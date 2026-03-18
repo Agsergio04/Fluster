@@ -1,4 +1,4 @@
-# Propuesta de Proyecto — Fluster Control de Demurrage y Detention para Pymes Logísticas
+# Propuesta de Proyecto — Fluster : Control de Demurrage y Detention para Pymes Logísticas
 
 ## Indice
 
@@ -11,7 +11,7 @@
 7. [Guion de trabajo (Criterio 1i)](#7-guion-de-trabajo-criterio-1i)  
 8. [Conclusión](#8-conclusión)  
 
----
+
 
 ## 1 Identificación de necesidades (Criterio 1c)
 
@@ -53,7 +53,6 @@ Se identifican dos perfiles principales:
 
 Ambos perfiles se benefician de un panel unificado donde se visualiza el estado de cada contenedor y un “semáforo” de riesgo que indica si se está dentro del free time, cerca de agotarlo o ya en sobrecoste.  
 
----
 
 ## 2 Oportunidades de negocio (Criterio 1d)
 
@@ -83,7 +82,7 @@ A medio plazo, Fluster puede evolucionar hacia un modelo SaaS con planes por nú
 
 El uso de una arquitectura API REST y de MongoDB Atlas facilita el escalado horizontal, pudiendo servir a varios clientes (multi-tenant) sin rediseñar el sistema.  
 
----
+
 
 ## 3 Tipo de proyecto (Criterio 1e)
 
@@ -126,7 +125,7 @@ La arquitectura propuesta sigue el patrón **cliente-servidor REST**:
 
 El entorno de desarrollo y despliegue se orquestará con **Docker Compose**, levantando servicios de frontend, backend y base de datos de manera coordinada.  
 
----
+
 
 ## 4 Características específicas (Criterio 1f)
 
@@ -191,7 +190,6 @@ El Producto Mínimo Viable de Fluster incluye:
 - **Infraestructura de desarrollo**: Docker Compose para orquestar frontend, backend y base de datos, facilitando despliegue y homogeneidad de entornos.  
 - **DevOps y diseño**: GitHub Actions / GitHub Project para integración continua y gestión de tareas, Figma para diseño de interfaces.  
 
----
 
 ## 5 Obligaciones legales y prevención (Criterio 1g)
 
@@ -224,7 +222,7 @@ La SPA de Fluster se desarrollará siguiendo buenas prácticas de accesibilidad 
 Se realizarán comprobaciones básicas con herramientas como **Lighthouse**, **Wave** y **TAW** para validar el cumplimiento.  
   
 
----
+
 
 ## 6 Ayudas y subvenciones (Criterio 1h)
 
@@ -318,7 +316,7 @@ Se utilizará una metodología **Scrum**: sprints cortos (1–2 semanas) y uso d
 - **Toggl Track**: Para medir el tiempo real dedicado a cada funcionalidad y ajustar el esfuerzo.  
 - **Herramienta de grabación (OBS o similar)**: Para generar vídeos de las demos parciales o de la demo final.  
 
----
+
 
 ## 8 Conclusión
 
@@ -329,5 +327,5 @@ Mediante una SPA basada en React y un backend Node.js + Express con MongoDB Atla
 El uso de tecnologías abiertas, el enfoque en la simplicidad para el usuario final y una hoja de ruta realista hacen que Fluster sea un candidato sólido para el proyecto de 2º DAW y una solución potencialmente viable para su implantación en PYMEs del sector logístico.  
 
 
----  
+
 
