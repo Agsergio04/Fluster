@@ -148,7 +148,7 @@ El Producto Mínimo Viable de Fluster incluye:
 #### 4.1.3. Registro de eventos con foto
 
 - Subida de fotos en diferentes momentos del ciclo de vida: entrada/salida de puerto, llegada a almacén, devolución vacía.  
-- Registro de timestamp, ubicación y tipo de evento (manual o inferido).  
+- Registro de timestamp, ubicación y tipo de evento manual.  
 - Procesamiento de la imagen en el backend usando **Tesseract OCR con Tess4J** para leer y validar el código del contenedor, vinculando la foto al contenedor correcto.  
 
 #### 4.1.4. Motor de cálculo de días y costes
