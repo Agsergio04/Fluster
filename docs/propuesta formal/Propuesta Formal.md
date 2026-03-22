@@ -143,12 +143,13 @@ El Producto Mínimo Viable de Fluster incluye:
 
 - Alta de contenedores con su código BIC, permitiendo introducción manual o reconocimiento mediante OCR.  
 - Asociación de cada contenedor a naviera y puerto, con definición de fecha de inicio de free time.  
-- Configuración de tarifas de D&D (demurrage y detention) personalizadas por usuario o cliente.  
+- Configuración de tarifas de D&D (demurrage y detention) personalizadas por el gestor de Operaciones.
 
-#### 4.1.3. Registro de eventos con foto
 
-- Subida de fotos en diferentes momentos del ciclo de vida: entrada/salida de puerto, llegada a almacén, devolución vacía.  
-- Registro de timestamp, ubicación y tipo de evento manual.  
+#### 4.1.3. Gestion de eventos de los contenedores
+
+- Subida de fotos en diferentes momentos del ciclo de vida: entrada/salida de puerto, llegada a almacén, devolución vacía (aunque el seguimiento se asignaria de manera manual).  
+- Registro de timestamp y tipo de evento manual.  
 - Procesamiento de la imagen en el backend usando **Tesseract OCR con Tess4J** para leer y validar el código del contenedor, vinculando la foto al contenedor correcto.  
 
 #### 4.1.4. Motor de cálculo de días y costes
@@ -173,7 +174,7 @@ El Producto Mínimo Viable de Fluster incluye:
 |----------|---------------|--------------|
 | **Obligatoria** | Gestión de usuarios y autenticación JWT | Necesaria para controlar el acceso a datos sensibles y separar roles. |
 | **Obligatoria** | Gestión de contenedores (alta, edición básica) | Sin contenedores, no hay unidad de control de D&D. |
-| **Obligatoria** | Registro de eventos con foto y timestamp | Es el núcleo de la trazabilidad y del cálculo posterior. |
+| **Obligatoria** | Registro de eventos con timestamp | Es el núcleo de la trazabilidad y del cálculo posterior. |
 | **Obligatoria** | Motor de cálculo de días y costes D&D | Genera el valor principal del producto: saber cuánto se está pagando o se va a pagar. |
 | **Obligatoria** | Panel de monitorización y semáforo de riesgo | Permite a la empresa actuar antes de que se generen sobrecostes. |
 | **Obligatoria** | Generación de informes con filtros por fechas/naviera/cliente | Imprescindible para comparar con las facturas de la naviera y justificar costes frente a terceros. |
