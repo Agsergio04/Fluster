@@ -173,7 +173,7 @@ El Producto Mínimo Viable de Fluster incluye:
 | Prioridad | Funcionalidad | Justificación |
 |----------|---------------|--------------|
 | **Obligatoria** | Gestión de usuarios y autenticación JWT | Necesaria para controlar el acceso a datos sensibles y separar roles. |
-| **Obligatoria** | Gestión de contenedores (alta, edición básica) | Sin contenedores, no hay unidad de control de D&D. |
+| **Obligatoria** | Gestión de contenedores  | Sin contenedores, no hay unidad de control de D&D. |
 | **Obligatoria** | Registro de eventos con timestamp | Es el núcleo de la trazabilidad y del cálculo posterior. |
 | **Obligatoria** | Motor de cálculo de días y costes D&D | Genera el valor principal del producto: saber cuánto se está pagando o se va a pagar. |
 | **Obligatoria** | Panel de monitorización y semáforo de riesgo | Permite a la empresa actuar antes de que se generen sobrecostes. |
