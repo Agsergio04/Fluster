@@ -177,7 +177,7 @@ El Producto Mínimo Viable de Fluster incluye:
 | **Obligatoria** | Registro de eventos con timestamp | Es el núcleo de la trazabilidad y del cálculo posterior. |
 | **Obligatoria** | Motor de cálculo de días y costes D&D | Genera el valor principal del producto: saber cuánto se está pagando o se va a pagar. |
 | **Obligatoria** | Panel de monitorización y semáforo de riesgo | Permite a la empresa actuar antes de que se generen sobrecostes. |
-| **Obligatoria** | Generación de informes con filtros por fechas/naviera/cliente | Imprescindible para comparar con las facturas de la naviera y justificar costes frente a terceros. |
+| **Obligatoria** | Generación de informes con filtros | Imprescindible para comparar con las facturas de la naviera y justificar costes frente a terceros. |
 | **Opcional** | Geolocalización de contenedores | Mejora la trazabilidad, pero la lógica base funciona sin ella. |
 | **Opcional** | MCP para IAS / acceso externo | Pensado como evolución para automatizar aún más el reporting vertical. |
 
