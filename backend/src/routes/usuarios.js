@@ -7,10 +7,13 @@ const router = Router()
 
 router.use(authMiddleware)
 
-router.get('/',    verificarRol('admin'),              usuarioController.listar)
-router.get('/:id', verificarRol('admin'),              usuarioController.obtener)
-router.put('/:id', verificarRol('admin'),              usuarioController.actualizar)
-router.patch('/:id/contrasena', verificarRol('admin'), usuarioController.cambiarContrasena)
-router.delete('/:id', verificarRol('admin'),           usuarioController.eliminar)
+// Gestión de usuarios — solo admin (página gestorDeUsuarios)
+router.get('/',    verificarRol('admin'), usuarioController.listar)
+router.get('/:id', verificarRol('admin'), usuarioController.obtener)
+router.put('/:id', verificarRol('admin'), usuarioController.actualizar)
+router.delete('/:id', verificarRol('admin'), usuarioController.eliminar)
+
+// Cambio de contraseña — cualquier rol puede cambiar la suya propia (página perfil)
+router.patch('/:id/contrasena', usuarioController.cambiarContrasena)
 
 module.exports = router

@@ -7,7 +7,10 @@ const router = Router()
 
 router.use(authMiddleware)
 
-router.post('/',                          verificarRol('admin', 'gestor', 'operador'), eventoController.registrar)
-router.get('/contenedor/:contenedorId',   verificarRol('admin', 'gestor', 'operador'), eventoController.listarPorContenedor)
+// Registro de evento — solo operador (página meterContenedor)
+router.post('/', verificarRol('operador'), eventoController.registrar)
+
+// Consulta — operador y gestor
+router.get('/contenedor/:contenedorId', verificarRol('operador', 'gestor'), eventoController.listarPorContenedor)
 
 module.exports = router

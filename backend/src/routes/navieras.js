@@ -5,12 +5,12 @@ const verificarRol = require('../middlewares/rolMiddleware')
 
 const router = Router()
 
-router.use(authMiddleware)
+router.use(authMiddleware, verificarRol('gestor'))
 
-router.get('/',    verificarRol('admin', 'gestor', 'operador'), navieraController.listar)
-router.get('/:id', verificarRol('admin', 'gestor', 'operador'), navieraController.obtener)
-router.post('/',   verificarRol('admin'),                       navieraController.crear)
-router.put('/:id', verificarRol('admin'),                       navieraController.actualizar)
-router.delete('/:id', verificarRol('admin'),                    navieraController.eliminar)
+router.get('/',       navieraController.listar)
+router.get('/:id',    navieraController.obtener)
+router.post('/',      navieraController.crear)
+router.put('/:id',    navieraController.actualizar)
+router.delete('/:id', navieraController.eliminar)
 
 module.exports = router

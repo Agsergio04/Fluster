@@ -5,9 +5,8 @@ const verificarRol = require('../middlewares/rolMiddleware')
 
 const router = Router()
 
-router.use(authMiddleware, verificarRol('admin', 'gestor'))
+router.use(authMiddleware, verificarRol('gestor'))
 
-// Las rutas específicas van antes que /:id
 router.get('/contenedor/:contenedorId', informeController.listarPorContenedor)
 router.get('/',                         informeController.listar)
 router.get('/:id',                      informeController.obtener)

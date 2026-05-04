@@ -29,6 +29,10 @@ async function actualizar(req, res, next) {
 
 async function cambiarContrasena(req, res, next) {
   try {
+    // Cada usuario solo puede cambiar su propia contraseña
+    if (req.usuario.id !== req.params.id) {
+      return res.status(403).json({ mensaje: 'Solo puedes cambiar tu propia contraseña' })
+    }
     const { contrasenaActual, contrasenaNueva } = req.body
     await usuarioService.cambiarContrasena(req.params.id, contrasenaActual, contrasenaNueva)
     res.status(204).send()

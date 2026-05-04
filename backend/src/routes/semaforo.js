@@ -5,6 +5,6 @@ const verificarRol = require('../middlewares/rolMiddleware')
 
 const router = Router()
 
-router.get('/', authMiddleware, verificarRol('admin', 'gestor', 'operador'), semaforoController.obtenerAgrupados)
+router.get('/', authMiddleware, verificarRol('gestor'), semaforoController.obtenerAgrupados)
 
 module.exports = router

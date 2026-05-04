@@ -37,16 +37,35 @@ async function obtenerPorId(id) {
 /**
  * Actualiza el nombre, correo o rol de un usuario.
  * El cambio de contraseña tiene su propia función para obligar a verificar la actual.
+ * Impide quitar el rol de admin al último administrador del sistema, igual que
+ * se impide borrarlo, para garantizar que siempre existe al menos uno.
  *
  * @param {string} id
  * @param {{ nombre?: string, correo?: string, rol?: string }} cambios
  * @returns {Promise<object>} Usuario actualizado sin contraseña
  */
 async function actualizar(id, cambios) {
+  const usuario = await Usuario.findById(id)
+  if (!usuario) {
+    const err = new Error('Usuario no encontrado')
+    err.status = 404
+    throw err
+  }
+
   if (cambios.correo) {
     const duplicado = await Usuario.findOne({ correo: cambios.correo, _id: { $ne: id } })
     if (duplicado) {
       const err = new Error('Ya existe un usuario con ese correo')
+      err.status = 409
+      throw err
+    }
+  }
+
+  // Proteger al último admin: no se puede cambiar su rol
+  if (cambios.rol && cambios.rol !== 'admin' && usuario.rol === 'admin') {
+    const totalAdmins = await Usuario.countDocuments({ rol: 'admin' })
+    if (totalAdmins === 1) {
+      const err = new Error('No se puede cambiar el rol del único administrador del sistema')
       err.status = 409
       throw err
     }
@@ -59,12 +78,6 @@ async function actualizar(id, cambios) {
     .findByIdAndUpdate(id, cambios, { new: true, runValidators: true })
     .select('-contrasena')
     .lean()
-
-  if (!actualizado) {
-    const err = new Error('Usuario no encontrado')
-    err.status = 404
-    throw err
-  }
 
   return actualizado
 }
