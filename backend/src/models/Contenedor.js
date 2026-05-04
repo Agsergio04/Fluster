@@ -1,20 +1,93 @@
+/**
+ * Modelo de Contenedor
+ * Entidad central del sistema; registra el ciclo de vida de cada contenedor
+ */
+
 const { Schema, model } = require('mongoose')
 
-const ESTADOS = ['INACTIVO', 'CARGADO', 'CLIENTE', 'VUELTA_PUERTO']
+/**
+ * Ciclo de vida de un contenedor (circular):
+ *
+ *   INACTIVO → CARGADO → CLIENTE → INACTIVO
+ *
+ *   INACTIVO → free time activo; sin coste.
+ *              Si fechaDevolucion está informada, el ciclo ya ha completado
+ *              y los costes D&D han sido aplicados y cerrados.
+ *   CARGADO  → contenedor en puerto; se acumula demurrage (sobreestadía).
+ *   CLIENTE  → contenedor con el cliente; se acumula detention (detención).
+ *
+ * La transición CLIENTE → INACTIVO es el momento en que se finalizan
+ * y aplican los costes totales del ciclo (demurrage + detention).
+ */
+const ESTADOS = ['INACTIVO', 'CARGADO', 'CLIENTE']
 
-const contenedorSchema = new Schema({
-  codigoBIC:          { type: String, required: true, uppercase: true },
-  tipo:               { type: String, required: true },
-  estado:             { type: String, enum: ESTADOS, default: 'INACTIVO' },
-  navieraId:          { type: Schema.Types.ObjectId, ref: 'Naviera', required: true },
-  clienteId:          { type: Schema.Types.ObjectId, ref: 'Cliente', required: true },
-  tarifaId:           { type: Schema.Types.ObjectId, ref: 'Tarifa', required: true },
-  diasLibres:         { type: Number, required: true },
-  fechaInicioLibre:   { type: Date, required: true },
-  fechaEntradaPuerto: { type: Date, default: null },
-  fechaSalidaPuerto:  { type: Date, default: null },
-  fechaDevolucion:    { type: Date, default: null },
-  creadoPor:          { type: Schema.Types.ObjectId, ref: 'Usuario', required: true }
-}, { timestamps: { createdAt: 'creadoEn', updatedAt: false } })
+/**
+ * Esquema de contenedor
+ * Solo persiste los datos de entrada y las fechas clave de cada tramo.
+ * Los días libres y las tarifas se obtienen de la naviera asociada.
+ * Los costes, días acumulados y el semáforo de riesgo se calculan en el
+ * backend bajo demanda a partir de las fechas y los datos de la naviera.
+ * El campo fechaDevolucion indica que el ciclo ha cerrado y los costes son definitivos.
+ */
+const contenedorSchema = new Schema(
+  {
+    codigoBIC: {
+      type: String,
+      required: true,
+      uppercase: true,
+      trim: true,
+    },
+    tipo: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    estado: {
+      type: String,
+      enum: ESTADOS,
+      default: 'INACTIVO',
+    },
+    navieraId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Naviera',
+      required: true,
+    },
+    clienteId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Cliente',
+      required: true,
+    },
+    fechaInicioLibre: {
+      type: Date,
+      required: true,
+    },
+    // Inicio del tramo CARGADO → activa demurrage
+    fechaEntradaPuerto: {
+      type: Date,
+      default: null,
+    },
+    // Inicio del tramo CLIENTE → activa detention
+    fechaSalidaPuerto: {
+      type: Date,
+      default: null,
+    },
+    // Cierre del ciclo
+    fechaDevolucion: {
+      type: Date,
+      default: null,
+    },
+    creadoPor: {
+      type: Schema.Types.ObjectId,
+      ref: 'Usuario',
+      required: true,
+    },
+  },
+  { timestamps: { createdAt: 'creadoEn', updatedAt: false } }
+)
+
+// Índices para las consultas más habituales del panel
+contenedorSchema.index({ estado: 1, creadoEn: -1 })
+contenedorSchema.index({ clienteId: 1 })
+contenedorSchema.index({ navieraId: 1 })
 
 module.exports = model('Contenedor', contenedorSchema)
