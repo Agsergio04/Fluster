@@ -65,16 +65,21 @@ async function crear({ codigoBIC, tipo, navieraId, fechaInicioLibre, creadoPor }
 
 /**
  * Lista contenedores con filtros opcionales.
- * Popula la naviera para que el panel no necesite peticiones adicionales.
- * El cliente vive en el ciclo activo, no en el contenedor.
+ * Si se filtra por clienteId busca primero los ciclos de ese cliente para
+ * obtener los contenedorIds, ya que el cliente vive en el Ciclo, no en el Contenedor.
  *
- * @param {{ estado?: string, navieraId?: string }} filtros
+ * @param {{ estado?: string, navieraId?: string, clienteId?: string }} filtros
  * @returns {Promise<object[]>}
  */
 async function listar(filtros = {}) {
   const query = {}
   if (filtros.estado) query.estado = filtros.estado
   if (filtros.navieraId) query.navieraId = filtros.navieraId
+
+  if (filtros.clienteId) {
+    const ids = await Ciclo.find({ clienteId: filtros.clienteId }).distinct('contenedorId')
+    query._id = { $in: ids }
+  }
 
   return Contenedor.find(query)
     .populate('navieraId', 'nombre codigo')
@@ -99,7 +104,14 @@ async function obtenerPorId(id) {
     throw err
   }
 
-  return contenedor
+  // Incluir el historial de ciclos para que el frontend tenga los cicloIds
+  // necesarios para la generación de informes y la vista de almacén
+  const ciclos = await Ciclo.find({ contenedorId: id })
+    .populate('clienteId', 'nombre')
+    .sort({ creadoEn: -1 })
+    .lean()
+
+  return { ...contenedor, ciclos }
 }
 
 /**
