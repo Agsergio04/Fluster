@@ -1,0 +1,26 @@
+// ITCSS — importar en orden de especificidad creciente
+// Cada capa amplía la anterior sin sobreescribirla
+
+// 00 Settings — variables CSS y de Sass (sin output CSS propio)
+@use './00-settings/css-variables';
+@use './00-settings/variables';
+
+// 01 Tools — mixins y funciones (sin output CSS propio)
+@use './01-tools/mixins';
+
+// 02 Generic — reset y estilos de normalización
+@use './02-generic/reset';
+
+// 03 Elements — estilos base de etiquetas HTML sin clases
+@use './03-elements/elements';
+
+// 04 Layout — estructura de página y rejillas
+@use './04-layout/layout';
+
+// 05 Components — componentes y páginas específicas
+// Se irán añadiendo aquí a medida que se creen
+@use './05-components/animations';
+@use './05-components/component-animations';
+
+// 06 Utilities — clases de apoyo de alta especificidad
+@use './06-utilities/utilities';
