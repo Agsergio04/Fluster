@@ -278,6 +278,37 @@ async function registrarDevolucion(id, fecha) {
   ).lean()
 }
 
+/**
+ * Cancela el ciclo activo y devuelve el contenedor a INACTIVO.
+ * Solo aplicable cuando el contenedor está en CARGADO, antes de que haya
+ * pasado al cliente; en ese punto no se ha generado ningún coste facturable
+ * así que el ciclo se borra por completo.
+ *
+ * @param {string} id - ID del contenedor
+ * @returns {Promise<object>} Contenedor actualizado
+ */
+async function cancelarCiclo(id) {
+  const contenedor = await Contenedor.findById(id)
+  if (!contenedor) {
+    const err = new Error('Contenedor no encontrado')
+    err.status = 404
+    throw err
+  }
+  if (contenedor.estado !== 'CARGADO') {
+    const err = new Error(`Solo se puede cancelar el ciclo desde estado CARGADO (actual: ${contenedor.estado})`)
+    err.status = 422
+    throw err
+  }
+
+  await Ciclo.findOneAndDelete({ contenedorId: id, fechaCierre: null })
+
+  return Contenedor.findByIdAndUpdate(
+    id,
+    { estado: 'INACTIVO', fechaEntradaPuerto: null },
+    { new: true }
+  ).lean()
+}
+
 module.exports = {
   crear,
   listar,
@@ -286,4 +317,5 @@ module.exports = {
   registrarEntradaPuerto,
   registrarSalidaPuerto,
   registrarDevolucion,
+  cancelarCiclo,
 }

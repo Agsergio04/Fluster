@@ -7,9 +7,10 @@ const { Schema, model } = require('mongoose')
 
 /**
  * Esquema de informe
- * Referencia al ciclo cerrado del que se extraen los datos para el PDF.
+ * Registro de auditoría que queda cuando el gestor exporta el PDF de un ciclo cerrado.
+ * El PDF lo genera el frontend con jsPDF; aquí solo se guarda quién lo generó y cuándo.
  * Los campos codigoBIC y cliente son snapshots del momento de emisión para
- * garantizar que el informe no cambia si los datos originales se modifican después.
+ * garantizar que el historial no cambia si los datos originales se modifican después.
  */
 const informeSchema = new Schema(
   {
@@ -30,10 +31,6 @@ const informeSchema = new Schema(
     },
     // Snapshot del nombre del cliente en el momento de generación
     cliente: {
-      type: String,
-      required: true,
-    },
-    urlPdf: {
       type: String,
       required: true,
     },

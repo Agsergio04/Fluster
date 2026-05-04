@@ -18,6 +18,20 @@ async function listarPorContenedor(contenedorId) {
 }
 
 /**
+ * Devuelve todos los ciclos asociados a un cliente, con los datos básicos
+ * del contenedor populados. Se usa en el almacén para filtrar tramos por cliente.
+ *
+ * @param {string} clienteId
+ * @returns {Promise<object[]>}
+ */
+async function listarPorCliente(clienteId) {
+  return Ciclo.find({ clienteId })
+    .populate('contenedorId', 'codigoBIC tipo estado')
+    .sort({ creadoEn: -1 })
+    .lean()
+}
+
+/**
  * Devuelve un ciclo por su ID.
  *
  * @param {string} id
@@ -33,4 +47,4 @@ async function obtenerPorId(id) {
   return ciclo
 }
 
-module.exports = { listarPorContenedor, obtenerPorId }
+module.exports = { listarPorContenedor, listarPorCliente, obtenerPorId }
