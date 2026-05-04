@@ -97,6 +97,13 @@ const cicloSchema = new Schema(
       ref: 'Contenedor',
       required: true,
     },
+    // El cliente se asigna al abrir el ciclo y permanece hasta que se cierra;
+    // cada ciclo puede pertenecer a un cliente distinto
+    clienteId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Cliente',
+      required: true,
+    },
     demurrage: {
       type: tramoDemurrageSchema,
       default: null,

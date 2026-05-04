@@ -52,11 +52,6 @@ const contenedorSchema = new Schema(
       ref: 'Naviera',
       required: true,
     },
-    clienteId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Cliente',
-      required: true,
-    },
     fechaInicioLibre: {
       type: Date,
       required: true,
@@ -87,7 +82,6 @@ const contenedorSchema = new Schema(
 
 // Índices para las consultas más habituales del panel
 contenedorSchema.index({ estado: 1, creadoEn: -1 })
-contenedorSchema.index({ clienteId: 1 })
 contenedorSchema.index({ navieraId: 1 })
 
 module.exports = model('Contenedor', contenedorSchema)
