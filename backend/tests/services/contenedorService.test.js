@@ -424,4 +424,161 @@ describe('contenedorService', () => {
       expect(Ciclo.findOneAndDelete).not.toHaveBeenCalled()
     })
   })
+
+  // ---------------------------------------------------------------------------
+  // crear
+  // ---------------------------------------------------------------------------
+  describe('crear', () => {
+    it('crea un contenedor en estado INACTIVO con los datos proporcionados', async () => {
+      const datos = {
+        codigoBIC: 'MSCU1234567',
+        tipo: '20DC',
+        navieraId: 'nav-id',
+        fechaInicioLibre: new Date('2025-01-01'),
+        creadoPor: 'user-id',
+      }
+      const mockContenedor = { _id: 'cont-id', estado: 'INACTIVO', ...datos }
+      Contenedor.create.mockResolvedValue(mockContenedor)
+
+      const result = await crear(datos)
+
+      expect(Contenedor.create).toHaveBeenCalledWith(datos)
+      expect(result).toEqual(mockContenedor)
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // listar
+  // ---------------------------------------------------------------------------
+  describe('listar', () => {
+    const mockPopulateSortLean = (data) =>
+      Contenedor.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          sort: jest.fn().mockReturnValue({
+            lean: jest.fn().mockResolvedValue(data),
+          }),
+        }),
+      })
+
+    it('devuelve todos los contenedores sin filtros', async () => {
+      const mockContenedores = [{ _id: 'c1' }, { _id: 'c2' }]
+      mockPopulateSortLean(mockContenedores)
+
+      const result = await listar()
+
+      expect(Contenedor.find).toHaveBeenCalledWith({})
+      expect(result).toEqual(mockContenedores)
+    })
+
+    it('filtra por estado cuando se proporciona', async () => {
+      mockPopulateSortLean([])
+
+      await listar({ estado: 'CARGADO' })
+
+      expect(Contenedor.find).toHaveBeenCalledWith(expect.objectContaining({ estado: 'CARGADO' }))
+    })
+
+    it('filtra por navieraId cuando se proporciona', async () => {
+      mockPopulateSortLean([])
+
+      await listar({ navieraId: 'nav-id' })
+
+      expect(Contenedor.find).toHaveBeenCalledWith(expect.objectContaining({ navieraId: 'nav-id' }))
+    })
+
+    it('filtra por clienteId buscando primero los contenedorIds en los ciclos', async () => {
+      Ciclo.find.mockReturnValue({ distinct: jest.fn().mockResolvedValue(['c1', 'c2']) })
+      mockPopulateSortLean([{ _id: 'c1' }, { _id: 'c2' }])
+
+      const result = await listar({ clienteId: 'cli-id' })
+
+      expect(Ciclo.find).toHaveBeenCalledWith({ clienteId: 'cli-id' })
+      expect(Contenedor.find).toHaveBeenCalledWith(
+        expect.objectContaining({ _id: { $in: ['c1', 'c2'] } })
+      )
+      expect(result).toHaveLength(2)
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // obtenerPorId
+  // ---------------------------------------------------------------------------
+  describe('obtenerPorId', () => {
+    it('devuelve el contenedor con su historial de ciclos', async () => {
+      const mockContenedor = { _id: 'cont-id', codigoBIC: 'MSCU1234567', estado: 'INACTIVO' }
+      const mockCiclos = [{ _id: 'ciclo-1', costeTotal: 300 }]
+
+      Contenedor.findById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          lean: jest.fn().mockResolvedValue(mockContenedor),
+        }),
+      })
+      Ciclo.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          sort: jest.fn().mockReturnValue({
+            lean: jest.fn().mockResolvedValue(mockCiclos),
+          }),
+        }),
+      })
+
+      const result = await obtenerPorId('cont-id')
+
+      expect(result.codigoBIC).toBe('MSCU1234567')
+      expect(result.ciclos).toEqual(mockCiclos)
+    })
+
+    it('lanza error 404 si el contenedor no existe', async () => {
+      Contenedor.findById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          lean: jest.fn().mockResolvedValue(null),
+        }),
+      })
+
+      await expect(obtenerPorId('no-existe')).rejects.toMatchObject({ status: 404 })
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // actualizar
+  // ---------------------------------------------------------------------------
+  describe('actualizar', () => {
+    it('actualiza los campos permitidos correctamente', async () => {
+      const updated = { _id: 'cont-id', codigoBIC: 'MSCU9999999', tipo: '40HC' }
+      Contenedor.findByIdAndUpdate.mockReturnValue({
+        lean: jest.fn().mockResolvedValue(updated),
+      })
+
+      const result = await actualizar('cont-id', { codigoBIC: 'MSCU9999999', tipo: '40HC' })
+
+      expect(result).toEqual(updated)
+    })
+
+    it('ignora los campos protegidos aunque vengan en el body', async () => {
+      Contenedor.findByIdAndUpdate.mockReturnValue({
+        lean: jest.fn().mockResolvedValue({ _id: 'cont-id' }),
+      })
+
+      await actualizar('cont-id', {
+        codigoBIC: 'MSCU9999999',
+        estado: 'CARGADO',
+        fechaEntradaPuerto: new Date(),
+        fechaSalidaPuerto: new Date(),
+        fechaDevolucion: new Date(),
+      })
+
+      const updateArg = Contenedor.findByIdAndUpdate.mock.calls[0][1]
+      expect(updateArg.estado).toBeUndefined()
+      expect(updateArg.fechaEntradaPuerto).toBeUndefined()
+      expect(updateArg.fechaSalidaPuerto).toBeUndefined()
+      expect(updateArg.fechaDevolucion).toBeUndefined()
+    })
+
+    it('lanza error 404 si el contenedor no existe', async () => {
+      Contenedor.findByIdAndUpdate.mockReturnValue({
+        lean: jest.fn().mockResolvedValue(null),
+      })
+
+      await expect(actualizar('no-existe', { codigoBIC: 'MSCU0000001' })).rejects.toMatchObject({ status: 404 })
+    })
+  })
 })
