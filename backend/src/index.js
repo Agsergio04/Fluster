@@ -1,6 +1,8 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./swagger.json')
 const conectarDB = require('./config/db')
 const errorMiddleware = require('./middlewares/errorMiddleware')
 
@@ -22,6 +24,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/health', (_req, res) => res.json({ ok: true }))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.use('/api/auth',         authRoutes)
 app.use('/api/usuarios',     usuarioRoutes)
