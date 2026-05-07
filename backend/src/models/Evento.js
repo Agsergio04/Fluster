@@ -40,11 +40,11 @@ const eventoSchema = new Schema(
       default: null,
     },
     // Código BIC extraído por Tesseract OCR de la foto subida
-    codigoBICOcr: {
+    codigoBIC: {
       type: String,
       default: null,
     },
-    // true si codigoBICOcr coincide con el BIC del contenedor
+    // true si codigoBIC coincide con el BIC del contenedor
     ocrValidado: {
       type: Boolean,
       default: false,
