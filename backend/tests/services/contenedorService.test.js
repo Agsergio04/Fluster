@@ -6,6 +6,10 @@ const Contenedor = require('../../src/models/Contenedor')
 const Naviera = require('../../src/models/Naviera')
 const Ciclo = require('../../src/models/Ciclo')
 const {
+  crear,
+  listar,
+  obtenerPorId,
+  actualizar,
   registrarEntradaPuerto,
   registrarSalidaPuerto,
   registrarDevolucion,
