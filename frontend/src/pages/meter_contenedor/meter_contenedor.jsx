@@ -1,0 +1,17 @@
+import './meter_contenedor.scss'
+
+function MeterContenedor() {
+  return (
+    <div className="o-app-shell">
+      <header className="o-header">
+        <h1>Fluster</h1>
+      </header>
+      <aside className="o-sidebar" />
+      <main className="o-main">
+        <h2>Meter contenedor</h2>
+      </main>
+    </div>
+  )
+}
+
+export default MeterContenedor

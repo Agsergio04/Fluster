@@ -3,6 +3,7 @@ import Login from '../pages/login/login'
 import Home from '../pages/home/home'
 import Almacen from '../pages/almacen/almacen'
 import Contenedores from '../pages/contenedores/contenedores'
+import MeterContenedor from '../pages/meter_contenedor/meter_contenedor'
 
 function AppRouter() {
   return (
@@ -12,6 +13,7 @@ function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/almacen" element={<Almacen />} />
         <Route path="/contenedores" element={<Contenedores />} />
+        <Route path="/meter-contenedor" element={<MeterContenedor />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
