@@ -6,6 +6,7 @@ import Contenedores from '../pages/contenedores/contenedores'
 import MeterContenedor from '../pages/meter_contenedor/meter_contenedor'
 import PanelDeControl from '../pages/panel_de_control/panel_de_control'
 import Perfil from '../pages/perfil/perfil'
+import Registro from '../pages/registro/registro'
 
 function AppRouter() {
   return (
@@ -18,6 +19,7 @@ function AppRouter() {
         <Route path="/meter-contenedor" element={<MeterContenedor />} />
         <Route path="/panel-de-control" element={<PanelDeControl />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/registro" element={<Registro />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
