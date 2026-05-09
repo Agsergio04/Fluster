@@ -5,6 +5,7 @@ import Almacen from '../pages/almacen/almacen'
 import Contenedores from '../pages/contenedores/contenedores'
 import MeterContenedor from '../pages/meter_contenedor/meter_contenedor'
 import PanelDeControl from '../pages/panel_de_control/panel_de_control'
+import Perfil from '../pages/perfil/perfil'
 
 function AppRouter() {
   return (
@@ -16,6 +17,7 @@ function AppRouter() {
         <Route path="/contenedores" element={<Contenedores />} />
         <Route path="/meter-contenedor" element={<MeterContenedor />} />
         <Route path="/panel-de-control" element={<PanelDeControl />} />
+        <Route path="/perfil" element={<Perfil />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
