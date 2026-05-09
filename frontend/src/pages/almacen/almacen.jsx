@@ -1,4 +1,6 @@
-function HomePage() {
+import './almacen.scss'
+
+function Almacen() {
   return (
     <div className="o-app-shell">
       <header className="o-header">
@@ -6,10 +8,10 @@ function HomePage() {
       </header>
       <aside className="o-sidebar" />
       <main className="o-main">
-        <h2>Panel de contenedores</h2>
+        <h2>Almacén</h2>
       </main>
     </div>
   )
 }
 
-export default HomePage
+export default Almacen
