@@ -1,0 +1,108 @@
+/* =========================================
+   Tokens — Modo claro
+========================================= */
+
+:root {
+
+  /* Tipografía
+  ----------------------------------------- */
+  --font-heading: 'Crimson Text', serif;
+  --font-body:    'Poppins', sans-serif;
+
+  /* Color primario
+  ----------------------------------------- */
+  --color-primary:       #4FB2F8;
+  --color-primary-hover: #69C1FF;
+  --color-primary-off:   #C8E7FD;
+
+  /* Color secundario
+  ----------------------------------------- */
+  --color-secondary:       #F28C28;
+  --color-secondary-hover: #F6A656;
+  --color-secondary-off:   #FBDBBC;
+
+  /* Neutros
+  ----------------------------------------- */
+  --color-bg:          #F9FAFB;
+  --color-surface:     #FFFFFF;
+  --color-text:        #111827;
+  --color-text-subtle: #6B7280;
+  --color-border:      #E5E7EB;
+
+  /* Semaforo
+  ----------------------------------------- */
+  --color-sin_costes:        #35C65B;
+  --color-sin_costes-inner:  #3DAC5C;
+  --color-primer_tramo:        #FFFC4B;
+  --color-primer_tramo-inner:  #ACA82E;
+  --color-segundo_tramo:          #7A0000;
+  --color-segundo_tramo-inner:    #AB0404;
+  --color-inactivo:       #B0AEAE;
+  --color-inactivo-inner: #A5A0A0;
+
+  /* Cards
+  ----------------------------------------- */
+  --color-card-almacen:    #4FB2F8;
+  --color-card-semaforo:   #F8944F;
+  --color-card-contenedor: #F8944F;
+  --color-card-usuario:    #F8944F;
+
+  /* Cajas
+  ----------------------------------------- */
+  --color-box-border: #FFFFFF;
+  --color-box-text:   #040404;
+
+}
+
+
+/* =========================================
+   Tokens — Modo oscuro
+========================================= */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+
+    /* Color primario
+    ----------------------------------------- */
+    --color-primary:       #245070;
+    --color-primary-hover: #1D435E;
+    --color-primary-off:   #122736;
+
+    /* Color secundario
+    ----------------------------------------- */
+    --color-secondary:       #844B16;
+    --color-secondary-hover: #784514;
+    --color-secondary-off:   #55310E;
+
+    /* Neutros
+    ----------------------------------------- */
+    --color-bg:          #111827;
+    --color-surface:     #1F2937;
+    --color-text:        #F9FAFB;
+    --color-text-subtle: #9CA3AF;
+    --color-border:      #374151;
+
+    /* Semaforo
+    ----------------------------------------- */
+    --color-sin_costes:        #195E2B;
+    --color-sin_costes-interno:  #19622C;
+    --color-primer_tramo:        #686920;
+    --color-primer_tramo-interno:  #787620;
+    --color-segundo_tramo:          #7A0000;
+    --color-segundo_tramo-interno:    #AB0404;
+    --color-inactivo:       #5A5656;
+    --color-inactivo-interno: #4C4A4A;
+
+    /* Cards
+    ----------------------------------------- */
+    --color-card-almacen:    #2F6891;
+    --color-card-semaforo:   #955A31;
+    --color-card-contenedor: #955A31;
+    --color-card-usuario:    #955A31;
+
+    /* Cajas
+    ----------------------------------------- */
+    --color-box-border: #FFFFFF;
+    --color-box-text:   #FFFFFF;
+  }
+}
