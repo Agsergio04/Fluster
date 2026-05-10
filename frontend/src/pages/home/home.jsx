@@ -1,6 +1,7 @@
 import './home.scss'
 import Input from '../../components/atomos/Input'
-import InputPassword from '../../components/atomos/InputPassword'
+import InputContrasenia from '../../components/atomos/InputContrasenia'
+import BotonRegistroLogin from '../../components/atomos/BotonRegistroLogin'
 
 function Home() {
   return (
@@ -19,19 +20,23 @@ function Home() {
         hint="Ejemplo: usuario@dominio.com"
       />
 
-      <InputPassword
+      <InputContrasenia
         id="password"
         label="Contraseña"
         required
         size="lg"
       />
 
-      <InputPassword
+      <InputContrasenia
         id="password-error"
         label="Contraseña con error"
         error="La contraseña es incorrecta"
         required
       />
+
+      <BotonRegistroLogin>Registrarse</BotonRegistroLogin>
+      <BotonRegistroLogin>Iniciar Sesión</BotonRegistroLogin>
+      <BotonRegistroLogin disabled>Registrarse</BotonRegistroLogin>
     </main>
   )
 }

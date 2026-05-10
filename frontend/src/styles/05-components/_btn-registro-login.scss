@@ -1,0 +1,26 @@
+.btn-registro-login {
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  width:            16.75rem;
+  padding:          var(--space-8);
+  background-color: var(--color-secondary);
+  border-radius:    var(--radius);
+  font-family:      var(--font-body);
+  font-size:        var(--text-16);
+  font-weight:      var(--font-weight-regular);
+  color:            var(--color-box-text);
+  text-transform:   uppercase;
+  white-space:      nowrap;
+  line-height:      var(--leading-tight);
+  transition:       background-color var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--color-secondary-off);
+    cursor:           not-allowed;
+  }
+}

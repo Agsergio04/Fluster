@@ -18,7 +18,7 @@ function EyeClosedIcon() {
   )
 }
 
-function InputPassword({
+function InputContrasenia({
   id,
   label,
   placeholder = 'Introduce tu contraseña',
@@ -80,4 +80,4 @@ function InputPassword({
   )
 }
 
-export default InputPassword
+export default InputContrasenia
