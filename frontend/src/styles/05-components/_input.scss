@@ -65,6 +65,59 @@
     }
   }
 
+  //Wrapper campo contraseña
+  &__password-wrapper {
+    order:            3;
+    width:            100%;
+    display:          flex;
+    align-items:      center;
+    gap:              var(--space-8);
+    padding:          var(--space-8);
+    background-color: var(--color-surface);
+    border:           1px solid transparent;
+    border-radius:    var(--radius);
+    transition:       border-color var(--transition-fast),
+                      box-shadow var(--transition-fast);
+
+    &:focus-within {
+      box-shadow: 0 0 0 3px var(--color-primary-off);
+    }
+
+    &:has(.input__field:disabled) {
+      opacity: 0.5;
+      cursor:  not-allowed;
+    }
+
+    .input__field {
+      order:         unset;
+      flex:          1;
+      min-width:     0;
+      width:         auto;
+      padding:       0;
+      background:    transparent;
+      border:        none;
+      border-radius: 0;
+      box-shadow:    none;
+
+      &:focus-visible {
+        outline:    none;
+        box-shadow: none;
+      }
+    }
+  }
+
+  //Botón toggle visibilidad
+  &__eye-btn {
+    display:     flex;
+    align-items: center;
+    flex-shrink: 0;
+    color:       var(--color-box-text);
+    opacity:     0.6;
+    transition:  opacity var(--transition-fast);
+
+    &:hover { opacity: 1; }
+  }
+
   //Pista de ayuda
   &__hint {
     order:        4;
@@ -92,7 +145,8 @@
     width:     42.44rem;
     max-width: 100%;
 
-    .input__field { width: 42.44rem; max-width: 100%; }
+    .input__field,
+    .input__password-wrapper { width: 42.44rem; max-width: 100%; }
   }
 
   //Modificador — Tamaño pequeño (175px)
@@ -100,19 +154,26 @@
     width:     10.94rem;
     max-width: 100%;
 
-    .input__field { width: 10.94rem; max-width: 100%; }
+    .input__field,
+    .input__password-wrapper { width: 10.94rem; max-width: 100%; }
   }
 
   //Modificador — Error
   &--error {
-    .input__field {
+    .input__field,
+    .input__password-wrapper {
       border-color: var(--color-error);
       box-shadow:   0 0 0 2px var(--color-error);
+    }
 
-      &:focus-visible {
-        border-color: var(--color-error);
-        box-shadow:   0 0 0 3px var(--color-error-subtle);
-      }
+    .input__password-wrapper:focus-within {
+      border-color: var(--color-error);
+      box-shadow:   0 0 0 3px var(--color-error-subtle);
+    }
+
+    .input__field:focus-visible {
+      border-color: var(--color-error);
+      box-shadow:   0 0 0 3px var(--color-error-subtle);
     }
 
     .input__error { display: block; }
@@ -121,7 +182,8 @@
 
   //Modificador — Éxito
   &--success {
-    .input__field {
+    .input__field,
+    .input__password-wrapper {
       border-color: var(--color-success);
       box-shadow:   0 0 0 2px var(--color-success);
     }

@@ -1,5 +1,6 @@
 import './home.scss'
 import Input from '../../components/atomos/Input'
+import InputPassword from '../../components/atomos/InputPassword'
 
 function Home() {
   return (
@@ -16,6 +17,20 @@ function Home() {
         required
         error="Correo no válido"
         hint="Ejemplo: usuario@dominio.com"
+      />
+
+      <InputPassword
+        id="password"
+        label="Contraseña"
+        required
+        size="lg"
+      />
+
+      <InputPassword
+        id="password-error"
+        label="Contraseña con error"
+        error="La contraseña es incorrecta"
+        required
       />
     </main>
   )
