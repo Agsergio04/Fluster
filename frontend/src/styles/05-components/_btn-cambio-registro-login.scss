@@ -1,0 +1,26 @@
+.btn-cambio-registro-login {
+  display:       inline-flex;
+  border-radius: var(--radius);
+  overflow:      hidden;
+
+  &__tab {
+    flex:        1;
+    padding:     var(--space-8) var(--space-16);
+    background:  var(--color-secondary);
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    white-space: nowrap;
+    line-height: var(--leading-tight);
+    transition:  background-color var(--transition-fast);
+
+    &--active {
+      background: var(--color-secondary-hover);
+    }
+
+    &:hover:not(&--active) {
+      background: var(--color-secondary-hover);
+    }
+  }
+}
