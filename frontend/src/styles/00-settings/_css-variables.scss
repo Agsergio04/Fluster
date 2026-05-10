@@ -1,108 +1,222 @@
+@use './variables' as vars;
+
 /* =========================================
-   Tokens — Modo claro
+   Variables CSS — tema claro (defecto)
 ========================================= */
 
 :root {
 
-  /* Tipografía
-  ----------------------------------------- */
-  --font-heading: 'Crimson Text', serif;
-  --font-body:    'Poppins', sans-serif;
+  // ── Colores Primarios ──────────────────────────────────────────
+  --color-primary:       #{vars.$color-primary};
+  --color-primary-hover: #{vars.$color-primary-hover};
+  --color-primary-off:   #{vars.$color-primary-off};
 
-  /* Color primario
-  ----------------------------------------- */
-  --color-primary:       #4FB2F8;
-  --color-primary-hover: #69C1FF;
-  --color-primary-off:   #C8E7FD;
+  // ── Colores Secundarios ────────────────────────────────────────
+  --color-secondary:       #{vars.$color-secondary};
+  --color-secondary-hover: #{vars.$color-secondary-hover};
+  --color-secondary-off:   #{vars.$color-secondary-off};
 
-  /* Color secundario
-  ----------------------------------------- */
-  --color-secondary:       #F28C28;
-  --color-secondary-hover: #F6A656;
-  --color-secondary-off:   #FBDBBC;
+  // ── Fondos de página ──────────────────────────────────────────
+  --color-bg:      #{vars.$color-bg-light};
+  --color-surface: #{vars.$color-surface-light};
 
-  /* Neutros
-  ----------------------------------------- */
-  --color-bg:          #F9FAFB;
-  --color-surface:     #FFFFFF;
-  --color-text:        #111827;
-  --color-text-subtle: #6B7280;
-  --color-border:      #E5E7EB;
+  // ── Texto y bordes ────────────────────────────────────────────
+  --color-text:        #{vars.$color-text-light};
+  --color-text-subtle: #{vars.$color-text-subtle-light};
+  --color-border:      #{vars.$color-border-light};
 
-  /* Semaforo
-  ----------------------------------------- */
-  --color-sin_costes:        #35C65B;
-  --color-sin_costes-inner:  #3DAC5C;
-  --color-primer_tramo:        #FFFC4B;
-  --color-primer_tramo-inner:  #ACA82E;
-  --color-segundo_tramo:          #7A0000;
-  --color-segundo_tramo-inner:    #AB0404;
-  --color-inactivo:       #B0AEAE;
-  --color-inactivo-inner: #A5A0A0;
+  // ── Cajas ─────────────────────────────────────────────────────
+  --color-box-border: #{vars.$color-box-border-light};
+  --color-box-text:   #{vars.$color-box-text-light};
 
-  /* Cards
-  ----------------------------------------- */
-  --color-card-almacen:    #4FB2F8;
-  --color-card-semaforo:   #F8944F;
-  --color-card-contenedor: #F8944F;
-  --color-card-usuario:    #F8944F;
+  // ── Semáforo ──────────────────────────────────────────────────
+  --color-sin_costes:          #{vars.$color-sin-costes};
+  --color-sin_costes-inner:    #{vars.$color-sin-costes-inner};
+  --color-primer_tramo:        #{vars.$color-primer-tramo};
+  --color-primer_tramo-inner:  #{vars.$color-primer-tramo-inner};
+  --color-segundo_tramo:       #{vars.$color-segundo-tramo};
+  --color-segundo_tramo-inner: #{vars.$color-segundo-tramo-inner};
+  --color-inactivo:            #{vars.$color-inactivo};
+  --color-inactivo-inner:      #{vars.$color-inactivo-inner};
 
-  /* Cajas
-  ----------------------------------------- */
-  --color-box-border: #FFFFFF;
-  --color-box-text:   #040404;
+  // ── Cards ─────────────────────────────────────────────────────
+  --color-card-almacen:    #{vars.$color-card-almacen-light};
+  --color-card-semaforo:   #{vars.$color-card-semaforo-light};
+  --color-card-contenedor: #{vars.$color-card-semaforo-light};
+  --color-card-usuario:    #{vars.$color-card-semaforo-light};
 
+  // ── Semánticos — alias ────────────────────────────────────────
+  --color-error:        var(--color-segundo_tramo);
+  --color-error-subtle: var(--color-segundo_tramo-inner);
+  --color-success:      var(--color-sin_costes);
+
+  // ── Tipografía — Familias ─────────────────────────────────────
+  --font-heading: #{vars.$font-heading};
+  --font-body:    #{vars.$font-body};
+
+  // ── Tipografía — Escala (base 8px) ───────────────────────────
+  --text-8:  #{vars.$text-8};
+  --text-16: #{vars.$text-16};
+  --text-24: #{vars.$text-24};
+  --text-32: #{vars.$text-32};
+  --text-40: #{vars.$text-40};
+  --text-48: #{vars.$text-48};
+  --text-56: #{vars.$text-56};
+  --text-64: #{vars.$text-64};
+
+  // ── Tipografía — Pesos ────────────────────────────────────────
+  --font-weight-light:    #{vars.$font-weight-light};
+  --font-weight-regular:  #{vars.$font-weight-regular};
+  --font-weight-medium:   #{vars.$font-weight-medium};
+  --font-weight-semibold: #{vars.$font-weight-semibold};
+  --font-weight-bold:     #{vars.$font-weight-bold};
+
+  // ── Tipografía — Interlineado ─────────────────────────────────
+  --leading-tight:   #{vars.$leading-tight};
+  --leading-snug:    #{vars.$leading-snug};
+  --leading-normal:  #{vars.$leading-normal};
+  --leading-relaxed: #{vars.$leading-relaxed};
+
+  // ── Espaciado (base 8px) ──────────────────────────────────────
+  --space-8:       #{vars.$space-8};
+  --space-16:      #{vars.$space-16};
+  --space-24:      #{vars.$space-24};
+  --space-32:      #{vars.$space-32};
+  --space-40:      #{vars.$space-40};
+  --space-48:      #{vars.$space-48};
+  --space-56:      #{vars.$space-56};
+  --space-64:      #{vars.$space-64};
+  --space-72:      #{vars.$space-72};
+  --space-80:      #{vars.$space-80};
+  --space-88:      #{vars.$space-88};
+  --space-96:      #{vars.$space-96};
+  --space-input-y: #{vars.$space-input-y};
+  --space-input-x: #{vars.$space-input-x};
+
+  // ── Radio de borde ────────────────────────────────────────────
+  --radius: #{vars.$radius};
+
+  // ── Transiciones ──────────────────────────────────────────────
+  --transition-fast: #{vars.$transition-fast};
+  --transition-base: #{vars.$transition-base};
+  --transition-slow: #{vars.$transition-slow};
+
+  // ── Sombras ───────────────────────────────────────────────────
+  --shadow-sm: #{vars.$shadow-sm};
+  --shadow-md: #{vars.$shadow-md};
+  --shadow-lg: #{vars.$shadow-lg};
+  --shadow-xl: #{vars.$shadow-xl};
 }
 
 
 /* =========================================
-   Tokens — Modo oscuro
+   Tema claro explícito [data-theme='light']
+========================================= */
+
+:root[data-theme='light'] {
+  --color-primary:       #{vars.$color-primary};
+  --color-primary-hover: #{vars.$color-primary-hover};
+  --color-primary-off:   #{vars.$color-primary-off};
+
+  --color-secondary:       #{vars.$color-secondary};
+  --color-secondary-hover: #{vars.$color-secondary-hover};
+  --color-secondary-off:   #{vars.$color-secondary-off};
+
+  --color-bg:      #{vars.$color-bg-light};
+  --color-surface: #{vars.$color-surface-light};
+
+  --color-text:        #{vars.$color-text-light};
+  --color-text-subtle: #{vars.$color-text-subtle-light};
+  --color-border:      #{vars.$color-border-light};
+
+  --color-box-border: #{vars.$color-box-border-light};
+  --color-box-text:   #{vars.$color-box-text-light};
+
+  --color-sin_costes:         #{vars.$color-sin-costes};
+  --color-sin_costes-inner:   #{vars.$color-sin-costes-inner};
+  --color-primer_tramo:       #{vars.$color-primer-tramo};
+  --color-primer_tramo-inner: #{vars.$color-primer-tramo-inner};
+  --color-inactivo:           #{vars.$color-inactivo};
+  --color-inactivo-inner:     #{vars.$color-inactivo-inner};
+
+  --color-card-almacen:    #{vars.$color-card-almacen-light};
+  --color-card-semaforo:   #{vars.$color-card-semaforo-light};
+  --color-card-contenedor: #{vars.$color-card-semaforo-light};
+  --color-card-usuario:    #{vars.$color-card-semaforo-light};
+}
+
+
+/* =========================================
+   Tema oscuro [data-theme='dark']
+========================================= */
+
+:root[data-theme='dark'] {
+  --color-primary:       #{vars.$color-primary-dark};
+  --color-primary-hover: #{vars.$color-primary-dark-hover};
+  --color-primary-off:   #{vars.$color-primary-dark-off};
+
+  --color-secondary:       #{vars.$color-secondary-dark};
+  --color-secondary-hover: #{vars.$color-secondary-dark-hover};
+  --color-secondary-off:   #{vars.$color-secondary-dark-off};
+
+  --color-bg:      #{vars.$color-bg-dark};
+  --color-surface: #{vars.$color-surface-dark};
+
+  --color-text:        #{vars.$color-text-dark};
+  --color-text-subtle: #{vars.$color-text-subtle-dark};
+  --color-border:      #{vars.$color-border-dark};
+
+  --color-box-border: #{vars.$color-box-border-dark};
+  --color-box-text:   #{vars.$color-box-text-dark};
+
+  --color-sin_costes:         #{vars.$color-sin-costes-dark};
+  --color-sin_costes-inner:   #{vars.$color-sin-costes-dark-inner};
+  --color-primer_tramo:       #{vars.$color-primer-tramo-dark};
+  --color-primer_tramo-inner: #{vars.$color-primer-tramo-dark-inner};
+  --color-inactivo:           #{vars.$color-inactivo-dark};
+  --color-inactivo-inner:     #{vars.$color-inactivo-dark-inner};
+
+  --color-card-almacen:    #{vars.$color-card-almacen-dark};
+  --color-card-semaforo:   #{vars.$color-card-semaforo-dark};
+  --color-card-contenedor: #{vars.$color-card-semaforo-dark};
+  --color-card-usuario:    #{vars.$color-card-semaforo-dark};
+}
+
+
+/* =========================================
+   Preferencia del sistema (fallback sin JS)
 ========================================= */
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
+    --color-primary:       #{vars.$color-primary-dark};
+    --color-primary-hover: #{vars.$color-primary-dark-hover};
+    --color-primary-off:   #{vars.$color-primary-dark-off};
 
-    /* Color primario
-    ----------------------------------------- */
-    --color-primary:       #245070;
-    --color-primary-hover: #1D435E;
-    --color-primary-off:   #122736;
+    --color-secondary:       #{vars.$color-secondary-dark};
+    --color-secondary-hover: #{vars.$color-secondary-dark-hover};
+    --color-secondary-off:   #{vars.$color-secondary-dark-off};
 
-    /* Color secundario
-    ----------------------------------------- */
-    --color-secondary:       #844B16;
-    --color-secondary-hover: #784514;
-    --color-secondary-off:   #55310E;
+    --color-bg:      #{vars.$color-bg-dark};
+    --color-surface: #{vars.$color-surface-dark};
 
-    /* Neutros
-    ----------------------------------------- */
-    --color-bg:          #111827;
-    --color-surface:     #1F2937;
-    --color-text:        #F9FAFB;
-    --color-text-subtle: #9CA3AF;
-    --color-border:      #374151;
+    --color-text:        #{vars.$color-text-dark};
+    --color-text-subtle: #{vars.$color-text-subtle-dark};
+    --color-border:      #{vars.$color-border-dark};
 
-    /* Semaforo
-    ----------------------------------------- */
-    --color-sin_costes:        #195E2B;
-    --color-sin_costes-interno:  #19622C;
-    --color-primer_tramo:        #686920;
-    --color-primer_tramo-interno:  #787620;
-    --color-segundo_tramo:          #7A0000;
-    --color-segundo_tramo-interno:    #AB0404;
-    --color-inactivo:       #5A5656;
-    --color-inactivo-interno: #4C4A4A;
+    --color-box-border: #{vars.$color-box-border-dark};
+    --color-box-text:   #{vars.$color-box-text-dark};
 
-    /* Cards
-    ----------------------------------------- */
-    --color-card-almacen:    #2F6891;
-    --color-card-semaforo:   #955A31;
-    --color-card-contenedor: #955A31;
-    --color-card-usuario:    #955A31;
+    --color-sin_costes:         #{vars.$color-sin-costes-dark};
+    --color-sin_costes-inner:   #{vars.$color-sin-costes-dark-inner};
+    --color-primer_tramo:       #{vars.$color-primer-tramo-dark};
+    --color-primer_tramo-inner: #{vars.$color-primer-tramo-dark-inner};
+    --color-inactivo:           #{vars.$color-inactivo-dark};
+    --color-inactivo-inner:     #{vars.$color-inactivo-dark-inner};
 
-    /* Cajas
-    ----------------------------------------- */
-    --color-box-border: #FFFFFF;
-    --color-box-text:   #FFFFFF;
+    --color-card-almacen:    #{vars.$color-card-almacen-dark};
+    --color-card-semaforo:   #{vars.$color-card-semaforo-dark};
+    --color-card-contenedor: #{vars.$color-card-semaforo-dark};
+    --color-card-usuario:    #{vars.$color-card-semaforo-dark};
   }
 }

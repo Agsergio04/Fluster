@@ -3,7 +3,6 @@
 
 // 00 Settings — variables CSS y de Sass (sin output CSS propio)
 @use './00-settings/css-variables';
-@use './00-settings/variables';
 
 // 01 Tools — mixins y funciones (sin output CSS propio)
 @use './01-tools/mixins';
@@ -21,6 +20,7 @@
 // Se irán añadiendo aquí a medida que se creen
 @use './05-components/animations';
 @use './05-components/component-animations';
+@use './05-components/input';
 
 // 06 Utilities — clases de apoyo de alta especificidad
 @use './06-utilities/utilities';

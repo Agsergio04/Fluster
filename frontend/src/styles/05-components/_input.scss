@@ -1,0 +1,135 @@
+
+.input {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-8);
+
+  //Etiqueta
+  &__label {
+    font-family:  var(--font-heading);
+    font-size:    var(--text-16);
+    font-weight:  var(--font-weight-regular);
+    color:        var(--color-text);
+    line-height:  var(--leading-snug);
+
+    & > abbr[title='required'] {
+      color:           var(--color-error);
+      text-decoration: none;
+      margin-left:     4px;
+    }
+  }
+
+  //Campo
+  &__field {
+    order:            3;
+    width:            100%;
+    padding:          var(--space-8);
+    background-color: var(--color-surface);
+    border:           1px solid transparent;
+    border-radius:    var(--radius);
+    color:            var(--color-box-text);
+    font-family:      var(--font-body);
+    font-size:        var(--text-24);
+    font-weight:      var(--font-weight-regular);
+    line-height:      var(--leading-tight);
+    transition:       border-color var(--transition-fast),
+                      box-shadow var(--transition-fast);
+
+    &::placeholder {
+      color: var(--color-box-text);
+    }
+
+    &:focus-visible {
+      outline:    none;
+      box-shadow: 0 0 0 3px var(--color-primary-off);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor:  not-allowed;
+    }
+
+    //Inputs de fecha y hora — estilos nativos normalizados
+    &[type='date'],
+    &[type='time'],
+    &[type='datetime-local'] {
+      -webkit-appearance: none;
+      appearance:         none;
+    }
+
+    &[type='date']::-webkit-calendar-picker-indicator,
+    &[type='time']::-webkit-calendar-picker-indicator,
+    &[type='datetime-local']::-webkit-calendar-picker-indicator {
+      cursor:  pointer;
+      opacity: 0.6;
+    }
+  }
+
+  //Pista de ayuda
+  &__hint {
+    order:        4;
+    font-size:    var(--text-8);
+    color:        var(--color-text-subtle);
+    padding-left: var(--space-16);
+  }
+
+  //Mensaje de error
+  &__error {
+    order:            2;
+    display:          none;
+    align-self:       flex-start;
+    padding:          4px 12px;
+    border-radius:    var(--radius);
+    background-color: var(--color-error);
+    font-size:        var(--text-8);
+    font-weight:      var(--font-weight-semibold);
+    color:            var(--color-surface);
+    line-height:      var(--leading-snug);
+  }
+
+  //Modificador — Tamaño grande (679px)
+  &--lg {
+    width:     42.44rem;
+    max-width: 100%;
+
+    .input__field { width: 42.44rem; max-width: 100%; }
+  }
+
+  //Modificador — Tamaño pequeño (175px)
+  &--sm {
+    width:     10.94rem;
+    max-width: 100%;
+
+    .input__field { width: 10.94rem; max-width: 100%; }
+  }
+
+  //Modificador — Error
+  &--error {
+    .input__field {
+      border-color: var(--color-error);
+      box-shadow:   0 0 0 2px var(--color-error);
+
+      &:focus-visible {
+        border-color: var(--color-error);
+        box-shadow:   0 0 0 3px var(--color-error-subtle);
+      }
+    }
+
+    .input__error { display: block; }
+    .input__hint  { display: none;  }
+  }
+
+  //Modificador — Éxito
+  &--success {
+    .input__field {
+      border-color: var(--color-success);
+      box-shadow:   0 0 0 2px var(--color-success);
+    }
+  }
+}
+
+[data-theme='dark'] .input__field[type='date']::-webkit-calendar-picker-indicator,
+[data-theme='dark'] .input__field[type='time']::-webkit-calendar-picker-indicator,
+[data-theme='dark'] .input__field[type='datetime-local']::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
