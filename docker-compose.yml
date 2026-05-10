@@ -1,0 +1,53 @@
+services:
+
+  # ─── Base de datos ────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: fluster
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - fluster-net
+
+  # ─── Backend ──────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      MONGO_URI:  mongodb://mongo:27017/fluster
+      PORT:       3000
+      JWT_SECRET: ${JWT_SECRET:-cambia_esto_por_un_secreto_seguro}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    networks:
+      - fluster-net
+
+  # ─── Frontend ─────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - fluster-net
+
+
+# ─── Volúmenes ────────────────────────────────────────────────
+volumes:
+  mongo_data:
+
+
+# ─── Red interna ──────────────────────────────────────────────
+networks:
+  fluster-net:
+    driver: bridge
