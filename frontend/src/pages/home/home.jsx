@@ -6,6 +6,8 @@ import BotonRegistroLogin from '../../components/atomos/BotonRegistroLogin'
 import BotonCambioRegistroLogin from '../../components/atomos/BotonCambioRegistroLogin'
 import BotonRolGestor from '../../components/atomos/BotonRolGestor'
 import BotonRolOperador from '../../components/atomos/BotonRolOperador'
+import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
+import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -62,6 +64,22 @@ function Home() {
         titulo="Soy un Operador"
         descripcion="Introduzco contenedores mediante un sistema OCR"
         active
+      />
+
+      <TextoCambiadorLoginRegistro
+        texto="¿No tienes cuenta?"
+        labelBoton="Registrarse"
+        onClick={() => {}}
+      />
+      <TextoCambiadorLoginRegistro
+        texto="¿Ya tienes cuenta?"
+        labelBoton="Iniciar sesión"
+        onClick={() => {}}
+      />
+      <TextoCambiadorRegistroLogin
+        texto="Tienes una cuenta"
+        labelBoton="Iniciar sesión"
+        onClick={() => {}}
       />
     </main>
   )
