@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from '../pages/login/login'
 import Home from '../pages/home/home'
 import Almacen from '../pages/almacen/almacen'
@@ -25,7 +25,8 @@ function AppRouter() {
         <Route path="/registro" element={<Registro />} />
         <Route path="/semaforo" element={<Semaforo />} />
         <Route path="/tarifas" element={<Tarifas />} />
-        <Route path="*" element={<Error />} />
+        <Route path="/error" element={<Error />} />
+        <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
     </BrowserRouter>
   )
