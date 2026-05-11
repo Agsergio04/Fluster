@@ -1,5 +1,6 @@
 .btn-actualizar-tarifa {
   display:          inline-flex;
+  align-self:       flex-start;
   align-items:      center;
   justify-content:  center;
   gap:              var(--space-8);

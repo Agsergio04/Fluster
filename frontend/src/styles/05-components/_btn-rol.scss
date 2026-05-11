@@ -1,5 +1,6 @@
 .btn-rol {
-  display:          flex;
+  display:          inline-flex;
+  align-self:       flex-start;
   align-items:      center;
   gap:              var(--space-8);
   width:            16.25rem;

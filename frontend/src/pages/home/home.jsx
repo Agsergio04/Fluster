@@ -9,6 +9,7 @@ import BotonRolOperador from '../../components/atomos/BotonRolOperador'
 import BotonGenerarInforme from '../../components/atomos/BotonGenerarInforme'
 import BotonEliminarTarifa from '../../components/atomos/BotonEliminarTarifa'
 import BotonActualizarTarifa from '../../components/atomos/BotonActualizarTarifa'
+import BotonEliminar from '../../components/atomos/BotonEliminar'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -93,6 +94,9 @@ function Home() {
 
       <BotonActualizarTarifa onClick={() => {}} />
       <BotonActualizarTarifa disabled />
+
+      <BotonEliminar onClick={() => {}} />
+      <BotonEliminar disabled size="md"/>
     </main>
   )
 }
