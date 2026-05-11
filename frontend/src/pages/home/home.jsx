@@ -35,6 +35,7 @@ import BotonBorrarUsuario from '../../components/atomos/BotonBorrarUsuario'
 import BotonCambiarEstado from '../../components/atomos/BotonCambiarEstado'
 import RolAsignado from '../../components/atomos/RolAsignado'
 import BotonRolesCardUsuario from '../../components/atomos/BotonRolesCardUsuario'
+import BuscadorCard from '../../components/moleculas/BuscadorCard'
 import CabeceraTramo from '../../components/atomos/CabeceraTramo'
 import CabeceraHeader from '../../components/moleculas/CabeceraHeader'
 import CabeceraSemaforoCard from '../../components/moleculas/CabeceraSemaforoCard'
@@ -47,6 +48,8 @@ function Home() {
   return (
     <main style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <h1>Home</h1>
+
+      <BuscadorCard value="" onChange={() => {}} onBuscar={() => {}} />
 
       <CabeceraTramo tramo="sin-coste"     cantidad={32} />
       <CabeceraTramo tramo="primer-tramo"  cantidad={14} />
