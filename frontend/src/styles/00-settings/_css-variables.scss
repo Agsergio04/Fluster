@@ -93,6 +93,10 @@
   --space-input-y: #{vars.$space-input-y};
   --space-input-x: #{vars.$space-input-x};
 
+  // ── Anchos de campo ───────────────────────────────────────────
+  --tamanio_normal:   #{vars.$tamanio_normal};
+  --tamanio_pequenio: #{vars.$tamanio_pequenio};
+
   // ── Radio de borde ────────────────────────────────────────────
   --radius: #{vars.$radius};
 

@@ -142,20 +142,20 @@
 
   //Modificador — Tamaño grande (679px)
   &--lg {
-    width:     42.44rem;
+    width:     var(--tamanio_normal);
     max-width: 100%;
 
     .input__field,
-    .input__password-wrapper { width: 42.44rem; max-width: 100%; }
+    .input__password-wrapper { width: var(--tamanio_normal); max-width: 100%; }
   }
 
   //Modificador — Tamaño pequeño (175px)
   &--sm {
-    width:     10.94rem;
+    width:     var(--tamanio_pequenio);
     max-width: 100%;
 
     .input__field,
-    .input__password-wrapper { width: 10.94rem; max-width: 100%; }
+    .input__password-wrapper { width: var(--tamanio_pequenio); max-width: 100%; }
   }
 
   //Modificador — Error

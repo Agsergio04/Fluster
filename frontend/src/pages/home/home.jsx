@@ -32,8 +32,10 @@ import ContenedoresIcon from '../../assets/icons/Icono contenedores.svg?react'
 import PanelControlIcon from '../../assets/icons/Icono panel de control.svg?react'
 import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
 import BotonBorrarUsuario from '../../components/atomos/BotonBorrarUsuario'
+import BotonCambiarEstado from '../../components/atomos/BotonCambiarEstado'
 import RolAsignado from '../../components/atomos/RolAsignado'
 import BotonRolesCardUsuario from '../../components/atomos/BotonRolesCardUsuario'
+import TextoConEntradaDatos from '../../components/moleculas/TextoConEntradaDatos'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -183,9 +185,37 @@ function Home() {
         onEditarDetention={() => {}}
       />
 
+      <TextoConEntradaDatos
+        id="filtro-bic"
+        label="Filtrado por el codigo Bic"
+        placeholder="Introduce el codigo Bic"
+        value=""
+        onChange={() => {}}
+      />
+      <TextoConEntradaDatos
+        id="filtro-naviera"
+        label="Filtrado por la naviera"
+        placeholder="Introduce la naviera"
+        value=""
+        onChange={() => {}}
+      />
+      <TextoConEntradaDatos
+        id="filtro-cliente"
+        label="Filtrado por el nombre del cliente"
+        placeholder="Introduce el nombre del cliente"
+        value=""
+        onChange={() => {}}
+      />
+
       <RolAsignado rol="admin" />
       <RolAsignado rol="gestor" />
       <RolAsignado rol="operador" />
+
+      <BotonCambiarEstado onAnterior={() => {}} onSiguiente={() => {}} />
+      <BotonCambiarEstado onSiguiente={() => {}} />
+      <BotonCambiarEstado onAnterior={() => {}} />
+      <BotonCambiarEstado mostrarAnterior={false} onSiguiente={() => {}} />
+      <BotonCambiarEstado mostrarAnterior={false} mostrarSiguiente={false} />
 
       <BotonBorrarUsuario onClick={() => {}} />
       <BotonBorrarUsuario disabled />

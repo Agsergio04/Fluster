@@ -42,10 +42,12 @@
 @use './05-components/btn-menu-hamburguesa';
 @use './05-components/btn-cambiar-tema';
 @use './05-components/btn-desplegable-hamburguesa';
+@use './05-components/texto-con-entrada-datos';
 @use './05-components/tramo-de-fechas';
 @use './05-components/tarjeta-ciclo-contenedor';
 @use './05-components/estado-contenedor-semaforo';
 @use './05-components/btn-roles-card-usuario';
+@use './05-components/btn-cambiar-estado';
 @use './05-components/btn-borrar-usuario';
 @use './05-components/rol-asignado';
 
