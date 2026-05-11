@@ -22,6 +22,7 @@ import BotonSeleccionarFoto from '../../components/atomos/BotonSeleccionarFoto'
 import BotonEmpezarAhora from '../../components/atomos/BotonEmpezarAhora'
 import BotonIniciarSesion from '../../components/atomos/BotonIniciarSesion'
 import BotonMenuHamburguesa from '../../components/atomos/BotonMenuHamburguesa'
+import BotonCambiarTema from '../../components/atomos/BotonCambiarTema'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -147,6 +148,9 @@ function Home() {
 
       <BotonMenuHamburguesa onClick={() => {}} />
       <BotonMenuHamburguesa disabled />
+
+      <BotonCambiarTema theme="light" onClick={() => {}} />
+      <BotonCambiarTema theme="dark" onClick={() => {}} />
     </main>
   )
 }
