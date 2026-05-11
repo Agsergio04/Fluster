@@ -16,6 +16,7 @@ import BotonCambioSeccion from '../../components/atomos/BotonCambioSeccion'
 import BotonIrIzquierda from '../../components/atomos/BotonIrIzquierda'
 import BotonIrDerecha from '../../components/atomos/BotonIrDerecha'
 import BotonBusqueda from '../../components/atomos/BotonBusqueda'
+import BotonDecision from '../../components/atomos/BotonDecision'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -122,6 +123,10 @@ function Home() {
 
       <BotonBusqueda onClick={() => {}} />
       <BotonBusqueda disabled />
+
+      <BotonDecision onClick={() => {}} />
+      <BotonDecision selected onClick={() => {}} />
+      <BotonDecision disabled />
     </main>
   )
 }
