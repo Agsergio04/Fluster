@@ -35,6 +35,7 @@ import BotonBorrarUsuario from '../../components/atomos/BotonBorrarUsuario'
 import BotonCambiarEstado from '../../components/atomos/BotonCambiarEstado'
 import RolAsignado from '../../components/atomos/RolAsignado'
 import BotonRolesCardUsuario from '../../components/atomos/BotonRolesCardUsuario'
+import CabeceraTramo from '../../components/atomos/CabeceraTramo'
 import CabeceraHeader from '../../components/moleculas/CabeceraHeader'
 import CabeceraSemaforoCard from '../../components/moleculas/CabeceraSemaforoCard'
 import TextoConEntradaDatos from '../../components/moleculas/TextoConEntradaDatos'
@@ -46,6 +47,11 @@ function Home() {
   return (
     <main style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <h1>Home</h1>
+
+      <CabeceraTramo tramo="sin-coste"     cantidad={32} />
+      <CabeceraTramo tramo="primer-tramo"  cantidad={14} />
+      <CabeceraTramo tramo="segundo-tramo" cantidad={7}  />
+      <CabeceraTramo tramo="inactivo"      cantidad={5}  />
 
       <CabeceraSemaforoCard estado="inactivo" onSiguiente={() => {}} />
       <CabeceraSemaforoCard estado="puerto-free" mostrarAnterior onAnterior={() => {}} onSiguiente={() => {}} />

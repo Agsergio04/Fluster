@@ -1,0 +1,59 @@
+.cabecera-tramo {
+  display:     flex;
+  align-items: center;
+  gap:         0.625rem;
+  width:       100%;
+  padding:     0.625rem;
+
+  &__label {
+    flex:        1 0 0;
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+  }
+
+  &__badge {
+    flex-shrink: 0;
+    padding:     0.625rem;
+  }
+
+  &__cantidad {
+    font-family: var(--font-heading);
+    font-size:   var(--text-40);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    white-space: nowrap;
+    color:       var(--color-box-text);
+  }
+
+  // ── Variantes ────────────────────────────────────────────────────
+
+  &--sin-coste {
+    background-color: var(--color-sin_costes);
+    border:           1px solid var(--color-box-text);
+
+    .cabecera-tramo__badge { background-color: var(--color-sin_costes-inner); }
+  }
+
+  &--primer-tramo {
+    background-color: var(--color-primer_tramo);
+    border:           1px solid var(--color-box-text);
+
+    .cabecera-tramo__badge { background-color: var(--color-primer_tramo-inner); }
+  }
+
+  &--segundo-tramo {
+    background-color: var(--color-segundo_tramo);
+
+    .cabecera-tramo__badge { background-color: var(--color-segundo_tramo-inner); }
+  }
+
+  &--inactivo {
+    background-color: var(--color-inactivo);
+    border:           1px solid var(--color-box-text);
+
+    .cabecera-tramo__badge { background-color: var(--color-inactivo-inner); }
+  }
+}
