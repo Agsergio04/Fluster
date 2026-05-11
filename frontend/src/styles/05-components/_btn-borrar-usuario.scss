@@ -1,0 +1,33 @@
+.btn-borrar-usuario {
+  display:          inline-flex;
+  align-self:       flex-start;
+  align-items:      center;
+  gap:              var(--space-8);
+  padding:          var(--space-8);
+  border:           none;
+  border-radius:    var(--radius);
+  cursor:           pointer;
+  font-family:      var(--font-body);
+  font-size:        var(--text-8);
+  font-weight:      var(--font-weight-regular);
+  line-height:      1;
+  white-space:      nowrap;
+  color:            var(--color-box-text);
+  background-color: var(--color-secondary);
+  transition:       background-color var(--transition-fast);
+
+  &__icono {
+    width:       1.5rem;
+    height:      1.5rem;
+    flex-shrink: 0;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--color-secondary-off);
+    cursor:           not-allowed;
+  }
+}
