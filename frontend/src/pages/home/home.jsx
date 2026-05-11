@@ -8,6 +8,7 @@ import BotonRolGestor from '../../components/atomos/BotonRolGestor'
 import BotonRolOperador from '../../components/atomos/BotonRolOperador'
 import BotonGenerarInforme from '../../components/atomos/BotonGenerarInforme'
 import BotonEliminarTarifa from '../../components/atomos/BotonEliminarTarifa'
+import BotonActualizarTarifa from '../../components/atomos/BotonActualizarTarifa'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -84,11 +85,14 @@ function Home() {
         onClick={() => {}}
       />
 
-      <BotonGenerarInforme onClick={() => {}} />
+      <BotonGenerarInforme onClick={() => {}}/>
       <BotonGenerarInforme disabled />
 
       <BotonEliminarTarifa onClick={() => {}} />
       <BotonEliminarTarifa disabled />
+
+      <BotonActualizarTarifa onClick={() => {}} />
+      <BotonActualizarTarifa disabled />
     </main>
   )
 }
