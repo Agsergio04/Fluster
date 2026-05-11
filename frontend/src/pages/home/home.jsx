@@ -36,6 +36,7 @@ import BotonCambiarEstado from '../../components/atomos/BotonCambiarEstado'
 import RolAsignado from '../../components/atomos/RolAsignado'
 import BotonRolesCardUsuario from '../../components/atomos/BotonRolesCardUsuario'
 import CabeceraHeader from '../../components/moleculas/CabeceraHeader'
+import CabeceraSemaforoCard from '../../components/moleculas/CabeceraSemaforoCard'
 import TextoConEntradaDatos from '../../components/moleculas/TextoConEntradaDatos'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
@@ -45,6 +46,11 @@ function Home() {
   return (
     <main style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <h1>Home</h1>
+
+      <CabeceraSemaforoCard estado="inactivo" onSiguiente={() => {}} />
+      <CabeceraSemaforoCard estado="puerto-free" mostrarAnterior onAnterior={() => {}} onSiguiente={() => {}} />
+      <CabeceraSemaforoCard estado="cliente-primer" mostrarAnterior onAnterior={() => {}} onSiguiente={() => {}} />
+      <CabeceraSemaforoCard estado="puerto-segundo" mostrarAnterior onAnterior={() => {}} mostrarSiguiente={false} />
 
       <CabeceraHeader tema="light" onToggleTema={() => {}} />
       <CabeceraHeader loggeado tema="light" onToggleTema={() => {}} onMenuHamburguesa={() => {}} />
