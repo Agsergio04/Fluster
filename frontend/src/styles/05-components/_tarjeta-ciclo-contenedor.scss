@@ -1,0 +1,53 @@
+.tarjeta-ciclo-contenedor {
+  display:          flex;
+  flex-direction:   column;
+  gap:              var(--space-16);
+  padding:          var(--space-16);
+  background-color: var(--color-card-contenedor);
+  border-radius:    var(--radius);
+
+  &__cabecera {
+    display:     flex;
+    align-items: center;
+  }
+
+  &__cliente {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-semibold);
+    color:       var(--color-box-text);
+  }
+
+  &__seccion {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-8);
+  }
+
+  &__coste-linea {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     center;
+    padding:         0 var(--space-8);
+    font-family:     var(--font-body);
+    font-size:       var(--text-16);
+    color:           var(--color-box-text);
+  }
+
+  &__separador {
+    border:           none;
+    border-top:       1px solid rgba(255 255 255 / 0.2);
+    margin:           0;
+  }
+
+  &__total {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     center;
+    padding:         0 var(--space-8);
+    font-family:     var(--font-body);
+    font-size:       var(--text-16);
+    font-weight:     var(--font-weight-semibold);
+    color:           var(--color-box-text);
+  }
+}

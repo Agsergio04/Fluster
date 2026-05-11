@@ -1,0 +1,58 @@
+.tramo-de-fechas {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-8);
+
+  &__cabecera {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-8);
+  }
+
+  &__titulo {
+    flex:        1;
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+  }
+
+  &__fechas {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-8);
+  }
+
+  &__fila {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-16);
+    padding:     0 var(--space-8);
+  }
+
+  &__etiqueta {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-16);
+    flex:        0 0 10rem;
+
+    svg {
+      width:       1.5rem;
+      height:      1.5rem;
+      flex-shrink: 0;
+      color:       var(--color-box-text);
+    }
+
+    span {
+      font-family: var(--font-body);
+      font-size:   var(--text-16);
+      color:       var(--color-box-text);
+    }
+  }
+
+  &__valor {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-box-text);
+  }
+}

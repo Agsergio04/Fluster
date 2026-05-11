@@ -24,6 +24,7 @@ import BotonIniciarSesion from '../../components/atomos/BotonIniciarSesion'
 import BotonMenuHamburguesa from '../../components/atomos/BotonMenuHamburguesa'
 import BotonCambiarTema from '../../components/atomos/BotonCambiarTema'
 import BotonDesplegableHamburguesa from '../../components/atomos/BotonDesplegableHamburguesa'
+import TarjetaCicloContenedor from '../../components/moleculas/TarjetaCicloContenedor'
 import ContenedoresFotoIcon from '../../assets/icons/Icono de contenedores por foto.svg?react'
 import TarifasIcon from '../../assets/icons/Icono Tarifas.svg?react'
 import GestorIcon from '../../assets/icons/Icono Gestor.svg?react'
@@ -166,6 +167,14 @@ function Home() {
       <BotonDesplegableHamburguesa icon={<ContenedoresIcon />} label="Contenedores" onClick={() => {}} />
       <BotonDesplegableHamburguesa icon={<PanelControlIcon />} label="Panel de control" onClick={() => {}} />
       <BotonDesplegableHamburguesa icon={<PerfilIcon />} label="Perfil" disabled />
+
+      <TarjetaCicloContenedor
+        cliente="Empresa Ejemplo S.L."
+        demurrage={{ fechaInicio: '01/03/2024', fechaFin: '05/03/2024', coste: 320 }}
+        detention={{ fechaInicio: '06/03/2024', fechaFin: '10/03/2024', coste: 180 }}
+        onEditarDemurrage={() => {}}
+        onEditarDetention={() => {}}
+      />
     </main>
   )
 }
