@@ -40,8 +40,6 @@
   --color-inactivo-inner:      #{vars.$color-inactivo-inner};
 
   // ── Cards ─────────────────────────────────────────────────────
-
-  // ── Cards ─────────────────────────────────────────────────────
   --color-card-almacen:    #{vars.$color-card-almacen-light};
   --color-card-semaforo:   #{vars.$color-card-semaforo-light};
   --color-card-contenedor: #{vars.$color-card-semaforo-light};
@@ -134,12 +132,14 @@
   --color-box-border: #{vars.$color-box-border-light};
   --color-box-text:   #{vars.$color-box-text-light};
 
-  --color-sin_costes:         #{vars.$color-sin-costes};
-  --color-sin_costes-inner:   #{vars.$color-sin-costes-inner};
-  --color-primer_tramo:       #{vars.$color-primer-tramo};
-  --color-primer_tramo-inner: #{vars.$color-primer-tramo-inner};
-  --color-inactivo:           #{vars.$color-inactivo};
-  --color-inactivo-inner:     #{vars.$color-inactivo-inner};
+  --color-sin_costes:          #{vars.$color-sin-costes};
+  --color-sin_costes-inner:    #{vars.$color-sin-costes-inner};
+  --color-primer_tramo:        #{vars.$color-primer-tramo};
+  --color-primer_tramo-inner:  #{vars.$color-primer-tramo-inner};
+  --color-segundo_tramo:       #{vars.$color-segundo-tramo};
+  --color-segundo_tramo-inner: #{vars.$color-segundo-tramo-inner};
+  --color-inactivo:            #{vars.$color-inactivo};
+  --color-inactivo-inner:      #{vars.$color-inactivo-inner};
 
   --color-card-almacen:    #{vars.$color-card-almacen-light};
   --color-card-semaforo:   #{vars.$color-card-semaforo-light};
@@ -171,12 +171,14 @@
   --color-box-border: #{vars.$color-box-border-dark};
   --color-box-text:   #{vars.$color-box-text-dark};
 
-  --color-sin_costes:         #{vars.$color-sin-costes-dark};
-  --color-sin_costes-inner:   #{vars.$color-sin-costes-dark-inner};
-  --color-primer_tramo:       #{vars.$color-primer-tramo-dark};
-  --color-primer_tramo-inner: #{vars.$color-primer-tramo-dark-inner};
-  --color-inactivo:           #{vars.$color-inactivo-dark};
-  --color-inactivo-inner:     #{vars.$color-inactivo-dark-inner};
+  --color-sin_costes:          #{vars.$color-sin-costes-dark};
+  --color-sin_costes-inner:    #{vars.$color-sin-costes-dark-inner};
+  --color-primer_tramo:        #{vars.$color-primer-tramo-dark};
+  --color-primer_tramo-inner:  #{vars.$color-primer-tramo-dark-inner};
+  --color-segundo_tramo:       #{vars.$color-segundo-tramo-dark};
+  --color-segundo_tramo-inner: #{vars.$color-segundo-tramo-dark-inner};
+  --color-inactivo:            #{vars.$color-inactivo-dark};
+  --color-inactivo-inner:      #{vars.$color-inactivo-dark-inner};
 
   --color-card-almacen:    #{vars.$color-card-almacen-dark};
   --color-card-semaforo:   #{vars.$color-card-semaforo-dark};
@@ -209,12 +211,14 @@
     --color-box-border: #{vars.$color-box-border-dark};
     --color-box-text:   #{vars.$color-box-text-dark};
 
-    --color-sin_costes:         #{vars.$color-sin-costes-dark};
-    --color-sin_costes-inner:   #{vars.$color-sin-costes-dark-inner};
-    --color-primer_tramo:       #{vars.$color-primer-tramo-dark};
-    --color-primer_tramo-inner: #{vars.$color-primer-tramo-dark-inner};
-    --color-inactivo:           #{vars.$color-inactivo-dark};
-    --color-inactivo-inner:     #{vars.$color-inactivo-dark-inner};
+    --color-sin_costes:          #{vars.$color-sin-costes-dark};
+    --color-sin_costes-inner:    #{vars.$color-sin-costes-dark-inner};
+    --color-primer_tramo:        #{vars.$color-primer-tramo-dark};
+    --color-primer_tramo-inner:  #{vars.$color-primer-tramo-dark-inner};
+    --color-segundo_tramo:       #{vars.$color-segundo-tramo-dark};
+    --color-segundo_tramo-inner: #{vars.$color-segundo-tramo-dark-inner};
+    --color-inactivo:            #{vars.$color-inactivo-dark};
+    --color-inactivo-inner:      #{vars.$color-inactivo-dark-inner};
 
     --color-card-almacen:    #{vars.$color-card-almacen-dark};
     --color-card-semaforo:   #{vars.$color-card-semaforo-dark};

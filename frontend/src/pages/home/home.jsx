@@ -32,6 +32,7 @@ import GestorIcon from '../../assets/icons/Icono Gestor.svg?react'
 import ContenedoresIcon from '../../assets/icons/Icono contenedores.svg?react'
 import PanelControlIcon from '../../assets/icons/Icono panel de control.svg?react'
 import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
+import BotonRolesCardUsuario from '../../components/atomos/BotonRolesCardUsuario'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -176,6 +177,11 @@ function Home() {
         onEditarDemurrage={() => {}}
         onEditarDetention={() => {}}
       />
+
+      <BotonRolesCardUsuario rol="admin" />
+      <BotonRolesCardUsuario rol="gestor" />
+      <BotonRolesCardUsuario rol="operador" />
+      <BotonRolesCardUsuario rol="admin" active={false} />
 
       <EstadoContenedorSemaforo estado="inactivo" />
       <EstadoContenedorSemaforo estado="puerto-free" />
