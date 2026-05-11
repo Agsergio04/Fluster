@@ -1,0 +1,53 @@
+.btn-desplegable-hamburguesa {
+  display:          inline-flex;
+  align-self:       flex-start;
+  align-items:      center;
+  gap:              var(--space-8);
+  width:            16.625rem;
+  height:           3.5625rem;
+  padding:          var(--space-8);
+  background-color: var(--color-primary);
+  border-radius:    var(--radius);
+  font-family:      var(--font-heading);
+  font-size:        var(--text-24);
+  font-weight:      var(--font-weight-regular);
+  color:            var(--color-box-text);
+  white-space:      nowrap;
+  transition:       background-color var(--transition-fast);
+
+  &__separador {
+    width:            0.3125rem;
+    height:           2.0625rem;
+    background-color: var(--color-box-text);
+    border-radius:    2px;
+    flex-shrink:      0;
+  }
+
+  &__icono {
+    display:     flex;
+    flex-shrink: 0;
+
+    svg {
+      width:  1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &__label {
+    flex:      1 0 0;
+    min-width: 0;
+  }
+
+  &:hover:not(:disabled):not(&--active) {
+    background-color: var(--color-primary-hover);
+  }
+
+  &--active {
+    cursor: default;
+  }
+
+  &:disabled {
+    background-color: var(--color-primary-off);
+    cursor:           not-allowed;
+  }
+}

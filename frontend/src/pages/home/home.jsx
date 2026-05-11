@@ -23,6 +23,13 @@ import BotonEmpezarAhora from '../../components/atomos/BotonEmpezarAhora'
 import BotonIniciarSesion from '../../components/atomos/BotonIniciarSesion'
 import BotonMenuHamburguesa from '../../components/atomos/BotonMenuHamburguesa'
 import BotonCambiarTema from '../../components/atomos/BotonCambiarTema'
+import BotonDesplegableHamburguesa from '../../components/atomos/BotonDesplegableHamburguesa'
+import ContenedoresFotoIcon from '../../assets/icons/Icono de contenedores por foto.svg?react'
+import TarifasIcon from '../../assets/icons/Icono Tarifas.svg?react'
+import GestorIcon from '../../assets/icons/Icono Gestor.svg?react'
+import ContenedoresIcon from '../../assets/icons/Icono contenedores.svg?react'
+import PanelControlIcon from '../../assets/icons/Icono panel de control.svg?react'
+import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -151,6 +158,14 @@ function Home() {
 
       <BotonCambiarTema theme="light" onClick={() => {}} />
       <BotonCambiarTema theme="dark" onClick={() => {}} />
+
+      <BotonDesplegableHamburguesa icon={<ContenedoresFotoIcon />} label="Meter contenedor" onClick={() => {}} />
+      <BotonDesplegableHamburguesa icon={<TarifasIcon />} label="Tarifas" onClick={() => {}} />
+      <BotonDesplegableHamburguesa icon={<GestorIcon />} label="Seguimiento" active onClick={() => {}} />
+      <BotonDesplegableHamburguesa icon={<ContenedoresIcon />} label="Almacen" onClick={() => {}} />
+      <BotonDesplegableHamburguesa icon={<ContenedoresIcon />} label="Contenedores" onClick={() => {}} />
+      <BotonDesplegableHamburguesa icon={<PanelControlIcon />} label="Panel de control" onClick={() => {}} />
+      <BotonDesplegableHamburguesa icon={<PerfilIcon />} label="Perfil" disabled />
     </main>
   )
 }
