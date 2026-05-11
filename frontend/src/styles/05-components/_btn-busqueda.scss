@@ -1,0 +1,26 @@
+.btn-busqueda {
+  display:          inline-flex;
+  align-self:       flex-start;
+  align-items:      center;
+  justify-content:  center;
+  padding:          var(--space-8);
+  background-color: var(--color-box-border);
+  border-radius:    var(--radius);
+  color:            var(--color-text);
+  transition:       background-color var(--transition-fast);
+
+  svg {
+    width:       1.5rem;
+    height:      1.5rem;
+    flex-shrink: 0;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-surface);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor:  not-allowed;
+  }
+}
