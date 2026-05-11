@@ -4,11 +4,9 @@ import Input from '../../components/atomos/Input'
 import InputContrasenia from '../../components/atomos/InputContrasenia'
 import BotonRegistroLogin from '../../components/atomos/BotonRegistroLogin'
 import BotonCambioRegistroLogin from '../../components/atomos/BotonCambioRegistroLogin'
-import BotonRolGestor from '../../components/atomos/BotonRolGestor'
-import BotonRolOperador from '../../components/atomos/BotonRolOperador'
+import BotonRol from '../../components/atomos/BotonRol'
+import BotonAccionTarifa from '../../components/atomos/BotonAccionTarifa'
 import BotonGenerarInforme from '../../components/atomos/BotonGenerarInforme'
-import BotonEliminarTarifa from '../../components/atomos/BotonEliminarTarifa'
-import BotonActualizarTarifa from '../../components/atomos/BotonActualizarTarifa'
 import BotonEliminar from '../../components/atomos/BotonEliminar'
 import BotonEditar from '../../components/atomos/BotonEditar'
 import BotonEditarCardFecha from '../../components/atomos/BotonEditarCardFecha'
@@ -29,6 +27,7 @@ import EstadoContenedorSemaforo from '../../components/atomos/EstadoContenedorSe
 import ContenedoresFotoIcon from '../../assets/icons/Icono de contenedores por foto.svg?react'
 import TarifasIcon from '../../assets/icons/Icono Tarifas.svg?react'
 import GestorIcon from '../../assets/icons/Icono Gestor.svg?react'
+import OperadorIcon from '../../assets/icons/Icono Operador.svg?react'
 import ContenedoresIcon from '../../assets/icons/Icono contenedores.svg?react'
 import PanelControlIcon from '../../assets/icons/Icono panel de control.svg?react'
 import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
@@ -76,20 +75,24 @@ function Home() {
 
       <BotonCambioRegistroLogin active={tab} onChange={setTab} />
 
-      <BotonRolGestor
+      <BotonRol
+        icon={<GestorIcon aria-hidden="true" />}
         titulo="Soy Gestor de Operaciones"
         descripcion="Controlo tarifas de navieras, gestiono los contenedores y genero los informes"
       />
-      <BotonRolGestor
+      <BotonRol
+        icon={<GestorIcon aria-hidden="true" />}
         titulo="Soy Gestor de Operaciones"
         descripcion="Controlo tarifas de navieras, gestiono los contenedores y genero los informes"
         active
       />
-      <BotonRolOperador
+      <BotonRol
+        icon={<OperadorIcon aria-hidden="true" />}
         titulo="Soy un Operador"
         descripcion="Introduzco contenedores mediante un sistema OCR"
       />
-      <BotonRolOperador
+      <BotonRol
+        icon={<OperadorIcon aria-hidden="true" />}
         titulo="Soy un Operador"
         descripcion="Introduzco contenedores mediante un sistema OCR"
         active
@@ -114,11 +117,11 @@ function Home() {
       <BotonGenerarInforme onClick={() => {}}/>
       <BotonGenerarInforme disabled />
 
-      <BotonEliminarTarifa onClick={() => {}} />
-      <BotonEliminarTarifa disabled />
+      <BotonAccionTarifa accion="eliminar" onClick={() => {}} />
+      <BotonAccionTarifa accion="eliminar" disabled />
 
-      <BotonActualizarTarifa onClick={() => {}} />
-      <BotonActualizarTarifa disabled />
+      <BotonAccionTarifa accion="actualizar" onClick={() => {}} />
+      <BotonAccionTarifa accion="actualizar" disabled />
 
       <BotonEliminar onClick={() => {}} />
       <BotonEliminar disabled size="md"/>

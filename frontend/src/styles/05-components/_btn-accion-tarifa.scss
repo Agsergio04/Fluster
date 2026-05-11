@@ -1,18 +1,20 @@
-.btn-actualizar-tarifa {
+.btn-accion-tarifa {
   display:          inline-flex;
   align-self:       flex-start;
   align-items:      center;
   justify-content:  center;
   gap:              var(--space-8);
   padding:          var(--space-8);
-  background-color: var(--color-secondary);
+  border:           none;
   border-radius:    var(--radius);
+  cursor:           pointer;
   font-family:      var(--font-heading);
   font-size:        var(--text-16);
   font-weight:      var(--font-weight-regular);
   color:            var(--color-box-text);
   white-space:      nowrap;
   line-height:      var(--leading-tight);
+  background-color: var(--color-secondary);
   transition:       background-color var(--transition-fast);
 
   svg {
