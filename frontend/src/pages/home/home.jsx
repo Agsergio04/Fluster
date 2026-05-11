@@ -20,6 +20,7 @@ import BotonDecision from '../../components/atomos/BotonDecision'
 import BotonEditadoFechaContenedor from '../../components/atomos/BotonEditadoFechaContenedor'
 import BotonSeleccionarFoto from '../../components/atomos/BotonSeleccionarFoto'
 import BotonEmpezarAhora from '../../components/atomos/BotonEmpezarAhora'
+import BotonIniciarSesion from '../../components/atomos/BotonIniciarSesion'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -139,6 +140,9 @@ function Home() {
 
       <BotonEmpezarAhora onClick={() => {}} />
       <BotonEmpezarAhora disabled />
+
+      <BotonIniciarSesion onClick={() => {}} />
+      <BotonIniciarSesion disabled />
     </main>
   )
 }
