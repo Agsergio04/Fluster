@@ -33,6 +33,7 @@ import ContenedoresIcon from '../../assets/icons/Icono contenedores.svg?react'
 import PanelControlIcon from '../../assets/icons/Icono panel de control.svg?react'
 import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
 import BotonBorrarUsuario from '../../components/atomos/BotonBorrarUsuario'
+import RolAsignado from '../../components/atomos/RolAsignado'
 import BotonRolesCardUsuario from '../../components/atomos/BotonRolesCardUsuario'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
@@ -178,6 +179,10 @@ function Home() {
         onEditarDemurrage={() => {}}
         onEditarDetention={() => {}}
       />
+
+      <RolAsignado rol="admin" />
+      <RolAsignado rol="gestor" />
+      <RolAsignado rol="operador" />
 
       <BotonBorrarUsuario onClick={() => {}} />
       <BotonBorrarUsuario disabled />

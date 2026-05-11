@@ -48,6 +48,7 @@
 @use './05-components/estado-contenedor-semaforo';
 @use './05-components/btn-roles-card-usuario';
 @use './05-components/btn-borrar-usuario';
+@use './05-components/rol-asignado';
 
 // 06 Utilities — clases de apoyo de alta especificidad
 @use './06-utilities/utilities';
