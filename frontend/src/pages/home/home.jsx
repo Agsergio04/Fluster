@@ -11,6 +11,7 @@ import BotonEliminarTarifa from '../../components/atomos/BotonEliminarTarifa'
 import BotonActualizarTarifa from '../../components/atomos/BotonActualizarTarifa'
 import BotonEliminar from '../../components/atomos/BotonEliminar'
 import BotonEditar from '../../components/atomos/BotonEditar'
+import BotonEditarCardFecha from '../../components/atomos/BotonEditarCardFecha'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -101,6 +102,9 @@ function Home() {
 
       <BotonEditar onClick={() => {}} />
       <BotonEditar disabled />
+
+      <BotonEditarCardFecha onClick={() => {}} />
+      <BotonEditarCardFecha disabled />
     </main>
   )
 }
