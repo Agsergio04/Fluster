@@ -17,6 +17,7 @@ import BotonIrIzquierda from '../../components/atomos/BotonIrIzquierda'
 import BotonIrDerecha from '../../components/atomos/BotonIrDerecha'
 import BotonBusqueda from '../../components/atomos/BotonBusqueda'
 import BotonDecision from '../../components/atomos/BotonDecision'
+import BotonEditadoFechaContenedor from '../../components/atomos/BotonEditadoFechaContenedor'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -127,6 +128,9 @@ function Home() {
       <BotonDecision onClick={() => {}} />
       <BotonDecision selected onClick={() => {}} />
       <BotonDecision disabled />
+
+      <BotonEditadoFechaContenedor onClick={() => {}} />
+      <BotonEditadoFechaContenedor disabled />
     </main>
   )
 }
