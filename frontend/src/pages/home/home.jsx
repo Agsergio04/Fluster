@@ -25,6 +25,7 @@ import BotonMenuHamburguesa from '../../components/atomos/BotonMenuHamburguesa'
 import BotonCambiarTema from '../../components/atomos/BotonCambiarTema'
 import BotonDesplegableHamburguesa from '../../components/atomos/BotonDesplegableHamburguesa'
 import TarjetaCicloContenedor from '../../components/moleculas/TarjetaCicloContenedor'
+import EstadoContenedorSemaforo from '../../components/atomos/EstadoContenedorSemaforo'
 import ContenedoresFotoIcon from '../../assets/icons/Icono de contenedores por foto.svg?react'
 import TarifasIcon from '../../assets/icons/Icono Tarifas.svg?react'
 import GestorIcon from '../../assets/icons/Icono Gestor.svg?react'
@@ -175,6 +176,14 @@ function Home() {
         onEditarDemurrage={() => {}}
         onEditarDetention={() => {}}
       />
+
+      <EstadoContenedorSemaforo estado="inactivo" />
+      <EstadoContenedorSemaforo estado="puerto-free" />
+      <EstadoContenedorSemaforo estado="cliente-free" />
+      <EstadoContenedorSemaforo estado="puerto-primer" />
+      <EstadoContenedorSemaforo estado="cliente-primer" />
+      <EstadoContenedorSemaforo estado="puerto-segundo" />
+      <EstadoContenedorSemaforo estado="cliente-segundo" />
     </main>
   )
 }
