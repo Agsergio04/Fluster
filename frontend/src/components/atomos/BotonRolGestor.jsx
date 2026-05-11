@@ -1,4 +1,4 @@
-import GestorIcon from '../iconos/GestorIcon'
+import GestorIcon from '../../assets/icons/Icono Gestor.svg?react'
 
 function BotonRolGestor({ titulo, descripcion, active = false, onClick }) {
   return (
@@ -9,7 +9,7 @@ function BotonRolGestor({ titulo, descripcion, active = false, onClick }) {
       onClick={onClick}
     >
       <span className="btn-rol__icono">
-        <GestorIcon />
+        <GestorIcon aria-hidden="true" />
       </span>
       <span className="btn-rol__texto">
         <span className="btn-rol__titulo">{titulo}</span>

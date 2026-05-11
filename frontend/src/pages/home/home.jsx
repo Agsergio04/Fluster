@@ -6,6 +6,8 @@ import BotonRegistroLogin from '../../components/atomos/BotonRegistroLogin'
 import BotonCambioRegistroLogin from '../../components/atomos/BotonCambioRegistroLogin'
 import BotonRolGestor from '../../components/atomos/BotonRolGestor'
 import BotonRolOperador from '../../components/atomos/BotonRolOperador'
+import BotonGenerarInforme from '../../components/atomos/BotonGenerarInforme'
+import BotonEliminarTarifa from '../../components/atomos/BotonEliminarTarifa'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 
@@ -81,6 +83,12 @@ function Home() {
         labelBoton="Iniciar sesión"
         onClick={() => {}}
       />
+
+      <BotonGenerarInforme onClick={() => {}} />
+      <BotonGenerarInforme disabled />
+
+      <BotonEliminarTarifa onClick={() => {}} />
+      <BotonEliminarTarifa disabled />
     </main>
   )
 }

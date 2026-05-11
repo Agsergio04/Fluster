@@ -1,4 +1,4 @@
-import OperadorIcon from '../iconos/OperadorIcon'
+import OperadorIcon from '../../assets/icons/Icono Operador.svg?react'
 
 function BotonRolOperador({ titulo, descripcion, active = false, onClick }) {
   return (
@@ -9,7 +9,7 @@ function BotonRolOperador({ titulo, descripcion, active = false, onClick }) {
       onClick={onClick}
     >
       <span className="btn-rol__icono">
-        <OperadorIcon />
+        <OperadorIcon aria-hidden="true" />
       </span>
       <span className="btn-rol__texto">
         <span className="btn-rol__titulo">{titulo}</span>

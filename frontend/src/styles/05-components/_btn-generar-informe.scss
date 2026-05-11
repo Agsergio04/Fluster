@@ -1,0 +1,24 @@
+.btn-generar-informe {
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  padding:          var(--space-8);
+  background-color: var(--color-secondary);
+  border-radius:    var(--radius);
+  font-family:      var(--font-body);
+  font-size:        var(--text-48);
+  font-weight:      var(--font-weight-regular);
+  color:            var(--color-box-text);
+  white-space:      nowrap;
+  line-height:      var(--leading-tight);
+  transition:       background-color var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--color-secondary-off);
+    cursor:           not-allowed;
+  }
+}
