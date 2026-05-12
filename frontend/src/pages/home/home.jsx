@@ -50,6 +50,7 @@ import BotonCardAlmacen from '../../components/atomos/BotonCardAlmacen'
 import BotonOperacionesPerfil from '../../components/atomos/BotonOperacionesPerfil'
 import InformacionHome from '../../components/moleculas/InformacionHome'
 import BotonesMenuHamburguesa from '../../components/moleculas/BotonesMenuHamburguesa'
+import OpcionFiltro from '../../components/moleculas/OpcionFiltro'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -327,6 +328,10 @@ function Home() {
         onCambiarRol={() => {}}
         onEliminar={() => {}}
       />
+
+      <OpcionFiltro label="Filtrar por orden alfabetico" selected onClick={() => {}} />
+      <OpcionFiltro label="Filtrar por orden ascendente las fechas" onClick={() => {}} />
+      <OpcionFiltro label="Filtrar por orden descendente las fechas" selected onClick={() => {}} />
 
       <BotonesMenuHamburguesa rol="gestor" seccionActiva="seguimiento" onNavegar={() => {}} />
       <BotonesMenuHamburguesa rol="gestor" seccionActiva="tarifas" onNavegar={() => {}} />

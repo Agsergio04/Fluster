@@ -5,12 +5,12 @@
   padding-bottom:   var(--space-8);
   background-color: var(--color-card-semaforo);
   border-radius:    var(--radius);
-  width:            24.25rem; // 388px, Figma-exact
+  width:            24.25rem; // 388px
 
   &__cuerpo {
     display:        flex;
     flex-direction: column;
-    gap:            1.5625rem; // 25px, Figma-exact
+    gap:            1.5625rem; // 25px
     padding-top:    var(--space-8);
     width:          100%;
   }
