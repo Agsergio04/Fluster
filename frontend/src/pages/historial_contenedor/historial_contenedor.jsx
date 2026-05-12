@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './historial_contenedor.scss'
+import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 import HistorialCiclosContenedor from '../../components/organismos/HistorialCiclosContenedor'
@@ -10,7 +11,7 @@ function HistorialContenedor() {
   const navigate        = useNavigate()
   const { id }          = useParams()
   const usuario         = getUsuario()
-  const [tema, setTema] = useState('light')
+  const [tema, toggleTema] = useTema()
 
   const [ciclos] = useState([])
 
@@ -29,7 +30,7 @@ function HistorialContenedor() {
         rol={usuario?.rol ?? null}
         seccionActiva="seguimiento"
         tema={tema}
-        onToggleTema={() => setTema(t => t === 'light' ? 'dark' : 'light')}
+        onToggleTema={toggleTema}
         onNavegar={ruta => navigate(ruta)}
       />
 

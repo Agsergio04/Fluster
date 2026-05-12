@@ -1,20 +1,20 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './home.scss'
+import useTema from '../../hooks/useTema'
 import Header from '../../components/organismos/Header'
 import IntroduccionPagina from '../../components/organismos/IntroduccionPagina'
 import InformacionHome from '../../components/moleculas/InformacionHome'
 
 function Home() {
   const navigate = useNavigate()
-  const [tema, setTema] = useState('light')
+  const [tema, toggleTema] = useTema()
 
   return (
     <div className="home">
       <Header
         rol={null}
         tema={tema}
-        onToggleTema={() => setTema(t => t === 'light' ? 'dark' : 'light')}
+        onToggleTema={toggleTema}
       />
 
       <IntroduccionPagina

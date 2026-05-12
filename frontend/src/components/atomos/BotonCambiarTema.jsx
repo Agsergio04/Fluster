@@ -1,17 +1,17 @@
 import SolIcon from '../../assets/icons/Icono modo claro.svg?react'
 import LunaIcon from '../../assets/icons/Icono modo oscuro.svg?react'
 
-function BotonCambiarTema({ theme = 'light', onClick }) {
+function BotonCambiarTema({ tema = 'light', onClick }) {
   return (
     <button
       className="btn-cambiar-tema"
       type="button"
-      aria-label={theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'}
+      aria-label={tema === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'}
       onClick={onClick}
     >
-      {theme === 'light'
-        ? <SolIcon aria-hidden="true" />
-        : <LunaIcon aria-hidden="true" />
+      {tema === 'light'
+        ? <LunaIcon aria-hidden="true" />
+        : <SolIcon aria-hidden="true" />
       }
     </button>
   )

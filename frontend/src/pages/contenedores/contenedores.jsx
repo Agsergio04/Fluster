@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './contenedores.scss'
+import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
@@ -8,7 +9,7 @@ import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 function Contenedores() {
   const navigate        = useNavigate()
   const usuario         = getUsuario()
-  const [tema, setTema] = useState('light')
+  const [tema, toggleTema] = useTema()
 
   const [busqueda, setBusqueda] = useState('')
   const [items]                 = useState([])
@@ -19,7 +20,7 @@ function Contenedores() {
         rol={usuario?.rol ?? null}
         seccionActiva="contenedores"
         tema={tema}
-        onToggleTema={() => setTema(t => t === 'light' ? 'dark' : 'light')}
+        onToggleTema={toggleTema}
         onNavegar={ruta => navigate(ruta)}
       />
 

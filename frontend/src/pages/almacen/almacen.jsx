@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './almacen.scss'
+import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
@@ -9,7 +10,7 @@ import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme
 function Almacen() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
-  const [tema, setTema] = useState('light')
+  const [tema, toggleTema] = useTema()
 
   const [busqueda, setBusqueda] = useState('')
   const [items]                 = useState([])
@@ -30,7 +31,7 @@ function Almacen() {
         rol={usuario?.rol ?? null}
         seccionActiva="almacen"
         tema={tema}
-        onToggleTema={() => setTema(t => t === 'light' ? 'dark' : 'light')}
+        onToggleTema={toggleTema}
         onNavegar={ruta => navigate(ruta)}
       />
 

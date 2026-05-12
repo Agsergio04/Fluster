@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './login.scss'
+import useTema from '../../hooks/useTema'
 import { login } from '../../services/authService'
 import Header from '../../components/organismos/Header'
 import EntradaDatosLogin from '../../components/moleculas/EntradaDatosLogin'
@@ -15,7 +16,7 @@ const RUTA_POR_ROL = {
 
 function Login() {
   const navigate = useNavigate()
-  const [tema, setTema] = useState('light')
+  const [tema, toggleTema] = useTema()
   const [correo, setCorreo] = useState('')
   const [contrasenia, setContrasenia] = useState('')
   const [errorCorreo, setErrorCorreo] = useState('')
@@ -46,7 +47,7 @@ function Login() {
       <Header
         rol={null}
         tema={tema}
-        onToggleTema={() => setTema(t => t === 'light' ? 'dark' : 'light')}
+        onToggleTema={toggleTema}
       />
 
       <div className="login__body">

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './registro.scss'
+import useTema from '../../hooks/useTema'
 import Header from '../../components/organismos/Header'
 import EntradaDatosRegistro from '../../components/moleculas/EntradaDatosRegistro'
 import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
@@ -9,7 +10,7 @@ import imagenRegistro from '../../assets/images/imagen_registro-login.png'
 
 function Registro() {
   const navigate = useNavigate()
-  const [tema, setTema] = useState('light')
+  const [tema, toggleTema] = useTema()
   const [nombre, setNombre] = useState('')
   const [correo, setCorreo] = useState('')
   const [contrasenia, setContrasenia] = useState('')
@@ -48,7 +49,7 @@ function Registro() {
       <Header
         rol={null}
         tema={tema}
-        onToggleTema={() => setTema(t => t === 'light' ? 'dark' : 'light')}
+        onToggleTema={toggleTema}
       />
 
       <div className="registro__body">
