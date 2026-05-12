@@ -47,6 +47,7 @@ import CardUsuario from '../../components/moleculas/CardUsuario'
 import CardSemaforo from '../../components/organismos/CardSemaforo'
 import SubirFotoOcr from '../../components/organismos/SubirFotoOcr'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
+import HistorialCiclosContenedor from '../../components/organismos/HistorialCiclosContenedor'
 import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
 import CeldaTabla from '../../components/atomos/CeldaTabla'
 import CeldaDetSob from '../../components/atomos/CeldaDetSob'
@@ -351,6 +352,16 @@ function Home() {
 
       <PanelGenerarInforme onGenerarInforme={() => {}} />
       <PanelGenerarInforme variante="individual" onGenerarInforme={() => {}} />
+
+      <HistorialCiclosContenedor
+        ciclosPorPagina={2}
+        onCancelar={() => {}}
+        ciclos={[
+          { cliente: 'Mario Casas',   demurrage: { fechaInicio: '12/02/2003', fechaFin: '13/02/2003', coste: 75 }, detention: { fechaInicio: '13/02/2003', fechaFin: '20/02/2003', coste: 75 } },
+          { cliente: 'Ana García',    demurrage: { fechaInicio: '01/03/2003', fechaFin: '03/03/2003', coste: 50 }, detention: { fechaInicio: '03/03/2003', fechaFin: '10/03/2003', coste: 60 } },
+          { cliente: 'Luis Martínez', demurrage: { fechaInicio: '15/04/2003', fechaFin: '17/04/2003', coste: 90 }, detention: { fechaInicio: '17/04/2003', fechaFin: '25/04/2003', coste: 80 } },
+        ]}
+      />
 
       <CardUsuario
         nombre="Sergio Aragón García"
