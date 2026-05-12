@@ -15,6 +15,8 @@ function ConjuntoCards({
   onBuscar,
   items = [],
   itemsPorPagina = 6,
+  onVerRegistro,
+  onBorrar,
 }) {
   const [pagina, setPagina] = useState(1)
   const totalPaginas = Math.max(1, Math.ceil(items.length / itemsPorPagina))
@@ -29,7 +31,7 @@ function ConjuntoCards({
       case 'usuarios':
         return <CardUsuario key={key} {...item} />
       case 'almacen':
-        return <CardContenedoresAlmacen key={key} {...item} />
+        return <CardContenedoresAlmacen key={key} {...item} onVerRegistro={() => onVerRegistro?.(item)} onBorrar={() => onBorrar?.(item)} />
       case 'contenedores':
         return <CardContenedor key={key} {...item} />
       default:

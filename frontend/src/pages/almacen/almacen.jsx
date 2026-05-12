@@ -50,6 +50,8 @@ function Almacen() {
           onBusquedaCambio={e => setBusqueda(e.target.value)}
           onBuscar={() => {}}
           items={items}
+          onVerRegistro={item => navigate(`/almacen/historial/${item.codigoBic}`)}
+          onBorrar={() => {}}
         />
       </div>
 
