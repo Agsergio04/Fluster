@@ -1,0 +1,143 @@
+.card-semaforo {
+  display:          flex;
+  flex-direction:   column;
+  gap:              var(--space-8);
+  padding-bottom:   var(--space-8);
+  background-color: var(--color-card-semaforo);
+  border-radius:    var(--radius);
+  width:            24.25rem; // 388px, Figma-exact
+
+  &__cuerpo {
+    display:        flex;
+    flex-direction: column;
+    gap:            1.5625rem; // 25px, Figma-exact
+    padding-top:    var(--space-8);
+    width:          100%;
+  }
+
+  &__bic {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-32);
+    padding:     0 var(--space-8);
+    width:       100%;
+  }
+
+  &__etiqueta {
+    flex:        1 0 0;
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    min-width:   0;
+  }
+
+  &__valor {
+    flex:        1 0 0;
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color:       var(--color-box-text);
+    text-align:  center;
+    min-width:   0;
+  }
+
+  &__datos {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-8);
+    width:          100%;
+  }
+
+  &__fila-fecha {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-32);
+    padding:     0 var(--space-8);
+    width:       100%;
+  }
+
+  &__fecha-izq {
+    display:      flex;
+    align-items:  center;
+    gap:          var(--space-24);
+    flex:         1 0 0;
+    padding-left: var(--space-8);
+    min-width:    0;
+  }
+
+  &__icono-label {
+    display:     flex;
+    align-items: center;
+    gap:         1.125rem; // 18px, Figma-exact
+    flex-shrink: 0;
+  }
+
+  &__icono {
+    width:       1.5rem;
+    height:      1.5rem;
+    flex-shrink: 0;
+    color:       var(--color-box-text);
+  }
+
+  &__etiqueta-sm {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    white-space: nowrap;
+  }
+
+  &__valor-sm {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color:       var(--color-box-text);
+    white-space: nowrap;
+  }
+
+  &__fila-cliente {
+    display:      flex;
+    align-items:  center;
+    gap:          2.75rem; // 44px, Figma-exact
+    padding-left: var(--space-16);
+    width:        100%;
+  }
+
+  &__tarifa {
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    justify-content: center;
+    gap:             0.625rem; // 10px, Figma-exact
+    padding:         0 var(--space-16);
+  }
+
+  &__tarifa-titulo {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-8);
+  }
+
+  &__etiqueta-lg {
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    white-space: nowrap;
+  }
+
+  &__tarifa-precio {
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    text-align:  center;
+  }
+}

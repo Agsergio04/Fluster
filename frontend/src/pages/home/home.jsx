@@ -44,6 +44,7 @@ import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiad
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoCard'
 import CardUsuario from '../../components/moleculas/CardUsuario'
+import CardSemaforo from '../../components/organismos/CardSemaforo'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -258,6 +259,47 @@ function Home() {
       <BotonesMovimientoCard paginaActual={1} totalPaginas={5} onCambiarPagina={() => {}} />
       <BotonesMovimientoCard paginaActual={3} totalPaginas={5} onCambiarPagina={() => {}} />
       <BotonesMovimientoCard paginaActual={5} totalPaginas={5} onCambiarPagina={() => {}} />
+
+      <CardSemaforo
+        estado="inactivo"
+        codigoBic="BLKU 1266960"
+        ultimaOperacion="27/03/2026"
+        onSiguiente={() => {}}
+        onEditarFecha={() => {}}
+      />
+      <CardSemaforo
+        estado="cliente-free"
+        codigoBic="BLKU 1266960"
+        ultimaOperacion="27/03/2026"
+        cliente="Logistica Mediterranea LS"
+        tarifaAcumulada={75.00}
+        mostrarAnterior
+        onAnterior={() => {}}
+        onSiguiente={() => {}}
+        onEditarFecha={() => {}}
+      />
+      <CardSemaforo
+        estado="puerto-primer"
+        codigoBic="BLKU 1266960"
+        ultimaOperacion="27/03/2026"
+        cliente="Logistica Mediterranea LS"
+        tarifaAcumulada={25.00}
+        mostrarAnterior
+        onAnterior={() => {}}
+        onSiguiente={() => {}}
+        onEditarFecha={() => {}}
+      />
+      <CardSemaforo
+        estado="puerto-segundo"
+        codigoBic="BLKU 1266960"
+        ultimaOperacion="27/03/2026"
+        cliente="Logistica Mediterranea LS"
+        tarifaAcumulada={25.00}
+        mostrarAnterior
+        onAnterior={() => {}}
+        mostrarSiguiente={false}
+        onEditarFecha={() => {}}
+      />
 
       <CardUsuario
         nombre="Sergio Aragón García"
