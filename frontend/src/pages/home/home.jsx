@@ -45,6 +45,8 @@ import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiad
 import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoCard'
 import CardUsuario from '../../components/moleculas/CardUsuario'
 import CardSemaforo from '../../components/organismos/CardSemaforo'
+import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
+import BotonCardAlmacen from '../../components/atomos/BotonCardAlmacen'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -321,6 +323,28 @@ function Home() {
         rol="admin"
         onCambiarRol={() => {}}
         onEliminar={() => {}}
+      />
+
+      <BotonCardAlmacen variante="ver-registro" onClick={() => {}} />
+      <BotonCardAlmacen variante="borrar" onClick={() => {}} />
+      <BotonCardAlmacen variante="ver-registro" disabled />
+      <BotonCardAlmacen variante="borrar" disabled />
+
+      <CardContenedoresAlmacen
+        codigoBic="BLKU 1266960"
+        ultimaOperacion="27/03/2026"
+        fechaInclusion="11/02/2020"
+        operador="Mario Casas Vaquerizo"
+        onVerRegistro={() => {}}
+        onBorrar={() => {}}
+      />
+      <CardContenedoresAlmacen
+        codigoBic="MSCU 8374210"
+        ultimaOperacion="15/01/2026"
+        fechaInclusion="03/06/2021"
+        operador="Laura Fernández Ruiz"
+        onVerRegistro={() => {}}
+        onBorrar={() => {}}
       />
     </main>
   )
