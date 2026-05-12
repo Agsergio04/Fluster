@@ -1,0 +1,194 @@
+.panel-generar-informe {
+  display:          flex;
+  flex-direction:   column;
+  align-items:      center;
+  gap:              5.4375rem; // 87px
+  padding:          var(--space-8);
+  background-color: var(--color-card-almacen);
+  border-radius:    var(--radius);
+  width:            100%;
+
+  // ── Sección de filtros ──────────────────────────────────────────
+  &__filtros {
+    display:     flex;
+    gap:         var(--space-32);
+    align-items: center;
+    padding:     var(--space-8);
+    width:       100%;
+  }
+
+  &__columna-fechas {
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    justify-content: center;
+    gap:             var(--space-40);
+    flex:            1 0 0;
+    min-width:       0;
+    padding:         var(--space-8);
+  }
+
+  &__seccion-titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-56);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    line-height: var(--leading-tight);
+    width:       100%;
+  }
+
+  &__rango {
+    display:     flex;
+    gap:         var(--space-56);
+    align-items: center;
+    width:       100%;
+  }
+
+  &__campo-fecha {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+    align-items:    center;
+    flex:           1 0 0;
+    min-width:      0;
+  }
+
+  &__campo-titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    line-height: var(--leading-tight);
+  }
+
+  &__campo-unico {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+    width:          100%;
+  }
+
+  &__campo-label {
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    line-height: var(--leading-tight);
+  }
+
+  &__input {
+    width:            100%;
+    padding:          var(--space-8);
+    background-color: var(--color-box-border);
+    border:           none;
+    border-radius:    var(--radius);
+    font-family:      var(--font-body);
+    font-size:        var(--text-24);
+    font-weight:      var(--font-weight-regular);
+    color:            var(--color-box-text);
+    line-height:      var(--leading-tight);
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__columna-textos {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+    width:          42.4375rem; // 679px
+    flex-shrink:    0;
+  }
+
+  // ── Opciones adicionales ────────────────────────────────────────
+  &__opciones {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-64);
+    align-items:    center;
+    padding:        var(--space-8);
+    width:          100%;
+  }
+
+  &__opciones-titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    line-height: var(--leading-tight);
+    width:       100%;
+  }
+
+  &__opciones-grid {
+    display:         flex;
+    align-items:     flex-start;
+    justify-content: center;
+    width:           100%;
+  }
+
+  &__opciones-grupo {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+    align-items:    center;
+    flex:           1 0 0;
+    min-width:      0;
+  }
+
+  &__opciones-grupo-titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-40);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    line-height: var(--leading-tight);
+    width:       100%;
+  }
+
+  &__lista-opciones {
+    display:        flex;
+    flex-direction: column;
+    gap:            1.25rem; // 20px
+    width:          100%;
+  }
+
+  // ── Botón centrado ──────────────────────────────────────────────
+  .btn-generar-informe {
+    align-self: center;
+  }
+
+  // ── Variante individual (panel estrecho) ────────────────────────
+  &--individual {
+    gap: var(--space-40);
+
+    .panel-generar-informe__filtros {
+      flex-direction: column;
+      gap:            2.6875rem; // 43px
+      align-items:    flex-start;
+    }
+
+    .panel-generar-informe__columna-fechas {
+      flex:  none;
+      width: 100%;
+    }
+
+    .panel-generar-informe__opciones {
+      gap: var(--space-32);
+    }
+
+    .panel-generar-informe__opciones-grid {
+      flex-direction: column;
+      align-items:    center;
+      gap:            var(--space-16);
+    }
+
+    .panel-generar-informe__opciones-grupo {
+      flex:  none;
+      width: 100%;
+    }
+  }
+}

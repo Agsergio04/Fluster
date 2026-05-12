@@ -46,6 +46,7 @@ import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoC
 import CardUsuario from '../../components/moleculas/CardUsuario'
 import CardSemaforo from '../../components/organismos/CardSemaforo'
 import SubirFotoOcr from '../../components/organismos/SubirFotoOcr'
+import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
 import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
 import CeldaTabla from '../../components/atomos/CeldaTabla'
 import CeldaDetSob from '../../components/atomos/CeldaDetSob'
@@ -347,6 +348,9 @@ function Home() {
         onIntroducir={() => {}}
         onCancelar={() => {}}
       />
+
+      <PanelGenerarInforme onGenerarInforme={() => {}} />
+      <PanelGenerarInforme variante="individual" onGenerarInforme={() => {}} />
 
       <CardUsuario
         nombre="Sergio Aragón García"
