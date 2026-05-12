@@ -1,0 +1,31 @@
+.cambiar-nombre {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-16);
+  width:          16.3125rem; // 261px, Figma-exact
+
+  .input {
+    width:   100%;
+    display: flex;
+  }
+
+  .btn-registro-login {
+    width: 100%;
+  }
+}
+
+.cambiar-contrasenia {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-16);
+  width:          16.3125rem; // 261px, Figma-exact
+
+  .input {
+    width:   100%;
+    display: flex;
+  }
+
+  .btn-registro-login {
+    width: 100%;
+  }
+}

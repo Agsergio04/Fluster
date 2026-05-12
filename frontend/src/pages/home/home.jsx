@@ -63,6 +63,8 @@ import EntradaDatosRegistro    from '../../components/moleculas/EntradaDatosRegi
 import OpcionFiltro from '../../components/moleculas/OpcionFiltro'
 import BuscadorContenedores from '../../components/moleculas/BuscadorContenedores'
 import CardContenedor from '../../components/moleculas/CardContenedor'
+import CambiarNombre from '../../components/moleculas/CambiarNombre'
+import CambiarContrasenia from '../../components/moleculas/CambiarContrasenia'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -78,6 +80,13 @@ function Home() {
         fechaInclusion="12/02/2025"
         onEditar={() => {}}
         onEliminar={() => {}}
+      />
+
+      <CambiarNombre nombre="" onNombreCambio={() => {}} onConfirmar={() => {}} />
+      <CambiarContrasenia
+        contrasenia=""    onContraseniaCambio={() => {}}
+        confirmacion=""   onConfirmacionCambio={() => {}}
+        onConfirmar={() => {}}
       />
 
       <CabeceraTramo tramo="sin-coste"     cantidad={32} />
