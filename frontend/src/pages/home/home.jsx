@@ -70,12 +70,35 @@ import CardContenedor from '../../components/moleculas/CardContenedor'
 import CambiarNombre from '../../components/moleculas/CambiarNombre'
 import FilaNavieraTarifasConBotones from '../../components/moleculas/FilaNavieraTarifasConBotones'
 import CambiarContrasenia from '../../components/moleculas/CambiarContrasenia'
+import Header from '../../components/organismos/Header'
+import PerfilCredenciales from '../../components/organismos/PerfilCredenciales'
 
 function Home() {
   const [tab, setTab] = useState('login')
   return (
     <main style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <h1>Home</h1>
+
+      <Header rol="admin" seccionActiva="panel-control" tema="light" onToggleTema={() => {}} onNavegar={() => {}} />
+      <Header rol="gestor" seccionActiva="seguimiento" tema="light" onToggleTema={() => {}} onNavegar={() => {}} />
+      <Header rol="operador" seccionActiva="contenedores" tema="light" onToggleTema={() => {}} onNavegar={() => {}} />
+      <Header rol={null} tema="light" onToggleTema={() => {}} />
+
+      <PerfilCredenciales
+        nombre="Jose Antonio Ruiz Cardenas"
+        rol="Gestor de Operaciones"
+        correo="joseantonioruiz@gmail.com"
+        nuevoNombre=""
+        onNuevoNombreCambio={() => {}}
+        onConfirmarNombre={() => {}}
+        contrasenia=""
+        onContraseniaCambio={() => {}}
+        confirmacion=""
+        onConfirmacionCambio={() => {}}
+        onConfirmarContrasenia={() => {}}
+        onCerrarSesion={() => {}}
+        onActualizarFoto={() => {}}
+      />
 
       <BuscadorCard value="" onChange={() => {}} onBuscar={() => {}} />
       <BuscadorContenedores value="" onChange={() => {}} onBuscar={() => {}} />

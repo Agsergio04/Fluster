@@ -1,0 +1,78 @@
+import CambiarNombre from '../moleculas/CambiarNombre'
+import CambiarContrasenia from '../moleculas/CambiarContrasenia'
+import BotonAccionTarifa from '../atomos/BotonAccionTarifa'
+import BotonOperacionesPerfil from '../atomos/BotonOperacionesPerfil'
+import imagenUsuarioDefault from '../../assets/images/imagen-usuario.png'
+
+function PerfilCredenciales({
+  foto,
+  nombre,
+  rol,
+  correo,
+  onActualizarFoto,
+  nuevoNombre,
+  onNuevoNombreCambio,
+  errorNombre,
+  onConfirmarNombre,
+  disabledNombre,
+  contrasenia,
+  onContraseniaCambio,
+  confirmacion,
+  onConfirmacionCambio,
+  errorContrasenia,
+  errorConfirmacion,
+  onConfirmarContrasenia,
+  disabledContrasenia,
+  onCerrarSesion,
+}) {
+  return (
+    <div className="perfil-credenciales">
+      <div className="perfil-credenciales__info">
+        <div className="perfil-credenciales__foto-seccion">
+          <img
+            src={foto || imagenUsuarioDefault}
+            alt={nombre}
+            className="perfil-credenciales__foto"
+          />
+          <BotonAccionTarifa accion="actualizar" onClick={onActualizarFoto} />
+          <div className="perfil-credenciales__campo">
+            <p className="perfil-credenciales__etiqueta">Nombre</p>
+            <p className="perfil-credenciales__valor">{nombre}</p>
+          </div>
+        </div>
+        <div className="perfil-credenciales__campo">
+          <p className="perfil-credenciales__etiqueta">Rol</p>
+          <p className="perfil-credenciales__valor">{rol}</p>
+        </div>
+        <div className="perfil-credenciales__campo">
+          <p className="perfil-credenciales__etiqueta">Correo</p>
+          <p className="perfil-credenciales__valor">{correo}</p>
+        </div>
+      </div>
+
+      <div className="perfil-credenciales__cambios">
+        <p className="perfil-credenciales__titulo">Cambio de credenciales</p>
+        <CambiarNombre
+          nombre={nuevoNombre}
+          onNombreCambio={onNuevoNombreCambio}
+          errorNombre={errorNombre}
+          onConfirmar={onConfirmarNombre}
+          disabled={disabledNombre}
+        />
+        <CambiarContrasenia
+          contrasenia={contrasenia}
+          onContraseniaCambio={onContraseniaCambio}
+          confirmacion={confirmacion}
+          onConfirmacionCambio={onConfirmacionCambio}
+          errorContrasenia={errorContrasenia}
+          errorConfirmacion={errorConfirmacion}
+          onConfirmar={onConfirmarContrasenia}
+          disabled={disabledContrasenia}
+        />
+        <BotonOperacionesPerfil variante="cerrar-sesion" onClick={onCerrarSesion} />
+      </div>
+    </div>
+  )
+}
+
+export default PerfilCredenciales
