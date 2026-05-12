@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import RutaProtegida from './RutaProtegida'
 import Login from '../pages/login/login'
 import Home from '../pages/home/home'
 import Almacen from '../pages/almacen/almacen'
@@ -12,22 +13,46 @@ import Semaforo from '../pages/semaforo/semaforo'
 import Tarifas from '../pages/tarifas/tarifas'
 import Error from '../pages/error/error'
 
+const GESTOR     = ['gestor']
+const OPERADOR   = ['operador']
+const AUTENTICADO = ['gestor', 'operador', 'admin']
+
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/almacen" element={<Almacen />} />
-        <Route path="/almacen/historial/:id" element={<HistorialContenedor />} />
-        <Route path="/contenedores" element={<Contenedores />} />
-        <Route path="/meter-contenedor" element={<MeterContenedor />} />
-        <Route path="/panel-de-control" element={<PanelDeControl />} />
-        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/login"    element={<Login />} />
+        <Route path="/"         element={<Home />} />
         <Route path="/registro" element={<Registro />} />
-        <Route path="/semaforo" element={<Semaforo />} />
-        <Route path="/tarifas" element={<Tarifas />} />
-        <Route path="/error" element={<Error />} />
+        <Route path="/error"    element={<Error />} />
+
+        <Route path="/semaforo" element={
+          <RutaProtegida roles={GESTOR}><Semaforo /></RutaProtegida>
+        } />
+        <Route path="/tarifas" element={
+          <RutaProtegida roles={GESTOR}><Tarifas /></RutaProtegida>
+        } />
+        <Route path="/almacen" element={
+          <RutaProtegida roles={GESTOR}><Almacen /></RutaProtegida>
+        } />
+        <Route path="/almacen/historial/:id" element={
+          <RutaProtegida roles={GESTOR}><HistorialContenedor /></RutaProtegida>
+        } />
+
+        <Route path="/contenedores" element={
+          <RutaProtegida roles={OPERADOR}><Contenedores /></RutaProtegida>
+        } />
+        <Route path="/meter-contenedor" element={
+          <RutaProtegida roles={OPERADOR}><MeterContenedor /></RutaProtegida>
+        } />
+
+        <Route path="/panel-de-control" element={
+          <RutaProtegida roles={['admin']}><PanelDeControl /></RutaProtegida>
+        } />
+        <Route path="/perfil" element={
+          <RutaProtegida roles={AUTENTICADO}><Perfil /></RutaProtegida>
+        } />
+
         <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
     </BrowserRouter>
