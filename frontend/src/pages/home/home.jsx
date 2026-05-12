@@ -62,6 +62,7 @@ import EntradaDatosLogin       from '../../components/moleculas/EntradaDatosLogi
 import EntradaDatosRegistro    from '../../components/moleculas/EntradaDatosRegistro'
 import OpcionFiltro from '../../components/moleculas/OpcionFiltro'
 import BuscadorContenedores from '../../components/moleculas/BuscadorContenedores'
+import CardContenedor from '../../components/moleculas/CardContenedor'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -71,6 +72,13 @@ function Home() {
 
       <BuscadorCard value="" onChange={() => {}} onBuscar={() => {}} />
       <BuscadorContenedores value="" onChange={() => {}} onBuscar={() => {}} />
+
+      <CardContenedor
+        codigoBic="BLKU1266960"
+        fechaInclusion="12/02/2025"
+        onEditar={() => {}}
+        onEliminar={() => {}}
+      />
 
       <CabeceraTramo tramo="sin-coste"     cantidad={32} />
       <CabeceraTramo tramo="primer-tramo"  cantidad={14} />
