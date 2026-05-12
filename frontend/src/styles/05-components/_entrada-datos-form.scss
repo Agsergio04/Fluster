@@ -1,0 +1,23 @@
+.entrada-datos-login {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.4375rem; // 7px
+  width:          16.3125rem; // 261px
+
+  .input {
+    width:   100%;
+    display: flex;
+  }
+}
+
+.entrada-datos-registro {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.25rem; // 4px
+  width:          16.3125rem; // 261px
+
+  .input {
+    width:   100%;
+    display: flex;
+  }
+}

@@ -54,7 +54,12 @@ import FilaNavieraTarifas from '../../components/moleculas/FilaNavieraTarifas'
 import BotonCardAlmacen from '../../components/atomos/BotonCardAlmacen'
 import BotonOperacionesPerfil from '../../components/atomos/BotonOperacionesPerfil'
 import InformacionHome from '../../components/moleculas/InformacionHome'
-import BotonesMenuHamburguesa from '../../components/moleculas/BotonesMenuHamburguesa'
+import BotonesMenuHamburguesa  from '../../components/moleculas/BotonesMenuHamburguesa'
+import BotonesLogin            from '../../components/moleculas/BotonesLogin'
+import BotonesRegistro         from '../../components/moleculas/BotonesRegistro'
+import BotonesSeleccionRol     from '../../components/moleculas/BotonesSeleccionRol'
+import EntradaDatosLogin       from '../../components/moleculas/EntradaDatosLogin'
+import EntradaDatosRegistro    from '../../components/moleculas/EntradaDatosRegistro'
 import OpcionFiltro from '../../components/moleculas/OpcionFiltro'
 
 function Home() {
@@ -349,6 +354,13 @@ function Home() {
       <OpcionFiltro label="Filtrar por orden alfabetico" selected onClick={() => {}} />
       <OpcionFiltro label="Filtrar por orden ascendente las fechas" onClick={() => {}} />
       <OpcionFiltro label="Filtrar por orden descendente las fechas" selected onClick={() => {}} />
+
+      <BotonesLogin onIniciarSesion={() => {}} onIrRegistro={() => {}} />
+      <BotonesRegistro onCrearCuenta={() => {}} onIrLogin={() => {}} />
+      <BotonesSeleccionRol rolSeleccionado="operador" onSeleccionarRol={() => {}} />
+      <BotonesSeleccionRol rolSeleccionado="gestor"   onSeleccionarRol={() => {}} />
+      <EntradaDatosLogin />
+      <EntradaDatosRegistro />
 
       <BotonesMenuHamburguesa rol="gestor" seccionActiva="seguimiento" onNavegar={() => {}} />
       <BotonesMenuHamburguesa rol="gestor" seccionActiva="tarifas" onNavegar={() => {}} />
