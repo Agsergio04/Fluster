@@ -66,12 +66,14 @@
 @use './05-components/celda-tabla';
 @use './05-components/cabecera-tablas-tarifas';
 @use './05-components/fila-naviera-tarifas';
+@use './05-components/fila-naviera-con-botones';
 @use './05-components/botones-acceso';
 @use './05-components/botones-seleccion-rol';
 @use './05-components/entrada-datos-form';
 @use './05-components/cambiar-credenciales';
 @use './05-components/card-almacen';
 @use './05-components/card-contenedor';
+@use './05-components/subir-foto-ocr';
 
 // 06 Utilities — clases de apoyo de alta especificidad
 @use './06-utilities/utilities';

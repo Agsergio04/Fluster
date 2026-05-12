@@ -45,6 +45,7 @@ import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiad
 import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoCard'
 import CardUsuario from '../../components/moleculas/CardUsuario'
 import CardSemaforo from '../../components/organismos/CardSemaforo'
+import SubirFotoOcr from '../../components/organismos/SubirFotoOcr'
 import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
 import CeldaTabla from '../../components/atomos/CeldaTabla'
 import CeldaDetSob from '../../components/atomos/CeldaDetSob'
@@ -64,6 +65,7 @@ import OpcionFiltro from '../../components/moleculas/OpcionFiltro'
 import BuscadorContenedores from '../../components/moleculas/BuscadorContenedores'
 import CardContenedor from '../../components/moleculas/CardContenedor'
 import CambiarNombre from '../../components/moleculas/CambiarNombre'
+import FilaNavieraTarifasConBotones from '../../components/moleculas/FilaNavieraTarifasConBotones'
 import CambiarContrasenia from '../../components/moleculas/CambiarContrasenia'
 
 function Home() {
@@ -336,6 +338,16 @@ function Home() {
         onEditarFecha={() => {}}
       />
 
+      <SubirFotoOcr onSeleccionarFoto={() => {}} />
+      <SubirFotoOcr
+        estado="introducido"
+        foto=""
+        codigoBic="BLKU258036"
+        onCodigoBicCambio={() => {}}
+        onIntroducir={() => {}}
+        onCancelar={() => {}}
+      />
+
       <CardUsuario
         nombre="Sergio Aragón García"
         correo="sergioaragon@gmail.com"
@@ -368,6 +380,12 @@ function Home() {
       <FilaNavieraTarifas
         naviera="MSC"
         valores={['10', '20', '15', '25', '30€', '40€', '50€', '60€']}
+      />
+      <FilaNavieraTarifasConBotones
+        naviera="MSC"
+        valores={['10', '20', '15', '25', '30€', '40€', '50€', '60€']}
+        onActualizar={() => {}}
+        onEliminar={() => {}}
       />
 
       <OpcionFiltro label="Filtrar por orden alfabetico" selected onClick={() => {}} />
