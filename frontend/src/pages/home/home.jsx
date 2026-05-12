@@ -48,6 +48,8 @@ import CardSemaforo from '../../components/organismos/CardSemaforo'
 import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
 import BotonCardAlmacen from '../../components/atomos/BotonCardAlmacen'
 import BotonOperacionesPerfil from '../../components/atomos/BotonOperacionesPerfil'
+import InformacionHome from '../../components/moleculas/InformacionHome'
+import BotonesMenuHamburguesa from '../../components/moleculas/BotonesMenuHamburguesa'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -325,6 +327,15 @@ function Home() {
         onCambiarRol={() => {}}
         onEliminar={() => {}}
       />
+
+      <BotonesMenuHamburguesa rol="gestor" seccionActiva="seguimiento" onNavegar={() => {}} />
+      <BotonesMenuHamburguesa rol="gestor" seccionActiva="tarifas" onNavegar={() => {}} />
+      <BotonesMenuHamburguesa rol="operador" seccionActiva="meter-contenedor" onNavegar={() => {}} />
+      <BotonesMenuHamburguesa rol="admin" seccionActiva="panel-control" onNavegar={() => {}} />
+
+      <InformacionHome variante="tarifas" />
+      <InformacionHome variante="ocr" />
+      <InformacionHome variante="semaforo" />
 
       <BotonOperacionesPerfil variante="cambiar-nombre" onClick={() => {}} />
       <BotonOperacionesPerfil variante="cambiar-contrasenia" onClick={() => {}} />

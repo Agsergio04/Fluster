@@ -1,5 +1,6 @@
 .btn-operaciones-perfil {
-  display:          flex;
+  display:          inline-flex;
+  align-self:       flex-start;
   align-items:      center;
   justify-content:  center;
   width:            16.3125rem; // 261px, Figma-exact
