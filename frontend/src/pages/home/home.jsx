@@ -42,6 +42,7 @@ import CabeceraSemaforoCard from '../../components/moleculas/CabeceraSemaforoCar
 import TextoConEntradaDatos from '../../components/moleculas/TextoConEntradaDatos'
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
+import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoCard'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -252,6 +253,10 @@ function Home() {
       <EstadoContenedorSemaforo estado="cliente-primer" />
       <EstadoContenedorSemaforo estado="puerto-segundo" />
       <EstadoContenedorSemaforo estado="cliente-segundo" />
+
+      <BotonesMovimientoCard paginaActual={1} totalPaginas={5} onCambiarPagina={() => {}} />
+      <BotonesMovimientoCard paginaActual={3} totalPaginas={5} onCambiarPagina={() => {}} />
+      <BotonesMovimientoCard paginaActual={5} totalPaginas={5} onCambiarPagina={() => {}} />
     </main>
   )
 }
