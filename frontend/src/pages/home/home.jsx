@@ -48,6 +48,7 @@ import CardSemaforo from '../../components/organismos/CardSemaforo'
 import SubirFotoOcr from '../../components/organismos/SubirFotoOcr'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
 import HistorialCiclosContenedor from '../../components/organismos/HistorialCiclosContenedor'
+import IntroduccionPagina from '../../components/organismos/IntroduccionPagina'
 import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
 import CeldaTabla from '../../components/atomos/CeldaTabla'
 import CeldaDetSob from '../../components/atomos/CeldaDetSob'
@@ -352,6 +353,8 @@ function Home() {
 
       <PanelGenerarInforme onGenerarInforme={() => {}} />
       <PanelGenerarInforme variante="individual" onGenerarInforme={() => {}} />
+
+      <IntroduccionPagina onIniciarSesion={() => {}} onEmpezarAhora={() => {}} />
 
       <HistorialCiclosContenedor
         ciclosPorPagina={2}
