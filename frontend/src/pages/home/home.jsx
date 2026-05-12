@@ -43,6 +43,7 @@ import TextoConEntradaDatos from '../../components/moleculas/TextoConEntradaDato
 import TextoCambiadorLoginRegistro from '../../components/moleculas/TextoCambiadorLoginRegistro'
 import TextoCambiadorRegistroLogin from '../../components/moleculas/TextoCambiadorRegistroLogin'
 import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoCard'
+import CardUsuario from '../../components/moleculas/CardUsuario'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -257,6 +258,28 @@ function Home() {
       <BotonesMovimientoCard paginaActual={1} totalPaginas={5} onCambiarPagina={() => {}} />
       <BotonesMovimientoCard paginaActual={3} totalPaginas={5} onCambiarPagina={() => {}} />
       <BotonesMovimientoCard paginaActual={5} totalPaginas={5} onCambiarPagina={() => {}} />
+
+      <CardUsuario
+        nombre="Sergio Aragón García"
+        correo="sergioaragon@gmail.com"
+        rol="operador"
+        onCambiarRol={() => {}}
+        onEliminar={() => {}}
+      />
+      <CardUsuario
+        nombre="Sergio Aragón García"
+        correo="sergioaragon@gmail.com"
+        rol="gestor"
+        onCambiarRol={() => {}}
+        onEliminar={() => {}}
+      />
+      <CardUsuario
+        nombre="Sergio Aragón García"
+        correo="sergioaragon@gmail.com"
+        rol="admin"
+        onCambiarRol={() => {}}
+        onEliminar={() => {}}
+      />
     </main>
   )
 }
