@@ -1,7 +1,8 @@
 import BotonIniciarSesion from '../atomos/BotonIniciarSesion'
 import BotonEmpezarAhora from '../atomos/BotonEmpezarAhora'
+import imagenHome from '../../assets/images/imagen_home.png'
 
-function IntroduccionPagina({ imagenSrc = '', onIniciarSesion, onEmpezarAhora }) {
+function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
   return (
     <div className="introduccion-pagina">
       <div className="introduccion-pagina__contenido">
@@ -17,9 +18,7 @@ function IntroduccionPagina({ imagenSrc = '', onIniciarSesion, onEmpezarAhora })
       </div>
 
       <div className="introduccion-pagina__imagen">
-        {imagenSrc && (
-          <img src={imagenSrc} alt="Puerto de contenedores" />
-        )}
+        <img src={imagenHome} alt="Puerto de contenedores" />
       </div>
     </div>
   )

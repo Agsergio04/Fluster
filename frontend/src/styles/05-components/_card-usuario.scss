@@ -34,17 +34,11 @@
     object-fit: cover;
   }
 
-  &__foto-placeholder {
-    width:  60%;
-    height: 60%;
-    color:  var(--color-box-text);
-  }
-
   &__datos {
     display:        flex;
     flex-direction: column;
     align-items:    center;
-    gap:            1.6875rem; // 27px, Figma-exact
+    gap:            1.6875rem; // 27px
     width:          100%;
   }
 
@@ -52,7 +46,7 @@
     display:        flex;
     flex-direction: column;
     align-items:    center;
-    gap:            0.1875rem; // 3px, Figma-exact
+    gap:            0.1875rem; // 3px
     width:          100%;
   }
 
@@ -105,7 +99,7 @@
     display:        flex;
     flex-direction: column;
     align-items:    center;
-    gap:            1.125rem; // 18px, Figma-exact
+    gap:            1.125rem; // 18px
     width:          100%;
   }
 

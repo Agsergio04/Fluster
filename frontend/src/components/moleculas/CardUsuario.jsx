@@ -1,7 +1,7 @@
 import RolAsignado from '../atomos/RolAsignado'
 import BotonRolesCardUsuario from '../atomos/BotonRolesCardUsuario'
 import BotonBorrarUsuario from '../atomos/BotonBorrarUsuario'
-import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
+import imagenUsuarioDefault from '../../assets/images/imagen-usuario.png'
 
 const ROLES = ['admin', 'gestor', 'operador']
 
@@ -10,10 +10,11 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', onCambiarRol, onE
     <div className="card-usuario">
       <div className="card-usuario__info">
         <div className="card-usuario__foto">
-          {foto
-            ? <img src={foto} alt={nombre} className="card-usuario__imagen" />
-            : <PerfilIcon className="card-usuario__foto-placeholder" aria-hidden="true" />
-          }
+          <img
+            src={foto || imagenUsuarioDefault}
+            alt={nombre}
+            className="card-usuario__imagen"
+          />
         </div>
         <div className="card-usuario__datos">
           <div className="card-usuario__campo">
