@@ -61,6 +61,7 @@ import BotonesSeleccionRol     from '../../components/moleculas/BotonesSeleccion
 import EntradaDatosLogin       from '../../components/moleculas/EntradaDatosLogin'
 import EntradaDatosRegistro    from '../../components/moleculas/EntradaDatosRegistro'
 import OpcionFiltro from '../../components/moleculas/OpcionFiltro'
+import BuscadorContenedores from '../../components/moleculas/BuscadorContenedores'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -69,6 +70,7 @@ function Home() {
       <h1>Home</h1>
 
       <BuscadorCard value="" onChange={() => {}} onBuscar={() => {}} />
+      <BuscadorContenedores value="" onChange={() => {}} onBuscar={() => {}} />
 
       <CabeceraTramo tramo="sin-coste"     cantidad={32} />
       <CabeceraTramo tramo="primer-tramo"  cantidad={14} />

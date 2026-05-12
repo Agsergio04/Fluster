@@ -1,0 +1,15 @@
+.buscador-contenedores {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-16);
+  width:          100%;
+
+  &__titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    text-align:  center;
+  }
+}
