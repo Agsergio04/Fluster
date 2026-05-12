@@ -1,0 +1,9 @@
+.tabla-tarifas {
+  display:          flex;
+  flex-direction:   column;
+  align-items:      flex-start;
+  width:            85.625rem; // 1370px
+  padding:          var(--space-8) 0.25rem; // 8px top/bottom · 4px sides
+  background-color: var(--color-card-almacen);
+  border-radius:    var(--radius);
+}

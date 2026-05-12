@@ -72,6 +72,8 @@ import FilaNavieraTarifasConBotones from '../../components/moleculas/FilaNaviera
 import CambiarContrasenia from '../../components/moleculas/CambiarContrasenia'
 import Header from '../../components/organismos/Header'
 import PerfilCredenciales from '../../components/organismos/PerfilCredenciales'
+import ConjuntoCards from '../../components/organismos/ConjuntoCards'
+import TablaTarifas from '../../components/organismos/TablaTarifas'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -98,6 +100,39 @@ function Home() {
         onConfirmarContrasenia={() => {}}
         onCerrarSesion={() => {}}
         onActualizarFoto={() => {}}
+      />
+
+      <TablaTarifas
+        filas={[
+          { naviera: 'MSC',     valores: ['10', '20', '15', '25', '30€', '40€', '50€', '60€'], onActualizar: () => {}, onEliminar: () => {} },
+          { naviera: 'MAERSK',  valores: ['12', '22', '18', '28', '35€', '45€', '55€', '65€'], onActualizar: () => {}, onEliminar: () => {} },
+          { naviera: 'HAPAG',   valores: ['8',  '18', '12', '22', '28€', '38€', '48€', '58€'], onActualizar: () => {}, onEliminar: () => {} },
+        ]}
+      />
+
+      <ConjuntoCards
+        variante="semaforo"
+        tramo="sin-coste"
+        busqueda=""
+        onBusquedaCambio={() => {}}
+        onBuscar={() => {}}
+        items={[
+          { id: 1, estado: 'sin-coste', codigoBic: 'BLKU1266960', ultimaOperacion: '27/03/2026', cliente: 'Logistica Mediterranea LS', tarifaAcumulada: '25.00 €' },
+          { id: 2, estado: 'sin-coste', codigoBic: 'TCKU3456789', ultimaOperacion: '01/04/2026', cliente: 'Armadores Unidos SA', tarifaAcumulada: '0.00 €' },
+        ]}
+        itemsPorPagina={6}
+      />
+
+      <ConjuntoCards
+        variante="usuarios"
+        busqueda=""
+        onBusquedaCambio={() => {}}
+        onBuscar={() => {}}
+        items={[
+          { id: 1, nombre: 'Jose Antonio Ruiz', correo: 'jose@gmail.com', rol: 'gestor', onCambiarRol: () => {}, onEliminar: () => {} },
+          { id: 2, nombre: 'Maria Nieto Gómez', correo: 'maria@gmail.com', rol: 'operador', onCambiarRol: () => {}, onEliminar: () => {} },
+        ]}
+        itemsPorPagina={6}
       />
 
       <BuscadorCard value="" onChange={() => {}} onBuscar={() => {}} />
