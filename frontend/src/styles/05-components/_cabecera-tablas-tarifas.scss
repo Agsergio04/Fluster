@@ -1,0 +1,11 @@
+.cabecera-tablas-tarifas {
+  display:     flex;
+  flex-wrap:   wrap;
+  align-items: flex-start;
+  width:       60rem; // 960px — ancho total (4×240px o 2×480px)
+}
+
+.cabecera-tablas-tarifas-navieras {
+  display:     flex;
+  align-items: flex-end; // columna naviera baja hasta la última fila
+}

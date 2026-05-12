@@ -1,0 +1,36 @@
+.celda-tabla {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         var(--space-8);
+  border:          2px solid var(--color-box-text);
+  flex-shrink:     0;
+
+  &__texto {
+    flex:        1 0 0;
+    font-family: var(--font-heading);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    text-align:  center;
+    min-width:   0;
+  }
+
+  &--body &__texto {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    white-space: nowrap;
+  }
+
+  // tamaños Figma-exact
+  &--sm      { width: 7.5rem;  } // 120px
+  &--md      { width: 15rem;   } // 240px
+  &--naviera { width: 10rem;   } // 160px
+  &--lg      { width: 30rem;   } // 480px
+}
+
+.celda-det-sob {
+  display:     flex;
+  align-items: center;
+}

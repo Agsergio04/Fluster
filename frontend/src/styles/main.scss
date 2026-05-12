@@ -62,6 +62,9 @@
 @use './05-components/informacion-home';
 @use './05-components/botones-menu-hamburguesa';
 @use './05-components/opcion-filtro';
+@use './05-components/celda-tabla';
+@use './05-components/cabecera-tablas-tarifas';
+@use './05-components/fila-naviera-tarifas';
 @use './05-components/card-almacen';
 
 // 06 Utilities — clases de apoyo de alta especificidad

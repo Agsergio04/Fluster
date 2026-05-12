@@ -1,0 +1,9 @@
+.fila-naviera-tarifas {
+  display:     flex;
+  align-items: center;
+
+  &__celdas {
+    display:     flex;
+    align-items: center;
+  }
+}

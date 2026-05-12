@@ -46,6 +46,11 @@ import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoC
 import CardUsuario from '../../components/moleculas/CardUsuario'
 import CardSemaforo from '../../components/organismos/CardSemaforo'
 import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
+import CeldaTabla from '../../components/atomos/CeldaTabla'
+import CeldaDetSob from '../../components/atomos/CeldaDetSob'
+import CabeceraTablasTarifas from '../../components/moleculas/CabeceraTablasTarifas'
+import CabeceraTablasTarifasNavieras from '../../components/moleculas/CabeceraTablasTarifasNavieras'
+import FilaNavieraTarifas from '../../components/moleculas/FilaNavieraTarifas'
 import BotonCardAlmacen from '../../components/atomos/BotonCardAlmacen'
 import BotonOperacionesPerfil from '../../components/atomos/BotonOperacionesPerfil'
 import InformacionHome from '../../components/moleculas/InformacionHome'
@@ -327,6 +332,18 @@ function Home() {
         rol="admin"
         onCambiarRol={() => {}}
         onEliminar={() => {}}
+      />
+
+      <CeldaTabla label="Tiempo (dias)" tamanio="lg" />
+      <CeldaTabla label="Primer Tramo" tamanio="md" />
+      <CeldaTabla label="Detencion"    tamanio="sm" fuente="body" />
+      <CeldaTabla label="Navieras"     tamanio="naviera" />
+      <CeldaDetSob />
+      <CabeceraTablasTarifas />
+      <CabeceraTablasTarifasNavieras />
+      <FilaNavieraTarifas
+        naviera="MSC"
+        valores={['10', '20', '15', '25', '30€', '40€', '50€', '60€']}
       />
 
       <OpcionFiltro label="Filtrar por orden alfabetico" selected onClick={() => {}} />
