@@ -47,6 +47,7 @@ import CardUsuario from '../../components/moleculas/CardUsuario'
 import CardSemaforo from '../../components/organismos/CardSemaforo'
 import CardContenedoresAlmacen from '../../components/moleculas/CardContenedoresAlmacen'
 import BotonCardAlmacen from '../../components/atomos/BotonCardAlmacen'
+import BotonOperacionesPerfil from '../../components/atomos/BotonOperacionesPerfil'
 
 function Home() {
   const [tab, setTab] = useState('login')
@@ -324,6 +325,11 @@ function Home() {
         onCambiarRol={() => {}}
         onEliminar={() => {}}
       />
+
+      <BotonOperacionesPerfil variante="cambiar-nombre" onClick={() => {}} />
+      <BotonOperacionesPerfil variante="cambiar-contrasenia" onClick={() => {}} />
+      <BotonOperacionesPerfil variante="cerrar-sesion" onClick={() => {}} />
+      <BotonOperacionesPerfil variante="cambiar-nombre" disabled />
 
       <BotonCardAlmacen variante="ver-registro" onClick={() => {}} />
       <BotonCardAlmacen variante="borrar" onClick={() => {}} />
