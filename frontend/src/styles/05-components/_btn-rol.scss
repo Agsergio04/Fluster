@@ -18,6 +18,15 @@
     background-color: var(--color-secondary-hover);
   }
 
+  &--off {
+    background-color: var(--color-secondary-off);
+    opacity:          0.6;
+
+    &:hover {
+      background-color: var(--color-secondary-off);
+    }
+  }
+
   &__icono {
     display:    flex;
     flex-shrink: 0;

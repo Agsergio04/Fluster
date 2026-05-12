@@ -10,14 +10,16 @@ function BotonesSeleccionRol({ rolSeleccionado, onSeleccionarRol }) {
         titulo="Soy un Operador"
         descripcion="Introduzco contenedores mediante un sistema OCR"
         active={rolSeleccionado === 'operador'}
-        onClick={() => onSeleccionarRol?.('operador')}
+        off={rolSeleccionado === 'gestor'}
+        onClick={() => onSeleccionarRol?.(rolSeleccionado === 'operador' ? null : 'operador')}
       />
       <BotonRol
         icon={<GestorIcon aria-hidden="true" />}
         titulo="Soy Gestor de Operaciones"
         descripcion="Controlo tarifas de navieras, gestiono los contenedores y genero los informes"
         active={rolSeleccionado === 'gestor'}
-        onClick={() => onSeleccionarRol?.('gestor')}
+        off={rolSeleccionado === 'operador'}
+        onClick={() => onSeleccionarRol?.(rolSeleccionado === 'gestor' ? null : 'gestor')}
       />
     </div>
   )

@@ -1,7 +1,7 @@
-function BotonRol({ icon, titulo, descripcion, active = false, onClick }) {
+function BotonRol({ icon, titulo, descripcion, active = false, off = false, onClick }) {
   return (
     <button
-      className={`btn-rol${active ? ' btn-rol--active' : ''}`}
+      className={`btn-rol${active ? ' btn-rol--active' : ''}${off ? ' btn-rol--off' : ''}`}
       type="button"
       aria-pressed={active}
       onClick={onClick}
