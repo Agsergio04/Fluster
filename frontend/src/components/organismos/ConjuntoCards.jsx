@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import CabeceraTramo from '../atomos/CabeceraTramo'
 import BuscadorContenedores from '../moleculas/BuscadorContenedores'
 import BotonesMovimientoCard from '../moleculas/BotonesMovimientoCard'
@@ -21,6 +21,9 @@ function ConjuntoCards({
   onEliminar,
 }) {
   const [pagina, setPagina] = useState(1)
+
+  useEffect(() => { setPagina(1) }, [busqueda])
+
   const totalPaginas = Math.max(1, Math.ceil(items.length / itemsPorPagina))
   const inicio = (pagina - 1) * itemsPorPagina
   const paginaItems = items.slice(inicio, inicio + itemsPorPagina)
