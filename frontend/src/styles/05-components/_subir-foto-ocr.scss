@@ -202,7 +202,9 @@
   }
 
   &__btn-cancelar {
-    width:      100%;
-    text-align: center;
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:           100%;
   }
 }
