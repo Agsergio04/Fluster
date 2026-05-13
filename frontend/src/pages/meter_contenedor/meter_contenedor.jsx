@@ -18,6 +18,7 @@ function MeterContenedor() {
   const [estado,      setEstado]      = useState('subiendo')
   const [foto,        setFoto]        = useState(null)
   const [codigoBic,   setCodigoBic]   = useState('')
+  const [errorOcr,    setErrorOcr]    = useState('')
   const [cargandoOcr, setCargandoOcr] = useState(false)
   const [cargando,    setCargando]    = useState(false)
 
@@ -33,14 +34,19 @@ function MeterContenedor() {
       const base64 = reader.result
       setFoto(base64)
       setCodigoBic('')
+      setErrorOcr('')
       setEstado('introducido')
 
       setCargandoOcr(true)
       try {
         const bic = await extraerCodigoBic(base64)
-        setCodigoBic(bic)
+        if (bic) {
+          setCodigoBic(bic)
+        } else {
+          setErrorOcr('No se detectó código BIC. Introdúcelo manualmente.')
+        }
       } catch {
-        // OCR falló — el usuario puede introducir el código manualmente
+        setErrorOcr('No se pudo leer la imagen. Introdúcelo manualmente.')
       } finally {
         setCargandoOcr(false)
       }
@@ -66,6 +72,7 @@ function MeterContenedor() {
     setEstado('subiendo')
     setFoto(null)
     setCodigoBic('')
+    setErrorOcr('')
   }
 
   return (
@@ -98,7 +105,8 @@ function MeterContenedor() {
           onSeleccionarFoto={handleSeleccionarFoto}
           foto={foto}
           codigoBic={codigoBic}
-          onCodigoBicCambio={e => setCodigoBic(e.target.value)}
+          errorOcr={errorOcr}
+          onCodigoBicCambio={e => { setCodigoBic(e.target.value); setErrorOcr('') }}
           cargandoOcr={cargandoOcr || cargando}
           onIntroducir={handleIntroducir}
           onCancelar={handleCancelar}
