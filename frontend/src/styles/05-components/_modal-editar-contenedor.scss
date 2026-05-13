@@ -8,7 +8,7 @@
   background-color: var(--color-overlay);
 
   &__panel {
-    background-color: var(--color-surface);
+    background-color: var(--color-primary-off);
     border:           1px solid var(--color-border);
     border-radius:    var(--radius);
     padding:          var(--space-32);
@@ -49,18 +49,18 @@
   }
 
   &__btn-foto {
-    background-color: var(--color-bg);
-    border:           1px solid var(--color-border);
+    background-color: var(--color-secondary);
+    border:           none;
     border-radius:    var(--radius);
     padding:          var(--space-8) var(--space-16);
-    color:            var(--color-text);
+    color:            var(--color-surface);
     font-family:      var(--font-body);
     font-size:        var(--text-16);
     cursor:           pointer;
     transition:       background-color var(--transition-fast);
 
     &:hover {
-      background-color: var(--color-border);
+      background-color: var(--color-secondary-hover);
     }
   }
 
@@ -99,7 +99,7 @@
   }
 
   &__btn-actualizar {
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
     border:           none;
     border-radius:    var(--radius);
     padding:          var(--space-8) var(--space-24);
@@ -111,7 +111,7 @@
     transition:       background-color var(--transition-fast);
 
     &:hover:not(:disabled) {
-      background-color: var(--color-primary-hover);
+      background-color: var(--color-secondary-hover);
     }
 
     &:disabled {
@@ -121,8 +121,8 @@
   }
 
   &__btn-cancelar {
-    background-color: transparent;
-    border:           1px solid var(--color-border);
+    background-color: var(--color-secondary-off);
+    border:           none;
     border-radius:    var(--radius);
     padding:          var(--space-8) var(--space-24);
     color:            var(--color-text);
@@ -132,7 +132,8 @@
     transition:       background-color var(--transition-fast);
 
     &:hover {
-      background-color: var(--color-bg);
+      background-color: var(--color-secondary);
+      color:            var(--color-surface);
     }
   }
 }
