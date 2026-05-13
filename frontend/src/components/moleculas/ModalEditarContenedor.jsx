@@ -4,6 +4,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
   const inputFotoRef = useRef(null)
 
   const [foto,             setFoto]             = useState(item.foto ?? null)
+  const [codigoBic,        setCodigoBic]        = useState(item.codigoBic ?? '')
   const [fechaInicioLibre, setFechaInicioLibre] = useState(
     item.fechaInicioLibre
       ? new Date(item.fechaInicioLibre).toISOString().split('T')[0]
@@ -24,6 +25,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
     setCargando(true)
     try {
       await onActualizar(item.id, {
+        codigoBIC:        codigoBic.trim().toUpperCase() || undefined,
         foto,
         fechaInicioLibre: fechaInicioLibre ? new Date(fechaInicioLibre).toISOString() : undefined,
       })
@@ -55,6 +57,17 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
           >
             Cambiar foto
           </button>
+        </div>
+
+        <div className="modal-editar-contenedor__campo">
+          <label className="modal-editar-contenedor__label">Codigo BIC</label>
+          <input
+            type="text"
+            className="modal-editar-contenedor__fecha-input"
+            value={codigoBic}
+            onChange={e => setCodigoBic(e.target.value)}
+            placeholder="BLKU258036"
+          />
         </div>
 
         <div className="modal-editar-contenedor__campo">

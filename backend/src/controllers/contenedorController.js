@@ -76,9 +76,10 @@ async function cancelarCiclo(req, res, next) {
 
 async function editarContenedor(req, res, next) {
   try {
-    const { foto, fechaInicioLibre } = req.body
+    const { codigoBIC, foto, fechaInicioLibre } = req.body
     const cambios = {}
-    if (foto !== undefined)           cambios.foto            = foto
+    if (codigoBIC !== undefined)        cambios.codigoBIC       = codigoBIC
+    if (foto !== undefined)             cambios.foto            = foto
     if (fechaInicioLibre !== undefined) cambios.fechaInicioLibre = fechaInicioLibre
     const actualizado = await contenedorService.actualizar(req.params.id, cambios)
     res.json(actualizado)
