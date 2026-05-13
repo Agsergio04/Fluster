@@ -10,6 +10,11 @@ export async function listarContenedores(params) {
   return data
 }
 
+export async function obtenerContenedor(id) {
+  const { data } = await apiClient.get(`/contenedores/${id}`)
+  return data
+}
+
 export async function actualizarContenedor(id, datos) {
   const { data } = await apiClient.patch(`/contenedores/${id}/editar`, datos)
   return data
