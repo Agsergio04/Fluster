@@ -19,3 +19,7 @@ export async function actualizarContenedor(id, datos) {
   const { data } = await apiClient.patch(`/contenedores/${id}/editar`, datos)
   return data
 }
+
+export async function eliminarContenedor(id) {
+  await apiClient.delete(`/contenedores/${id}`)
+}
