@@ -12,6 +12,7 @@ function Header({ rol = null, seccionActiva, tema = 'light', onToggleTema, onNav
         tema={tema}
         onToggleTema={onToggleTema}
         onMenuHamburguesa={rol ? () => setMenuAbierto(v => !v) : undefined}
+        onLogoClick={() => onNavegar?.('/')}
       />
       {rol && menuAbierto && (
         <BotonesMenuHamburguesa
