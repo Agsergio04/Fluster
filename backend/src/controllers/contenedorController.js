@@ -88,4 +88,13 @@ async function editarContenedor(req, res, next) {
   }
 }
 
-module.exports = { crear, listar, obtener, actualizar, editarContenedor, entradaPuerto, salidaPuerto, devolucion, cancelarCiclo }
+async function eliminar(req, res, next) {
+  try {
+    await contenedorService.eliminar(req.params.id)
+    res.status(204).send()
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { crear, listar, obtener, actualizar, editarContenedor, eliminar, entradaPuerto, salidaPuerto, devolucion, cancelarCiclo }

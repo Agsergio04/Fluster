@@ -17,6 +17,9 @@ router.post('/', verificarRol('operador'), contenedorController.crear)
 // Edición de datos — solo gestor (página almacén)
 router.put('/:id', verificarRol('gestor'), contenedorController.actualizar)
 
+// Borrado — solo operador (página contenedores), solo si está INACTIVO
+router.delete('/:id', verificarRol('operador'), contenedorController.eliminar)
+
 // Edición de foto y fecha de inclusión — operador (página contenedores)
 router.patch('/:id/editar', verificarRol('operador'), contenedorController.editarContenedor)
 
