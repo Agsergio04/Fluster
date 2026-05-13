@@ -62,6 +62,7 @@ function Contenedores() {
       <div className="contenedores__contenido">
         <ConjuntoCards
           variante="contenedores"
+          itemsPorPagina={9}
           busqueda={busqueda}
           onBusquedaCambio={e => setBusqueda(e.target.value)}
           onBuscar={() => {}}
