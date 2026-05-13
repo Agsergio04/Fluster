@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import CambiarNombre from '../moleculas/CambiarNombre'
 import CambiarContrasenia from '../moleculas/CambiarContrasenia'
 import BotonAccionTarifa from '../atomos/BotonAccionTarifa'
@@ -25,6 +26,15 @@ function PerfilCredenciales({
   disabledContrasenia,
   onCerrarSesion,
 }) {
+  const inputFotoRef = useRef(null)
+
+  const handleSeleccionarFoto = e => {
+    const fichero = e.target.files?.[0]
+    if (!fichero) return
+    onActualizarFoto(URL.createObjectURL(fichero))
+    e.target.value = ''
+  }
+
   return (
     <div className="perfil-credenciales">
       <div className="perfil-credenciales__info">
@@ -34,7 +44,14 @@ function PerfilCredenciales({
             alt={nombre}
             className="perfil-credenciales__foto"
           />
-          <BotonAccionTarifa accion="actualizar" onClick={onActualizarFoto} />
+          <input
+            ref={inputFotoRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleSeleccionarFoto}
+          />
+          <BotonAccionTarifa accion="actualizar" onClick={() => inputFotoRef.current?.click()} />
           <div className="perfil-credenciales__campo">
             <p className="perfil-credenciales__etiqueta">Nombre</p>
             <p className="perfil-credenciales__valor">{nombre}</p>

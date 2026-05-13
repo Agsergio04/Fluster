@@ -11,6 +11,7 @@ function Perfil() {
   const usuario         = getUsuario()
   const [tema, toggleTema] = useTema()
 
+  const [foto,          setFoto]          = useState(null)
   const [nuevoNombre,   setNuevoNombre]   = useState('')
   const [contrasenia,   setContrasenia]   = useState('')
   const [confirmacion,  setConfirmacion]  = useState('')
@@ -57,11 +58,11 @@ function Perfil() {
 
       <div className="perfil__contenido">
         <PerfilCredenciales
-          foto={null}
+          foto={foto}
           nombre={usuario?.nombre ?? ''}
           rol={usuario?.rol ?? ''}
           correo={usuario?.correo ?? ''}
-          onActualizarFoto={() => {}}
+          onActualizarFoto={url => setFoto(url)}
           nuevoNombre={nuevoNombre}
           onNuevoNombreCambio={e => setNuevoNombre(e.target.value)}
           errorNombre={errorNombre}
