@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './contenedores.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
-import { listarContenedores, actualizarContenedor } from '../../services/contenedorService'
+import { listarContenedores, actualizarContenedor, eliminarContenedor } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEditarContenedor from '../../components/moleculas/ModalEditarContenedor'
@@ -42,6 +42,11 @@ function Contenedores() {
     setEditando(null)
   }
 
+  const handleEliminar = async (item) => {
+    await eliminarContenedor(item.id)
+    setContenedores(prev => prev.filter(c => c._id !== item.id))
+  }
+
   return (
     <div className="contenedores">
       <Header
@@ -68,7 +73,7 @@ function Contenedores() {
           onBuscar={() => {}}
           items={items}
           onEditar={item => setEditando(item)}
-          onEliminar={item => {}}
+          onEliminar={handleEliminar}
         />
       </div>
 
