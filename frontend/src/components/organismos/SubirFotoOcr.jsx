@@ -4,6 +4,7 @@ import IntroducirFotoIcon from '../../assets/icons/Icono Introducr mediante foto
 function SubirFotoOcr({
   estado = 'subiendo',
   onSeleccionarFoto,
+  onIntroducirManual,
   foto,
   codigoBic = '',
   errorOcr = '',
@@ -12,6 +13,7 @@ function SubirFotoOcr({
   onIntroducir,
   onCancelar,
 }) {
+  // Estado: imagen cargada + OCR ejecutado
   if (estado === 'introducido') {
     return (
       <div className="subir-foto-ocr subir-foto-ocr--introducido">
@@ -58,6 +60,45 @@ function SubirFotoOcr({
     )
   }
 
+  // Estado: entrada manual sin foto
+  if (estado === 'manual') {
+    return (
+      <div className="subir-foto-ocr subir-foto-ocr--introducido">
+        <div className="subir-foto-ocr__formulario subir-foto-ocr__formulario--solo">
+          <div className="subir-foto-ocr__campo-bic">
+            <p className="subir-foto-ocr__bic-label">Codigo BIC</p>
+            <input
+              className="subir-foto-ocr__bic-input"
+              type="text"
+              value={codigoBic}
+              onChange={onCodigoBicCambio}
+              placeholder="BLKU258036"
+              autoFocus
+            />
+          </div>
+
+          <div className="subir-foto-ocr__botones-accion">
+            <button
+              type="button"
+              className="subir-foto-ocr__btn-introducir"
+              onClick={onIntroducir}
+            >
+              Introducir contenedor
+            </button>
+            <button
+              type="button"
+              className="subir-foto-ocr__btn-cancelar"
+              onClick={onCancelar}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Estado: pantalla inicial — elegir foto o entrada manual
   return (
     <div className="subir-foto-ocr">
       <div className="subir-foto-ocr__cuerpo">
@@ -71,6 +112,13 @@ function SubirFotoOcr({
             </p>
           </div>
           <BotonSeleccionarFoto onClick={onSeleccionarFoto} />
+          <button
+            type="button"
+            className="subir-foto-ocr__btn-manual"
+            onClick={onIntroducirManual}
+          >
+            Introducir código manualmente
+          </button>
         </div>
       </div>
     </div>

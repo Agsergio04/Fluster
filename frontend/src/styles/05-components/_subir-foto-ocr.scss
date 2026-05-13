@@ -135,6 +135,27 @@
     line-height: var(--leading-snug);
   }
 
+  &__formulario--solo {
+    width: 100%;
+  }
+
+  &__btn-manual {
+    padding:          var(--space-8);
+    background-color: transparent;
+    border:           1px solid var(--color-secondary);
+    border-radius:    var(--radius);
+    font-family:      var(--font-body);
+    font-size:        var(--text-24);
+    font-weight:      var(--font-weight-regular);
+    color:            var(--color-box-text);
+    line-height:      var(--leading-tight);
+    transition:       background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-secondary);
+    }
+  }
+
   &__botones-accion {
     display:         flex;
     flex-direction:  column;
