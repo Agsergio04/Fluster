@@ -2,20 +2,20 @@ import Input          from '../atomos/Input'
 import InputContrasenia from '../atomos/InputContrasenia'
 
 function EntradaDatosLogin({
-  nombre = '',         onNombreCambio,
+  correo = '',         onCorreoCambio,
   contrasenia = '',    onContraseniaCambio,
-  errorNombre,         errorContrasenia,
+  errorCorreo,         errorContrasenia,
 }) {
   return (
     <div className="entrada-datos-login">
       <Input
-        id="login-nombre"
-        label="Introduce tu nombre:"
-        type="text"
-        placeholder="Introduce tu nombre"
-        value={nombre}
-        onChange={onNombreCambio}
-        error={errorNombre}
+        id="login-correo"
+        label="Introduce tu correo:"
+        type="email"
+        placeholder="Introduce tu correo"
+        value={correo}
+        onChange={onCorreoCambio}
+        error={errorCorreo}
       />
       <InputContrasenia
         id="login-contrasenia"

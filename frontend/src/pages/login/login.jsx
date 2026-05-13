@@ -58,9 +58,9 @@ function Login() {
         <div className="login__panel">
           <h2 className="login__titulo">Iniciar Sesion</h2>
           <EntradaDatosLogin
-            nombre={correo}
-            onNombreCambio={e => setCorreo(e.target.value)}
-            errorNombre={errorCorreo}
+            correo={correo}
+            onCorreoCambio={e => setCorreo(e.target.value)}
+            errorCorreo={errorCorreo}
             contrasenia={contrasenia}
             onContraseniaCambio={e => setContrasenia(e.target.value)}
             errorContrasenia={errorContrasenia}
