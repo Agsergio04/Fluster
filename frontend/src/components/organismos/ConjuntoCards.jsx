@@ -19,6 +19,7 @@ function ConjuntoCards({
   onBorrar,
   onEditar,
   onEliminar,
+  onCambiarRol,
 }) {
   const [pagina, setPagina] = useState(1)
 
@@ -34,7 +35,7 @@ function ConjuntoCards({
       case 'semaforo':
         return <CardSemaforo key={key} {...item} />
       case 'usuarios':
-        return <CardUsuario key={key} {...item} />
+        return <CardUsuario key={key} {...item} onCambiarRol={rol => onCambiarRol?.(item, rol)} onEliminar={() => onEliminar?.(item)} />
       case 'almacen':
         return <CardContenedoresAlmacen key={key} {...item} onVerRegistro={() => onVerRegistro?.(item)} onBorrar={() => onBorrar?.(item)} />
       case 'contenedores':
