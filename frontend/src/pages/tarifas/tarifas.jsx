@@ -1,17 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './tarifas.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
+import { listarNavieras } from '../../services/navieraService'
 import Header from '../../components/organismos/Header'
 import TablaTarifas from '../../components/organismos/TablaTarifas'
+
+const navieraAFila = n => ({
+  naviera: n.nombre,
+  valores: [
+    n.diasLibresDetention            ?? 0,
+    n.diasLibresDemurrage            ?? 0,
+    n.diasDetention?.[0]?.hastaDia   ?? '-',
+    n.diasDemurrage?.[0]?.hastaDia   ?? '-',
+    n.diasDetention?.[0]?.precioPorDia ?? '-',
+    n.diasDemurrage?.[0]?.precioPorDia ?? '-',
+    n.diasDetention?.[1]?.precioPorDia ?? '-',
+    n.diasDemurrage?.[1]?.precioPorDia ?? '-',
+  ],
+})
 
 function Tarifas() {
   const navigate        = useNavigate()
   const usuario         = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [filas] = useState([])
+  const [filas, setFilas] = useState([])
+
+  useEffect(() => {
+    listarNavieras()
+      .then(data => setFilas(data.map(navieraAFila)))
+      .catch(() => {})
+  }, [])
 
   return (
     <div className="tarifas">
