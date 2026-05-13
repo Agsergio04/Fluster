@@ -128,6 +128,13 @@
     }
   }
 
+  &__error-ocr {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-error);
+    line-height: var(--leading-snug);
+  }
+
   &__botones-accion {
     display:         flex;
     flex-direction:  column;
