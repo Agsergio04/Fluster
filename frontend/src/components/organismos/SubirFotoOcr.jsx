@@ -6,6 +6,7 @@ function SubirFotoOcr({
   onSeleccionarFoto,
   foto,
   codigoBic = '',
+  errorOcr = '',
   onCodigoBicCambio,
   cargandoOcr = false,
   onIntroducir,
@@ -30,6 +31,9 @@ function SubirFotoOcr({
               placeholder={cargandoOcr ? 'Detectando...' : 'BLKU258036'}
               disabled={cargandoOcr}
             />
+            {errorOcr && (
+              <p className="subir-foto-ocr__error-ocr">{errorOcr}</p>
+            )}
           </div>
 
           <div className="subir-foto-ocr__botones-accion">
