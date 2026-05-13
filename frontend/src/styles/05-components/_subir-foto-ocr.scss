@@ -182,6 +182,9 @@
 
   &__btn-introducir,
   &__btn-cancelar {
+    display:          inline-flex;
+    align-items:      center;
+    justify-content:  center;
     padding:          var(--space-8);
     background-color: var(--color-secondary);
     border-radius:    var(--radius);
@@ -190,21 +193,11 @@
     font-weight:      var(--font-weight-regular);
     color:            var(--color-box-text);
     line-height:      var(--leading-tight);
+    white-space:      nowrap;
     transition:       background-color var(--transition-fast);
 
     &:hover {
       background-color: var(--color-secondary-hover);
     }
-  }
-
-  &__btn-introducir {
-    white-space: nowrap;
-  }
-
-  &__btn-cancelar {
-    display:         inline-flex;
-    align-items:     center;
-    justify-content: center;
-    width:           100%;
   }
 }
