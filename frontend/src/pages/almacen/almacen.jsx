@@ -72,6 +72,7 @@ function Almacen() {
       <div className="almacen__contenido">
         <ConjuntoCards
           variante="almacen"
+          itemsPorPagina={9}
           busqueda={busqueda}
           onBusquedaCambio={e => setBusqueda(e.target.value)}
           onBuscar={() => {}}

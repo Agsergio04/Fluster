@@ -79,6 +79,7 @@ function Semaforo() {
             key={tramo}
             variante="semaforo"
             tramo={tramo}
+            itemsPorPagina={9}
             busqueda={busquedas[tramo]}
             onBusquedaCambio={e => handleBusquedaCambio(tramo, e.target.value)}
             onBuscar={() => {}}
