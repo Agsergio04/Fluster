@@ -74,4 +74,17 @@ async function cancelarCiclo(req, res, next) {
   }
 }
 
-module.exports = { crear, listar, obtener, actualizar, entradaPuerto, salidaPuerto, devolucion, cancelarCiclo }
+async function editarContenedor(req, res, next) {
+  try {
+    const { foto, fechaInicioLibre } = req.body
+    const cambios = {}
+    if (foto !== undefined)           cambios.foto            = foto
+    if (fechaInicioLibre !== undefined) cambios.fechaInicioLibre = fechaInicioLibre
+    const actualizado = await contenedorService.actualizar(req.params.id, cambios)
+    res.json(actualizado)
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { crear, listar, obtener, actualizar, editarContenedor, entradaPuerto, salidaPuerto, devolucion, cancelarCiclo }
