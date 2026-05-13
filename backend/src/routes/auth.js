@@ -5,8 +5,7 @@ const verificarRol = require('../middlewares/rolMiddleware')
 
 const router = Router()
 
-// El registro lo hace solo el admin; así controla quién tiene acceso al sistema
-router.post('/registro', authMiddleware, verificarRol('admin'), authController.registrar)
+router.post('/registro', authController.registrar)
 router.post('/login', authController.login)
 
 module.exports = router
