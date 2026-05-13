@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import RutaProtegida from './RutaProtegida'
+import RutaPublica from './RutaPublica'
 import Login from '../pages/login/login'
 import Home from '../pages/home/home'
 import Almacen from '../pages/almacen/almacen'
@@ -21,9 +22,9 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login"    element={<Login />} />
+        <Route path="/login"    element={<RutaPublica><Login /></RutaPublica>} />
+        <Route path="/registro" element={<RutaPublica><Registro /></RutaPublica>} />
         <Route path="/"         element={<Home />} />
-        <Route path="/registro" element={<Registro />} />
         <Route path="/error"    element={<Error />} />
 
         <Route path="/semaforo" element={
