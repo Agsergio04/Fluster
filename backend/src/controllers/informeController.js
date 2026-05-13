@@ -37,4 +37,13 @@ async function obtener(req, res, next) {
   }
 }
 
-module.exports = { generar, listar, listarPorContenedor, obtener }
+async function generarDatos(req, res, next) {
+  try {
+    const ciclos = await informeService.generarDatos(req.query)
+    res.json(ciclos)
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { generar, listar, listarPorContenedor, obtener, generarDatos }

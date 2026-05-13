@@ -91,4 +91,75 @@ async function obtenerPorId(id) {
   return informe
 }
 
-module.exports = { generar, listar, listarPorContenedor, obtenerPorId }
+/**
+ * Devuelve ciclos CERRADOS con todos los datos necesarios para generar el PDF.
+ * Aplica los mismos filtros que el panel de informes del frontend.
+ *
+ * @param {{ fechaDesde?, fechaHasta?, fechaEspecifica?, naviera?, cliente?,
+ *           codigoBic?, contenedorId?, ordenAscendente?, ordenDescendente?,
+ *           ordenAlfabetico? }} filtros
+ * @returns {Promise<object[]>}
+ */
+async function generarDatos(filtros = {}) {
+  const query = { fechaCierre: { $ne: null } }
+
+  if (filtros.fechaDesde || filtros.fechaHasta) {
+    query.fechaCierre = {}
+    if (filtros.fechaDesde) query.fechaCierre.$gte = new Date(filtros.fechaDesde)
+    if (filtros.fechaHasta) {
+      const fin = new Date(filtros.fechaHasta)
+      fin.setHours(23, 59, 59, 999)
+      query.fechaCierre.$lte = fin
+    }
+  }
+
+  if (filtros.fechaEspecifica) {
+    const ini = new Date(filtros.fechaEspecifica)
+    const fin = new Date(filtros.fechaEspecifica)
+    fin.setHours(23, 59, 59, 999)
+    query.fechaCierre = { $gte: ini, $lte: fin }
+  }
+
+  if (filtros.contenedorId) query.contenedorId = filtros.contenedorId
+
+  let ciclos = await Ciclo.find(query)
+    .populate({
+      path: 'contenedorId',
+      populate: { path: 'navieraId', select: 'nombre codigo' },
+    })
+    .populate('clienteId', 'nombre')
+    .sort({ fechaCierre: -1 })
+    .lean()
+
+  if (filtros.naviera) {
+    const nav = filtros.naviera.toLowerCase()
+    ciclos = ciclos.filter(c =>
+      c.contenedorId?.navieraId?.nombre?.toLowerCase().includes(nav) ||
+      c.contenedorId?.navieraId?.codigo?.toLowerCase().includes(nav)
+    )
+  }
+
+  if (filtros.cliente) {
+    const cli = filtros.cliente.toLowerCase()
+    ciclos = ciclos.filter(c => c.clienteId?.nombre?.toLowerCase().includes(cli))
+  }
+
+  if (filtros.codigoBic) {
+    const bic = filtros.codigoBic.toUpperCase()
+    ciclos = ciclos.filter(c => c.contenedorId?.codigoBIC?.includes(bic))
+  }
+
+  if (filtros.ordenAscendente === 'true')
+    ciclos.sort((a, b) => new Date(a.fechaCierre) - new Date(b.fechaCierre))
+  else if (filtros.ordenDescendente === 'true')
+    ciclos.sort((a, b) => new Date(b.fechaCierre) - new Date(a.fechaCierre))
+
+  if (filtros.ordenAlfabetico === 'true')
+    ciclos.sort((a, b) =>
+      (a.contenedorId?.codigoBIC ?? '').localeCompare(b.contenedorId?.codigoBIC ?? '')
+    )
+
+  return ciclos
+}
+
+module.exports = { generar, listar, listarPorContenedor, obtenerPorId, generarDatos }
