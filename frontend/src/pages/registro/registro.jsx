@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './registro.scss'
 import useTema from '../../hooks/useTema'
+import { registro } from '../../services/authService'
 import Header from '../../components/organismos/Header'
 import EntradaDatosRegistro from '../../components/moleculas/EntradaDatosRegistro'
 import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
@@ -34,7 +35,7 @@ function Registro() {
 
     try {
       setCargando(true)
-      // TODO: conectar con authService.registro()
+      await registro(nombre.trim(), correo.trim(), contrasenia, rol)
       navigate('/login')
     } catch (err) {
       const mensaje = err.response?.data?.mensaje ?? 'Error al crear la cuenta'

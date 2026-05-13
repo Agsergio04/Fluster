@@ -1,22 +1,13 @@
 import apiClient from './apiClient'
+import { guardarSesion } from './session'
 
 export async function login(correo, contrasena) {
-  const { data } = await apiClient.post('/auth/login', { correo, contrasena })
-  sessionStorage.setItem('token', data.token)
-  sessionStorage.setItem('usuario', JSON.stringify(data.usuario))
+  const { data } = await apiClient.post('/login', { correo, contrasena })
+  guardarSesion(data.token, data.usuario)
   return data.usuario
 }
 
-export function logout() {
-  sessionStorage.removeItem('token')
-  sessionStorage.removeItem('usuario')
-}
-
-export function getUsuario() {
-  const raw = sessionStorage.getItem('usuario')
-  return raw ? JSON.parse(raw) : null
-}
-
-export function getToken() {
-  return sessionStorage.getItem('token')
+export async function registro(nombre, correo, contrasena, rol) {
+  const { data } = await apiClient.post('/registro', { nombre, correo, contrasena, rol })
+  return data
 }
