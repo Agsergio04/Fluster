@@ -35,6 +35,16 @@ function Perfil() {
     // TODO: conectar con authService.actualizarContrasenia()
   }
 
+  const handleActualizarFoto = async fotoBase64 => {
+    try {
+      await actualizarFoto(usuario.id, fotoBase64)
+      setFoto(fotoBase64)
+      actualizarUsuario({ foto: fotoBase64 })
+    } catch (err) {
+      console.error('Error al actualizar foto:', err.response?.data ?? err.message)
+    }
+  }
+
   const handleCerrarSesion = () => {
     limpiarSesion()
     navigate('/')
@@ -63,13 +73,7 @@ function Perfil() {
           nombre={usuario?.nombre ?? ''}
           rol={usuario?.rol ?? ''}
           correo={usuario?.correo ?? ''}
-          onActualizarFoto={async fotoBase64 => {
-            try {
-              await actualizarFoto(usuario.id, fotoBase64)
-              setFoto(fotoBase64)
-              actualizarUsuario({ foto: fotoBase64 })
-            } catch {}
-          }}
+          onActualizarFoto={handleActualizarFoto}
           nuevoNombre={nuevoNombre}
           onNuevoNombreCambio={e => setNuevoNombre(e.target.value)}
           errorNombre={errorNombre}
