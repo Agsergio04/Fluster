@@ -16,6 +16,9 @@ function PerfilCredenciales({
   errorNombre,
   onConfirmarNombre,
   disabledNombre,
+  contraseniaActual,
+  onContraseniaActualCambio,
+  errorContraseniaActual,
   contrasenia,
   onContraseniaCambio,
   confirmacion,
@@ -79,6 +82,9 @@ function PerfilCredenciales({
           disabled={disabledNombre}
         />
         <CambiarContrasenia
+          contraseniaActual={contraseniaActual}
+          onContraseniaActualCambio={onContraseniaActualCambio}
+          errorContraseniaActual={errorContraseniaActual}
           contrasenia={contrasenia}
           onContraseniaCambio={onContraseniaCambio}
           confirmacion={confirmacion}

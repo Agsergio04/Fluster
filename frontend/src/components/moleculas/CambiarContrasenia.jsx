@@ -2,13 +2,23 @@ import InputContrasenia from '../atomos/InputContrasenia'
 import BotonRegistroLogin from '../atomos/BotonRegistroLogin'
 
 function CambiarContrasenia({
-  contrasenia = '',    onContraseniaCambio,
-  confirmacion = '',   onConfirmacionCambio,
-  errorContrasenia,    errorConfirmacion,
-  onConfirmar,         disabled = false,
+  contraseniaActual = '',  onContraseniaActualCambio,
+  contrasenia = '',        onContraseniaCambio,
+  confirmacion = '',       onConfirmacionCambio,
+  errorContraseniaActual,  errorContrasenia,    errorConfirmacion,
+  onConfirmar,             disabled = false,
 }) {
   return (
     <div className="cambiar-contrasenia">
+      <InputContrasenia
+        id="cambiar-contrasenia-actual"
+        label="Introduce tu contraseña actual:"
+        placeholder="Introduce tu contraseña actual"
+        value={contraseniaActual}
+        onChange={onContraseniaActualCambio}
+        error={errorContraseniaActual}
+        disabled={disabled}
+      />
       <InputContrasenia
         id="cambiar-contrasenia-nueva"
         label="Introduce tu nueva contraseña:"

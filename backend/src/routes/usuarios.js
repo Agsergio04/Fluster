@@ -13,7 +13,8 @@ router.get('/:id', verificarRol('admin'), usuarioController.obtener)
 router.put('/:id', verificarRol('admin'), usuarioController.actualizar)
 router.delete('/:id', verificarRol('admin'), usuarioController.eliminar)
 
-// Cambio de contraseña — cualquier rol puede cambiar la suya propia (página perfil)
+// Cambio de credenciales propias — cualquier rol (página perfil)
+router.patch('/:id/nombre',    usuarioController.cambiarNombre)
 router.patch('/:id/contrasena', usuarioController.cambiarContrasena)
 router.patch('/:id/foto',      usuarioController.actualizarFoto)
 

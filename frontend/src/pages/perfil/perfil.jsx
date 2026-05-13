@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './perfil.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario, limpiarSesion, actualizarUsuario } from '../../services/session'
-import { actualizarFoto } from '../../services/usuarioService'
+import { actualizarFoto, actualizarNombre, cambiarContrasena } from '../../services/usuarioService'
 import Header from '../../components/organismos/Header'
 import PerfilCredenciales from '../../components/organismos/PerfilCredenciales'
 
@@ -13,26 +13,49 @@ function Perfil() {
   const [tema, toggleTema] = useTema()
 
   const [foto,          setFoto]          = useState(usuario?.foto ?? null)
-  const [nuevoNombre,   setNuevoNombre]   = useState('')
-  const [contrasenia,   setContrasenia]   = useState('')
-  const [confirmacion,  setConfirmacion]  = useState('')
-  const [errorNombre,   setErrorNombre]   = useState('')
-  const [errorContrasenia,  setErrorContrasenia]  = useState('')
-  const [errorConfirmacion, setErrorConfirmacion] = useState('')
+  const [nuevoNombre,          setNuevoNombre]          = useState('')
+  const [contraseniaActual,    setContraseniaActual]    = useState('')
+  const [contrasenia,          setContrasenia]          = useState('')
+  const [confirmacion,         setConfirmacion]         = useState('')
+  const [errorNombre,          setErrorNombre]          = useState('')
+  const [errorContraseniaActual, setErrorContraseniaActual] = useState('')
+  const [errorContrasenia,     setErrorContrasenia]     = useState('')
+  const [errorConfirmacion,    setErrorConfirmacion]    = useState('')
   const [cargando, setCargando] = useState(false)
 
   const handleConfirmarNombre = async () => {
     setErrorNombre('')
     if (!nuevoNombre.trim()) { setErrorNombre('Introduce tu nuevo nombre'); return }
-    // TODO: conectar con authService.actualizarNombre()
+    try {
+      setCargando(true)
+      const actualizado = await actualizarNombre(usuario.id, nuevoNombre.trim())
+      actualizarUsuario({ nombre: actualizado.nombre })
+      setNuevoNombre('')
+    } catch (err) {
+      setErrorNombre(err.response?.data?.mensaje ?? 'Error al cambiar el nombre')
+    } finally {
+      setCargando(false)
+    }
   }
 
   const handleConfirmarContrasenia = async () => {
+    setErrorContraseniaActual('')
     setErrorContrasenia('')
     setErrorConfirmacion('')
-    if (!contrasenia.trim()) { setErrorContrasenia('Introduce tu nueva contraseña'); return }
+    if (!contraseniaActual.trim()) { setErrorContraseniaActual('Introduce tu contraseña actual'); return }
+    if (!contrasenia.trim())       { setErrorContrasenia('Introduce tu nueva contraseña'); return }
     if (contrasenia !== confirmacion) { setErrorConfirmacion('Las contraseñas no coinciden'); return }
-    // TODO: conectar con authService.actualizarContrasenia()
+    try {
+      setCargando(true)
+      await cambiarContrasena(usuario.id, contraseniaActual, contrasenia)
+      setContraseniaActual('')
+      setContrasenia('')
+      setConfirmacion('')
+    } catch (err) {
+      setErrorContraseniaActual(err.response?.data?.mensaje ?? 'Error al cambiar la contraseña')
+    } finally {
+      setCargando(false)
+    }
   }
 
   const handleActualizarFoto = async fotoBase64 => {
@@ -79,6 +102,9 @@ function Perfil() {
           errorNombre={errorNombre}
           onConfirmarNombre={handleConfirmarNombre}
           disabledNombre={cargando}
+          contraseniaActual={contraseniaActual}
+          onContraseniaActualCambio={e => setContraseniaActual(e.target.value)}
+          errorContraseniaActual={errorContraseniaActual}
           contrasenia={contrasenia}
           onContraseniaCambio={e => setContrasenia(e.target.value)}
           confirmacion={confirmacion}
