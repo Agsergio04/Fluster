@@ -48,6 +48,7 @@ function Login() {
         rol={null}
         tema={tema}
         onToggleTema={toggleTema}
+        onNavegar={ruta => navigate(ruta)}
       />
 
       <div className="login__body">

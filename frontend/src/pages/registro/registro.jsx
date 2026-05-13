@@ -51,6 +51,7 @@ function Registro() {
         rol={null}
         tema={tema}
         onToggleTema={toggleTema}
+        onNavegar={ruta => navigate(ruta)}
       />
 
       <div className="registro__body">
