@@ -139,12 +139,24 @@
     width: 100%;
   }
 
+  &__botones-inicio {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-16);
+    width:          100%;
+
+    .btn-seleccionar-foto,
+    .subir-foto-ocr__btn-manual {
+      width:      100%;
+      align-self: stretch;
+    }
+  }
+
   &__btn-manual {
     display:          inline-flex;
-    align-self:       flex-start;
     align-items:      center;
     justify-content:  center;
-    min-width:        15.375rem;
     padding:          var(--space-8);
     background-color: var(--color-secondary);
     border-radius:    var(--radius);

@@ -111,14 +111,16 @@ function SubirFotoOcr({
               Aqui puedes arrastrar la imagen o meterla directamente para la inclusion del contenedor
             </p>
           </div>
-          <BotonSeleccionarFoto onClick={onSeleccionarFoto} />
-          <button
-            type="button"
-            className="subir-foto-ocr__btn-manual"
-            onClick={onIntroducirManual}
-          >
-            Introducir código manualmente
-          </button>
+          <div className="subir-foto-ocr__botones-inicio">
+            <BotonSeleccionarFoto onClick={onSeleccionarFoto} />
+            <button
+              type="button"
+              className="subir-foto-ocr__btn-manual"
+              onClick={onIntroducirManual}
+            >
+              Introducir manualmente
+            </button>
+          </div>
         </div>
       </div>
     </div>
