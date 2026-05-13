@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './historial_contenedor.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
+import { obtenerContenedor } from '../../services/contenedorService'
+import { obtenerDatosInforme, registrarInforme } from '../../services/informeService'
+import { generarPDFIndividual } from '../../services/pdfService'
 import Header from '../../components/organismos/Header'
 import HistorialCiclosContenedor from '../../components/organismos/HistorialCiclosContenedor'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
@@ -13,7 +16,23 @@ function HistorialContenedor() {
   const usuario         = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [ciclos] = useState([])
+  const [contenedor, setContenedor] = useState(null)
+  const [ciclos,     setCiclos]     = useState([])
+
+  useEffect(() => {
+    obtenerContenedor(id)
+      .then(data => {
+        setContenedor(data)
+        setCiclos(
+          (data.ciclos ?? []).map(c => ({
+            cliente:   c.clienteId?.nombre ?? '-',
+            demurrage: c.demurrage,
+            detention: c.detention,
+          }))
+        )
+      })
+      .catch(() => {})
+  }, [id])
 
   const [fechaDesde,      setFechaDesde]      = useState('')
   const [fechaHasta,      setFechaHasta]      = useState('')
@@ -36,7 +55,7 @@ function HistorialContenedor() {
 
       <section className="historial-contenedor__intro">
         <h1 className="historial-contenedor__titulo">Registro del contenedor</h1>
-        <p className="historial-contenedor__codigo">{id}</p>
+        <p className="historial-contenedor__codigo">{contenedor?.codigoBIC ?? id}</p>
         <p className="historial-contenedor__subtitulo">
           Historial completo de los ciclos del contenedor con los costes de demurrage
           y detention asociados a cada periodo de actividad
@@ -63,7 +82,22 @@ function HistorialContenedor() {
             ordenAscendente={ordenAscendente}   onOrdenAscendente={() => setOrdenAscendente(v => !v)}
             ordenDescendente={ordenDescendente} onOrdenDescendente={() => setOrdenDescendente(v => !v)}
             ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
-            onGenerarInforme={() => {}}
+            onGenerarInforme={async () => {
+              const datosCiclos = await obtenerDatosInforme({
+                contenedorId: id,
+                fechaDesde, fechaHasta, fechaEspecifica,
+                naviera, cliente,
+                ordenAscendente:  String(ordenAscendente),
+                ordenDescendente: String(ordenDescendente),
+                ordenAlfabetico:  String(ordenAlfabetico),
+              })
+              const ok = generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)
+              if (ok) {
+                await Promise.all(
+                  datosCiclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
+                )
+              }
+            }}
           />
         </div>
       </div>
