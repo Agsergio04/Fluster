@@ -68,6 +68,13 @@ function MeterContenedor() {
     }
   }
 
+  const handleIntroducirManual = () => {
+    setEstado('manual')
+    setFoto(null)
+    setCodigoBic('')
+    setErrorOcr('')
+  }
+
   const handleCancelar = () => {
     setEstado('subiendo')
     setFoto(null)
@@ -103,6 +110,7 @@ function MeterContenedor() {
         <SubirFotoOcr
           estado={estado}
           onSeleccionarFoto={handleSeleccionarFoto}
+          onIntroducirManual={handleIntroducirManual}
           foto={foto}
           codigoBic={codigoBic}
           errorOcr={errorOcr}
