@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './almacen.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
+import { listarContenedores } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
@@ -12,18 +13,42 @@ function Almacen() {
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [busqueda, setBusqueda] = useState('')
-  const [items]                 = useState([])
+  const [busqueda,     setBusqueda]     = useState('')
+  const [contenedores, setContenedores] = useState([])
 
-  const [fechaDesde,      setFechaDesde]      = useState('')
-  const [fechaHasta,      setFechaHasta]      = useState('')
-  const [fechaEspecifica, setFechaEspecifica] = useState('')
-  const [naviera,         setNaviera]         = useState('')
-  const [cliente,         setCliente]         = useState('')
-  const [codigoBic,       setCodigoBic]       = useState('')
+  const [fechaDesde,       setFechaDesde]       = useState('')
+  const [fechaHasta,       setFechaHasta]       = useState('')
+  const [fechaEspecifica,  setFechaEspecifica]  = useState('')
+  const [naviera,          setNaviera]          = useState('')
+  const [cliente,          setCliente]          = useState('')
+  const [codigoBic,        setCodigoBic]        = useState('')
   const [ordenAscendente,  setOrdenAscendente]  = useState(false)
   const [ordenDescendente, setOrdenDescendente] = useState(false)
   const [ordenAlfabetico,  setOrdenAlfabetico]  = useState(false)
+
+  useEffect(() => {
+    listarContenedores()
+      .then(data => setContenedores(data))
+      .catch(() => {})
+  }, [])
+
+  const ultimaFecha = c => {
+    const fecha = c.fechaDevolucion ?? c.fechaSalidaPuerto ?? c.fechaEntradaPuerto ?? c.fechaInicioLibre
+    return fecha ? new Date(fecha).toLocaleDateString('es-ES') : '-'
+  }
+
+  const items = contenedores
+    .filter(c =>
+      !busqueda.trim() ||
+      c.codigoBIC.toLowerCase().includes(busqueda.trim().toLowerCase())
+    )
+    .map(c => ({
+      id:              c._id,
+      codigoBic:       c.codigoBIC,
+      ultimaOperacion: ultimaFecha(c),
+      fechaInclusion:  new Date(c.creadoEn).toLocaleDateString('es-ES'),
+      operador:        c.creadoPor?.nombre ?? '-',
+    }))
 
   return (
     <div className="almacen">

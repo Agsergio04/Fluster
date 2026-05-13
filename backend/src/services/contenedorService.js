@@ -83,6 +83,7 @@ async function listar(filtros = {}) {
 
   return Contenedor.find(query)
     .populate('navieraId', 'nombre codigo')
+    .populate('creadoPor', 'nombre')
     .sort({ creadoEn: -1 })
     .lean()
 }
