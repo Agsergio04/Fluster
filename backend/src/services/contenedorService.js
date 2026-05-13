@@ -59,7 +59,7 @@ function calcularCosteTramos(diasFacturables, tramos) {
  * @param {object} datos
  * @returns {Promise<object>}
  */
-async function crear({ codigoBIC, creadoPor }) {
+async function crear({ codigoBIC, foto, creadoPor }) {
   const prefijo = codigoBIC.substring(0, 3).toUpperCase()
   let naviera = await Naviera.findOne({ codigo: prefijo })
   if (!naviera) {
@@ -72,7 +72,7 @@ async function crear({ codigoBIC, creadoPor }) {
       diasDetention:        [],
     })
   }
-  return Contenedor.create({ codigoBIC, navieraId: naviera._id, creadoPor })
+  return Contenedor.create({ codigoBIC, foto: foto ?? null, navieraId: naviera._id, creadoPor })
 }
 
 /**

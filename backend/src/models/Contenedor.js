@@ -37,6 +37,10 @@ const contenedorSchema = new Schema(
       uppercase: true,
       trim: true,
     },
+    foto: {
+      type: String,
+      default: null,
+    },
     tipo: {
       type: String,
       trim: true,
