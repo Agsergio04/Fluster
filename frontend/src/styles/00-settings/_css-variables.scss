@@ -111,6 +111,9 @@
   --shadow-md: #{vars.$shadow-md};
   --shadow-lg: #{vars.$shadow-lg};
   --shadow-xl: #{vars.$shadow-xl};
+
+  // ── Overlay ───────────────────────────────────────────────────
+  --color-overlay: #{vars.$color-overlay};
 }
 
 

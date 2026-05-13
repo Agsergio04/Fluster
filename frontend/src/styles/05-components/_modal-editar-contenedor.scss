@@ -5,7 +5,7 @@
   display:         flex;
   align-items:     center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.45); // no hay variable de overlay en el proyecto
+  background-color: var(--color-overlay);
 
   &__panel {
     background-color: var(--color-surface);
