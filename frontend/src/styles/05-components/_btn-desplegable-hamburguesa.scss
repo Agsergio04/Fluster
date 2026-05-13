@@ -44,7 +44,8 @@
   }
 
   &--active {
-    cursor: default;
+    background-color: var(--color-primary-hover);
+    cursor:           default;
   }
 
   &:disabled {
