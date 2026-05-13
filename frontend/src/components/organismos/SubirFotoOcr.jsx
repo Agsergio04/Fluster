@@ -7,6 +7,14 @@ function SubirFotoOcr({
   foto,
   codigoBic = '',
   onCodigoBicCambio,
+  tipo = '',
+  onTipoCambio,
+  navieras = [],
+  navieraId = '',
+  onNavieraCambio,
+  fechaInicioLibre = '',
+  onFechaInicioLibreCambio,
+  cargandoOcr = false,
   onIntroducir,
   onCancelar,
 }) {
@@ -26,7 +34,43 @@ function SubirFotoOcr({
               type="text"
               value={codigoBic}
               onChange={onCodigoBicCambio}
-              placeholder="BLKU258036"
+              placeholder={cargandoOcr ? 'Detectando...' : 'BLKU258036'}
+              disabled={cargandoOcr}
+            />
+          </div>
+
+          <div className="subir-foto-ocr__campo-bic">
+            <p className="subir-foto-ocr__bic-label">Tipo</p>
+            <input
+              className="subir-foto-ocr__bic-input"
+              type="text"
+              value={tipo}
+              onChange={onTipoCambio}
+              placeholder="20DC, 40HC..."
+            />
+          </div>
+
+          <div className="subir-foto-ocr__campo-bic">
+            <p className="subir-foto-ocr__bic-label">Naviera</p>
+            <select
+              className="subir-foto-ocr__bic-input"
+              value={navieraId}
+              onChange={onNavieraCambio}
+            >
+              <option value="">Selecciona naviera</option>
+              {navieras.map(n => (
+                <option key={n._id} value={n._id}>{n.nombre}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="subir-foto-ocr__campo-bic">
+            <p className="subir-foto-ocr__bic-label">Fecha inicio libre</p>
+            <input
+              className="subir-foto-ocr__bic-input"
+              type="date"
+              value={fechaInicioLibre}
+              onChange={onFechaInicioLibreCambio}
             />
           </div>
 
@@ -35,6 +79,7 @@ function SubirFotoOcr({
               type="button"
               className="subir-foto-ocr__btn-introducir"
               onClick={onIntroducir}
+              disabled={cargandoOcr}
             >
               Introducir contenedor
             </button>
