@@ -30,7 +30,7 @@ function Contenedores() {
       id:             c._id,
       codigoBic:      c.codigoBIC,
       fechaInclusion: new Date(c.creadoEn).toLocaleDateString('es-ES'),
-      foto:           null,
+      foto:           c.foto ?? null,
     }))
 
   return (

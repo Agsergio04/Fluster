@@ -53,7 +53,7 @@ function MeterContenedor() {
 
     try {
       setCargando(true)
-      await crearContenedor({ codigoBIC: codigoBic.trim().toUpperCase() })
+      await crearContenedor({ codigoBIC: codigoBic.trim().toUpperCase(), foto })
       navigate('/contenedores')
     } catch (err) {
       console.error('Error al crear contenedor:', err.response?.data ?? err.message)
