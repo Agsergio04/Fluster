@@ -343,11 +343,37 @@ async function cancelarCiclo(id) {
   ).lean()
 }
 
+/**
+ * Elimina un contenedor y todos sus ciclos asociados.
+ * Solo se puede eliminar si está en estado INACTIVO; un contenedor activo
+ * tiene costes en curso que no deben perderse.
+ *
+ * @param {string} id
+ * @returns {Promise<void>}
+ */
+async function eliminar(id) {
+  const contenedor = await Contenedor.findById(id)
+  if (!contenedor) {
+    const err = new Error('Contenedor no encontrado')
+    err.status = 404
+    throw err
+  }
+  if (contenedor.estado !== 'INACTIVO') {
+    const err = new Error(`No se puede eliminar un contenedor en estado ${contenedor.estado}`)
+    err.status = 422
+    throw err
+  }
+
+  await Ciclo.deleteMany({ contenedorId: id })
+  await contenedor.deleteOne()
+}
+
 module.exports = {
   crear,
   listar,
   obtenerPorId,
   actualizar,
+  eliminar,
   registrarEntradaPuerto,
   registrarSalidaPuerto,
   registrarDevolucion,
