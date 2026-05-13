@@ -41,9 +41,9 @@ async function run() {
       const bic = await extraerCodigoBic(url)
       if (bic) {
         okCount++
-        const nombre = `contenedor_${bic}${ext}`
+        const nombre = `contenedor_leido_${okCount}${ext}`
         fs.copyFileSync(full, path.join(destino, nombre))
-        console.log(`✓  ${nombre}`)
+        console.log(`✓  ${nombre}  (${bic})`)
       } else {
         failCount++
         const nombre = `contenedor_fallo_${failCount}${ext}`
