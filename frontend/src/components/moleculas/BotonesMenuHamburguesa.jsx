@@ -8,19 +8,19 @@ import PanelControlIcon    from '../../assets/icons/Icono panel de control.svg?r
 
 const ITEMS = {
   gestor: [
-    { id: 'seguimiento',      label: 'Seguimiento',      icon: <GestorIcon /> },
-    { id: 'tarifas',          label: 'Tarifas',           icon: <TarifasIcon /> },
-    { id: 'almacen',          label: 'Almacen',           icon: <ContenedoresIcon /> },
-    { id: 'perfil',           label: 'Perfil',            icon: <PerfilIcon /> },
+    { id: 'seguimiento', label: 'Seguimiento',      icon: <GestorIcon />,           ruta: '/semaforo' },
+    { id: 'tarifas',     label: 'Tarifas',           icon: <TarifasIcon />,          ruta: '/tarifas' },
+    { id: 'almacen',     label: 'Almacen',           icon: <ContenedoresIcon />,     ruta: '/almacen' },
+    { id: 'perfil',      label: 'Perfil',            icon: <PerfilIcon />,           ruta: '/perfil' },
   ],
   operador: [
-    { id: 'meter-contenedor', label: 'Meter contenedor', icon: <ContenedoresFotoIcon /> },
-    { id: 'contenedores',     label: 'Contenedores',     icon: <ContenedoresIcon /> },
-    { id: 'perfil',           label: 'Perfil',           icon: <PerfilIcon /> },
+    { id: 'meter-contenedor', label: 'Meter contenedor', icon: <ContenedoresFotoIcon />, ruta: '/meter-contenedor' },
+    { id: 'contenedores',     label: 'Contenedores',     icon: <ContenedoresIcon />,     ruta: '/contenedores' },
+    { id: 'perfil',           label: 'Perfil',           icon: <PerfilIcon />,           ruta: '/perfil' },
   ],
   admin: [
-    { id: 'panel-control',   label: 'Panel de control', icon: <PanelControlIcon /> },
-    { id: 'perfil',          label: 'Perfil',           icon: <PerfilIcon /> },
+    { id: 'panel-de-control', label: 'Panel de control', icon: <PanelControlIcon />, ruta: '/panel-de-control' },
+    { id: 'perfil',           label: 'Perfil',           icon: <PerfilIcon />,       ruta: '/perfil' },
   ],
 }
 
@@ -28,13 +28,13 @@ function BotonesMenuHamburguesa({ rol = 'gestor', seccionActiva, onNavegar }) {
   const items = ITEMS[rol] ?? []
   return (
     <nav className="botones-menu-hamburguesa">
-      {items.map(({ id, label, icon }) => (
+      {items.map(({ id, label, icon, ruta }) => (
         <BotonDesplegableHamburguesa
           key={id}
           icon={icon}
           label={label}
           active={id === seccionActiva}
-          onClick={() => onNavegar?.(id)}
+          onClick={() => onNavegar?.(ruta)}
         />
       ))}
     </nav>
