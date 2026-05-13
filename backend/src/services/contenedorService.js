@@ -141,6 +141,15 @@ async function actualizar(id, cambios) {
   delete cambios.fechaSalidaPuerto
   delete cambios.fechaDevolucion
 
+  if (cambios.codigoBIC) {
+    const duplicado = await Contenedor.findOne({ codigoBIC: cambios.codigoBIC.toUpperCase(), _id: { $ne: id } })
+    if (duplicado) {
+      const err = new Error(`Ya existe un contenedor con el código BIC ${cambios.codigoBIC.toUpperCase()}`)
+      err.status = 409
+      throw err
+    }
+  }
+
   const actualizado = await Contenedor.findByIdAndUpdate(
     id,
     cambios,

@@ -95,6 +95,12 @@
     }
   }
 
+  &__error {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-error);
+  }
+
   &__botones {
     display:         flex;
     gap:             var(--space-16);

@@ -11,6 +11,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
       : ''
   )
   const [cargando, setCargando] = useState(false)
+  const [error,    setError]    = useState('')
 
   const handleFotoElegida = e => {
     const fichero = e.target.files?.[0]
@@ -22,6 +23,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
   }
 
   const handleActualizar = async () => {
+    setError('')
     setCargando(true)
     try {
       await onActualizar(item.id, {
@@ -29,6 +31,8 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
         foto,
         fechaInicioLibre: fechaInicioLibre ? new Date(fechaInicioLibre).toISOString() : undefined,
       })
+    } catch (err) {
+      setError(err.response?.data?.message ?? 'Error al actualizar el contenedor')
     } finally {
       setCargando(false)
     }
@@ -79,6 +83,8 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
             onChange={e => setFechaInicioLibre(e.target.value)}
           />
         </div>
+
+        {error && <p className="modal-editar-contenedor__error">{error}</p>}
 
         <div className="modal-editar-contenedor__botones">
           <button

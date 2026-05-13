@@ -37,13 +37,9 @@ function Contenedores() {
     }))
 
   const handleActualizar = async (id, datos) => {
-    try {
-      const actualizado = await actualizarContenedor(id, datos)
-      setContenedores(prev => prev.map(c => c._id === id ? { ...c, ...actualizado } : c))
-      setEditando(null)
-    } catch (err) {
-      console.error('Error al actualizar contenedor:', err.response?.data ?? err.message)
-    }
+    const actualizado = await actualizarContenedor(id, datos)
+    setContenedores(prev => prev.map(c => c._id === id ? { ...c, ...actualizado } : c))
+    setEditando(null)
   }
 
   return (
