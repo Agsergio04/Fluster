@@ -39,8 +39,8 @@ const contenedorSchema = new Schema(
     },
     tipo: {
       type: String,
-      required: true,
       trim: true,
+      default: null,
     },
     estado: {
       type: String,
@@ -54,7 +54,7 @@ const contenedorSchema = new Schema(
     },
     fechaInicioLibre: {
       type: Date,
-      required: true,
+      default: Date.now,
     },
     // Inicio del tramo CARGADO → activa demurrage
     fechaEntradaPuerto: {

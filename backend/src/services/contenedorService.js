@@ -59,8 +59,15 @@ function calcularCosteTramos(diasFacturables, tramos) {
  * @param {object} datos
  * @returns {Promise<object>}
  */
-async function crear({ codigoBIC, tipo, navieraId, fechaInicioLibre, creadoPor }) {
-  return Contenedor.create({ codigoBIC, tipo, navieraId, fechaInicioLibre, creadoPor })
+async function crear({ codigoBIC, creadoPor }) {
+  const prefijo = codigoBIC.substring(0, 3).toUpperCase()
+  const naviera = await Naviera.findOne({ codigo: prefijo })
+  if (!naviera) {
+    const err = new Error(`No se encontró una naviera con el código ${prefijo}`)
+    err.status = 404
+    throw err
+  }
+  return Contenedor.create({ codigoBIC, navieraId: naviera._id, creadoPor })
 }
 
 /**
