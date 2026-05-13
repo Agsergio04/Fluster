@@ -31,7 +31,9 @@ function PerfilCredenciales({
   const handleSeleccionarFoto = e => {
     const fichero = e.target.files?.[0]
     if (!fichero) return
-    onActualizarFoto(URL.createObjectURL(fichero))
+    const reader = new FileReader()
+    reader.onload = () => onActualizarFoto(reader.result)
+    reader.readAsDataURL(fichero)
     e.target.value = ''
   }
 

@@ -139,4 +139,17 @@ async function eliminar(id) {
   await usuario.deleteOne()
 }
 
-module.exports = { listar, obtenerPorId, actualizar, cambiarContrasena, eliminar }
+async function actualizarFoto(id, foto) {
+  const actualizado = await Usuario
+    .findByIdAndUpdate(id, { foto }, { new: true })
+    .select('-contrasena')
+    .lean()
+  if (!actualizado) {
+    const err = new Error('Usuario no encontrado')
+    err.status = 404
+    throw err
+  }
+  return actualizado
+}
+
+module.exports = { listar, obtenerPorId, actualizar, cambiarContrasena, eliminar, actualizarFoto }

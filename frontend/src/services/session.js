@@ -23,3 +23,9 @@ export function getUsuario() {
 export function isAuthenticated() {
   return !!getToken()
 }
+
+export function actualizarUsuario(cambios) {
+  const usuario = getUsuario()
+  if (!usuario) return
+  sessionStorage.setItem(USUARIO_KEY, JSON.stringify({ ...usuario, ...cambios }))
+}

@@ -15,5 +15,6 @@ router.delete('/:id', verificarRol('admin'), usuarioController.eliminar)
 
 // Cambio de contraseña — cualquier rol puede cambiar la suya propia (página perfil)
 router.patch('/:id/contrasena', usuarioController.cambiarContrasena)
+router.patch('/:id/foto',      usuarioController.actualizarFoto)
 
 module.exports = router

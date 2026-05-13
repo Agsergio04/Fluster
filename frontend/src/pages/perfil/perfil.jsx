@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './perfil.scss'
 import useTema from '../../hooks/useTema'
-import { getUsuario, limpiarSesion } from '../../services/session'
+import { getUsuario, limpiarSesion, actualizarUsuario } from '../../services/session'
+import { actualizarFoto } from '../../services/usuarioService'
 import Header from '../../components/organismos/Header'
 import PerfilCredenciales from '../../components/organismos/PerfilCredenciales'
 
@@ -11,7 +12,7 @@ function Perfil() {
   const usuario         = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [foto,          setFoto]          = useState(null)
+  const [foto,          setFoto]          = useState(usuario?.foto ?? null)
   const [nuevoNombre,   setNuevoNombre]   = useState('')
   const [contrasenia,   setContrasenia]   = useState('')
   const [confirmacion,  setConfirmacion]  = useState('')
@@ -62,7 +63,13 @@ function Perfil() {
           nombre={usuario?.nombre ?? ''}
           rol={usuario?.rol ?? ''}
           correo={usuario?.correo ?? ''}
-          onActualizarFoto={url => setFoto(url)}
+          onActualizarFoto={async fotoBase64 => {
+            try {
+              await actualizarFoto(usuario.id, fotoBase64)
+              setFoto(fotoBase64)
+              actualizarUsuario({ foto: fotoBase64 })
+            } catch {}
+          }}
           nuevoNombre={nuevoNombre}
           onNuevoNombreCambio={e => setNuevoNombre(e.target.value)}
           errorNombre={errorNombre}

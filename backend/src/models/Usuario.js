@@ -35,6 +35,10 @@ const usuarioSchema = new Schema(
       enum: ['admin', 'gestor', 'operador'],
       required: true,
     },
+    foto: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: { createdAt: 'creadoEn', updatedAt: false } }
 )

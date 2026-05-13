@@ -50,4 +50,16 @@ async function eliminar(req, res, next) {
   }
 }
 
-module.exports = { listar, obtener, actualizar, cambiarContrasena, eliminar }
+async function actualizarFoto(req, res, next) {
+  try {
+    if (req.usuario.id !== req.params.id) {
+      return res.status(403).json({ mensaje: 'Solo puedes actualizar tu propia foto' })
+    }
+    const actualizado = await usuarioService.actualizarFoto(req.params.id, req.body.foto)
+    res.json(actualizado)
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { listar, obtener, actualizar, cambiarContrasena, eliminar, actualizarFoto }
