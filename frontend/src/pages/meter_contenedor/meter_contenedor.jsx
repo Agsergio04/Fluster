@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './meter_contenedor.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import { extraerCodigoBic } from '../../services/ocrService'
 import { crearContenedor } from '../../services/contenedorService'
-import { listarNavieras } from '../../services/navieraService'
 import Header from '../../components/organismos/Header'
 import SubirFotoOcr from '../../components/organismos/SubirFotoOcr'
 
@@ -16,21 +15,11 @@ function MeterContenedor() {
 
   const inputFotoRef = useRef(null)
 
-  const [estado,           setEstado]           = useState('subiendo')
-  const [foto,             setFoto]             = useState(null)
-  const [codigoBic,        setCodigoBic]        = useState('')
-  const [tipo,             setTipo]             = useState('')
-  const [navieraId,        setNavieraId]        = useState('')
-  const [fechaInicioLibre, setFechaInicioLibre] = useState('')
-  const [navieras,         setNavieras]         = useState([])
-  const [cargandoOcr,      setCargandoOcr]      = useState(false)
-  const [cargando,         setCargando]         = useState(false)
-
-  useEffect(() => {
-    listarNavieras()
-      .then(setNavieras)
-      .catch(() => {})
-  }, [])
+  const [estado,      setEstado]      = useState('subiendo')
+  const [foto,        setFoto]        = useState(null)
+  const [codigoBic,   setCodigoBic]   = useState('')
+  const [cargandoOcr, setCargandoOcr] = useState(false)
+  const [cargando,    setCargando]    = useState(false)
 
   const handleSeleccionarFoto = () => inputFotoRef.current?.click()
 
@@ -60,16 +49,11 @@ function MeterContenedor() {
   }
 
   const handleIntroducir = async () => {
-    if (!codigoBic.trim() || !tipo.trim() || !navieraId || !fechaInicioLibre) return
+    if (!codigoBic.trim()) return
 
     try {
       setCargando(true)
-      await crearContenedor({
-        codigoBIC:       codigoBic.trim().toUpperCase(),
-        tipo:            tipo.trim(),
-        navieraId,
-        fechaInicioLibre,
-      })
+      await crearContenedor({ codigoBIC: codigoBic.trim().toUpperCase() })
       navigate('/contenedores')
     } catch (err) {
       console.error('Error al crear contenedor:', err.response?.data ?? err.message)
@@ -82,9 +66,6 @@ function MeterContenedor() {
     setEstado('subiendo')
     setFoto(null)
     setCodigoBic('')
-    setTipo('')
-    setNavieraId('')
-    setFechaInicioLibre('')
   }
 
   return (
@@ -118,14 +99,7 @@ function MeterContenedor() {
           foto={foto}
           codigoBic={codigoBic}
           onCodigoBicCambio={e => setCodigoBic(e.target.value)}
-          tipo={tipo}
-          onTipoCambio={e => setTipo(e.target.value)}
-          navieras={navieras}
-          navieraId={navieraId}
-          onNavieraCambio={e => setNavieraId(e.target.value)}
-          fechaInicioLibre={fechaInicioLibre}
-          onFechaInicioLibreCambio={e => setFechaInicioLibre(e.target.value)}
-          cargandoOcr={cargandoOcr}
+          cargandoOcr={cargandoOcr || cargando}
           onIntroducir={handleIntroducir}
           onCancelar={handleCancelar}
         />
