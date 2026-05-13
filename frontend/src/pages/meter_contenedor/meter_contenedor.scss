@@ -1,0 +1,40 @@
+.meter-contenedor {
+  display:          flex;
+  flex-direction:   column;
+  min-height:       100dvh;
+  background-color: var(--color-primary-off);
+
+  &__intro {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+    padding:        var(--space-48) var(--space-24) var(--space-32);
+  }
+
+  &__titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-64);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    text-align:  center;
+  }
+
+  &__subtitulo {
+    font-family: var(--font-body);
+    font-size:   var(--text-32);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-normal);
+    color:       var(--color-box-text);
+  }
+
+  &__contenido {
+    display:        flex;
+    flex-direction: column;
+    padding:        0 var(--space-24) var(--space-64);
+
+    .subir-foto-ocr {
+      min-height: 37.5rem;
+    }
+  }
+}
