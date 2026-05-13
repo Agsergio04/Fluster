@@ -4,6 +4,8 @@ import './almacen.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import { listarContenedores } from '../../services/contenedorService'
+import { obtenerDatosInforme, registrarInforme } from '../../services/informeService'
+import { generarPDFGeneral } from '../../services/pdfService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
@@ -77,7 +79,7 @@ function Almacen() {
           onBusquedaCambio={e => setBusqueda(e.target.value)}
           onBuscar={() => {}}
           items={items}
-          onVerRegistro={item => navigate(`/almacen/historial/${item.codigoBic}`)}
+          onVerRegistro={item => navigate(`/almacen/historial/${item.id}`)}
           onBorrar={() => {}}
         />
       </div>
@@ -102,7 +104,21 @@ function Almacen() {
           ordenAscendente={ordenAscendente}   onOrdenAscendente={() => setOrdenAscendente(v => !v)}
           ordenDescendente={ordenDescendente} onOrdenDescendente={() => setOrdenDescendente(v => !v)}
           ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
-          onGenerarInforme={() => {}}
+          onGenerarInforme={async () => {
+            const ciclos = await obtenerDatosInforme({
+              fechaDesde, fechaHasta, fechaEspecifica,
+              naviera, cliente, codigoBic,
+              ordenAscendente:  String(ordenAscendente),
+              ordenDescendente: String(ordenDescendente),
+              ordenAlfabetico:  String(ordenAlfabetico),
+            })
+            const ok = generarPDFGeneral(ciclos)
+            if (ok) {
+              await Promise.all(
+                ciclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
+              )
+            }
+          }}
         />
       </div>
     </div>
