@@ -3,17 +3,19 @@ import { useNavigate } from 'react-router-dom'
 import './contenedores.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
-import { listarContenedores } from '../../services/contenedorService'
+import { listarContenedores, actualizarContenedor } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
+import ModalEditarContenedor from '../../components/moleculas/ModalEditarContenedor'
 
 function Contenedores() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [busqueda,    setBusqueda]    = useState('')
+  const [busqueda,     setBusqueda]     = useState('')
   const [contenedores, setContenedores] = useState([])
+  const [editando,     setEditando]     = useState(null)
 
   useEffect(() => {
     listarContenedores()
@@ -27,11 +29,22 @@ function Contenedores() {
       c.codigoBIC.toLowerCase().includes(busqueda.trim().toLowerCase())
     )
     .map(c => ({
-      id:             c._id,
-      codigoBic:      c.codigoBIC,
-      fechaInclusion: new Date(c.creadoEn).toLocaleDateString('es-ES'),
-      foto:           c.foto ?? null,
+      id:               c._id,
+      codigoBic:        c.codigoBIC,
+      fechaInclusion:   new Date(c.fechaInicioLibre).toLocaleDateString('es-ES'),
+      fechaInicioLibre: c.fechaInicioLibre,
+      foto:             c.foto ?? null,
     }))
+
+  const handleActualizar = async (id, datos) => {
+    try {
+      const actualizado = await actualizarContenedor(id, datos)
+      setContenedores(prev => prev.map(c => c._id === id ? { ...c, ...actualizado } : c))
+      setEditando(null)
+    } catch (err) {
+      console.error('Error al actualizar contenedor:', err.response?.data ?? err.message)
+    }
+  }
 
   return (
     <div className="contenedores">
@@ -57,10 +70,18 @@ function Contenedores() {
           onBusquedaCambio={e => setBusqueda(e.target.value)}
           onBuscar={() => {}}
           items={items}
-          onEditar={item => {}}
+          onEditar={item => setEditando(item)}
           onEliminar={item => {}}
         />
       </div>
+
+      {editando && (
+        <ModalEditarContenedor
+          item={editando}
+          onActualizar={handleActualizar}
+          onCancelar={() => setEditando(null)}
+        />
+      )}
     </div>
   )
 }
