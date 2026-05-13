@@ -1,0 +1,93 @@
+import { useState, useRef } from 'react'
+
+function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
+  const inputFotoRef = useRef(null)
+
+  const [foto,             setFoto]             = useState(item.foto ?? null)
+  const [fechaInicioLibre, setFechaInicioLibre] = useState(
+    item.fechaInicioLibre
+      ? new Date(item.fechaInicioLibre).toISOString().split('T')[0]
+      : ''
+  )
+  const [cargando, setCargando] = useState(false)
+
+  const handleFotoElegida = e => {
+    const fichero = e.target.files?.[0]
+    if (!fichero) return
+    e.target.value = ''
+    const reader = new FileReader()
+    reader.onload = () => setFoto(reader.result)
+    reader.readAsDataURL(fichero)
+  }
+
+  const handleActualizar = async () => {
+    setCargando(true)
+    try {
+      await onActualizar(item.id, {
+        foto,
+        fechaInicioLibre: fechaInicioLibre ? new Date(fechaInicioLibre).toISOString() : undefined,
+      })
+    } finally {
+      setCargando(false)
+    }
+  }
+
+  return (
+    <div className="modal-editar-contenedor" onClick={onCancelar}>
+      <div className="modal-editar-contenedor__panel" onClick={e => e.stopPropagation()}>
+
+        <div className="modal-editar-contenedor__foto-wrapper">
+          {foto
+            ? <img className="modal-editar-contenedor__foto" src={foto} alt="Foto del contenedor" />
+            : <div className="modal-editar-contenedor__foto-placeholder">Sin foto</div>
+          }
+          <input
+            ref={inputFotoRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleFotoElegida}
+          />
+          <button
+            type="button"
+            className="modal-editar-contenedor__btn-foto"
+            onClick={() => inputFotoRef.current?.click()}
+          >
+            Cambiar foto
+          </button>
+        </div>
+
+        <div className="modal-editar-contenedor__campo">
+          <label className="modal-editar-contenedor__label">Fecha de Inclusion</label>
+          <input
+            type="date"
+            className="modal-editar-contenedor__fecha-input"
+            value={fechaInicioLibre}
+            onChange={e => setFechaInicioLibre(e.target.value)}
+          />
+        </div>
+
+        <div className="modal-editar-contenedor__botones">
+          <button
+            type="button"
+            className="modal-editar-contenedor__btn-actualizar"
+            onClick={handleActualizar}
+            disabled={cargando}
+          >
+            {cargando ? 'Actualizando...' : 'Actualizar'}
+          </button>
+          <button
+            type="button"
+            className="modal-editar-contenedor__btn-cancelar"
+            onClick={onCancelar}
+          >
+            Cancelar
+          </button>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
+export default ModalEditarContenedor
