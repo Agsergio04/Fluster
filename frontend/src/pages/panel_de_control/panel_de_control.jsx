@@ -38,6 +38,10 @@ function PanelDeControl() {
     }))
 
   const handleCambiarRol = async (item, nuevoRol) => {
+    if (item.id === usuario?.id) {
+      setAviso('No puedes cambiar tu propio rol')
+      return
+    }
     try {
       const actualizado = await actualizarRol(item.id, nuevoRol)
       setUsuarios(prev => prev.map(u => u._id === item.id ? { ...u, rol: actualizado.rol } : u))
