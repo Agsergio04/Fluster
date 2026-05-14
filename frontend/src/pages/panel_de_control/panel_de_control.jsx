@@ -14,6 +14,7 @@ function PanelDeControl() {
 
   const [busqueda, setBusqueda] = useState('')
   const [usuarios, setUsuarios] = useState([])
+  const [aviso,    setAviso]    = useState('')
 
   useEffect(() => {
     listarUsuarios()
@@ -36,13 +37,23 @@ function PanelDeControl() {
     }))
 
   const handleCambiarRol = async (item, nuevoRol) => {
-    const actualizado = await actualizarRol(item.id, nuevoRol)
-    setUsuarios(prev => prev.map(u => u._id === item.id ? { ...u, rol: actualizado.rol } : u))
+    try {
+      const actualizado = await actualizarRol(item.id, nuevoRol)
+      setUsuarios(prev => prev.map(u => u._id === item.id ? { ...u, rol: actualizado.rol } : u))
+      setAviso('')
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo cambiar el rol')
+    }
   }
 
   const handleEliminar = async (item) => {
-    await eliminarUsuario(item.id)
-    setUsuarios(prev => prev.filter(u => u._id !== item.id))
+    try {
+      await eliminarUsuario(item.id)
+      setUsuarios(prev => prev.filter(u => u._id !== item.id))
+      setAviso('')
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el usuario')
+    }
   }
 
   return (
@@ -63,6 +74,9 @@ function PanelDeControl() {
       </section>
 
       <div className="panel-de-control__contenido">
+        {aviso && (
+          <p className="panel-de-control__aviso">{aviso}</p>
+        )}
         <ConjuntoCards
           variante="usuarios"
           itemsPorPagina={9}
