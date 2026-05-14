@@ -36,4 +36,17 @@
     align-items:    center;
     padding:        0 var(--space-24) var(--space-64);
   }
+
+  &__estado {
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    padding:     var(--space-48);
+
+    &--error {
+      color: var(--color-error);
+    }
+  }
 }

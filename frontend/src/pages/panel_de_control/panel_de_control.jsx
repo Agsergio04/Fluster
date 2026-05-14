@@ -12,13 +12,17 @@ function PanelDeControl() {
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [busqueda, setBusqueda] = useState('')
-  const [usuarios, setUsuarios] = useState([])
+  const [busqueda,  setBusqueda]  = useState('')
+  const [usuarios,  setUsuarios]  = useState([])
+  const [cargando,  setCargando]  = useState(true)
+  const [error,     setError]     = useState('')
 
   useEffect(() => {
+    setCargando(true)
     listarUsuarios()
-      .then(data => setUsuarios(data))
-      .catch(() => {})
+      .then(data => { setUsuarios(data); setError('') })
+      .catch(() => setError('No se pudieron cargar los usuarios. Comprueba que el servidor está activo.'))
+      .finally(() => setCargando(false))
   }, [])
 
   const items = usuarios
@@ -71,16 +75,24 @@ function PanelDeControl() {
       </section>
 
       <div className="panel-de-control__contenido">
-        <ConjuntoCards
-          variante="usuarios"
-          itemsPorPagina={6}
-          busqueda={busqueda}
-          onBusquedaCambio={e => setBusqueda(e.target.value)}
-          onBuscar={() => {}}
-          items={items}
-          onCambiarRol={handleCambiarRol}
-          onEliminar={handleEliminar}
-        />
+        {cargando && (
+          <p className="panel-de-control__estado">Cargando usuarios...</p>
+        )}
+        {!cargando && error && (
+          <p className="panel-de-control__estado panel-de-control__estado--error">{error}</p>
+        )}
+        {!cargando && !error && (
+          <ConjuntoCards
+            variante="usuarios"
+            itemsPorPagina={6}
+            busqueda={busqueda}
+            onBusquedaCambio={e => setBusqueda(e.target.value)}
+            onBuscar={() => {}}
+            items={items}
+            onCambiarRol={handleCambiarRol}
+            onEliminar={handleEliminar}
+          />
+        )}
       </div>
     </div>
   )
