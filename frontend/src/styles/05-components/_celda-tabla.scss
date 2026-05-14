@@ -6,7 +6,8 @@
   border:          2px solid var(--color-box-text);
   flex-shrink:     0;
 
-  &__texto {
+  &__texto,
+  &__input {
     flex:        1 0 0;
     font-family: var(--font-heading);
     font-size:   var(--text-24);
@@ -18,21 +19,14 @@
   }
 
   &__input {
-    flex:        1 0 0;
-    width:       100%;
-    font-family: var(--font-heading);
-    font-size:   var(--text-24);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    color:       var(--color-box-text);
-    text-align:  center;
-    min-width:   0;
-    background:  transparent;
-    border:      none;
-    outline:     none;
+    padding:    0;
+    background: transparent;
+    border:     none;
+    outline:    none;
   }
 
-  &--body &__texto {
+  &--body &__texto,
+  &--body &__input {
     font-family: var(--font-body);
     font-size:   var(--text-16);
     white-space: nowrap;
