@@ -20,7 +20,10 @@
     background-color: var(--color-secondary-hover);
   }
 
-  &--off,
+  &--off {
+    background-color: var(--color-secondary-off);
+  }
+
   &:disabled {
     background-color: var(--color-secondary-off);
     cursor:           not-allowed;
