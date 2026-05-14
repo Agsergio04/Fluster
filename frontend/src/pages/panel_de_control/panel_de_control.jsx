@@ -6,6 +6,7 @@ import { getUsuario } from '../../services/session'
 import { listarUsuarios, actualizarRol, eliminarUsuario } from '../../services/usuarioService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
+import Notificacion from '../../components/atomos/Notificacion'
 
 function PanelDeControl() {
   const navigate = useNavigate()
@@ -74,9 +75,6 @@ function PanelDeControl() {
       </section>
 
       <div className="panel-de-control__contenido">
-        {aviso && (
-          <p className="panel-de-control__aviso">{aviso}</p>
-        )}
         <ConjuntoCards
           variante="usuarios"
           itemsPorPagina={9}
@@ -88,6 +86,8 @@ function PanelDeControl() {
           onEliminar={handleEliminar}
         />
       </div>
+
+      <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </div>
   )
 }
