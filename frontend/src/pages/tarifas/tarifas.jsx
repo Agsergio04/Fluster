@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import './tarifas.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
-import { listarNavieras } from '../../services/navieraService'
+import { listarNavieras, actualizarNaviera, eliminarNaviera } from '../../services/navieraService'
 import Header from '../../components/organismos/Header'
 import TablaTarifas from '../../components/organismos/TablaTarifas'
 
 const navieraAFila = n => ({
+  _id: n._id,
   naviera: n.nombre,
   valores: [
     n.diasLibresDetention            ?? 0,
@@ -21,18 +22,56 @@ const navieraAFila = n => ({
   ],
 })
 
+const valoresANaviera = (navieraOriginal, valores) => {
+  const det0Hasta = Number(valores[2])
+  const dem0Hasta = Number(valores[3])
+  return {
+    diasLibresDetention: Number(valores[0]),
+    diasLibresDemurrage: Number(valores[1]),
+    diasDetention: navieraOriginal.diasDetention.map((t, i) => {
+      if (i === 0) return { ...t, hastaDia: det0Hasta, precioPorDia: Number(valores[4]) }
+      if (i === 1) return { ...t, desdeDia: det0Hasta + 1, precioPorDia: Number(valores[6]) }
+      return t
+    }),
+    diasDemurrage: navieraOriginal.diasDemurrage.map((t, i) => {
+      if (i === 0) return { ...t, hastaDia: dem0Hasta, precioPorDia: Number(valores[5]) }
+      if (i === 1) return { ...t, desdeDia: dem0Hasta + 1, precioPorDia: Number(valores[7]) }
+      return t
+    }),
+  }
+}
+
 function Tarifas() {
-  const navigate        = useNavigate()
-  const usuario         = getUsuario()
+  const navigate           = useNavigate()
+  const usuario            = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [filas, setFilas] = useState([])
+  const [navieras, setNavieras] = useState([])
 
   useEffect(() => {
     listarNavieras()
-      .then(data => setFilas(data.map(navieraAFila)))
+      .then(data => setNavieras(data))
       .catch(() => {})
   }, [])
+
+  const handleActualizar = async (id, valoresNuevos) => {
+    const navieraOriginal = navieras.find(n => n._id === id)
+    if (!navieraOriginal) return
+    const cambios = valoresANaviera(navieraOriginal, valoresNuevos)
+    const actualizada = await actualizarNaviera(id, cambios)
+    setNavieras(prev => prev.map(n => n._id === id ? actualizada : n))
+  }
+
+  const handleEliminar = async (id) => {
+    await eliminarNaviera(id)
+    setNavieras(prev => prev.filter(n => n._id !== id))
+  }
+
+  const filas = navieras.map(n => ({
+    ...navieraAFila(n),
+    onActualizar: valoresNuevos => handleActualizar(n._id, valoresNuevos),
+    onEliminar:   ()            => handleEliminar(n._id),
+  }))
 
   return (
     <div className="tarifas">
