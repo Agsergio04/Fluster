@@ -12,17 +12,13 @@ function PanelDeControl() {
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [busqueda,  setBusqueda]  = useState('')
-  const [usuarios,  setUsuarios]  = useState([])
-  const [cargando,  setCargando]  = useState(true)
-  const [error,     setError]     = useState('')
+  const [busqueda, setBusqueda] = useState('')
+  const [usuarios, setUsuarios] = useState([])
 
   useEffect(() => {
-    setCargando(true)
     listarUsuarios()
-      .then(data => { setUsuarios(data); setError('') })
-      .catch(() => setError('No se pudieron cargar los usuarios. Comprueba que el servidor está activo.'))
-      .finally(() => setCargando(false))
+      .then(data => setUsuarios(data))
+      .catch(() => {})
   }, [])
 
   const items = usuarios
@@ -33,28 +29,20 @@ function PanelDeControl() {
     )
     .map(u => ({
       id:     u._id,
-      foto:   u.foto ?? null,
+      foto:   u.foto   ?? null,
       nombre: u.nombre,
       correo: u.correo,
       rol:    u.rol,
     }))
 
   const handleCambiarRol = async (item, nuevoRol) => {
-    try {
-      await actualizarRol(item.id, nuevoRol)
-      setUsuarios(prev => prev.map(u => u._id === item.id ? { ...u, rol: nuevoRol } : u))
-    } catch (err) {
-      console.error('Error al cambiar rol:', err.response?.data ?? err.message)
-    }
+    const actualizado = await actualizarRol(item.id, nuevoRol)
+    setUsuarios(prev => prev.map(u => u._id === item.id ? { ...u, rol: actualizado.rol } : u))
   }
 
   const handleEliminar = async (item) => {
-    try {
-      await eliminarUsuario(item.id)
-      setUsuarios(prev => prev.filter(u => u._id !== item.id))
-    } catch (err) {
-      console.error('Error al eliminar usuario:', err.response?.data ?? err.message)
-    }
+    await eliminarUsuario(item.id)
+    setUsuarios(prev => prev.filter(u => u._id !== item.id))
   }
 
   return (
@@ -75,24 +63,16 @@ function PanelDeControl() {
       </section>
 
       <div className="panel-de-control__contenido">
-        {cargando && (
-          <p className="panel-de-control__estado">Cargando usuarios...</p>
-        )}
-        {!cargando && error && (
-          <p className="panel-de-control__estado panel-de-control__estado--error">{error}</p>
-        )}
-        {!cargando && !error && (
-          <ConjuntoCards
-            variante="usuarios"
-            itemsPorPagina={6}
-            busqueda={busqueda}
-            onBusquedaCambio={e => setBusqueda(e.target.value)}
-            onBuscar={() => {}}
-            items={items}
-            onCambiarRol={handleCambiarRol}
-            onEliminar={handleEliminar}
-          />
-        )}
+        <ConjuntoCards
+          variante="usuarios"
+          itemsPorPagina={6}
+          busqueda={busqueda}
+          onBusquedaCambio={e => setBusqueda(e.target.value)}
+          onBuscar={() => {}}
+          items={items}
+          onCambiarRol={handleCambiarRol}
+          onEliminar={handleEliminar}
+        />
       </div>
     </div>
   )
