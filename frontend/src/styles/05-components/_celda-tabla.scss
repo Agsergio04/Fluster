@@ -25,6 +25,8 @@
     background:         transparent;
     border:             none;
     outline:            none;
+
+    &[readonly] { cursor: default; }
   }
 
   &--body &__texto,
