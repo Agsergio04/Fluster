@@ -39,8 +39,7 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', onCambiarRol, onE
               <BotonRolesCardUsuario
                 key={r}
                 rol={r}
-                active={r !== rol}
-                disabled={r === rol}
+                seleccionado={r === rol}
                 onClick={() => onCambiarRol?.(r)}
               />
             ))}

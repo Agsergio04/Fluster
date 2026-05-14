@@ -4,10 +4,11 @@ const LABELS = {
   operador: 'Operador',
 }
 
-function BotonRolesCardUsuario({ rol = 'operador', active = true, disabled = false, onClick }) {
+function BotonRolesCardUsuario({ rol = 'operador', active = true, seleccionado = false, disabled = false, onClick }) {
+  const modificador = seleccionado ? '--seleccionado' : !active ? '--off' : ''
   return (
     <button
-      className={`btn-roles-card-usuario${!active ? ' btn-roles-card-usuario--off' : ''}`}
+      className={`btn-roles-card-usuario${modificador ? ` btn-roles-card-usuario${modificador}` : ''}`}
       type="button"
       disabled={disabled}
       onClick={onClick}
