@@ -65,7 +65,7 @@ function PanelDeControl() {
       <div className="panel-de-control__contenido">
         <ConjuntoCards
           variante="usuarios"
-          itemsPorPagina={6}
+          itemsPorPagina={9}
           busqueda={busqueda}
           onBusquedaCambio={e => setBusqueda(e.target.value)}
           onBuscar={() => {}}
