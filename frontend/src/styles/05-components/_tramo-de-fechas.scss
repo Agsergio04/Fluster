@@ -12,8 +12,8 @@
   &__titulo {
     flex:        1;
     font-family: var(--font-body);
-    font-size:   var(--text-16);
-    font-weight: var(--font-weight-regular);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-semibold);
     color:       var(--color-box-text);
   }
 
@@ -45,14 +45,14 @@
 
     span {
       font-family: var(--font-body);
-      font-size:   var(--text-16);
+      font-size:   var(--text-24);
       color:       var(--color-box-text);
     }
   }
 
   &__valor {
     font-family: var(--font-body);
-    font-size:   var(--text-16);
+    font-size:   var(--text-24);
     color:       var(--color-box-text);
   }
 }

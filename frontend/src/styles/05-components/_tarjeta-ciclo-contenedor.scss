@@ -1,10 +1,8 @@
 .tarjeta-ciclo-contenedor {
-  display:          flex;
-  flex-direction:   column;
-  gap:              var(--space-16);
-  padding:          var(--space-16);
-  background-color: var(--color-card-contenedor);
-  border-radius:    var(--radius);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-16);
+  padding:        var(--space-16);
 
   &__cabecera {
     display:     flex;
@@ -13,7 +11,7 @@
 
   &__cliente {
     font-family: var(--font-body);
-    font-size:   var(--text-16);
+    font-size:   var(--text-24);
     font-weight: var(--font-weight-semibold);
     color:       var(--color-box-text);
   }
@@ -21,7 +19,7 @@
   &__seccion {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-8);
+    gap:            var(--space-16);
   }
 
   &__coste-linea {
@@ -30,7 +28,7 @@
     align-items:     center;
     padding:         0 var(--space-8);
     font-family:     var(--font-body);
-    font-size:       var(--text-16);
+    font-size:       var(--text-24);
     color:           var(--color-box-text);
   }
 
@@ -44,9 +42,9 @@
     display:         flex;
     justify-content: space-between;
     align-items:     center;
-    padding:         0 var(--space-8);
+    padding:         var(--space-8);
     font-family:     var(--font-body);
-    font-size:       var(--text-16);
+    font-size:       var(--text-24);
     font-weight:     var(--font-weight-semibold);
     color:           var(--color-box-text);
   }

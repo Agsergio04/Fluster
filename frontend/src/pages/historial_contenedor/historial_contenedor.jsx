@@ -86,7 +86,7 @@ function HistorialContenedor() {
         <div className="historial-contenedor__historial">
           <HistorialCiclosContenedor
             ciclos={ciclos}
-            ciclosPorPagina={1}
+            ciclosPorPagina={2}
             onCancelar={() => navigate(-1)}
             onEditarDemurrage={(ciclo) => abrirModal(ciclo.cicloId, 'Demurrage', { fechaInicio: ciclo.demurrage?.fechaInicio, fechaFin: ciclo.demurrage?.fechaFin })}
             onEditarDetention={(ciclo) => abrirModal(ciclo.cicloId, 'Detention', { fechaInicio: ciclo.detention?.fechaInicio, fechaFin: ciclo.detention?.fechaFin })}
