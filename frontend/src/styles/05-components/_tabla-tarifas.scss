@@ -23,69 +23,33 @@
   .tabla-tarifas-wrapper--movil   { display: flex; flex-direction: column; gap: var(--space-32); width: 100%; }
 }
 
+// ── Variante de celda para el título de cada grupo ───────────────────
+.celda-tabla--grupo-titulo {
+  width:            25rem; // naviera(10) + sm(7.5) + sm(7.5)
+  background-color: rgba(0 0 0 / 0.15);
+}
+
 // ── Grupos por naviera en móvil ──────────────────────────────────────
 .grupo-naviera-movil {
   display:          flex;
   flex-direction:   column;
-  gap:              var(--space-16);
   background-color: var(--color-card-almacen);
   border-radius:    var(--radius);
-  padding:          var(--space-16);
+  padding:          var(--space-8) 0.25rem;
 
   &__bloque {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-8);
   }
 
-  &__titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--text-24);
-    font-weight: var(--font-weight-semibold);
-    color:       var(--color-box-text);
-    text-align:  center;
-  }
-
-  &__tabla {
-    width:           100%;
-    border-collapse: collapse;
-    font-family:     var(--font-body);
-    font-size:       var(--text-16);
-    color:           var(--color-box-text);
-
-    th, td {
-      padding:    var(--space-8);
-      border:     1px solid rgba(255 255 255 / 0.3);
-      text-align: center;
-    }
-
-    th {
-      font-family:      var(--font-heading);
-      font-size:        var(--text-16);
-      font-weight:      var(--font-weight-semibold);
-      background-color: rgba(0 0 0 / 0.15);
-    }
-
-    tr:nth-child(even) td {
-      background-color: rgba(0 0 0 / 0.08);
-    }
-  }
-
-  &__input {
-    width:       100%;
-    background:  transparent;
-    border:      none;
-    outline:     none;
-    font-family: var(--font-body);
-    font-size:   var(--text-16);
-    color:       var(--color-box-text);
-    text-align:  center;
+  &__fila {
+    display: flex;
   }
 
   &__botones {
     display:         flex;
     justify-content: center;
     gap:             var(--space-16);
-    padding-top:     var(--space-8);
+    padding:         var(--space-16) var(--space-8) var(--space-8);
   }
 }

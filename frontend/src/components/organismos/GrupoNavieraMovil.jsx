@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import CeldaTabla from '../atomos/CeldaTabla'
 import BotonAccionTarifa from '../atomos/BotonAccionTarifa'
 
 const GRUPOS = [
@@ -18,35 +19,21 @@ function GrupoNavieraMovil({ naviera, valores = [], onActualizar, onEliminar }) 
     <div className="grupo-naviera-movil">
       {GRUPOS.map(grupo => (
         <div key={grupo.titulo} className="grupo-naviera-movil__bloque">
-          <p className="grupo-naviera-movil__titulo">{grupo.titulo}</p>
-          <table className="grupo-naviera-movil__tabla">
-            <thead>
-              <tr>
-                <th>Naviera</th>
-                <th>Det.</th>
-                <th>Dem.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{naviera}</td>
-                <td>
-                  <input
-                    className="grupo-naviera-movil__input"
-                    value={vals[grupo.det]}
-                    onChange={e => handleChange(grupo.det, e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    className="grupo-naviera-movil__input"
-                    value={vals[grupo.dem]}
-                    onChange={e => handleChange(grupo.dem, e.target.value)}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="grupo-naviera-movil__fila">
+            <div className="celda-tabla celda-tabla--grupo-titulo">
+              <span className="celda-tabla__texto">{grupo.titulo}</span>
+            </div>
+          </div>
+          <div className="grupo-naviera-movil__fila">
+            <CeldaTabla label="Naviera"     tamanio="naviera" fuente="body" />
+            <CeldaTabla label="Detención"   tamanio="sm"      fuente="body" />
+            <CeldaTabla label="Sobrestadía" tamanio="sm"      fuente="body" />
+          </div>
+          <div className="grupo-naviera-movil__fila">
+            <CeldaTabla label={naviera}                  tamanio="naviera" readonly />
+            <CeldaTabla label={String(vals[grupo.det])}  tamanio="sm"      editable onChange={v => handleChange(grupo.det, v)} />
+            <CeldaTabla label={String(vals[grupo.dem])}  tamanio="sm"      editable onChange={v => handleChange(grupo.dem, v)} />
+          </div>
         </div>
       ))}
 
