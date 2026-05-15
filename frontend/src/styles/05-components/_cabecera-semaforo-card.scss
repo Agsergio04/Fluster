@@ -6,4 +6,9 @@
   padding:          var(--space-8);
   border-radius:    var(--radius) var(--radius) 0 0;
   background-color: var(--color-secondary);
+
+  @media (max-width: 1023px) {
+    gap:             var(--space-16);
+    justify-content: space-between;
+  }
 }
