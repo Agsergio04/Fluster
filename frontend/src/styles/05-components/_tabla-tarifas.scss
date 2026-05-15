@@ -64,6 +64,7 @@
   // Celdas de datos: proporcional al reparto original (10:7.5:7.5 → 4:3:3)
   .celda-tabla {
     flex-shrink: 1;
+    min-width:   0; // permite que el flex-item encoja por debajo de su contenido
 
     &--naviera { flex: 4 1 0; width: auto; }
     &--sm      { flex: 3 1 0; width: auto; }
@@ -72,6 +73,7 @@
     &__input {
       flex-shrink: 1;
       min-width:   0;
+      width:       100%;
     }
   }
 
