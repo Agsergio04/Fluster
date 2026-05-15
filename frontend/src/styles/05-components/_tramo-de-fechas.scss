@@ -1,3 +1,5 @@
+$tramo-etiqueta-ancho: 11rem;
+
 .tramo-de-fechas {
   display:        flex;
   flex-direction: column;
@@ -33,8 +35,9 @@
   &__etiqueta {
     display:     flex;
     align-items: center;
-    gap:         var(--space-16);
-    flex:        0 0 10rem;
+    gap:         var(--space-8);
+    flex:        0 0 $tramo-etiqueta-ancho;
+    white-space: nowrap;
 
     svg {
       width:       1.5rem;
@@ -51,8 +54,10 @@
   }
 
   &__valor {
+    flex:        1;
     font-family: var(--font-body);
     font-size:   var(--text-24);
     color:       var(--color-box-text);
+    text-align:  right;
   }
 }
