@@ -5,7 +5,7 @@ const verificarRol = require('../middlewares/rolMiddleware')
 
 const router = Router()
 
-router.use(authMiddleware, verificarRol('gestor'))
+router.use(authMiddleware, verificarRol('gestor', 'admin'))
 
 router.get('/contenedor/:contenedorId', informeController.listarPorContenedor)
 router.get('/generar-datos',            informeController.generarDatos)

@@ -103,19 +103,23 @@ function HistorialContenedor() {
             orden={orden}                       onOrden={setOrden}
             ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
             onGenerarInforme={async () => {
-              const datosCiclos = await obtenerDatosInforme({
-                contenedorId: id,
-                fechaDesde, fechaHasta, fechaEspecifica,
-                naviera, cliente,
-                ordenAscendente:  String(orden === 'ascendente'),
-                ordenDescendente: String(orden === 'descendente'),
-                ordenAlfabetico:  String(ordenAlfabetico),
-              })
-              const ok = generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)
-              if (ok) {
-                await Promise.all(
-                  datosCiclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
-                )
+              try {
+                const datosCiclos = await obtenerDatosInforme({
+                  contenedorId: id,
+                  fechaDesde, fechaHasta, fechaEspecifica,
+                  naviera, cliente,
+                  ordenAscendente:  String(orden === 'ascendente'),
+                  ordenDescendente: String(orden === 'descendente'),
+                  ordenAlfabetico:  String(ordenAlfabetico),
+                })
+                const ok = generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)
+                if (ok) {
+                  await Promise.all(
+                    datosCiclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
+                  )
+                }
+              } catch (err) {
+                console.error('Error al generar informe:', err)
               }
             }}
           />

@@ -113,18 +113,22 @@ function Almacen() {
           orden={orden}                       onOrden={setOrden}
           ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
           onGenerarInforme={async () => {
-            const ciclos = await obtenerDatosInforme({
-              fechaDesde, fechaHasta, fechaEspecifica,
-              naviera, cliente, codigoBic,
-              ordenAscendente:  String(orden === 'ascendente'),
-              ordenDescendente: String(orden === 'descendente'),
-              ordenAlfabetico:  String(ordenAlfabetico),
-            })
-            const ok = generarPDFGeneral(ciclos)
-            if (ok) {
-              await Promise.all(
-                ciclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
-              )
+            try {
+              const ciclos = await obtenerDatosInforme({
+                fechaDesde, fechaHasta, fechaEspecifica,
+                naviera, cliente, codigoBic,
+                ordenAscendente:  String(orden === 'ascendente'),
+                ordenDescendente: String(orden === 'descendente'),
+                ordenAlfabetico:  String(ordenAlfabetico),
+              })
+              const ok = generarPDFGeneral(ciclos)
+              if (ok) {
+                await Promise.all(
+                  ciclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
+                )
+              }
+            } catch (err) {
+              console.error('Error al generar informe:', err)
             }
           }}
         />
