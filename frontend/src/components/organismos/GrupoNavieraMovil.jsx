@@ -3,10 +3,10 @@ import CeldaTabla from '../atomos/CeldaTabla'
 import BotonAccionTarifa from '../atomos/BotonAccionTarifa'
 
 const GRUPOS = [
-  { titulo: 'Duración Free Time',  det: 0, dem: 1 },
-  { titulo: 'Límite Primer Tramo', det: 2, dem: 3 },
-  { titulo: 'Primer Tramo',        det: 4, dem: 5 },
-  { titulo: 'Segundo Tramo',       det: 6, dem: 7 },
+  { grupo: 'Tiempo (días)',            sub: 'Duración Free Time',  det: 0, dem: 1 },
+  { grupo: 'Tiempo (días)',            sub: 'Límite Primer Tramo', det: 2, dem: 3 },
+  { grupo: 'Tarifas (€ por cada día)', sub: 'Primer Tramo',        det: 4, dem: 5 },
+  { grupo: 'Tarifas (€ por cada día)', sub: 'Segundo Tramo',       det: 6, dem: 7 },
 ]
 
 function GrupoNavieraMovil({ naviera, valores = [], onActualizar, onEliminar }) {
@@ -18,22 +18,32 @@ function GrupoNavieraMovil({ naviera, valores = [], onActualizar, onEliminar }) 
   return (
     <div className="grupo-naviera-movil">
       {GRUPOS.map(grupo => (
-        <div key={grupo.titulo} className="grupo-naviera-movil__bloque">
+        <div key={grupo.sub} className="grupo-naviera-movil__bloque">
+
           <div className="grupo-naviera-movil__fila">
             <div className="celda-tabla celda-tabla--grupo-titulo">
-              <span className="celda-tabla__texto">{grupo.titulo}</span>
+              <span className="celda-tabla__texto">{grupo.grupo}</span>
             </div>
           </div>
+
+          <div className="grupo-naviera-movil__fila">
+            <div className="celda-tabla celda-tabla--subgrupo-titulo">
+              <span className="celda-tabla__texto">{grupo.sub}</span>
+            </div>
+          </div>
+
           <div className="grupo-naviera-movil__fila">
             <CeldaTabla label="Naviera"     tamanio="naviera" fuente="body" />
             <CeldaTabla label="Detención"   tamanio="sm"      fuente="body" />
             <CeldaTabla label="Sobrestadía" tamanio="sm"      fuente="body" />
           </div>
+
           <div className="grupo-naviera-movil__fila">
-            <CeldaTabla label={naviera}                  tamanio="naviera" readonly />
-            <CeldaTabla label={String(vals[grupo.det])}  tamanio="sm"      editable onChange={v => handleChange(grupo.det, v)} />
-            <CeldaTabla label={String(vals[grupo.dem])}  tamanio="sm"      editable onChange={v => handleChange(grupo.dem, v)} />
+            <CeldaTabla label={naviera}                 tamanio="naviera" readonly />
+            <CeldaTabla label={String(vals[grupo.det])} tamanio="sm"      editable onChange={v => handleChange(grupo.det, v)} />
+            <CeldaTabla label={String(vals[grupo.dem])} tamanio="sm"      editable onChange={v => handleChange(grupo.dem, v)} />
           </div>
+
         </div>
       ))}
 

@@ -23,10 +23,15 @@
   .tabla-tarifas-wrapper--movil   { display: flex; flex-direction: column; gap: var(--space-32); width: 100%; }
 }
 
-// ── Variante de celda para el título de cada grupo ───────────────────
+// ── Variantes de celda para cabeceras de mini-tablas móvil ──────────
 .celda-tabla--grupo-titulo {
   width:            25rem; // naviera(10) + sm(7.5) + sm(7.5)
-  background-color: rgba(0 0 0 / 0.15);
+  background-color: rgba(0 0 0 / 0.25);
+}
+
+.celda-tabla--subgrupo-titulo {
+  width:            25rem;
+  background-color: rgba(0 0 0 / 0.12);
 }
 
 // ── Grupos por naviera en móvil ──────────────────────────────────────
