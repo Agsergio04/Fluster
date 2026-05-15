@@ -58,6 +58,22 @@
 
   &__fila {
     display: flex;
+    width:   100%;
+  }
+
+  // Celdas de datos: proporcional al reparto original (10:7.5:7.5 → 4:3:3)
+  .celda-tabla {
+    flex-shrink: 1;
+
+    &--naviera { flex: 4 1 0; width: auto; }
+    &--sm      { flex: 3 1 0; width: auto; }
+  }
+
+  // Celdas de cabecera de grupo/subgrupo: ancho completo
+  .celda-tabla--grupo-titulo,
+  .celda-tabla--subgrupo-titulo {
+    flex:  1 1 0;
+    width: auto;
   }
 
   &__botones {
