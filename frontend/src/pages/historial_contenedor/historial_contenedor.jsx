@@ -59,8 +59,7 @@ function HistorialContenedor() {
   const [fechaEspecifica, setFechaEspecifica] = useState('')
   const [naviera,         setNaviera]         = useState('')
   const [cliente,         setCliente]         = useState('')
-  const [ordenAscendente,  setOrdenAscendente]  = useState(false)
-  const [ordenDescendente, setOrdenDescendente] = useState(false)
+  const [orden,            setOrden]            = useState('')
   const [ordenAlfabetico,  setOrdenAlfabetico]  = useState(false)
 
   return (
@@ -101,16 +100,15 @@ function HistorialContenedor() {
             fechaEspecifica={fechaEspecifica} onFechaEspecifica={e => setFechaEspecifica(e.target.value)}
             naviera={naviera}                 onNaviera={e => setNaviera(e.target.value)}
             cliente={cliente}                 onCliente={e => setCliente(e.target.value)}
-            ordenAscendente={ordenAscendente}   onOrdenAscendente={() => setOrdenAscendente(v => !v)}
-            ordenDescendente={ordenDescendente} onOrdenDescendente={() => setOrdenDescendente(v => !v)}
+            orden={orden}                       onOrden={setOrden}
             ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
             onGenerarInforme={async () => {
               const datosCiclos = await obtenerDatosInforme({
                 contenedorId: id,
                 fechaDesde, fechaHasta, fechaEspecifica,
                 naviera, cliente,
-                ordenAscendente:  String(ordenAscendente),
-                ordenDescendente: String(ordenDescendente),
+                ordenAscendente:  String(orden === 'ascendente'),
+                ordenDescendente: String(orden === 'descendente'),
                 ordenAlfabetico:  String(ordenAlfabetico),
               })
               const ok = generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)

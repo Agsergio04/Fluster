@@ -9,8 +9,7 @@ function PanelGenerarInforme({
   naviera = '',          onNaviera,
   cliente = '',          onCliente,
   codigoBic = '',        onCodigoBic,
-  ordenAscendente = false,   onOrdenAscendente,
-  ordenDescendente = false,  onOrdenDescendente,
+  orden = '',            onOrden,
   ordenAlfabetico = false,   onOrdenAlfabetico,
   onGenerarInforme,
 }) {
@@ -100,8 +99,8 @@ function PanelGenerarInforme({
           <div className="panel-generar-informe__opciones-grupo">
             <p className="panel-generar-informe__opciones-grupo-titulo">Opciones para las fechas</p>
             <div className="panel-generar-informe__lista-opciones">
-              <OpcionFiltro label="Filtrar por orden ascendente las fechas"  selected={ordenAscendente}  onClick={onOrdenAscendente}  />
-              <OpcionFiltro label="Filtrar por orden descendente las fechas" selected={ordenDescendente} onClick={onOrdenDescendente} />
+              <OpcionFiltro label="Filtrar por orden ascendente las fechas"  selected={orden === 'ascendente'}  onClick={() => onOrden?.(orden === 'ascendente'  ? '' : 'ascendente')}  />
+              <OpcionFiltro label="Filtrar por orden descendente las fechas" selected={orden === 'descendente'} onClick={() => onOrden?.(orden === 'descendente' ? '' : 'descendente')} />
             </div>
           </div>
 

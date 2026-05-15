@@ -26,8 +26,7 @@ function Almacen() {
   const [naviera,          setNaviera]          = useState('')
   const [cliente,          setCliente]          = useState('')
   const [codigoBic,        setCodigoBic]        = useState('')
-  const [ordenAscendente,  setOrdenAscendente]  = useState(false)
-  const [ordenDescendente, setOrdenDescendente] = useState(false)
+  const [orden,            setOrden]            = useState('')
   const [ordenAlfabetico,  setOrdenAlfabetico]  = useState(false)
 
   useEffect(() => {
@@ -111,15 +110,14 @@ function Almacen() {
           naviera={naviera}                 onNaviera={e => setNaviera(e.target.value)}
           cliente={cliente}                 onCliente={e => setCliente(e.target.value)}
           codigoBic={codigoBic}             onCodigoBic={e => setCodigoBic(e.target.value)}
-          ordenAscendente={ordenAscendente}   onOrdenAscendente={() => setOrdenAscendente(v => !v)}
-          ordenDescendente={ordenDescendente} onOrdenDescendente={() => setOrdenDescendente(v => !v)}
+          orden={orden}                       onOrden={setOrden}
           ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
           onGenerarInforme={async () => {
             const ciclos = await obtenerDatosInforme({
               fechaDesde, fechaHasta, fechaEspecifica,
               naviera, cliente, codigoBic,
-              ordenAscendente:  String(ordenAscendente),
-              ordenDescendente: String(ordenDescendente),
+              ordenAscendente:  String(orden === 'ascendente'),
+              ordenDescendente: String(orden === 'descendente'),
               ordenAlfabetico:  String(ordenAlfabetico),
             })
             const ok = generarPDFGeneral(ciclos)
