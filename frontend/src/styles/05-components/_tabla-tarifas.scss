@@ -7,3 +7,9 @@
   background-color: var(--color-card-almacen);
   border-radius:    var(--radius);
 }
+
+.tabla-tarifas-wrapper {
+  width:      100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
