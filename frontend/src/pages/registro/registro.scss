@@ -63,4 +63,19 @@
     color:       var(--color-error);
     text-align:  center;
   }
+
+  @media (max-width: 767px) {
+    &__imagen {
+      display: none;
+    }
+
+    &__panel {
+      flex:    1;
+      padding: var(--space-32) var(--space-16);
+    }
+
+    &__titulo {
+      font-size: var(--text-32);
+    }
+  }
 }
