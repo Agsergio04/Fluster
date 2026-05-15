@@ -35,4 +35,22 @@
     justify-content: center;
     padding:         var(--space-32) var(--space-24) var(--space-64);
   }
+
+  @media (max-width: 767px) {
+    &__intro {
+      padding: var(--space-24) var(--space-16) var(--space-16);
+    }
+
+    &__titulo {
+      font-size: var(--text-40);
+    }
+
+    &__subtitulo {
+      font-size: var(--text-24);
+    }
+
+    &__contenido {
+      padding: var(--space-16) var(--space-16) var(--space-32);
+    }
+  }
 }
