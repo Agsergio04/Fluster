@@ -67,6 +67,12 @@
 
     &--naviera { flex: 4 1 0; width: auto; }
     &--sm      { flex: 3 1 0; width: auto; }
+
+    &__texto,
+    &__input {
+      flex-shrink: 1;
+      min-width:   0;
+    }
   }
 
   // Celdas de cabecera de grupo/subgrupo: ancho completo
