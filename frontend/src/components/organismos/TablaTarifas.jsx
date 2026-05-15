@@ -1,6 +1,6 @@
 import CabeceraTablasTarifasNavieras from '../moleculas/CabeceraTablasTarifasNavieras'
 import FilaNavieraTarifasConBotones from '../moleculas/FilaNavieraTarifasConBotones'
-import GrupoNavieraMovil from './GrupoNavieraMovil'
+import ConjuntoNavieras from './ConjuntoNavieras'
 
 function TablaTarifas({ filas = [] }) {
   return (
@@ -21,15 +21,7 @@ function TablaTarifas({ filas = [] }) {
       </div>
 
       <div className="tabla-tarifas-wrapper--movil">
-        {filas.map((fila, i) => (
-          <GrupoNavieraMovil
-            key={fila.naviera ?? i}
-            naviera={fila.naviera}
-            valores={fila.valores}
-            onActualizar={fila.onActualizar}
-            onEliminar={fila.onEliminar}
-          />
-        ))}
+        <ConjuntoNavieras filas={filas} />
       </div>
     </>
   )

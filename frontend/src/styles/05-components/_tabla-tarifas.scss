@@ -14,13 +14,13 @@
   -webkit-overflow-scrolling: touch;
 }
 
-// ── Visibilidad desktop / móvil ──────────────────────────────────────
+// ── Visibilidad desktop / tablet+móvil ──────────────────────────────
 .tabla-tarifas-wrapper--desktop { display: block; }
 .tabla-tarifas-wrapper--movil   { display: none;  }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .tabla-tarifas-wrapper--desktop { display: none;  }
-  .tabla-tarifas-wrapper--movil   { display: flex; flex-direction: column; gap: var(--space-32); width: 100%; }
+  .tabla-tarifas-wrapper--movil   { display: block; width: 100%; }
 }
 
 // ── Variantes de celda para cabeceras de mini-tablas móvil ──────────
