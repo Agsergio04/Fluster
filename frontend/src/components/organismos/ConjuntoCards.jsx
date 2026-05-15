@@ -7,6 +7,9 @@ import CardUsuario from '../moleculas/CardUsuario'
 import CardContenedoresAlmacen from '../moleculas/CardContenedoresAlmacen'
 import CardContenedor from '../moleculas/CardContenedor'
 
+const MOVIL_QUERY = '(max-width: 1023px)'
+const ITEMS_MOVIL  = 3
+
 function ConjuntoCards({
   variante = 'semaforo',
   tramo,
@@ -21,13 +24,26 @@ function ConjuntoCards({
   onEliminar,
   onCambiarRol,
 }) {
-  const [pagina, setPagina] = useState(1)
+  const [pagina,       setPagina]       = useState(1)
+  const [itemsActivos, setItemsActivos] = useState(
+    () => window.matchMedia(MOVIL_QUERY).matches ? ITEMS_MOVIL : itemsPorPagina
+  )
+
+  useEffect(() => {
+    const mq      = window.matchMedia(MOVIL_QUERY)
+    const handler = e => {
+      setItemsActivos(e.matches ? ITEMS_MOVIL : itemsPorPagina)
+      setPagina(1)
+    }
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [itemsPorPagina])
 
   useEffect(() => { setPagina(1) }, [busqueda])
 
-  const totalPaginas = Math.max(1, Math.ceil(items.length / itemsPorPagina))
-  const inicio = (pagina - 1) * itemsPorPagina
-  const paginaItems = items.slice(inicio, inicio + itemsPorPagina)
+  const totalPaginas = Math.max(1, Math.ceil(items.length / itemsActivos))
+  const inicio       = (pagina - 1) * itemsActivos
+  const paginaItems  = items.slice(inicio, inicio + itemsActivos)
 
   const renderCard = (item, i) => {
     const key = item.id ?? inicio + i
