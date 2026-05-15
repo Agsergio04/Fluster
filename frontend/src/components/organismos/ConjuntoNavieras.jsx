@@ -3,11 +3,22 @@ import GrupoNavieraMovil from './GrupoNavieraMovil'
 import BuscadorContenedores from '../moleculas/BuscadorContenedores'
 import BotonesMovimientoCard from '../moleculas/BotonesMovimientoCard'
 
-const ITEMS_POR_PAGINA = 5
+const isMobile = () => window.matchMedia('(max-width: 767px)').matches
 
 function ConjuntoNavieras({ filas = [] }) {
-  const [busqueda, setBusqueda] = useState('')
-  const [pagina,   setPagina]   = useState(1)
+  const [busqueda,       setBusqueda]       = useState('')
+  const [pagina,         setPagina]         = useState(1)
+  const [itemsPorPagina, setItemsPorPagina] = useState(() => isMobile() ? 3 : 5)
+
+  useEffect(() => {
+    const mq      = window.matchMedia('(max-width: 767px)')
+    const handler = e => {
+      setItemsPorPagina(e.matches ? 3 : 5)
+      setPagina(1)
+    }
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   useEffect(() => { setPagina(1) }, [busqueda])
 
@@ -16,9 +27,9 @@ function ConjuntoNavieras({ filas = [] }) {
     f.naviera?.toLowerCase().includes(busqueda.trim().toLowerCase())
   )
 
-  const totalPaginas = Math.max(1, Math.ceil(filasFiltradas.length / ITEMS_POR_PAGINA))
-  const inicio       = (pagina - 1) * ITEMS_POR_PAGINA
-  const filasPagina  = filasFiltradas.slice(inicio, inicio + ITEMS_POR_PAGINA)
+  const totalPaginas = Math.max(1, Math.ceil(filasFiltradas.length / itemsPorPagina))
+  const inicio       = (pagina - 1) * itemsPorPagina
+  const filasPagina  = filasFiltradas.slice(inicio, inicio + itemsPorPagina)
 
   return (
     <div className="conjunto-navieras">
