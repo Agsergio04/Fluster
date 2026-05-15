@@ -6,6 +6,8 @@ function HistorialCiclosContenedor({
   ciclos = [],
   ciclosPorPagina = 1,
   onCancelar,
+  onEditarDemurrage,
+  onEditarDetention,
 }) {
   const [paginaActual, setPaginaActual] = useState(1)
 
@@ -22,8 +24,8 @@ function HistorialCiclosContenedor({
             cliente={ciclo.cliente}
             demurrage={ciclo.demurrage}
             detention={ciclo.detention}
-            onEditarDemurrage={ciclo.onEditarDemurrage}
-            onEditarDetention={ciclo.onEditarDetention}
+            onEditarDemurrage={() => onEditarDemurrage?.(ciclo)}
+            onEditarDetention={() => onEditarDetention?.(ciclo)}
           />
         ))}
       </div>

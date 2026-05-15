@@ -4,11 +4,13 @@ import './historial_contenedor.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import { obtenerContenedor } from '../../services/contenedorService'
+import { editarDemurrageCiclo, editarDetentionCiclo } from '../../services/cicloService'
 import { obtenerDatosInforme, registrarInforme } from '../../services/informeService'
 import { generarPDFIndividual } from '../../services/pdfService'
 import Header from '../../components/organismos/Header'
 import HistorialCiclosContenedor from '../../components/organismos/HistorialCiclosContenedor'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
+import ModalEditarTramo from '../../components/moleculas/ModalEditarTramo'
 
 function HistorialContenedor() {
   const navigate        = useNavigate()
@@ -18,13 +20,15 @@ function HistorialContenedor() {
 
   const [contenedor, setContenedor] = useState(null)
   const [ciclos,     setCiclos]     = useState([])
+  const [modal,      setModal]      = useState(null)
 
-  useEffect(() => {
+  const cargarContenedor = () =>
     obtenerContenedor(id)
       .then(data => {
         setContenedor(data)
         setCiclos(
           (data.ciclos ?? []).map(c => ({
+            cicloId:   c._id,
             cliente:   c.clienteId?.nombre ?? '-',
             demurrage: c.demurrage,
             detention: c.detention,
@@ -32,7 +36,23 @@ function HistorialContenedor() {
         )
       })
       .catch(() => {})
-  }, [id])
+
+  useEffect(() => { cargarContenedor() }, [id])
+
+  const abrirModal = (cicloId, tramo, fechas) =>
+    setModal({ cicloId, tramo, ...fechas })
+
+  const cerrarModal = () => setModal(null)
+
+  const handleGuardar = async (fechas) => {
+    if (modal.tramo === 'Demurrage') {
+      await editarDemurrageCiclo(modal.cicloId, fechas)
+    } else {
+      await editarDetentionCiclo(modal.cicloId, fechas)
+    }
+    cerrarModal()
+    cargarContenedor()
+  }
 
   const [fechaDesde,      setFechaDesde]      = useState('')
   const [fechaHasta,      setFechaHasta]      = useState('')
@@ -68,6 +88,8 @@ function HistorialContenedor() {
             ciclos={ciclos}
             ciclosPorPagina={1}
             onCancelar={() => navigate(-1)}
+            onEditarDemurrage={(ciclo) => abrirModal(ciclo.cicloId, 'Demurrage', { fechaInicio: ciclo.demurrage?.fechaInicio, fechaFin: ciclo.demurrage?.fechaFin })}
+            onEditarDetention={(ciclo) => abrirModal(ciclo.cicloId, 'Detention', { fechaInicio: ciclo.detention?.fechaInicio, fechaFin: ciclo.detention?.fechaFin })}
           />
         </div>
 
@@ -101,6 +123,15 @@ function HistorialContenedor() {
           />
         </div>
       </div>
+      {modal && (
+        <ModalEditarTramo
+          tramo={modal.tramo}
+          fechaInicio={modal.fechaInicio}
+          fechaFin={modal.fechaFin}
+          onGuardar={handleGuardar}
+          onCancelar={cerrarModal}
+        />
+      )}
     </div>
   )
 }

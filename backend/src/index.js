@@ -15,6 +15,7 @@ const contenedorRoutes  = require('./routes/contenedores')
 const eventoRoutes      = require('./routes/eventos')
 const informeRoutes     = require('./routes/informes')
 const semaforoRoutes    = require('./routes/semaforo')
+const cicloRoutes       = require('./routes/ciclos')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -36,6 +37,7 @@ app.use('/api/contenedores', contenedorRoutes)
 app.use('/api/eventos',      eventoRoutes)
 app.use('/api/informes',     informeRoutes)
 app.use('/api/semaforo',     semaforoRoutes)
+app.use('/api/ciclos',      cicloRoutes)
 
 // Debe ir al final, después de todas las rutas
 app.use(errorMiddleware)
