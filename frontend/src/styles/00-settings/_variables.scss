@@ -136,3 +136,7 @@ $shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
 
 // ── Overlay ────────────────────────────────────────────────────────
 $color-overlay: rgba(0, 0, 0, 0.45);
+
+// ── Breakpoints ────────────────────────────────────────────────────
+$breakpoint-mobile: 767px;
+$breakpoint-tablet: 1023px;
