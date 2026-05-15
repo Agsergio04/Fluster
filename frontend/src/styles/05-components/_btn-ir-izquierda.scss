@@ -3,17 +3,17 @@
   align-self:       flex-start;
   align-items:      center;
   justify-content:  center;
-  width:            3.5rem;
-  height:           3.5rem;
-  padding:          var(--space-8);
+  width:            2.6875rem;
+  height:           2.6875rem;
+  padding:          0;
   background-color: var(--color-secondary-hover);
   border-radius:    var(--radius);
   color:            var(--color-box-text);
   transition:       background-color var(--transition-fast);
 
   svg {
-    width:       1.875rem;
-    height:      1.5rem;
+    width:       1.25rem;
+    height:      1.25rem;
     flex-shrink: 0;
   }
 
