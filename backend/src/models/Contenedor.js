@@ -8,18 +8,18 @@ const { Schema, model } = require('mongoose')
 /**
  * Ciclo de vida de un contenedor (circular):
  *
- *   INACTIVO → CARGADO → CLIENTE → INACTIVO
+ *   INACTIVO → PUERTO → CLIENTE → INACTIVO
  *
  *   INACTIVO → free time activo; sin coste.
  *              Si fechaDevolucion está informada, el ciclo ya ha completado
  *              y los costes D&D han sido aplicados y cerrados.
- *   CARGADO  → contenedor en puerto; se acumula demurrage (sobreestadía).
+ *   PUERTO   → contenedor en puerto; se acumula demurrage (sobreestadía).
  *   CLIENTE  → contenedor con el cliente; se acumula detention (detención).
  *
  * La transición CLIENTE → INACTIVO es el momento en que se finalizan
  * y aplican los costes totales del ciclo (demurrage + detention).
  */
-const ESTADOS = ['INACTIVO', 'CARGADO', 'CLIENTE']
+const ESTADOS = ['INACTIVO', 'PUERTO', 'CLIENTE']
 
 /**
  * Esquema de contenedor

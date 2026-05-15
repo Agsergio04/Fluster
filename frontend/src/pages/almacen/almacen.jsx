@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import './almacen.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
-import { listarContenedores } from '../../services/contenedorService'
+import { listarContenedores, eliminarContenedor } from '../../services/contenedorService'
 import { obtenerDatosInforme, registrarInforme } from '../../services/informeService'
 import { generarPDFGeneral } from '../../services/pdfService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
+import Notificacion from '../../components/atomos/Notificacion'
 
 function Almacen() {
   const navigate = useNavigate()
@@ -17,6 +18,7 @@ function Almacen() {
 
   const [busqueda,     setBusqueda]     = useState('')
   const [contenedores, setContenedores] = useState([])
+  const [aviso,        setAviso]        = useState('')
 
   const [fechaDesde,       setFechaDesde]       = useState('')
   const [fechaHasta,       setFechaHasta]       = useState('')
@@ -47,6 +49,7 @@ function Almacen() {
     .map(c => ({
       id:              c._id,
       codigoBic:       c.codigoBIC,
+      estado:          c.estado,
       ultimaOperacion: ultimaFecha(c),
       fechaInclusion:  new Date(c.creadoEn).toLocaleDateString('es-ES'),
       operador:        c.creadoPor?.nombre ?? '-',
@@ -80,7 +83,14 @@ function Almacen() {
           onBuscar={() => {}}
           items={items}
           onVerRegistro={item => navigate(`/almacen/historial/${item.id}`)}
-          onBorrar={() => {}}
+          onBorrar={async item => {
+            try {
+              await eliminarContenedor(item.id)
+              setContenedores(prev => prev.filter(c => c._id !== item.id))
+            } catch (err) {
+              setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el contenedor')
+            }
+          }}
         />
       </div>
 
@@ -121,6 +131,7 @@ function Almacen() {
           }}
         />
       </div>
+      <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </div>
   )
 }

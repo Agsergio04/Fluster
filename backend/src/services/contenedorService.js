@@ -170,7 +170,7 @@ async function actualizar(id, cambios) {
 // ---------------------------------------------------------------------------
 
 /**
- * Registra la entrada del contenedor al puerto (INACTIVO → CARGADO).
+ * Registra la entrada del contenedor al puerto (INACTIVO → PUERTO).
  * Abre un nuevo ciclo con el cliente asignado y el tramo de demurrage en curso.
  * La fecha de inicio del demurrage es fechaInicioLibre, no la de llegada física,
  * porque es la fecha desde la que la naviera empieza a contar los días libres.
@@ -206,13 +206,13 @@ async function registrarEntradaPuerto(id, fecha, clienteId) {
 
   return Contenedor.findByIdAndUpdate(
     id,
-    { estado: 'CARGADO', fechaEntradaPuerto: fecha },
+    { estado: 'PUERTO', fechaEntradaPuerto: fecha },
     { new: true }
   ).lean()
 }
 
 /**
- * Registra la salida del contenedor del puerto hacia el cliente (CARGADO → CLIENTE).
+ * Registra la salida del contenedor del puerto hacia el cliente (PUERTO → CLIENTE).
  * Cierra el tramo de demurrage calculando días y coste, y abre el tramo de detention.
  *
  * @param {string} id    - ID del contenedor
@@ -226,7 +226,7 @@ async function registrarSalidaPuerto(id, fecha) {
     err.status = 404
     throw err
   }
-  if (contenedor.estado !== 'CARGADO') {
+  if (contenedor.estado !== 'PUERTO') {
     const err = new Error(`Transición no válida: el contenedor está en estado ${contenedor.estado}`)
     err.status = 422
     throw err
@@ -314,7 +314,7 @@ async function registrarDevolucion(id, fecha) {
 
 /**
  * Cancela el ciclo activo y devuelve el contenedor a INACTIVO.
- * Solo aplicable cuando el contenedor está en CARGADO, antes de que haya
+ * Solo aplicable cuando el contenedor está en PUERTO, antes de que haya
  * pasado al cliente; en ese punto no se ha generado ningún coste facturable
  * así que el ciclo se borra por completo.
  *
@@ -328,8 +328,8 @@ async function cancelarCiclo(id) {
     err.status = 404
     throw err
   }
-  if (contenedor.estado !== 'CARGADO') {
-    const err = new Error(`Solo se puede cancelar el ciclo desde estado CARGADO (actual: ${contenedor.estado})`)
+  if (contenedor.estado !== 'PUERTO') {
+    const err = new Error(`Solo se puede cancelar el ciclo desde estado PUERTO (actual: ${contenedor.estado})`)
     err.status = 422
     throw err
   }

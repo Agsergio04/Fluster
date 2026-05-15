@@ -2,7 +2,7 @@
  * Servicio del semáforo
  * Agrupa todos los contenedores según su nivel de riesgo D&D en tiempo real.
  * El grupo se determina calculando los días transcurridos desde la fecha de inicio
- * del tramo activo (demurrage si está en CARGADO, detention si está en CLIENTE)
+ * del tramo activo (demurrage si está en PUERTO, detention si está en CLIENTE)
  * y comparando los días facturables con los tramos de tarifa de la naviera.
  */
 
@@ -101,7 +101,7 @@ async function obtenerAgrupados() {
     const naviera = contenedor.navieraId
     let diasTranscurridos, diasFacturables, tramos
 
-    if (contenedor.estado === 'CARGADO') {
+    if (contenedor.estado === 'PUERTO') {
       diasTranscurridos = calcularDiasHastaHoy(ciclo.demurrage.fechaInicio)
       diasFacturables = Math.max(0, diasTranscurridos - ciclo.demurrage.diasLibres)
       tramos = naviera.diasDemurrage

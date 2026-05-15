@@ -1,7 +1,7 @@
 import TramoDeFechas from './TramoDeFechas'
 
 const formatCoste = (n) =>
-  n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'
+  (n ?? 0).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'
 
 function TarjetaCicloContenedor({
   cliente,
@@ -10,7 +10,9 @@ function TarjetaCicloContenedor({
   onEditarDemurrage,
   onEditarDetention,
 }) {
-  const costeTotal = demurrage.coste + detention.coste
+  const costeDem  = demurrage?.costeTotal ?? 0
+  const costeDet  = detention?.costeTotal ?? 0
+  const costeTotal = costeDem + costeDet
 
   return (
     <article className="tarjeta-ciclo-contenedor">
@@ -21,13 +23,13 @@ function TarjetaCicloContenedor({
       <div className="tarjeta-ciclo-contenedor__seccion">
         <TramoDeFechas
           titulo="Demurrage"
-          fechaInicio={demurrage.fechaInicio}
-          fechaFin={demurrage.fechaFin}
+          fechaInicio={demurrage?.fechaInicio}
+          fechaFin={demurrage?.fechaFin}
           onEditar={onEditarDemurrage}
         />
         <p className="tarjeta-ciclo-contenedor__coste-linea">
           <span>Coste Demurrage</span>
-          <span>{formatCoste(demurrage.coste)}</span>
+          <span>{formatCoste(costeDem)}</span>
         </p>
       </div>
 
@@ -36,13 +38,13 @@ function TarjetaCicloContenedor({
       <div className="tarjeta-ciclo-contenedor__seccion">
         <TramoDeFechas
           titulo="Detention"
-          fechaInicio={detention.fechaInicio}
-          fechaFin={detention.fechaFin}
+          fechaInicio={detention?.fechaInicio}
+          fechaFin={detention?.fechaFin}
           onEditar={onEditarDetention}
         />
         <p className="tarjeta-ciclo-contenedor__coste-linea">
           <span>Coste Detention</span>
-          <span>{formatCoste(detention.coste)}</span>
+          <span>{formatCoste(costeDet)}</span>
         </p>
       </div>
 

@@ -4,6 +4,7 @@ import BotonCardAlmacen from '../atomos/BotonCardAlmacen'
 
 function CardContenedoresAlmacen({
   codigoBic,
+  estado,
   ultimaOperacion,
   fechaInclusion,
   operador,
@@ -47,7 +48,7 @@ function CardContenedoresAlmacen({
 
       <div className="card-almacen__acciones">
         <BotonCardAlmacen variante="ver-registro" onClick={onVerRegistro} />
-        <BotonCardAlmacen variante="borrar" onClick={onBorrar} />
+        <BotonCardAlmacen variante="borrar" onClick={onBorrar} disabled={estado !== 'INACTIVO'} />
       </div>
     </div>
   )

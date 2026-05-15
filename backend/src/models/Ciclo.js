@@ -7,7 +7,7 @@ const { Schema, model } = require('mongoose')
 
 /**
  * Tramo de demurrage
- * Cubre el período en que el contenedor permanece en puerto (estado CARGADO).
+ * Cubre el período en que el contenedor permanece en puerto (estado PUERTO).
  * El coste empieza a acumularse una vez superados los diasLibres de la naviera.
  */
 const tramoDemurrageSchema = new Schema(
@@ -85,8 +85,8 @@ const tramoDetentionSchema = new Schema(
 
 /**
  * Esquema de ciclo
- * Un ciclo cubre el recorrido completo INACTIVO → CARGADO → CLIENTE → INACTIVO.
- * Se crea cuando el contenedor entra en CARGADO y se cierra con los costes definitivos
+ * Un ciclo cubre el recorrido completo INACTIVO → PUERTO → CLIENTE → INACTIVO.
+ * Se crea cuando el contenedor entra en PUERTO y se cierra con los costes definitivos
  * en la transición CLIENTE → INACTIVO.
  * Un mismo contenedor puede acumular varios ciclos a lo largo de su vida útil.
  */

@@ -1,4 +1,4 @@
-jest.mock('../../src/models/Contenedor')
+﻿jest.mock('../../src/models/Contenedor')
 jest.mock('../../src/models/Naviera')
 jest.mock('../../src/models/Ciclo')
 
@@ -67,10 +67,10 @@ describe('contenedorService', () => {
   beforeEach(() => jest.clearAllMocks())
 
   // ---------------------------------------------------------------------------
-  // registrarEntradaPuerto (INACTIVO → CARGADO)
+  // registrarEntradaPuerto (INACTIVO â†’ PUERTO)
   // ---------------------------------------------------------------------------
   describe('registrarEntradaPuerto', () => {
-    it('transiciona de INACTIVO a CARGADO y crea un ciclo con los días libres de la naviera', async () => {
+    it('transiciona de INACTIVO a PUERTO y crea un ciclo con los dÃ­as libres de la naviera', async () => {
       const contenedor = makeContenedor('INACTIVO')
       const naviera = makeNaviera()
 
@@ -78,7 +78,7 @@ describe('contenedorService', () => {
       Naviera.findById.mockResolvedValue(naviera)
       Ciclo.create.mockResolvedValue({})
       Contenedor.findByIdAndUpdate.mockReturnValue({
-        lean: jest.fn().mockResolvedValue({ ...contenedor, estado: 'CARGADO' }),
+        lean: jest.fn().mockResolvedValue({ ...contenedor, estado: 'PUERTO' }),
       })
 
       const result = await registrarEntradaPuerto('cont-id', new Date('2025-02-01'), 'cliente-id')
@@ -88,17 +88,17 @@ describe('contenedorService', () => {
         clienteId: 'cliente-id',
         demurrage: expect.objectContaining({ diasLibres: 5 }),
       }))
-      expect(result.estado).toBe('CARGADO')
+      expect(result.estado).toBe('PUERTO')
     })
 
-    it('el ciclo se crea con fechaInicio = fechaInicioLibre del contenedor (no la fecha física de entrada)', async () => {
+    it('el ciclo se crea con fechaInicio = fechaInicioLibre del contenedor (no la fecha fÃ­sica de entrada)', async () => {
       const contenedor = makeContenedor('INACTIVO', { fechaInicioLibre: new Date('2025-01-15') })
 
       Contenedor.findById.mockResolvedValue(contenedor)
       Naviera.findById.mockResolvedValue(makeNaviera())
       Ciclo.create.mockResolvedValue({})
       Contenedor.findByIdAndUpdate.mockReturnValue({
-        lean: jest.fn().mockResolvedValue({ ...contenedor, estado: 'CARGADO' }),
+        lean: jest.fn().mockResolvedValue({ ...contenedor, estado: 'PUERTO' }),
       })
 
       await registrarEntradaPuerto('cont-id', new Date('2025-02-01'), 'cliente-id')
@@ -118,8 +118,8 @@ describe('contenedorService', () => {
       expect(Ciclo.create).not.toHaveBeenCalled()
     })
 
-    it('lanza error 422 si el contenedor no está en INACTIVO', async () => {
-      Contenedor.findById.mockResolvedValue(makeContenedor('CARGADO'))
+    it('lanza error 422 si el contenedor no estÃ¡ en INACTIVO', async () => {
+      Contenedor.findById.mockResolvedValue(makeContenedor('PUERTO'))
 
       await expect(
         registrarEntradaPuerto('cont-id', new Date(), 'cliente-id')
@@ -128,7 +128,7 @@ describe('contenedorService', () => {
       expect(Ciclo.create).not.toHaveBeenCalled()
     })
 
-    it('lanza error 422 si el contenedor está en estado CLIENTE', async () => {
+    it('lanza error 422 si el contenedor estÃ¡ en estado CLIENTE', async () => {
       Contenedor.findById.mockResolvedValue(makeContenedor('CLIENTE'))
 
       await expect(
@@ -138,17 +138,17 @@ describe('contenedorService', () => {
   })
 
   // ---------------------------------------------------------------------------
-  // registrarSalidaPuerto (CARGADO → CLIENTE)
+  // registrarSalidaPuerto (PUERTO â†’ CLIENTE)
   // ---------------------------------------------------------------------------
   describe('registrarSalidaPuerto', () => {
-    it('transiciona de CARGADO a CLIENTE y calcula el coste de demurrage', async () => {
-      // 10 días desde 01/01 hasta 11/01, diasLibres=5 → 5 facturables
-      // tramo 1 (días 1-5, 50€/día): 5 días × 50€ = 250€
+    it('transiciona de PUERTO a CLIENTE y calcula el coste de demurrage', async () => {
+      // 10 dÃ­as desde 01/01 hasta 11/01, diasLibres=5 â†’ 5 facturables
+      // tramo 1 (dÃ­as 1-5, 50â‚¬/dÃ­a): 5 dÃ­as Ã— 50â‚¬ = 250â‚¬
       const ciclo = makeCiclo({
         demurrage: { fechaInicio: new Date('2025-01-01'), diasLibres: 5 },
       })
 
-      Contenedor.findById.mockResolvedValue(makeContenedor('CARGADO'))
+      Contenedor.findById.mockResolvedValue(makeContenedor('PUERTO'))
       Naviera.findById.mockResolvedValue(makeNaviera())
       Ciclo.findOne.mockResolvedValue(ciclo)
       Ciclo.findByIdAndUpdate.mockResolvedValue({})
@@ -171,13 +171,13 @@ describe('contenedorService', () => {
       expect(result.estado).toBe('CLIENTE')
     })
 
-    it('calcula coste 0 cuando los días transcurridos no superan los días libres', async () => {
-      // 3 días transcurridos, 5 libres → 0 facturables → coste 0
+    it('calcula coste 0 cuando los dÃ­as transcurridos no superan los dÃ­as libres', async () => {
+      // 3 dÃ­as transcurridos, 5 libres â†’ 0 facturables â†’ coste 0
       const ciclo = makeCiclo({
         demurrage: { fechaInicio: new Date('2025-01-01'), diasLibres: 10 },
       })
 
-      Contenedor.findById.mockResolvedValue(makeContenedor('CARGADO'))
+      Contenedor.findById.mockResolvedValue(makeContenedor('PUERTO'))
       Naviera.findById.mockResolvedValue(makeNaviera())
       Ciclo.findOne.mockResolvedValue(ciclo)
       Ciclo.findByIdAndUpdate.mockResolvedValue({})
@@ -198,11 +198,11 @@ describe('contenedorService', () => {
       )
     })
 
-    it('calcula el coste correctamente cuando hay días en múltiples tramos', async () => {
-      // 12 días, diasLibres=0 → 12 facturables
-      // tramo 1 (días 1-5,  10€): 5 días × 10€ =  50€
-      // tramo 2 (días 6-10, 20€): 5 días × 20€ = 100€
-      // tramo 3 (días 11+,  40€): 2 días × 40€ =  80€  → total: 230€
+    it('calcula el coste correctamente cuando hay dÃ­as en mÃºltiples tramos', async () => {
+      // 12 dÃ­as, diasLibres=0 â†’ 12 facturables
+      // tramo 1 (dÃ­as 1-5,  10â‚¬): 5 dÃ­as Ã— 10â‚¬ =  50â‚¬
+      // tramo 2 (dÃ­as 6-10, 20â‚¬): 5 dÃ­as Ã— 20â‚¬ = 100â‚¬
+      // tramo 3 (dÃ­as 11+,  40â‚¬): 2 dÃ­as Ã— 40â‚¬ =  80â‚¬  â†’ total: 230â‚¬
       const navieraMultiTramo = makeNaviera({
         diasLibresDemurrage: 0,
         diasDemurrage: [
@@ -215,7 +215,7 @@ describe('contenedorService', () => {
         demurrage: { fechaInicio: new Date('2025-01-01'), diasLibres: 0 },
       })
 
-      Contenedor.findById.mockResolvedValue(makeContenedor('CARGADO'))
+      Contenedor.findById.mockResolvedValue(makeContenedor('PUERTO'))
       Naviera.findById.mockResolvedValue(navieraMultiTramo)
       Ciclo.findOne.mockResolvedValue(ciclo)
       Ciclo.findByIdAndUpdate.mockResolvedValue({})
@@ -237,13 +237,13 @@ describe('contenedorService', () => {
       )
     })
 
-    it('abre el tramo de detention con la fecha de salida y los días libres de la naviera', async () => {
+    it('abre el tramo de detention con la fecha de salida y los dÃ­as libres de la naviera', async () => {
       const fechaSalida = new Date('2025-01-11')
       const ciclo = makeCiclo({
         demurrage: { fechaInicio: new Date('2025-01-01'), diasLibres: 5 },
       })
 
-      Contenedor.findById.mockResolvedValue(makeContenedor('CARGADO'))
+      Contenedor.findById.mockResolvedValue(makeContenedor('PUERTO'))
       Naviera.findById.mockResolvedValue(makeNaviera())
       Ciclo.findOne.mockResolvedValue(ciclo)
       Ciclo.findByIdAndUpdate.mockResolvedValue({})
@@ -272,7 +272,7 @@ describe('contenedorService', () => {
       await expect(registrarSalidaPuerto('no-existe', new Date())).rejects.toMatchObject({ status: 404 })
     })
 
-    it('lanza error 422 si el contenedor no está en CARGADO', async () => {
+    it('lanza error 422 si el contenedor no estÃ¡ en PUERTO', async () => {
       Contenedor.findById.mockResolvedValue(makeContenedor('CLIENTE'))
 
       await expect(registrarSalidaPuerto('cont-id', new Date())).rejects.toMatchObject({ status: 422 })
@@ -280,11 +280,11 @@ describe('contenedorService', () => {
   })
 
   // ---------------------------------------------------------------------------
-  // registrarDevolucion (CLIENTE → INACTIVO)
+  // registrarDevolucion (CLIENTE â†’ INACTIVO)
   // ---------------------------------------------------------------------------
   describe('registrarDevolucion', () => {
     it('transiciona de CLIENTE a INACTIVO y cierra el ciclo con el coste total', async () => {
-      // 3 días desde 11/01 hasta 14/01, diasLibresDetention=7 → 0 facturables → costeDetention=0
+      // 3 dÃ­as desde 11/01 hasta 14/01, diasLibresDetention=7 â†’ 0 facturables â†’ costeDetention=0
       // costeTotal = demurrage.costeTotal(250) + detention(0) = 250
       const ciclo = makeCiclo({
         demurrage: { fechaInicio: new Date('2025-01-01'), diasLibres: 5, costeTotal: 250 },
@@ -314,11 +314,11 @@ describe('contenedorService', () => {
       expect(result.estado).toBe('INACTIVO')
     })
 
-    it('calcula correctamente el coste de detention cuando hay días facturables', async () => {
-      // 15 días de detention, diasLibres=7 → 8 facturables
-      // tramo 1 (días 1-5, 30€): 5 × 30 = 150€
-      // tramo 2 (días 6+,  60€): 3 × 60 = 180€ → total detention: 330€
-      // costeTotal = 250(demurrage) + 330(detention) = 580€
+    it('calcula correctamente el coste de detention cuando hay dÃ­as facturables', async () => {
+      // 15 dÃ­as de detention, diasLibres=7 â†’ 8 facturables
+      // tramo 1 (dÃ­as 1-5, 30â‚¬): 5 Ã— 30 = 150â‚¬
+      // tramo 2 (dÃ­as 6+,  60â‚¬): 3 Ã— 60 = 180â‚¬ â†’ total detention: 330â‚¬
+      // costeTotal = 250(demurrage) + 330(detention) = 580â‚¬
       const ciclo = makeCiclo({
         demurrage: { fechaInicio: new Date('2025-01-01'), diasLibres: 5, costeTotal: 250 },
         detention: { fechaInicio: new Date('2025-01-11'), diasLibres: 7 },
@@ -332,7 +332,7 @@ describe('contenedorService', () => {
         lean: jest.fn().mockResolvedValue({ estado: 'INACTIVO' }),
       })
 
-      // 26/01 - 11/01 = 15 días, diasLibres=7 → 8 facturables
+      // 26/01 - 11/01 = 15 dÃ­as, diasLibres=7 â†’ 8 facturables
       await registrarDevolucion('cont-id', new Date('2025-01-26'))
 
       expect(Ciclo.findByIdAndUpdate).toHaveBeenCalledWith(
@@ -348,7 +348,7 @@ describe('contenedorService', () => {
       )
     })
 
-    it('cierra el ciclo con fechaCierre igual a la fecha de devolución', async () => {
+    it('cierra el ciclo con fechaCierre igual a la fecha de devoluciÃ³n', async () => {
       const fechaDevolucion = new Date('2025-01-14')
       const ciclo = makeCiclo({
         demurrage: { costeTotal: 0, diasLibres: 5, fechaInicio: new Date('2025-01-11') },
@@ -373,7 +373,7 @@ describe('contenedorService', () => {
       )
     })
 
-    it('lanza error 422 si el contenedor no está en CLIENTE', async () => {
+    it('lanza error 422 si el contenedor no estÃ¡ en CLIENTE', async () => {
       Contenedor.findById.mockResolvedValue(makeContenedor('INACTIVO'))
 
       await expect(registrarDevolucion('cont-id', new Date())).rejects.toMatchObject({ status: 422 })
@@ -387,11 +387,11 @@ describe('contenedorService', () => {
   })
 
   // ---------------------------------------------------------------------------
-  // cancelarCiclo (CARGADO → INACTIVO sin coste)
+  // cancelarCiclo (PUERTO â†’ INACTIVO sin coste)
   // ---------------------------------------------------------------------------
   describe('cancelarCiclo', () => {
     it('cancela el ciclo activo y devuelve el contenedor a INACTIVO', async () => {
-      Contenedor.findById.mockResolvedValue(makeContenedor('CARGADO'))
+      Contenedor.findById.mockResolvedValue(makeContenedor('PUERTO'))
       Ciclo.findOneAndDelete.mockResolvedValue({})
       Contenedor.findByIdAndUpdate.mockReturnValue({
         lean: jest.fn().mockResolvedValue({ estado: 'INACTIVO', fechaEntradaPuerto: null }),
@@ -404,14 +404,14 @@ describe('contenedorService', () => {
       expect(result.fechaEntradaPuerto).toBeNull()
     })
 
-    it('lanza error 422 si el contenedor no está en CARGADO', async () => {
+    it('lanza error 422 si el contenedor no estÃ¡ en PUERTO', async () => {
       Contenedor.findById.mockResolvedValue(makeContenedor('CLIENTE'))
 
       await expect(cancelarCiclo('cont-id')).rejects.toMatchObject({ status: 422 })
       expect(Ciclo.findOneAndDelete).not.toHaveBeenCalled()
     })
 
-    it('lanza error 422 si el contenedor está en INACTIVO', async () => {
+    it('lanza error 422 si el contenedor estÃ¡ en INACTIVO', async () => {
       Contenedor.findById.mockResolvedValue(makeContenedor('INACTIVO'))
 
       await expect(cancelarCiclo('cont-id')).rejects.toMatchObject({ status: 422 })
@@ -473,9 +473,9 @@ describe('contenedorService', () => {
     it('filtra por estado cuando se proporciona', async () => {
       mockPopulateSortLean([])
 
-      await listar({ estado: 'CARGADO' })
+      await listar({ estado: 'PUERTO' })
 
-      expect(Contenedor.find).toHaveBeenCalledWith(expect.objectContaining({ estado: 'CARGADO' }))
+      expect(Contenedor.find).toHaveBeenCalledWith(expect.objectContaining({ estado: 'PUERTO' }))
     })
 
     it('filtra por navieraId cuando se proporciona', async () => {
@@ -560,7 +560,7 @@ describe('contenedorService', () => {
 
       await actualizar('cont-id', {
         codigoBIC: 'MSCU9999999',
-        estado: 'CARGADO',
+        estado: 'PUERTO',
         fechaEntradaPuerto: new Date(),
         fechaSalidaPuerto: new Date(),
         fechaDevolucion: new Date(),
@@ -582,3 +582,4 @@ describe('contenedorService', () => {
     })
   })
 })
+
