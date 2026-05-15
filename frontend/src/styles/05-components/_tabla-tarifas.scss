@@ -13,3 +13,68 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+// ── Visibilidad desktop / móvil ──────────────────────────────────────
+.tabla-tarifas-wrapper--desktop { display: block; }
+.tabla-tarifas-wrapper--movil   { display: none;  }
+
+@media (max-width: 767px) {
+  .tabla-tarifas-wrapper--desktop { display: none;  }
+  .tabla-tarifas-wrapper--movil   { display: block; width: 100%; }
+}
+
+// ── Tablas móvil ─────────────────────────────────────────────────────
+.tabla-tarifas-movil {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-24);
+  width:          100%;
+
+  &__bloque {
+    display:          flex;
+    flex-direction:   column;
+    gap:              var(--space-8);
+    background-color: var(--color-card-almacen);
+    border-radius:    var(--radius);
+    padding:          var(--space-8);
+  }
+
+  &__titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-semibold);
+    color:       var(--color-box-text);
+    text-align:  center;
+  }
+
+  &__scroll {
+    overflow-x:                 auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__tabla {
+    width:           100%;
+    border-collapse: collapse;
+    font-family:     var(--font-body);
+    font-size:       var(--text-16);
+    color:           var(--color-box-text);
+
+    th, td {
+      padding:    var(--space-8);
+      border:     1px solid rgba(255 255 255 / 0.3);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    th {
+      font-family: var(--font-heading);
+      font-size:   var(--text-16);
+      font-weight: var(--font-weight-semibold);
+      background-color: rgba(0 0 0 / 0.15);
+    }
+
+    tr:nth-child(even) td {
+      background-color: rgba(0 0 0 / 0.08);
+    }
+  }
+}
