@@ -1,4 +1,9 @@
+import { useState } from 'react'
+
 function CeldaTabla({ label, tamanio = 'md', fuente = 'heading', editable = false, readonly = false, onChange }) {
+  const [displayValue, setDisplayValue] = useState(label)
+  const [focused,      setFocused]      = useState(false)
+
   const clases = `celda-tabla celda-tabla--${tamanio}${fuente === 'body' ? ' celda-tabla--body' : ''}`
 
   if (editable || readonly) {
@@ -6,9 +11,22 @@ function CeldaTabla({ label, tamanio = 'md', fuente = 'heading', editable = fals
       <div className={clases}>
         <input
           className="celda-tabla__input"
-          value={label}
+          value={focused ? displayValue : label}
           readOnly={readonly}
-          onChange={e => onChange?.(e.target.value)}
+          onFocus={() => {
+            if (!readonly) {
+              setFocused(true)
+              setDisplayValue('')
+            }
+          }}
+          onBlur={() => {
+            setFocused(false)
+            if (displayValue === '') setDisplayValue(label)
+          }}
+          onChange={e => {
+            setDisplayValue(e.target.value)
+            onChange?.(e.target.value)
+          }}
         />
       </div>
     )
