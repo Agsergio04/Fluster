@@ -83,9 +83,13 @@
   }
 
   &__botones {
-    display:         flex;
-    justify-content: center;
-    gap:             var(--space-16);
-    padding:         var(--space-16) var(--space-8) var(--space-8);
+    display: flex;
+    gap:     var(--space-16);
+    padding: var(--space-16) var(--space-8) var(--space-8);
+
+    .btn-accion-tarifa {
+      flex:    1;
+      padding: var(--space-16) var(--space-8);
+    }
   }
 }
