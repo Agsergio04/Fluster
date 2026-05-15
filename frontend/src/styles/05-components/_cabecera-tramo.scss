@@ -56,4 +56,14 @@
 
     .cabecera-tramo__badge { background-color: var(--color-inactivo-inner); }
   }
+
+  @media (max-width: 1023px) {
+    &__label    { font-size: var(--text-32); }
+    &__cantidad { font-size: var(--text-24); }
+  }
+
+  @media (max-width: 767px) {
+    &__label    { font-size: var(--text-24); }
+    &__cantidad { font-size: var(--text-16); }
+  }
 }
