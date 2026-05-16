@@ -344,6 +344,43 @@ async function cancelarCiclo(id) {
 }
 
 /**
+ * Revierte la salida al cliente (CLIENTE → PUERTO).
+ * Elimina los datos de detention del ciclo activo y restaura el estado PUERTO.
+ */
+async function revertirSalidaPuerto(id) {
+  const contenedor = await Contenedor.findById(id)
+  if (!contenedor) {
+    const err = new Error('Contenedor no encontrado')
+    err.status = 404
+    throw err
+  }
+  if (contenedor.estado !== 'CLIENTE') {
+    const err = new Error(`Solo se puede revertir desde estado CLIENTE (actual: ${contenedor.estado})`)
+    err.status = 422
+    throw err
+  }
+
+  await Ciclo.findOneAndUpdate(
+    { contenedorId: id, fechaCierre: null },
+    {
+      $unset: {
+        'demurrage.fechaFin':           '',
+        'demurrage.diasTranscurridos':  '',
+        'demurrage.diasFacturables':    '',
+        'demurrage.costeTotal':         '',
+        detention:                      '',
+      },
+    }
+  )
+
+  return Contenedor.findByIdAndUpdate(
+    id,
+    { estado: 'PUERTO', fechaSalidaPuerto: null },
+    { new: true }
+  ).lean()
+}
+
+/**
  * Elimina un contenedor y todos sus ciclos asociados.
  * Solo se puede eliminar si está en estado INACTIVO; un contenedor activo
  * tiene costes en curso que no deben perderse.

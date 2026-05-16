@@ -97,4 +97,13 @@ async function eliminar(req, res, next) {
   }
 }
 
-module.exports = { crear, listar, obtener, actualizar, editarContenedor, eliminar, entradaPuerto, salidaPuerto, devolucion, cancelarCiclo }
+async function revertirSalidaPuerto(req, res, next) {
+  try {
+    const contenedor = await contenedorService.revertirSalidaPuerto(req.params.id)
+    res.json(contenedor)
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { crear, listar, obtener, actualizar, editarContenedor, eliminar, entradaPuerto, salidaPuerto, devolucion, cancelarCiclo, revertirSalidaPuerto }

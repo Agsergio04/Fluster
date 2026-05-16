@@ -24,9 +24,10 @@ router.delete('/:id', verificarRol('operador'), contenedorController.eliminar)
 router.patch('/:id/editar', verificarRol('operador'), contenedorController.editarContenedor)
 
 // Transiciones de estado — solo gestor (página semáforo)
-router.patch('/:id/entrada-puerto', verificarRol('gestor'), contenedorController.entradaPuerto)
-router.patch('/:id/salida-puerto',  verificarRol('gestor'), contenedorController.salidaPuerto)
-router.patch('/:id/devolucion',     verificarRol('gestor'), contenedorController.devolucion)
-router.patch('/:id/cancelar-ciclo', verificarRol('gestor'), contenedorController.cancelarCiclo)
+router.patch('/:id/entrada-puerto',   verificarRol('gestor'), contenedorController.entradaPuerto)
+router.patch('/:id/salida-puerto',    verificarRol('gestor'), contenedorController.salidaPuerto)
+router.patch('/:id/revertir-salida',  verificarRol('gestor'), contenedorController.revertirSalidaPuerto)
+router.patch('/:id/devolucion',       verificarRol('gestor'), contenedorController.devolucion)
+router.patch('/:id/cancelar-ciclo',   verificarRol('gestor'), contenedorController.cancelarCiclo)
 
 module.exports = router
