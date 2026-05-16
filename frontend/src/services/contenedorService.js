@@ -31,3 +31,27 @@ export async function entradaPuerto(id, clienteId) {
   })
   return data
 }
+
+export async function salidaPuerto(id) {
+  const { data } = await apiClient.patch(`/contenedores/${id}/salida-puerto`, {
+    fecha: new Date().toISOString(),
+  })
+  return data
+}
+
+export async function revertirSalidaPuerto(id) {
+  const { data } = await apiClient.patch(`/contenedores/${id}/revertir-salida`)
+  return data
+}
+
+export async function devolucion(id) {
+  const { data } = await apiClient.patch(`/contenedores/${id}/devolucion`, {
+    fecha: new Date().toISOString(),
+  })
+  return data
+}
+
+export async function cancelarCiclo(id) {
+  const { data } = await apiClient.patch(`/contenedores/${id}/cancelar-ciclo`)
+  return data
+}
