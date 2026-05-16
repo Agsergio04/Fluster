@@ -413,6 +413,7 @@ module.exports = {
   eliminar,
   registrarEntradaPuerto,
   registrarSalidaPuerto,
+  revertirSalidaPuerto,
   registrarDevolucion,
   cancelarCiclo,
 }
