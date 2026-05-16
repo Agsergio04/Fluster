@@ -23,3 +23,11 @@ export async function actualizarContenedor(id, datos) {
 export async function eliminarContenedor(id) {
   await apiClient.delete(`/contenedores/${id}`)
 }
+
+export async function entradaPuerto(id, clienteId) {
+  const { data } = await apiClient.patch(`/contenedores/${id}/entrada-puerto`, {
+    fecha: new Date().toISOString(),
+    clienteId,
+  })
+  return data
+}

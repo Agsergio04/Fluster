@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './semaforo.scss'
 import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import { obtenerAgrupados } from '../../services/semaforoService'
+import { crearCliente } from '../../services/clienteService'
+import { entradaPuerto } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
+import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
 
 const TRAMOS = ['sin-coste', 'primer-tramo', 'segundo-tramo', 'inactivo']
 
@@ -28,32 +31,52 @@ function Semaforo() {
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [busquedas, setBusquedas] = useState({
+  const [busquedas,   setBusquedas]   = useState({
     'sin-coste': '', 'primer-tramo': '', 'segundo-tramo': '', 'inactivo': '',
   })
-  const [grupos, setGrupos] = useState({
+  const [grupos,      setGrupos]      = useState({
     'sin-coste': [], 'primer-tramo': [], 'segundo-tramo': [], 'inactivo': [],
   })
+  const [modalPuerto, setModalPuerto] = useState(null) // null | { id }
 
-  useEffect(() => {
+  const cargarGrupos = useCallback(() => {
     obtenerAgrupados()
       .then(data => setGrupos({
-        'sin-coste':    (data.freeTime     ?? []).map(c => mapearContenedor(c, 'sin-coste')),
-        'primer-tramo': (data.primerTramo  ?? []).map(c => mapearContenedor(c, 'primer-tramo')),
-        'segundo-tramo':(data.segundoTramo ?? []).map(c => mapearContenedor(c, 'segundo-tramo')),
-        'inactivo':     (data.inactivos    ?? []).map(c => mapearContenedor(c, 'inactivo')),
+        'sin-coste':     (data.freeTime     ?? []).map(c => mapearContenedor(c, 'sin-coste')),
+        'primer-tramo':  (data.primerTramo  ?? []).map(c => mapearContenedor(c, 'primer-tramo')),
+        'segundo-tramo': (data.segundoTramo ?? []).map(c => mapearContenedor(c, 'segundo-tramo')),
+        'inactivo':      (data.inactivos    ?? []).map(c => mapearContenedor(c, 'inactivo')),
       }))
       .catch(() => {})
   }, [])
+
+  useEffect(() => { cargarGrupos() }, [cargarGrupos])
+
+  const handleEntradaPuerto = async (nombre) => {
+    try {
+      const cliente = await crearCliente(nombre)
+      await entradaPuerto(modalPuerto.id, cliente._id)
+      setModalPuerto(null)
+      cargarGrupos()
+    } catch (err) {
+      console.error('Error en entrada a puerto:', err)
+    }
+  }
 
   const handleBusquedaCambio = (tramo, valor) =>
     setBusquedas(prev => ({ ...prev, [tramo]: valor }))
 
   const itemsFiltrados = tramo =>
-    grupos[tramo].filter(item =>
-      !busquedas[tramo].trim() ||
-      item.codigoBic.toLowerCase().includes(busquedas[tramo].trim().toLowerCase())
-    )
+    grupos[tramo]
+      .filter(item =>
+        !busquedas[tramo].trim() ||
+        item.codigoBic.toLowerCase().includes(busquedas[tramo].trim().toLowerCase())
+      )
+      .map(item =>
+        tramo === 'inactivo'
+          ? { ...item, mostrarAnterior: false, mostrarSiguiente: true, onSiguiente: () => setModalPuerto({ id: item.id }) }
+          : { ...item, mostrarAnterior: false, mostrarSiguiente: false }
+      )
 
   return (
     <div className="semaforo">
@@ -87,6 +110,12 @@ function Semaforo() {
           />
         ))}
       </div>
+      {modalPuerto && (
+        <ModalEntradaPuerto
+          onConfirmar={handleEntradaPuerto}
+          onCancelar={() => setModalPuerto(null)}
+        />
+      )}
     </div>
   )
 }
