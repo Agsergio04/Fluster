@@ -7,6 +7,7 @@ $tramo-etiqueta-ancho: 11rem;
 
   &__cabecera {
     display:     flex;
+    flex-wrap:   wrap;
     align-items: center;
     gap:         var(--space-8);
   }
@@ -27,6 +28,7 @@ $tramo-etiqueta-ancho: 11rem;
 
   &__fila {
     display:     flex;
+    flex-wrap:   wrap;
     align-items: center;
     gap:         var(--space-16);
     padding:     0 var(--space-8);
