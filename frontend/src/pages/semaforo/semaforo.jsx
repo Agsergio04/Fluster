@@ -12,20 +12,32 @@ import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
 
 const TRAMOS = ['sin-coste', 'primer-tramo', 'segundo-tramo', 'inactivo']
 
+const TRAMO_SUFIJO = {
+  'sin-coste':     'free',
+  'primer-tramo':  'primer',
+  'segundo-tramo': 'segundo',
+}
+
 const ultimaFecha = c => {
   const fecha = c.fechaDevolucion ?? c.fechaSalidaPuerto ?? c.fechaEntradaPuerto ?? c.fechaInicioLibre
   return fecha ? new Date(fecha).toLocaleDateString('es-ES') : '-'
 }
 
-const mapearContenedor = (c, estado) => ({
-  id:              c._id,
-  estado,
-  estadoBackend:   c.estado,
-  codigoBic:       c.codigoBIC,
-  ultimaOperacion: ultimaFecha(c),
-  cliente:         c._semaforo?.cliente ?? null,
-  tarifaAcumulada: 0,
-})
+const mapearContenedor = (c, tramo) => {
+  const estadoBackend = c.estado
+  const estado = estadoBackend === 'INACTIVO'
+    ? 'inactivo'
+    : `${estadoBackend.toLowerCase()}-${TRAMO_SUFIJO[tramo] ?? 'free'}`
+  return {
+    id:              c._id,
+    estado,
+    estadoBackend,
+    codigoBic:       c.codigoBIC,
+    ultimaOperacion: ultimaFecha(c),
+    cliente:         c._semaforo?.cliente ?? null,
+    tarifaAcumulada: 0,
+  }
+}
 
 function Semaforo() {
   const navigate = useNavigate()
