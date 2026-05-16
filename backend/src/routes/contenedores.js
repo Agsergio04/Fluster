@@ -20,8 +20,8 @@ router.put('/:id', verificarRol('gestor'), contenedorController.actualizar)
 // Borrado — solo operador (página contenedores), solo si está INACTIVO
 router.delete('/:id', verificarRol('operador'), contenedorController.eliminar)
 
-// Edición de foto y fecha de inclusión — operador (página contenedores)
-router.patch('/:id/editar', verificarRol('operador'), contenedorController.editarContenedor)
+// Edición de foto y fecha de inclusión — operador y gestor
+router.patch('/:id/editar', verificarRol('operador', 'gestor'), contenedorController.editarContenedor)
 
 // Transiciones de estado — solo gestor (página semáforo)
 router.patch('/:id/entrada-puerto',   verificarRol('gestor'), contenedorController.entradaPuerto)

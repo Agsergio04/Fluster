@@ -5,10 +5,11 @@ import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import { obtenerAgrupados } from '../../services/semaforoService'
 import { crearCliente } from '../../services/clienteService'
-import { entradaPuerto, salidaPuerto, cancelarCiclo, revertirSalidaPuerto, devolucion } from '../../services/contenedorService'
+import { entradaPuerto, salidaPuerto, cancelarCiclo, revertirSalidaPuerto, devolucion, actualizarContenedor } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
+import ModalEditarFecha from '../../components/organismos/ModalEditarFecha'
 
 const TRAMOS = ['sin-coste', 'primer-tramo', 'segundo-tramo', 'inactivo']
 
@@ -29,13 +30,14 @@ const mapearContenedor = (c, tramo) => {
     ? 'inactivo'
     : `${estadoBackend.toLowerCase()}-${TRAMO_SUFIJO[tramo] ?? 'free'}`
   return {
-    id:              c._id,
+    id:               c._id,
     estado,
     estadoBackend,
-    codigoBic:       c.codigoBIC,
-    ultimaOperacion: ultimaFecha(c),
-    cliente:         c._semaforo?.cliente ?? null,
-    tarifaAcumulada: 0,
+    codigoBic:        c.codigoBIC,
+    ultimaOperacion:  ultimaFecha(c),
+    fechaInicioLibre: c.fechaInicioLibre ?? null,
+    cliente:          c._semaforo?.cliente ?? null,
+    tarifaAcumulada:  0,
   }
 }
 
@@ -50,7 +52,8 @@ function Semaforo() {
   const [grupos,      setGrupos]      = useState({
     'sin-coste': [], 'primer-tramo': [], 'segundo-tramo': [], 'inactivo': [],
   })
-  const [modalPuerto, setModalPuerto] = useState(null) // null | { id }
+  const [modalPuerto,  setModalPuerto]  = useState(null) // null | { id }
+  const [modalFecha,   setModalFecha]   = useState(null) // null | { id, fechaInicioLibre }
 
   const cargarGrupos = useCallback(() => {
     obtenerAgrupados()
@@ -94,6 +97,18 @@ function Semaforo() {
     }
   }
 
+  const handleEditarFecha = async (nuevaFecha) => {
+    try {
+      await actualizarContenedor(modalFecha.id, {
+        fechaInicioLibre: new Date(nuevaFecha).toISOString(),
+      })
+      setModalFecha(null)
+      cargarGrupos()
+    } catch (err) {
+      console.error('Error al editar fecha:', err)
+    }
+  }
+
   const handleRevertirSalida = async (id) => {
     try {
       await revertirSalidaPuerto(id)
@@ -122,8 +137,9 @@ function Semaforo() {
         item.codigoBic.toLowerCase().includes(busquedas[tramo].trim().toLowerCase())
       )
       .map(item => {
+        const editarFecha = () => setModalFecha({ id: item.id, fechaInicioLibre: item.fechaInicioLibre })
         if (tramo === 'inactivo') {
-          return { ...item, mostrarAnterior: false, mostrarSiguiente: true, onSiguiente: () => setModalPuerto({ id: item.id }) }
+          return { ...item, mostrarAnterior: false, mostrarSiguiente: true, onSiguiente: () => setModalPuerto({ id: item.id }), onEditarFecha: editarFecha }
         }
         if (item.estadoBackend === 'PUERTO') {
           return {
@@ -132,6 +148,7 @@ function Semaforo() {
             mostrarSiguiente: true,
             onAnterior: () => handleCancelarCiclo(item.id),
             onSiguiente: () => handleSalidaPuerto(item.id),
+            onEditarFecha: editarFecha,
           }
         }
         if (item.estadoBackend === 'CLIENTE') {
@@ -141,9 +158,10 @@ function Semaforo() {
             mostrarSiguiente: true,
             onAnterior: () => handleRevertirSalida(item.id),
             onSiguiente: () => handleDevolucion(item.id),
+            onEditarFecha: editarFecha,
           }
         }
-        return { ...item, mostrarAnterior: false, mostrarSiguiente: false }
+        return { ...item, mostrarAnterior: false, mostrarSiguiente: false, onEditarFecha: editarFecha }
       })
 
   return (
@@ -182,6 +200,13 @@ function Semaforo() {
         <ModalEntradaPuerto
           onConfirmar={handleEntradaPuerto}
           onCancelar={() => setModalPuerto(null)}
+        />
+      )}
+      {modalFecha && (
+        <ModalEditarFecha
+          fechaActual={modalFecha.fechaInicioLibre}
+          onConfirmar={handleEditarFecha}
+          onCancelar={() => setModalFecha(null)}
         />
       )}
     </div>
