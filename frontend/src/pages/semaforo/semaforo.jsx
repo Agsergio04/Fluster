@@ -5,7 +5,7 @@ import useTema from '../../hooks/useTema'
 import { getUsuario } from '../../services/session'
 import { obtenerAgrupados } from '../../services/semaforoService'
 import { crearCliente } from '../../services/clienteService'
-import { entradaPuerto, salidaPuerto, cancelarCiclo } from '../../services/contenedorService'
+import { entradaPuerto, salidaPuerto, cancelarCiclo, revertirSalidaPuerto, devolucion } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
@@ -82,6 +82,24 @@ function Semaforo() {
     }
   }
 
+  const handleRevertirSalida = async (id) => {
+    try {
+      await revertirSalidaPuerto(id)
+      cargarGrupos()
+    } catch (err) {
+      console.error('Error al revertir salida:', err)
+    }
+  }
+
+  const handleDevolucion = async (id) => {
+    try {
+      await devolucion(id)
+      cargarGrupos()
+    } catch (err) {
+      console.error('Error en devolucion:', err)
+    }
+  }
+
   const handleBusquedaCambio = (tramo, valor) =>
     setBusquedas(prev => ({ ...prev, [tramo]: valor }))
 
@@ -102,6 +120,15 @@ function Semaforo() {
             mostrarSiguiente: true,
             onAnterior: () => handleCancelarCiclo(item.id),
             onSiguiente: () => handleSalidaPuerto(item.id),
+          }
+        }
+        if (item.estadoBackend === 'CLIENTE') {
+          return {
+            ...item,
+            mostrarAnterior: true,
+            mostrarSiguiente: true,
+            onAnterior: () => handleRevertirSalida(item.id),
+            onSiguiente: () => handleDevolucion(item.id),
           }
         }
         return { ...item, mostrarAnterior: false, mostrarSiguiente: false }
