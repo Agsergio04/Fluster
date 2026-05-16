@@ -13,6 +13,17 @@ const Ciclo = require('../models/Ciclo')
 // Helpers privados
 // ---------------------------------------------------------------------------
 
+function calcularCosteTramos(diasFacturables, tramos) {
+  if (diasFacturables <= 0 || !tramos?.length) return 0
+  let total = 0
+  for (const tramo of tramos) {
+    if (diasFacturables < tramo.desdeDia) break
+    const fin = tramo.hastaDia === null ? diasFacturables : Math.min(tramo.hastaDia, diasFacturables)
+    total += (fin - tramo.desdeDia + 1) * tramo.precioPorDia
+  }
+  return total
+}
+
 function calcularDiasHastaHoy(fechaInicio) {
   const inicio = new Date(fechaInicio)
   const hoy = new Date()
@@ -99,16 +110,19 @@ async function obtenerAgrupados() {
     }
 
     const naviera = contenedor.navieraId
-    let diasTranscurridos, diasFacturables, tramos
+    let diasTranscurridos, diasFacturables, tramos, costeAcumulado
 
     if (contenedor.estado === 'PUERTO') {
       diasTranscurridos = calcularDiasHastaHoy(ciclo.demurrage.fechaInicio)
-      diasFacturables = Math.max(0, diasTranscurridos - ciclo.demurrage.diasLibres)
-      tramos = naviera.diasDemurrage
+      diasFacturables   = Math.max(0, diasTranscurridos - ciclo.demurrage.diasLibres)
+      tramos            = naviera.diasDemurrage
+      costeAcumulado    = calcularCosteTramos(diasFacturables, tramos)
     } else {
       diasTranscurridos = calcularDiasHastaHoy(ciclo.detention.fechaInicio)
-      diasFacturables = Math.max(0, diasTranscurridos - ciclo.detention.diasLibres)
-      tramos = naviera.diasDetention
+      diasFacturables   = Math.max(0, diasTranscurridos - ciclo.detention.diasLibres)
+      tramos            = naviera.diasDetention
+      // El coste de demurrage ya está cerrado y guardado en el ciclo
+      costeAcumulado    = (ciclo.demurrage?.costeTotal ?? 0) + calcularCosteTramos(diasFacturables, tramos)
     }
 
     const grupo = determinarGrupo(diasFacturables, tramos)
@@ -118,6 +132,7 @@ async function obtenerAgrupados() {
       _semaforo: {
         diasTranscurridos,
         diasFacturables,
+        costeAcumulado,
         cliente: ciclo.clienteId?.nombre ?? null,
       },
     })

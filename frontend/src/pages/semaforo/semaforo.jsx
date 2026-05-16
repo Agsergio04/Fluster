@@ -37,7 +37,7 @@ const mapearContenedor = (c, tramo) => {
     ultimaOperacion:  ultimaFecha(c),
     fechaInicioLibre: c.fechaInicioLibre ?? null,
     cliente:          c._semaforo?.cliente ?? null,
-    tarifaAcumulada:  0,
+    tarifaAcumulada:  c._semaforo?.costeAcumulado ?? 0,
   }
 }
 
