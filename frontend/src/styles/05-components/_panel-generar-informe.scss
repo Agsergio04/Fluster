@@ -11,6 +11,7 @@
   // ── Sección de filtros ──────────────────────────────────────────
   &__filtros {
     display:     flex;
+    flex-wrap:   wrap;
     gap:         var(--space-32);
     align-items: center;
     padding:     var(--space-8);
@@ -40,6 +41,7 @@
 
   &__rango {
     display:     flex;
+    flex-wrap:   wrap;
     gap:         var(--space-56);
     align-items: center;
     width:       100%;
@@ -125,6 +127,7 @@
 
   &__opciones-grid {
     display:         flex;
+    flex-wrap:       wrap;
     align-items:     flex-start;
     justify-content: center;
     width:           100%;
