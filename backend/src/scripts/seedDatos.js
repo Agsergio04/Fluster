@@ -94,6 +94,18 @@ const NAVIERAS = [
       { desdeDia: 13, hastaDia: null, precioPorDia: 105 },
     ],
   },
+  {
+    nombre: 'BAF', codigo: 'BAFU',
+    diasLibresDemurrage: 3, diasLibresDetention: 5,
+    diasDemurrage: [
+      { desdeDia: 1,  hastaDia: 5,    precioPorDia: 60  },
+      { desdeDia: 6,  hastaDia: null, precioPorDia: 95  },
+    ],
+    diasDetention: [
+      { desdeDia: 1,  hastaDia: 5,    precioPorDia: 50  },
+      { desdeDia: 6,  hastaDia: null, precioPorDia: 80  },
+    ],
+  },
 ]
 
 const CLIENTES_SEED = [
@@ -136,6 +148,18 @@ async function upsertContenedor(datos, correoCreador) {
   if (existe) { console.log(`  [skip] ${datos.codigoBIC}`); return existe }
   const nuevo = await Contenedor.create(datos)
   console.log(`  [ok]   ${datos.codigoBIC} — estado: ${datos.estado}, creado por: ${correoCreador}`)
+  return nuevo
+}
+
+async function resetContenedor(datos, correoCreador) {
+  const existente = await Contenedor.findOne({ codigoBIC: datos.codigoBIC })
+  if (existente) {
+    await Ciclo.deleteMany({ contenedorId: existente._id })
+    await Evento.deleteMany({ contenedorId: existente._id })
+    await existente.deleteOne()
+  }
+  const nuevo = await Contenedor.create(datos)
+  console.log(`  [ok]   ${datos.codigoBIC} — ${datos.estado} — creado por: ${correoCreador}`)
   return nuevo
 }
 
@@ -214,161 +238,148 @@ async function run() {
   // ── Contenedores ───────────────────────────
   console.log('\n=== Contenedores ===')
 
-  // 1. INACTIVO — recién registrado, sin ciclo
+  // ── INACTIVO (2) ──────────────────────────
   const c1 = await upsertContenedor({
     codigoBIC: 'MAEU1234567', tipo: '20DC', estado: 'INACTIVO',
     navieraId: maeu._id, fechaInicioLibre: diasAtras(2), creadoPor: op1._id,
   }, 'operador1@fluster.com')
 
-  // 2. INACTIVO — recién registrado, sin ciclo
   const c2 = await upsertContenedor({
     codigoBIC: 'MSCU7654321', tipo: '40HC', estado: 'INACTIVO',
     navieraId: mscu._id, fechaInicioLibre: diasAtras(1), creadoPor: op2._id,
   }, 'operador2@fluster.com')
 
-  // 3. PUERTO — 8 días en puerto (supera 5 días libres de Maersk → acumula demurrage)
-  const c3 = await upsertContenedor({
+  // ── SIN COSTE / freeTime (2) ──────────────
+  // Maersk: 5 días libres demurrage. fechaInicioLibre 4 días → 0 facturables
+  const c3 = await resetContenedor({
     codigoBIC: 'MAEU2345678', tipo: '40DC', estado: 'PUERTO',
-    navieraId: maeu._id, fechaInicioLibre: diasAtras(12),
-    fechaEntradaPuerto: diasAtras(8), creadoPor: op1._id,
+    navieraId: maeu._id, fechaInicioLibre: diasAtras(4),
+    fechaEntradaPuerto: diasAtras(3), creadoPor: op1._id,
   }, 'operador1@fluster.com')
 
-  // 4. PUERTO — 4 días en puerto (dentro de los 7 días libres de MSC → sin coste aún)
-  const c4 = await upsertContenedor({
-    codigoBIC: 'MSCU3456789', tipo: '20DC', estado: 'PUERTO',
-    navieraId: mscu._id, fechaInicioLibre: diasAtras(10),
-    fechaEntradaPuerto: diasAtras(4), creadoPor: op3._id,
+  // MSC: 5 días libres detention. Salida 3 días → 0 facturables
+  const c4 = await resetContenedor({
+    codigoBIC: 'MSCU3456789', tipo: '20DC', estado: 'CLIENTE',
+    navieraId: mscu._id, fechaInicioLibre: diasAtras(18),
+    fechaEntradaPuerto: diasAtras(15), fechaSalidaPuerto: diasAtras(3), creadoPor: op3._id,
   }, 'operador3@fluster.com')
 
-  // 5. CLIENTE — 5 días con cliente (dentro de los 6 días libres CMA CGM → sin coste aún)
-  const c5 = await upsertContenedor({
-    codigoBIC: 'CMAU1234567', tipo: '40HC', estado: 'CLIENTE',
-    navieraId: cmau._id, fechaInicioLibre: diasAtras(20),
-    fechaEntradaPuerto: diasAtras(15), fechaSalidaPuerto: diasAtras(5),
-    creadoPor: op2._id,
+  // ── PRIMER TRAMO (2) ──────────────────────
+  // CMA CGM: 4 días libres demurrage. fechaInicioLibre 8 días → 4 facturables (tramo 1–4)
+  const c5 = await resetContenedor({
+    codigoBIC: 'CMAU1234567', tipo: '40HC', estado: 'PUERTO',
+    navieraId: cmau._id, fechaInicioLibre: diasAtras(8),
+    fechaEntradaPuerto: diasAtras(6), creadoPor: op2._id,
   }, 'operador2@fluster.com')
 
-  // 6. CLIENTE — 10 días con cliente (supera 7 días libres de Maersk → acumula detention)
-  const c6 = await upsertContenedor({
+  // Maersk: 7 días libres detention. Salida 12 días → 5 facturables (tramo 1–7)
+  const c6 = await resetContenedor({
     codigoBIC: 'MAEU4567890', tipo: '20DC', estado: 'CLIENTE',
     navieraId: maeu._id, fechaInicioLibre: diasAtras(25),
-    fechaEntradaPuerto: diasAtras(18), fechaSalidaPuerto: diasAtras(10),
-    creadoPor: op3._id,
+    fechaEntradaPuerto: diasAtras(20), fechaSalidaPuerto: diasAtras(12), creadoPor: op3._id,
   }, 'operador3@fluster.com')
 
-  // 7. INACTIVO — ciclo completado (MSC, coste finalizado)
-  const c7 = await upsertContenedor({
-    codigoBIC: 'MSCU5678901', tipo: '40DC', estado: 'INACTIVO',
-    navieraId: mscu._id, fechaInicioLibre: diasAtras(45),
-    fechaEntradaPuerto: diasAtras(40), fechaSalidaPuerto: diasAtras(25),
-    fechaDevolucion: diasAtras(5), creadoPor: op1._id,
+  // ── SEGUNDO TRAMO (2) ─────────────────────
+  // MSC: 7 días libres demurrage. fechaInicioLibre 25 días → 18 facturables (supera tramo 1–7)
+  const c7 = await resetContenedor({
+    codigoBIC: 'MSCU5678901', tipo: '40DC', estado: 'PUERTO',
+    navieraId: mscu._id, fechaInicioLibre: diasAtras(25),
+    fechaEntradaPuerto: diasAtras(22), creadoPor: op1._id,
   }, 'operador1@fluster.com')
 
-  // 8. INACTIVO — ciclo completado (CMA CGM, coste finalizado)
-  const c8 = await upsertContenedor({
-    codigoBIC: 'CMAU9876543', tipo: '40HC', estado: 'INACTIVO',
-    navieraId: cmau._id, fechaInicioLibre: diasAtras(60),
-    fechaEntradaPuerto: diasAtras(55), fechaSalidaPuerto: diasAtras(40),
-    fechaDevolucion: diasAtras(15), creadoPor: op2._id,
+  // CMA CGM: 6 días libres detention. Salida 20 días → 14 facturables (supera tramo 1–6)
+  const c8 = await resetContenedor({
+    codigoBIC: 'CMAU9876543', tipo: '40HC', estado: 'CLIENTE',
+    navieraId: cmau._id, fechaInicioLibre: diasAtras(40),
+    fechaEntradaPuerto: diasAtras(35), fechaSalidaPuerto: diasAtras(20), creadoPor: op2._id,
   }, 'operador2@fluster.com')
 
   // ── Ciclos ─────────────────────────────────
   console.log('\n=== Ciclos ===')
 
-  // ── MAEU1234567 (INACTIVO) — 2 ciclos históricos completados
-  await upsertCiclo(c1._id, cicloCerrado(c1._id, cl1._id, maeu, 120, 100, 85))  // dem=20d det=15d
-  await upsertCiclo(c1._id, cicloCerrado(c1._id, cl2._id, maeu,  70,  58, 45))  // dem=12d det=13d
+  // ── MAEU1234567 (INACTIVO) — 2 ciclos históricos
+  await upsertCiclo(c1._id, cicloCerrado(c1._id, cl1._id, maeu, 120, 100, 85))
+  await upsertCiclo(c1._id, cicloCerrado(c1._id, cl2._id, maeu,  70,  58, 45))
 
-  // ── MSCU7654321 (INACTIVO) — 2 ciclos históricos completados
-  await upsertCiclo(c2._id, cicloCerrado(c2._id, cl2._id, mscu, 110,  95, 80))  // dem=15d det=15d
-  await upsertCiclo(c2._id, cicloCerrado(c2._id, cl3._id, mscu,  60,  50, 38))  // dem=10d det=12d
+  // ── MSCU7654321 (INACTIVO) — 2 ciclos históricos
+  await upsertCiclo(c2._id, cicloCerrado(c2._id, cl2._id, mscu, 110,  95, 80))
+  await upsertCiclo(c2._id, cicloCerrado(c2._id, cl3._id, mscu,  60,  50, 38))
 
-  // ── MAEU2345678 (PUERTO) — 2 ciclos cerrados + ciclo activo en demurrage
-  await upsertCiclo(c3._id, cicloCerrado(c3._id, cl3._id, maeu, 160, 140, 120)) // dem=20d det=20d
-  await upsertCiclo(c3._id, cicloCerrado(c3._id, cl1._id, maeu, 100,  82,  65)) // dem=18d det=17d
-  await upsertCiclo(c3._id, {
-    contenedorId: c3._id, clienteId: cl2._id,
-    demurrage: { diasLibres: maeu.diasLibresDemurrage, fechaInicio: diasAtras(8), fechaFin: null },
-    detention: null,
+  // ── MAEU2345678 (PUERTO, sin-coste) — ciclo activo, 0 días facturables
+  await Ciclo.create({
+    contenedorId: c3._id, clienteId: cl1._id,
+    demurrage: { diasLibres: maeu.diasLibresDemurrage, fechaInicio: diasAtras(4) },
   })
 
-  // ── MSCU3456789 (PUERTO) — 1 ciclo cerrado + ciclo activo en demurrage
-  await upsertCiclo(c4._id, cicloCerrado(c4._id, cl1._id, mscu, 130, 115,  98)) // dem=15d det=17d
-  await upsertCiclo(c4._id, {
-    contenedorId: c4._id, clienteId: cl2._id,
-    demurrage: { diasLibres: mscu.diasLibresDemurrage, fechaInicio: diasAtras(4), fechaFin: null },
-    detention: null,
-  })
-
-  // ── CMAU1234567 (CLIENTE) — 2 ciclos cerrados + ciclo activo en detention
-  await upsertCiclo(c5._id, cicloCerrado(c5._id, cl3._id, cmau, 150, 130, 110)) // dem=20d det=20d
-  await upsertCiclo(c5._id, cicloCerrado(c5._id, cl2._id, cmau,  90,  75,  58)) // dem=15d det=17d
+  // ── MSCU3456789 (CLIENTE, sin-coste) — demurrage cerrado + detention dentro de libres
   {
-    const demDias = 10, demLibres = cmau.diasLibresDemurrage
-    await upsertCiclo(c5._id, {
-      contenedorId: c5._id, clienteId: cl1._id,
+    const demDias = 12, demLibres = mscu.diasLibresDemurrage  // 12-7=5 facturables
+    await Ciclo.create({
+      contenedorId: c4._id, clienteId: cl2._id,
       demurrage: {
-        diasLibres: demLibres, fechaInicio: diasAtras(15), fechaFin: diasAtras(5),
-        diasTranscurridos: demDias, diasFacturables: Math.max(0, demDias - demLibres),
-        costeTotal: calcularCoste(demDias, demLibres, cmau.diasDemurrage),
+        diasLibres: demLibres, fechaInicio: diasAtras(15), fechaFin: diasAtras(3),
+        diasTranscurridos: demDias,
+        diasFacturables: Math.max(0, demDias - demLibres),
+        costeTotal: calcularCoste(demDias, demLibres, mscu.diasDemurrage),
       },
-      detention: { diasLibres: cmau.diasLibresDetention, fechaInicio: diasAtras(5), fechaFin: null },
+      detention: { diasLibres: mscu.diasLibresDetention, fechaInicio: diasAtras(3) },
     })
   }
 
-  // ── MAEU4567890 (CLIENTE) — 1 ciclo cerrado + ciclo activo en detention
-  await upsertCiclo(c6._id, cicloCerrado(c6._id, cl2._id, maeu, 160, 140, 120)) // dem=20d det=20d
+  // ── CMAU1234567 (PUERTO, primer-tramo) — 4 días facturables en tramo [1-4]
+  await Ciclo.create({
+    contenedorId: c5._id, clienteId: cl3._id,
+    demurrage: { diasLibres: cmau.diasLibresDemurrage, fechaInicio: diasAtras(8) },
+  })
+
+  // ── MAEU4567890 (CLIENTE, primer-tramo) — detention 5 días facturables en tramo [1-7]
   {
-    const demDias = 8, demLibres = maeu.diasLibresDemurrage
-    await upsertCiclo(c6._id, {
-      contenedorId: c6._id, clienteId: cl3._id,
+    const demDias = 8, demLibres = maeu.diasLibresDemurrage   // 8-5=3 facturables
+    await Ciclo.create({
+      contenedorId: c6._id, clienteId: cl1._id,
       demurrage: {
-        diasLibres: demLibres, fechaInicio: diasAtras(18), fechaFin: diasAtras(10),
-        diasTranscurridos: demDias, diasFacturables: Math.max(0, demDias - demLibres),
+        diasLibres: demLibres, fechaInicio: diasAtras(20), fechaFin: diasAtras(12),
+        diasTranscurridos: demDias,
+        diasFacturables: Math.max(0, demDias - demLibres),
         costeTotal: calcularCoste(demDias, demLibres, maeu.diasDemurrage),
       },
-      detention: { diasLibres: maeu.diasLibresDetention, fechaInicio: diasAtras(10), fechaFin: null },
+      detention: { diasLibres: maeu.diasLibresDetention, fechaInicio: diasAtras(12) },
     })
   }
 
-  // ── MSCU5678901 (INACTIVO) — 2 ciclos históricos + ciclo reciente ya cerrado
-  await upsertCiclo(c7._id, cicloCerrado(c7._id, cl1._id, mscu, 200, 178, 155)) // dem=22d det=23d
-  await upsertCiclo(c7._id, cicloCerrado(c7._id, cl3._id, mscu, 130, 112,  95)) // dem=18d det=17d
-  await upsertCiclo(c7._id, cicloCerrado(c7._id, cl2._id, mscu,  40,  25,   5)) // dem=15d det=20d
+  // ── MSCU5678901 (PUERTO, segundo-tramo) — 18 días facturables, supera tramo [1-7]
+  await Ciclo.create({
+    contenedorId: c7._id, clienteId: cl3._id,
+    demurrage: { diasLibres: mscu.diasLibresDemurrage, fechaInicio: diasAtras(25) },
+  })
 
-  // ── CMAU9876543 (INACTIVO) — 2 ciclos históricos + ciclo reciente ya cerrado
-  await upsertCiclo(c8._id, cicloCerrado(c8._id, cl2._id, cmau, 250, 225, 200)) // dem=25d det=25d
-  await upsertCiclo(c8._id, cicloCerrado(c8._id, cl1._id, cmau, 165, 147, 130)) // dem=18d det=17d
-  await upsertCiclo(c8._id, cicloCerrado(c8._id, cl3._id, cmau,  55,  40,  15)) // dem=15d det=25d
+  // ── CMAU9876543 (CLIENTE, segundo-tramo) — detention 14 días facturables, supera tramo [1-6]
+  {
+    const demDias = 15, demLibres = cmau.diasLibresDemurrage  // 15-4=11 facturables
+    await Ciclo.create({
+      contenedorId: c8._id, clienteId: cl2._id,
+      demurrage: {
+        diasLibres: demLibres, fechaInicio: diasAtras(35), fechaFin: diasAtras(20),
+        diasTranscurridos: demDias,
+        diasFacturables: Math.max(0, demDias - demLibres),
+        costeTotal: calcularCoste(demDias, demLibres, cmau.diasDemurrage),
+      },
+      detention: { diasLibres: cmau.diasLibresDetention, fechaInicio: diasAtras(20) },
+    })
+  }
 
   // ── Eventos ────────────────────────────────
   console.log('\n=== Eventos ===')
 
-  // MAEU2345678 — PUERTO: solo entrada_puerto
-  await upsertEvento(c3._id, 'entrada_puerto', diasAtras(8), op1._id)
-
-  // MSCU3456789 — PUERTO: solo entrada_puerto
-  await upsertEvento(c4._id, 'entrada_puerto', diasAtras(4), op3._id)
-
-  // CMAU1234567 — CLIENTE: entrada + salida_puerto
-  await upsertEvento(c5._id, 'entrada_puerto', diasAtras(15), op2._id)
-  await upsertEvento(c5._id, 'salida_puerto',  diasAtras(5),  op2._id)
-
-  // MAEU4567890 — CLIENTE: entrada + salida_puerto
-  await upsertEvento(c6._id, 'entrada_puerto', diasAtras(18), op3._id)
-  await upsertEvento(c6._id, 'salida_puerto',  diasAtras(10), op3._id)
-
-  // MSCU5678901 — INACTIVO completado: ciclo completo de eventos
-  await upsertEvento(c7._id, 'entrada_puerto',  diasAtras(40), op1._id)
-  await upsertEvento(c7._id, 'salida_puerto',   diasAtras(25), op1._id)
-  await upsertEvento(c7._id, 'llegada_almacen', diasAtras(24), op1._id)
-  await upsertEvento(c7._id, 'devolucion',      diasAtras(5),  op1._id)
-
-  // CMAU9876543 — INACTIVO completado: ciclo completo de eventos
-  await upsertEvento(c8._id, 'entrada_puerto',  diasAtras(55), op2._id)
-  await upsertEvento(c8._id, 'salida_puerto',   diasAtras(40), op2._id)
-  await upsertEvento(c8._id, 'llegada_almacen', diasAtras(39), op2._id)
-  await upsertEvento(c8._id, 'devolucion',      diasAtras(15), op2._id)
+  await upsertEvento(c3._id, 'entrada_puerto', diasAtras(3),  op1._id)
+  await upsertEvento(c4._id, 'entrada_puerto', diasAtras(15), op3._id)
+  await upsertEvento(c4._id, 'salida_puerto',  diasAtras(3),  op3._id)
+  await upsertEvento(c5._id, 'entrada_puerto', diasAtras(6),  op2._id)
+  await upsertEvento(c6._id, 'entrada_puerto', diasAtras(20), op3._id)
+  await upsertEvento(c6._id, 'salida_puerto',  diasAtras(12), op3._id)
+  await upsertEvento(c7._id, 'entrada_puerto', diasAtras(22), op1._id)
+  await upsertEvento(c8._id, 'entrada_puerto', diasAtras(35), op2._id)
+  await upsertEvento(c8._id, 'salida_puerto',  diasAtras(20), op2._id)
 
   // ─────────────────────────────────────────────
   console.log('\n══════════════════════════════════════════')
@@ -381,15 +392,11 @@ async function run() {
   console.log('  operador1@fluster.com  Test1234    [operador]')
   console.log('  operador2@fluster.com  Test1234    [operador]')
   console.log('  operador3@fluster.com  Test1234    [operador]')
-  console.log('\nContenedores creados:')
-  console.log('  MAEU1234567  INACTIVO  (op1) — sin ciclo')
-  console.log('  MSCU7654321  INACTIVO  (op2) — sin ciclo')
-  console.log('  MAEU2345678  PUERTO   (op1) — demurrage activo (8 días, >5 libres)')
-  console.log('  MSCU3456789  PUERTO   (op3) — demurrage activo (4 días, dentro de libres)')
-  console.log('  CMAU1234567  CLIENTE   (op2) — detention activa (5 días, dentro de libres)')
-  console.log('  MAEU4567890  CLIENTE   (op3) — detention activa (10 días, >7 libres)')
-  console.log('  MSCU5678901  INACTIVO  (op1) — ciclo cerrado con costes')
-  console.log('  CMAU9876543  INACTIVO  (op2) — ciclo cerrado con costes')
+  console.log('\nSemáforo:')
+  console.log('  INACTIVO     MAEU1234567  MSCU7654321')
+  console.log('  sin-coste    MAEU2345678 (PUERTO) · MSCU3456789 (CLIENTE)')
+  console.log('  primer-tramo CMAU1234567 (PUERTO) · MAEU4567890 (CLIENTE)')
+  console.log('  segundo-tramo MSCU5678901 (PUERTO) · CMAU9876543 (CLIENTE)')
 
   await mongoose.disconnect()
 }
