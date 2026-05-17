@@ -2,10 +2,10 @@ import BuscadorCard from './BuscadorCard'
 
 function BuscadorContenedores({ value, onChange, onBuscar }) {
   return (
-    <div className="buscador-contenedores">
-      <p className="buscador-contenedores__titulo">Buscador rápido</p>
+    <section className="buscador-contenedores" aria-label="Buscador rápido">
+      <h2 className="buscador-contenedores__titulo">Buscador rápido</h2>
       <BuscadorCard value={value} onChange={onChange} onBuscar={onBuscar} />
-    </div>
+    </section>
   )
 }
 
