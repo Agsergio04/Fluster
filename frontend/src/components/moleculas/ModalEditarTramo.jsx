@@ -26,15 +26,23 @@ function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar 
 
   return (
     <div className="modal-editar-contenedor" onClick={onCancelar}>
-      <div className="modal-editar-contenedor__panel" onClick={e => e.stopPropagation()}>
-
-        <h2 className="modal-editar-contenedor__label" style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>
+      <div
+        className="modal-editar-contenedor__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="editar-tramo-titulo"
+        onClick={e => e.stopPropagation()}
+      >
+        <h2 id="editar-tramo-titulo" className="modal-editar-contenedor__titulo">
           Editar {tramo}
         </h2>
 
         <div className="modal-editar-contenedor__campo">
-          <label className="modal-editar-contenedor__label">Fecha de inicio</label>
+          <label htmlFor="editar-tramo-inicio" className="modal-editar-contenedor__label">
+            Fecha de inicio
+          </label>
           <input
+            id="editar-tramo-inicio"
             type="date"
             className="modal-editar-contenedor__fecha-input"
             value={inicio}
@@ -43,8 +51,11 @@ function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar 
         </div>
 
         <div className="modal-editar-contenedor__campo">
-          <label className="modal-editar-contenedor__label">Fecha de fin</label>
+          <label htmlFor="editar-tramo-fin" className="modal-editar-contenedor__label">
+            Fecha de fin
+          </label>
           <input
+            id="editar-tramo-fin"
             type="date"
             className="modal-editar-contenedor__fecha-input"
             value={fin}

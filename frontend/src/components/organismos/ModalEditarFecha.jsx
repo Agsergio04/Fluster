@@ -12,11 +12,23 @@ function ModalEditarFecha({ fechaActual, onConfirmar, onCancelar }) {
 
   return (
     <div className="modal-editar-contenedor" onClick={onCancelar}>
-      <div className="modal-editar-contenedor__panel" onClick={e => e.stopPropagation()}>
-        <h2 className="modal-editar-contenedor__titulo">Editar fecha de operación</h2>
+      <div
+        className="modal-editar-contenedor__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="editar-fecha-titulo"
+        onClick={e => e.stopPropagation()}
+      >
+        <h2 id="editar-fecha-titulo" className="modal-editar-contenedor__titulo">
+          Editar fecha de operación
+        </h2>
+
         <div className="modal-editar-contenedor__campo">
-          <label className="modal-editar-contenedor__label">Fecha de inicio libre</label>
+          <label htmlFor="editar-fecha-input" className="modal-editar-contenedor__label">
+            Fecha de inicio libre
+          </label>
           <input
+            id="editar-fecha-input"
             type="date"
             className="modal-editar-contenedor__fecha-input"
             value={fecha}
@@ -25,9 +37,17 @@ function ModalEditarFecha({ fechaActual, onConfirmar, onCancelar }) {
             autoFocus
           />
         </div>
+
         <div className="modal-editar-contenedor__botones">
-          <button className="modal-editar-contenedor__btn-cancelar" onClick={onCancelar}>Cancelar</button>
           <button
+            type="button"
+            className="modal-editar-contenedor__btn-cancelar"
+            onClick={onCancelar}
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
             className="modal-editar-contenedor__btn-actualizar"
             disabled={!fecha}
             onClick={() => onConfirmar(fecha)}

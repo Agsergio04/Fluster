@@ -12,15 +12,21 @@ function ModalEntradaPuerto({ onConfirmar, onCancelar }) {
     <div className="modal-editar-contenedor" onClick={onCancelar}>
       <div
         className="modal-editar-contenedor__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="entrada-puerto-titulo"
         onClick={e => e.stopPropagation()}
       >
-        <h2 className="modal-entrada-puerto__titulo">Entrada a Puerto</h2>
+        <h2 id="entrada-puerto-titulo" className="modal-entrada-puerto__titulo">
+          Entrada a Puerto
+        </h2>
 
         <div className="modal-editar-contenedor__campo">
-          <label className="modal-editar-contenedor__label">
+          <label htmlFor="entrada-puerto-cliente" className="modal-editar-contenedor__label">
             Nombre del cliente
           </label>
           <input
+            id="entrada-puerto-cliente"
             className="modal-editar-contenedor__fecha-input"
             type="text"
             value={nombre}
@@ -33,15 +39,15 @@ function ModalEntradaPuerto({ onConfirmar, onCancelar }) {
 
         <div className="modal-editar-contenedor__botones">
           <button
-            className="modal-editar-contenedor__btn-cancelar"
             type="button"
+            className="modal-editar-contenedor__btn-cancelar"
             onClick={onCancelar}
           >
             Cancelar
           </button>
           <button
-            className="modal-editar-contenedor__btn-actualizar"
             type="button"
+            className="modal-editar-contenedor__btn-actualizar"
             disabled={!nombre.trim()}
             onClick={() => onConfirmar(nombre.trim())}
           >
