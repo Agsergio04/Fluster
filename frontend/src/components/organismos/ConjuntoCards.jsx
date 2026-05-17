@@ -72,7 +72,7 @@ function ConjuntoCards({
         onBuscar={onBuscar}
       />
       {items.length === 0 ? (
-        <p className="conjunto-cards__vacio">No hay elementos</p>
+        <p className="conjunto-cards__vacio" role="status">No hay elementos</p>
       ) : (
         <div className="conjunto-cards__grid">
           {paginaItems.map((item, i) => renderCard(item, i))}
