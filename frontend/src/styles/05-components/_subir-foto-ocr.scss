@@ -1,0 +1,200 @@
+.subir-foto-ocr {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         var(--space-8);
+  border:          1px solid var(--color-box-border);
+  border-radius:   var(--radius);
+  width:           100%;
+
+  &__cuerpo {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            5.375rem; // 86px, Figma-exact
+    width:          24.4375rem; // 391px, Figma-exact
+  }
+
+  &__icono {
+    width:  6.25rem; // 100px, Figma-exact
+    height: 6.0625rem; // 97px, Figma-exact
+    color:  var(--color-box-text);
+  }
+
+  &__info {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            2.875rem; // 46px, Figma-exact
+    width:          100%;
+  }
+
+  &__texto {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-32);
+    color:          var(--color-box-text);
+    width:          100%;
+  }
+
+  &__titulo {
+    font-family:  var(--font-heading);
+    font-size:    var(--text-40);
+    font-weight:  var(--font-weight-regular);
+    line-height:  var(--leading-tight);
+    text-align:   center;
+    white-space:  pre-wrap;
+  }
+
+  &__descripcion {
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-tight);
+  }
+
+  // ── Estado: imagen cargada ──────────────────────────────────────
+  &--introducido {
+    justify-content: flex-start;
+    align-items:     flex-start;
+  }
+
+  &__previsualizacion {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.375rem; // 6px, Figma-exact
+    align-items:    center;
+    padding:        var(--space-24) var(--space-8);
+    width:          29.0625rem; // 465px, Figma-exact
+    flex-shrink:    0;
+  }
+
+  &__previsualizacion-titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-40);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    line-height: var(--leading-tight);
+    width:       100%;
+  }
+
+  &__foto {
+    width:         20.5rem; // 328px, Figma-exact
+    height:        27.1875rem; // 435px, Figma-exact
+    border-radius: var(--radius);
+    object-fit:    cover;
+    flex-shrink:   0;
+  }
+
+  &__formulario {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            4.5625rem; // 73px, Figma-exact
+    flex:           1 0 0;
+    min-width:      0;
+  }
+
+  &__campo-bic {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+    width:          100%;
+    color:          var(--color-box-text);
+  }
+
+  &__bic-label {
+    font-family: var(--font-heading);
+    font-size:   var(--text-56);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-tight);
+  }
+
+  &__bic-input {
+    width:            100%;
+    padding:          var(--space-8);
+    background-color: var(--color-box-border);
+    border:           none;
+    border-radius:    var(--radius);
+    font-family:      var(--font-body);
+    font-size:        var(--text-32);
+    font-weight:      var(--font-weight-regular);
+    color:            var(--color-box-text);
+    line-height:      var(--leading-tight);
+
+    &:focus-visible {
+      outline:    none;
+      box-shadow: 0 0 0 3px var(--color-primary-off);
+    }
+  }
+
+  &__error-ocr {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-error);
+    line-height: var(--leading-snug);
+  }
+
+  &__formulario--solo {
+    width: 100%;
+  }
+
+  &__botones-inicio {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-16);
+    width:          100%;
+
+    .btn-seleccionar-foto,
+    .subir-foto-ocr__btn-manual {
+      width:      100%;
+      align-self: stretch;
+    }
+  }
+
+  &__btn-manual {
+    display:          inline-flex;
+    align-items:      center;
+    justify-content:  center;
+    padding:          var(--space-8);
+    background-color: var(--color-secondary);
+    border-radius:    var(--radius);
+    font-family:      var(--font-body);
+    font-size:        var(--text-24);
+    font-weight:      var(--font-weight-regular);
+    color:            var(--color-box-text);
+    transition:       background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-secondary-hover);
+    }
+  }
+
+  &__botones-accion {
+    display:        inline-flex;
+    flex-direction: column;
+    gap:            var(--space-40);
+  }
+
+  &__btn-introducir,
+  &__btn-cancelar {
+    display:          inline-flex;
+    align-items:      center;
+    justify-content:  center;
+    padding:          var(--space-8);
+    background-color: var(--color-secondary);
+    border-radius:    var(--radius);
+    font-family:      var(--font-body);
+    font-size:        var(--text-32);
+    font-weight:      var(--font-weight-regular);
+    color:            var(--color-box-text);
+    line-height:      var(--leading-tight);
+    transition:       background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-secondary-hover);
+    }
+  }
+}

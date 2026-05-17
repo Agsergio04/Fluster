@@ -1,0 +1,9 @@
+.fila-naviera-con-botones {
+  display:     flex;
+  gap:         var(--space-8);
+  align-items: flex-start;
+
+  .btn-accion-tarifa {
+    align-self: center;
+  }
+}

@@ -1,0 +1,87 @@
+// ITCSS — importar en orden de especificidad creciente
+// Cada capa amplía la anterior sin sobreescribirla
+
+// 00 Settings — variables CSS y de Sass (sin output CSS propio)
+@use './00-settings/css-variables';
+
+// 01 Tools — mixins y funciones (sin output CSS propio)
+@use './01-tools/mixins';
+
+// 02 Generic — reset y estilos de normalización
+@use './02-generic/reset';
+
+// 03 Elements — estilos base de etiquetas HTML sin clases
+@use './03-elements/elements';
+
+// 04 Layout — estructura de página y patrones de rejilla reutilizables
+@use './04-layout/layout';
+
+// 05 Components — componentes y páginas específicas
+// Se irán añadiendo aquí a medida que se creen
+@use './05-components/input';
+@use './05-components/btn-registro-login';
+@use './05-components/btn-cambio-registro-login';
+@use './05-components/btn-rol';
+@use './05-components/texto-cambiador-login-registro';
+@use './05-components/btn-generar-informe';
+@use './05-components/btn-accion-tarifa';
+@use './05-components/btn-eliminar';
+@use './05-components/btn-editar';
+@use './05-components/btn-editar-card-fecha';
+@use './05-components/btn-cambio-seccion';
+@use './05-components/btn-ir-izquierda';
+@use './05-components/btn-ir-derecha';
+@use './05-components/btn-busqueda';
+@use './05-components/btn-decision';
+@use './05-components/btn-editado-fecha-contenedor';
+@use './05-components/btn-seleccionar-foto';
+@use './05-components/btn-empezar-ahora';
+@use './05-components/btn-iniciar-sesion';
+@use './05-components/btn-menu-hamburguesa';
+@use './05-components/btn-cambiar-tema';
+@use './05-components/btn-desplegable-hamburguesa';
+@use './05-components/texto-con-entrada-datos';
+@use './05-components/cabecera-header';
+@use './05-components/cabecera-semaforo-card';
+@use './05-components/cabecera-tramo';
+@use './05-components/buscador-card';
+@use './05-components/buscador-contenedores';
+@use './05-components/tramo-de-fechas';
+@use './05-components/tarjeta-ciclo-contenedor';
+@use './05-components/estado-contenedor-semaforo';
+@use './05-components/btn-roles-card-usuario';
+@use './05-components/btn-cambiar-estado';
+@use './05-components/btn-borrar-usuario';
+@use './05-components/rol-asignado';
+@use './05-components/botones-movimiento-card';
+@use './05-components/card-usuario';
+@use './05-components/card-semaforo';
+@use './05-components/btn-card-almacen';
+@use './05-components/btn-operaciones-perfil';
+@use './05-components/informacion-home';
+@use './05-components/botones-menu-hamburguesa';
+@use './05-components/opcion-filtro';
+@use './05-components/celda-tabla';
+@use './05-components/cabecera-tablas-tarifas';
+@use './05-components/fila-naviera-tarifas';
+@use './05-components/fila-naviera-con-botones';
+@use './05-components/botones-acceso';
+@use './05-components/botones-seleccion-rol';
+@use './05-components/entrada-datos-form';
+@use './05-components/cambiar-credenciales';
+@use './05-components/card-almacen';
+@use './05-components/card-contenedor';
+@use './05-components/subir-foto-ocr';
+@use './05-components/panel-generar-informe';
+@use './05-components/historial-ciclos-contenedor';
+@use './05-components/introduccion-pagina';
+@use './05-components/header';
+@use './05-components/perfil-credenciales';
+@use './05-components/conjunto-cards';
+@use './05-components/conjunto-navieras';
+@use './05-components/tabla-tarifas';
+@use './05-components/modal-editar-contenedor';
+@use './05-components/notificacion';
+
+// 06 Utilities — clases de apoyo de alta especificidad
+@use './06-utilities/utilities';

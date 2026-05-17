@@ -1,0 +1,25 @@
+.btn-iniciar-sesion {
+  display:          inline-flex;
+  align-self:       flex-start;
+  align-items:      center;
+  justify-content:  center;
+  width:            23.5rem;
+  padding:          var(--space-8);
+  background-color: var(--color-secondary);
+  border-radius:    var(--radius);
+  font-family:      var(--font-body);
+  font-size:        var(--text-32);
+  font-weight:      var(--font-weight-regular);
+  color:            var(--color-box-text);
+  white-space:      nowrap;
+  transition:       background-color var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--color-secondary-off);
+    cursor:           not-allowed;
+  }
+}

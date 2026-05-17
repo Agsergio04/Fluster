@@ -1,0 +1,35 @@
+.btn-roles-card-usuario {
+  display:         inline-flex;
+  align-self:      flex-start;
+  align-items:     center;
+  justify-content: center;
+  padding:         var(--space-8);
+  border:          none;
+  border-radius:   var(--radius);
+  cursor:          pointer;
+  font-family:     var(--font-heading);
+  font-size:       var(--text-24);
+  font-weight:     var(--font-weight-regular);
+  line-height:     1;
+  white-space:     nowrap;
+  color:           var(--color-box-text);
+  background-color: var(--color-secondary);
+  transition:      background-color var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &--seleccionado {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &--off {
+    background-color: var(--color-secondary-off);
+  }
+
+  &:disabled {
+    background-color: var(--color-secondary-off);
+    cursor:           not-allowed;
+  }
+}

@@ -1,0 +1,23 @@
+.btn-decision {
+  display:          inline-flex;
+  align-self:       flex-start;
+  width:            2.625rem;
+  height:           2.8125rem;
+  background-color: var(--color-inactivo);
+  border:           2px solid var(--color-secondary);
+  border-radius:    100px;
+  transition:       background-color var(--transition-fast);
+
+  &--selected {
+    background-color: var(--color-secondary);
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor:  not-allowed;
+  }
+}

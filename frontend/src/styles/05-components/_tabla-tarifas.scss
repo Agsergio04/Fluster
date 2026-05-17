@@ -1,0 +1,91 @@
+.tabla-tarifas {
+  display:          flex;
+  flex-direction:   column;
+  align-items:      stretch;
+  width:            fit-content;
+  padding:          var(--space-8) 0.25rem;
+  background-color: var(--color-card-almacen);
+  border-radius:    var(--radius);
+}
+
+.tabla-tarifas-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+// ── Visibilidad desktop / tablet+móvil ──────────────────────────────
+.tabla-tarifas-wrapper--desktop { display: block; }
+.tabla-tarifas-wrapper--movil   { display: none;  }
+
+@media (max-width: 1023px) {
+  .tabla-tarifas-wrapper--desktop { display: none;  }
+  .tabla-tarifas-wrapper--movil   { display: block; width: 100%; }
+}
+
+// ── Variantes de celda para cabeceras de mini-tablas móvil ──────────
+.celda-tabla--grupo-titulo {
+  width: 18rem; // naviera(6) + sm(6) + sm(6)
+}
+
+.celda-tabla--subgrupo-titulo {
+  width: 18rem;
+}
+
+// ── Grupos por naviera en móvil ──────────────────────────────────────
+.grupo-naviera-movil {
+  display:          flex;
+  flex-direction:   column;
+  background-color: var(--color-card-almacen);
+  border-radius:    var(--radius);
+  padding:          var(--space-8) 0.25rem;
+
+  &__seccion {
+    display:        flex;
+    flex-direction: column;
+
+    & + & {
+      margin-top: var(--space-8);
+    }
+  }
+
+  &__bloque {
+    display:        flex;
+    flex-direction: column;
+  }
+
+  &__fila {
+    display: flex;
+    width:   100%;
+  }
+
+  // Celdas de datos: proporcional al reparto original (10:7.5:7.5 → 4:3:3)
+  .celda-tabla {
+    flex-shrink: 1;
+    min-width:   0; // permite que el flex-item encoja por debajo de su contenido
+
+    &--naviera { flex: 4 1 0; width: auto; }
+    &--sm      { flex: 3 1 0; width: auto; }
+
+    &__texto,
+    &__input {
+      flex-shrink: 1;
+      min-width:   0;
+      width:       100%;
+    }
+  }
+
+  // Celdas de cabecera de grupo/subgrupo: ancho completo
+  .celda-tabla--grupo-titulo,
+  .celda-tabla--subgrupo-titulo {
+    flex:  1 1 0;
+    width: auto;
+  }
+
+  &__botones {
+    display:         flex;
+    justify-content: center;
+    gap:             var(--space-16);
+    padding:         var(--space-16) var(--space-8) var(--space-8);
+  }
+}

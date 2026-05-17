@@ -1,0 +1,33 @@
+.opcion-filtro {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-16);
+  width:       100%;
+  background:  none;
+  cursor:      pointer;
+
+  &__circulo {
+    width:            2.625rem;   // 42px, Figma-exact
+    height:           2.8125rem;  // 45px, Figma-exact
+    border-radius:    100px;
+    border:           2px solid var(--color-secondary);
+    background-color: var(--color-inactivo);
+    flex-shrink:      0;
+    transition:       background-color var(--transition-fast);
+  }
+
+  &--seleccionada &__circulo {
+    background-color: var(--color-secondary);
+  }
+
+  &__label {
+    flex:        1 0 0;
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    min-width:   0;
+    text-align:  left;
+  }
+}

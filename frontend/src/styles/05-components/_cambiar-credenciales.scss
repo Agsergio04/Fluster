@@ -1,0 +1,41 @@
+.cambiar-nombre {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-16);
+  width:          16.3125rem; // 261px, Figma-exact
+
+  .input {
+    width:   100%;
+    display: flex;
+
+    &__label {
+      font-family: var(--font-body);
+      font-size:   var(--text-16);
+    }
+  }
+
+  .btn-registro-login {
+    width: 100%;
+  }
+}
+
+.cambiar-contrasenia {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-16);
+  width:          16.3125rem; // 261px, Figma-exact
+
+  .input {
+    width:   100%;
+    display: flex;
+
+    &__label {
+      font-family: var(--font-body);
+      font-size:   var(--text-16);
+    }
+  }
+
+  .btn-registro-login {
+    width: 100%;
+  }
+}

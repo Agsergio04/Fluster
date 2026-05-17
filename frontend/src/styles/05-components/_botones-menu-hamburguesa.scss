@@ -1,0 +1,13 @@
+.botones-menu-hamburguesa {
+  display:          flex;
+  flex-direction:   column;
+  gap:              var(--space-16);
+  padding:          var(--space-8);
+  background-color: var(--color-primary);
+  width:            100%;
+
+  .btn-desplegable-hamburguesa {
+    width:     100%;
+    align-self: stretch;
+  }
+}

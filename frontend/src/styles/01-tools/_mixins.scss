@@ -1,0 +1,92 @@
+@use '../00-settings/variables' as vars;
+
+
+// ── Breakpoints ──────────────────────────────────────────────────────
+// Uso: @include mobile { font-size: 1rem; }
+
+@mixin mobile {
+  @media (max-width: #{vars.$breakpoint-mobile}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{vars.$breakpoint-tablet}) {
+    @content;
+  }
+}
+
+
+// ── Layout ───────────────────────────────────────────────────────────
+// Uso: @include flex-col(var(--space-16))
+//      @include flex-row(var(--space-8), flex-start)
+
+@mixin flex-col($gap: null, $align: center) {
+  display:        flex;
+  flex-direction: column;
+  align-items:    $align;
+  @if $gap != null { gap: $gap; }
+}
+
+@mixin flex-row($gap: null, $align: center) {
+  display:     flex;
+  align-items: $align;
+  @if $gap != null { gap: $gap; }
+}
+
+
+// ── Tipografía ───────────────────────────────────────────────────────
+// Uso: @include texto(heading, vars.$text-64, vars.$font-weight-regular, vars.$leading-tight)
+//      @include texto(body)
+
+@mixin texto(
+  $familia:      heading,
+  $tamanio:      vars.$text-16,
+  $peso:         vars.$font-weight-regular,
+  $interlineado: vars.$leading-normal
+) {
+  font-family:  if($familia == heading, vars.$font-heading, vars.$font-body);
+  font-size:    $tamanio;
+  font-weight:  $peso;
+  line-height:  $interlineado;
+}
+
+
+// ── Accesibilidad ────────────────────────────────────────────────────
+// Aplica el anillo de foco estándar de la app al elemento padre.
+// Uso: @include foco-visible
+
+@mixin foco-visible {
+  &:focus-visible {
+    outline:       none;
+    box-shadow:    0 0 0 3px var(--color-primary-off);
+    border-radius: var(--radius);
+  }
+}
+
+
+// ── Texto ─────────────────────────────────────────────────────────────
+// Trunca el texto a una línea con puntos suspensivos.
+// Requiere que el elemento tenga un ancho definido o esté en un flex/grid.
+// Uso: @include truncar
+
+@mixin truncar {
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  white-space:   nowrap;
+}
+
+
+// ── Botones ───────────────────────────────────────────────────────────
+// Estructura base compartida por la mayoría de botones de la app.
+// Uso: @include btn-base
+//      @include btn-base(var(--space-16) var(--space-24))
+
+@mixin btn-base($padding: var(--space-8)) {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         $padding;
+  border-radius:   var(--radius);
+  transition:      background-color var(--transition-fast);
+}

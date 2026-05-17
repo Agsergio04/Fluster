@@ -1,0 +1,31 @@
+.texto-cambiador-login-registro {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-8);
+
+  &__pregunta {
+    font-family: var(--font-heading);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    white-space: nowrap;
+    line-height: var(--leading-tight);
+  }
+
+  &__boton {
+    padding:          0 var(--space-8);
+    background-color: var(--color-secondary-hover);
+    border-radius:    var(--radius);
+    font-family:      var(--font-body);
+    font-size:        var(--text-16);
+    font-weight:      var(--font-weight-regular);
+    color:            var(--color-box-text);
+    white-space:      nowrap;
+    line-height:      var(--leading-tight);
+    transition:       background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-secondary);
+    }
+  }
+}

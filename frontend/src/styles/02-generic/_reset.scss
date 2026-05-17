@@ -1,0 +1,116 @@
+/* =========================================
+   Reset — Box sizing
+========================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   Reset — Márgenes y paddings
+========================================= */
+
+* {
+  margin:  0;
+  padding: 0;
+}
+
+
+/* =========================================
+   Reset — Documento
+========================================= */
+
+html {
+  font-size:                16px;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust:    100%;
+  text-size-adjust:         100%;
+  scroll-behavior:          smooth;
+  color-scheme:             light dark;
+}
+
+body {
+  min-height:              100dvh;
+  font-family:             var(--font-body);
+  background-color:        var(--color-primary-off);
+  color:                   var(--color-text);
+  line-height:             1.5;
+  -webkit-font-smoothing:  antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* =========================================
+   Reset — Tipografía
+========================================= */
+
+p,
+h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+
+/* =========================================
+   Reset — Multimedia
+========================================= */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display:   block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+
+/* =========================================
+   Reset — Formularios
+========================================= */
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+
+/* =========================================
+   Reset — Tabla
+========================================= */
+
+table {
+  border-collapse: collapse;
+  border-spacing:  0;
+}
+
+
+/* =========================================
+   Reset — Atributo hidden
+========================================= */
+
+[hidden] {
+  display: none;
+}
+
+
+/* =========================================
+   Reset — Interacción móvil
+========================================= */
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}

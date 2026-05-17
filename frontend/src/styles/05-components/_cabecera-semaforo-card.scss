@@ -1,0 +1,11 @@
+.cabecera-semaforo-card {
+  display:          flex;
+  flex-wrap:        wrap;
+  align-items:      center;
+  justify-content:  space-between;
+  gap:              var(--space-8);
+  width:            100%;
+  padding:          var(--space-8);
+  border-radius:    var(--radius) var(--radius) 0 0;
+  background-color: var(--color-secondary);
+}

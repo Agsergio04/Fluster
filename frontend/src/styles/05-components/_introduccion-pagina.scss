@@ -1,0 +1,62 @@
+.introduccion-pagina {
+  display:     flex;
+  align-items: center;
+  width:       100%;
+  height:      35.5rem; // 568px, Figma-exact
+
+  &__contenido {
+    display:         flex;
+    flex-direction:  column;
+    gap:             4.5rem; // 72px, Figma-exact
+    align-items:     flex-start;
+    justify-content: center;
+    padding:         0 var(--space-24);
+    flex-shrink:     0;
+  }
+
+  &__titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    line-height: var(--leading-tight);
+    width:       100%;
+  }
+
+  &__descripcion {
+    font-family: var(--font-heading);
+    font-size:   var(--text-32);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    line-height: var(--leading-tight);
+    width:       56.25rem; // 900px, Figma-exact
+  }
+
+  &__botones {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+    align-items:    center;
+    width:          100%;
+
+    .btn-iniciar-sesion,
+    .btn-empezar-ahora {
+      align-self: center;
+    }
+  }
+
+  &__imagen {
+    flex:        1 0 0;
+    min-width:   0;
+    height:      100%;
+    overflow:    hidden;
+
+    img {
+      width:      100%;
+      height:     100%;
+      object-fit: cover;
+    }
+  }
+}

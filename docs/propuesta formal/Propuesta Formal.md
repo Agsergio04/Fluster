@@ -325,7 +325,17 @@ Fluster nace para dar respuesta a una necesidad concreta de las PYMEs logística
 
 Mediante una SPA basada en React y un backend Node.js + Express con MongoDB Atlas, el proyecto propone un registro estructurado del ciclo de vida del contenedor, el cálculo automático de días y costes y un panel visual de riesgo que permite anticiparse a los sobrecostes.  
 
-El uso de tecnologías abiertas, el enfoque en la simplicidad para el usuario final y una hoja de ruta realista hacen que Fluster sea un candidato sólido para el proyecto de 2º DAW y una solución potencialmente viable para su implantación en PYMEs del sector logístico.  
+El uso de tecnologías abiertas, el enfoque en la simplicidad para el usuario final y una hoja de ruta realista hacen que Fluster sea un candidato sólido para el proyecto de 2º DAW y una solución potencialmente viable para su implantación en PYMEs del sector logístico.
+
+### Líneas de trabajo futuras
+
+Como evolución natural del sistema, se identifican las siguientes líneas de mejora prioritarias:
+
+- **Soporte multi-organización (multi-tenant):** el MVP actual gestiona los contenedores de una única empresa. Una extensión lógica sería introducir un modelo `Organización` que agrupe usuarios y contenedores por empresa cliente, permitiendo que el administrador cree organizaciones desde su panel, asigne usuarios a cada una y que cada organización opere de forma completamente aislada sobre sus propios datos. Esta arquitectura convertiría Fluster en un SaaS ligero capaz de dar servicio a varias PYMEs desde una única instancia, manteniendo la separación de datos y roles que exige cada cliente.
+
+- **Geolocalización de eventos:** registrar la posición GPS en el momento de subir una foto aportaría trazabilidad adicional y facilitaría auditorías ante discrepancias con la naviera.
+
+- **Integración con sistemas externos:** exponer una API pública o webhooks permitiría conectar Fluster con ERPs o TMS ya existentes en la empresa cliente, automatizando la entrada de datos sin intervención manual.  
 
 
 

@@ -1,0 +1,55 @@
+// Utilities — clases de apoyo reutilizables de alta especificidad
+
+
+// ── Accesibilidad ─────────────────────────────────────────────────────
+
+// Visualmente oculto pero accesible para lectores de pantalla.
+// Usar en etiquetas descriptivas que no deben verse pero sí leerse.
+.sr-only {
+  position:    absolute;
+  width:       1px;
+  height:      1px;
+  padding:     0;
+  margin:      -1px;
+  overflow:    hidden;
+  clip:        rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border:      0;
+}
+
+
+// ── Texto ─────────────────────────────────────────────────────────────
+
+// Trunca el texto a una línea con puntos suspensivos.
+// El elemento debe tener un ancho definido o estar dentro de flex/grid.
+.truncar {
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  white-space:   nowrap;
+}
+
+.text-center { text-align: center; }
+.text-left   { text-align: left;   }
+.text-right  { text-align: right;  }
+
+// Evita saltos de línea (útil en etiquetas cortas de UI).
+.no-wrap { white-space: nowrap; }
+
+
+// ── Interacción ───────────────────────────────────────────────────────
+
+// Evita que el texto o los hijos se seleccionen al hacer clic
+// (útil en botones con doble clic o en drag & drop).
+.no-select { user-select: none; }
+
+// Fuerza cursor de puntero en elementos no interactivos por defecto.
+.pointer { cursor: pointer; }
+
+// Desactiva todos los eventos de ratón y toque (decorativos, overlays).
+.no-pointer { pointer-events: none; }
+
+
+// ── Visibilidad ───────────────────────────────────────────────────────
+
+// Oculta visualmente pero mantiene el espacio en el layout.
+.invisible { visibility: hidden; }

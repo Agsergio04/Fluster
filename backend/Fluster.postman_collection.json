@@ -1,0 +1,754 @@
+{
+  "info": {
+    "_postman_id": "fluster-api-collection",
+    "name": "Fluster API",
+    "description": "Colección completa de la API REST de Fluster — sistema de seguimiento de contenedores con cálculo de costes D&D (Demurrage & Detention).\n\n**Cómo empezar:**\n1. Asegúrate de que el backend está corriendo en `http://localhost:3000`.\n2. Ejecuta la petición **Login** — el token JWT se guardará automáticamente en la variable `token`.\n3. El resto de peticiones protegidas ya usan `{{token}}` como Bearer.\n\n**Roles disponibles:**\n- `admin` — gestión de usuarios\n- `gestor` — clientes, navieras, ciclo de vida de contenedores, informes\n- `operador` — alta de contenedores y registro de eventos fotográficos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",       "value": "http://localhost:3000", "type": "string" },
+    { "key": "token",         "value": "",                      "type": "string" },
+    { "key": "usuarioId",     "value": "",                      "type": "string" },
+    { "key": "clienteId",     "value": "",                      "type": "string" },
+    { "key": "navieraId",     "value": "",                      "type": "string" },
+    { "key": "contenedorId",  "value": "",                      "type": "string" },
+    { "key": "cicloId",       "value": "",                      "type": "string" },
+    { "key": "informeId",     "value": "",                      "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Comprueba que el servidor está en funcionamiento. No requiere autenticación."
+      },
+      "response": []
+    },
+    {
+      "name": "Auth",
+      "description": "Endpoints de autenticación. El login es público; el registro solo lo puede hacer un admin.",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('token', body.token);",
+                  "    pm.collectionVariables.set('usuarioId', body.usuario.id);",
+                  "    console.log('Token guardado correctamente');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@fluster.com\",\n  \"contrasena\": \"Admin1234\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Autentica al usuario y devuelve un token JWT. El token se guarda automáticamente en la variable `token` de la colección.\n\n**Respuesta exitosa (200):**\n```json\n{\n  \"token\": \"eyJhbGci...\",\n  \"usuario\": { \"id\": \"...\", \"nombre\": \"Admin\", \"correo\": \"admin@fluster.com\", \"rol\": \"admin\" }\n}\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar usuario (solo admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Nuevo Gestor\",\n  \"correo\": \"gestor@fluster.com\",\n  \"contrasena\": \"Gestor1234\",\n  \"rol\": \"gestor\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/registro",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "registro"]
+            },
+            "description": "Crea un nuevo usuario en el sistema. Solo puede hacerlo un admin.\n\n**Campos:**\n- `nombre` — nombre completo\n- `correo` — email único\n- `contrasena` — contraseña en texto plano (se hashea con bcrypt)\n- `rol` — `admin` | `gestor` | `operador`\n\n**Errores:**\n- `409` — el correo ya está registrado"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "description": "Gestión de usuarios del sistema. Todos los endpoints requieren rol `admin`, excepto el cambio de contraseña propio.",
+      "item": [
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios"]
+            },
+            "description": "Devuelve todos los usuarios del sistema sin sus contraseñas. Solo admin."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "{{usuarioId}}"]
+            },
+            "description": "Devuelve un usuario concreto por su ID. Solo admin.\n\n**Errores:**\n- `404` — usuario no encontrado"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Nombre Actualizado\",\n  \"correo\": \"nuevo@fluster.com\",\n  \"rol\": \"gestor\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "{{usuarioId}}"]
+            },
+            "description": "Actualiza nombre, correo o rol de un usuario. Solo admin.\n\n**Errores:**\n- `404` — usuario no encontrado\n- `409` — correo ya en uso o intento de cambiar rol al único admin"
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "{{usuarioId}}"]
+            },
+            "description": "Elimina un usuario del sistema. Solo admin.\n\n**Errores:**\n- `404` — usuario no encontrado\n- `409` — intento de eliminar el único admin"
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar contraseña propia",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contrasenaActual\": \"Admin1234\",\n  \"contrasenaNueva\": \"NuevaContrasena1234\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}/contrasena",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "{{usuarioId}}", "contrasena"]
+            },
+            "description": "Cambia la contraseña de un usuario. Cualquier rol puede cambiar su propia contraseña; requiere verificar la contraseña actual.\n\n**Errores:**\n- `401` — contraseña actual incorrecta\n- `404` — usuario no encontrado"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "description": "CRUD de clientes. Todos los endpoints requieren rol `gestor`.",
+      "item": [
+        {
+          "name": "Listar clientes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes"]
+            },
+            "description": "Devuelve todos los clientes registrados."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{clienteId}}"]
+            },
+            "description": "Devuelve un cliente por su ID.\n\n**Errores:**\n- `404` — cliente no encontrado"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear cliente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('clienteId', body._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Mercadona S.A.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes"]
+            },
+            "description": "Crea un nuevo cliente. El ID se guarda en la variable `clienteId`."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Mercadona S.A. (actualizado)\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{clienteId}}"]
+            },
+            "description": "Actualiza el nombre de un cliente.\n\n**Errores:**\n- `404` — cliente no encontrado"
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{clienteId}}"]
+            },
+            "description": "Elimina un cliente. Solo es posible si no tiene ciclos asociados.\n\n**Errores:**\n- `404` — cliente no encontrado\n- `409` — el cliente tiene ciclos D&D asociados"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Navieras",
+      "description": "CRUD de navieras con sus tarifas D&D. Todos los endpoints requieren rol `gestor`.",
+      "item": [
+        {
+          "name": "Listar navieras",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/navieras",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "navieras"]
+            },
+            "description": "Devuelve todas las navieras con sus tramos de tarifa."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener naviera por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/navieras/{{navieraId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "navieras", "{{navieraId}}"]
+            },
+            "description": "Devuelve una naviera por su ID incluyendo sus tramos D&D.\n\n**Errores:**\n- `404` — naviera no encontrada"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear naviera",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('navieraId', body._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"MSC Mediterranean Shipping\",\n  \"codigo\": \"MSC\",\n  \"diasLibresDemurrage\": 5,\n  \"diasLibresDetention\": 7,\n  \"diasDemurrage\": [\n    { \"desdeDia\": 1, \"hastaDia\": 5,   \"precioPorDia\": 50 },\n    { \"desdeDia\": 6, \"hastaDia\": 10,  \"precioPorDia\": 100 },\n    { \"desdeDia\": 11, \"hastaDia\": null, \"precioPorDia\": 150 }\n  ],\n  \"diasDetention\": [\n    { \"desdeDia\": 1, \"hastaDia\": 5,   \"precioPorDia\": 30 },\n    { \"desdeDia\": 6, \"hastaDia\": null, \"precioPorDia\": 60 }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/navieras",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "navieras"]
+            },
+            "description": "Crea una nueva naviera con sus tarifas D&D por tramos. El ID se guarda en `navieraId`.\n\n**Campos de tramo:**\n- `desdeDia` — día de inicio del tramo (inclusive)\n- `hastaDia` — día de fin del tramo (`null` = sin límite)\n- `precioPorDia` — coste en € por día dentro del tramo\n\n**Errores:**\n- `409` — el código de naviera ya existe"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar naviera",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"MSC Mediterranean Shipping Company\",\n  \"diasLibresDemurrage\": 7\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/navieras/{{navieraId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "navieras", "{{navieraId}}"]
+            },
+            "description": "Actualiza los datos de una naviera. Si se cambia el `codigo`, verifica que no exista ya.\n\n**Errores:**\n- `404` — naviera no encontrada\n- `409` — código duplicado"
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar naviera",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/navieras/{{navieraId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "navieras", "{{navieraId}}"]
+            },
+            "description": "Elimina una naviera. Solo es posible si no tiene contenedores asociados.\n\n**Errores:**\n- `404` — naviera no encontrada\n- `409` — la naviera tiene contenedores asociados"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contenedores",
+      "description": "Gestión del ciclo de vida de los contenedores. Lectura: `operador` y `gestor`. Escritura: `operador` (alta), `gestor` (resto).",
+      "item": [
+        {
+          "name": "Listar contenedores",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores"],
+              "query": [
+                { "key": "estado",      "value": "CARGADO",       "disabled": true, "description": "INACTIVO | CARGADO | CLIENTE" },
+                { "key": "navieraId",   "value": "{{navieraId}}", "disabled": true },
+                { "key": "clienteId",   "value": "{{clienteId}}", "disabled": true }
+              ]
+            },
+            "description": "Lista todos los contenedores. Acepta filtros opcionales por query param.\n\n**Filtros (todos opcionales):**\n- `estado` — `INACTIVO` | `CARGADO` | `CLIENTE`\n- `navieraId` — ID de naviera\n- `clienteId` — ID de cliente (busca en ciclos asociados)"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener contenedor por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores/{{contenedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores", "{{contenedorId}}"]
+            },
+            "description": "Devuelve un contenedor con su naviera y el historial completo de ciclos D&D.\n\n**Errores:**\n- `404` — contenedor no encontrado"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear contenedor (operador)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('contenedorId', body._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigoBIC\": \"MSCU1234567\",\n  \"tipo\": \"20DC\",\n  \"navieraId\": \"{{navieraId}}\",\n  \"fechaInicioLibre\": \"2025-01-01T00:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores"]
+            },
+            "description": "Da de alta un contenedor en estado `INACTIVO`. Solo `operador`.\n\n**Campos:**\n- `codigoBIC` — código BIC del contenedor (ej. MSCU1234567)\n- `tipo` — tipo de contenedor (ej. 20DC, 40HC)\n- `navieraId` — ID de la naviera propietaria\n- `fechaInicioLibre` — fecha desde la que la naviera empieza a contar días libres\n\nEl `creadoPor` se extrae del token JWT automáticamente. El ID se guarda en `contenedorId`."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar contenedor (gestor)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigoBIC\": \"MSCU9999999\",\n  \"tipo\": \"40HC\",\n  \"navieraId\": \"{{navieraId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores/{{contenedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores", "{{contenedorId}}"]
+            },
+            "description": "Actualiza datos no estructurales del contenedor. El estado y las fechas de transición **no** se pueden modificar por esta vía.\n\n**Errores:**\n- `404` — contenedor no encontrado"
+          },
+          "response": []
+        },
+        {
+          "name": "Entrada al puerto — INACTIVO → CARGADO",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    console.log('Contenedor ahora en estado CARGADO');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2025-02-01T08:00:00.000Z\",\n  \"clienteId\": \"{{clienteId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores/{{contenedorId}}/entrada-puerto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores", "{{contenedorId}}", "entrada-puerto"]
+            },
+            "description": "Registra la entrada física del contenedor al puerto. Transiciona `INACTIVO → CARGADO` y abre un nuevo ciclo D&D con el cliente indicado. Solo `gestor`.\n\n**Campos:**\n- `fecha` — fecha real de entrada al puerto\n- `clienteId` — cliente al que pertenece este ciclo\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `INACTIVO`"
+          },
+          "response": []
+        },
+        {
+          "name": "Salida del puerto — CARGADO → CLIENTE",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2025-02-15T10:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores/{{contenedorId}}/salida-puerto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores", "{{contenedorId}}", "salida-puerto"]
+            },
+            "description": "Registra la salida del contenedor del puerto hacia el cliente. Transiciona `CARGADO → CLIENTE`, cierra el tramo de demurrage calculando días y coste, y abre el tramo de detention. Solo `gestor`.\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `CARGADO`"
+          },
+          "response": []
+        },
+        {
+          "name": "Devolución — CLIENTE → INACTIVO",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    console.log('Ciclo cerrado. Los costes D&D son definitivos.');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2025-03-01T09:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores/{{contenedorId}}/devolucion",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores", "{{contenedorId}}", "devolucion"]
+            },
+            "description": "Registra la devolución del contenedor. Transiciona `CLIENTE → INACTIVO`, cierra el tramo de detention, suma demurrage + detention y cierra el ciclo con costes definitivos. Solo `gestor`.\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `CLIENTE`"
+          },
+          "response": []
+        },
+        {
+          "name": "Cancelar ciclo — CARGADO → INACTIVO",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/contenedores/{{contenedorId}}/cancelar-ciclo",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contenedores", "{{contenedorId}}", "cancelar-ciclo"]
+            },
+            "description": "Cancela el ciclo activo y devuelve el contenedor a `INACTIVO` sin registrar ningún coste. Solo aplicable desde estado `CARGADO` (antes de que llegue al cliente). El ciclo se elimina completamente. Solo `gestor`.\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `CARGADO`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Eventos",
+      "description": "Registro fotográfico de los hitos del ciclo de vida de un contenedor. Registro: `operador`. Consulta: `operador` y `gestor`.",
+      "item": [
+        {
+          "name": "Registrar evento (operador)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contenedorId\": \"{{contenedorId}}\",\n  \"tipo\": \"entrada_puerto\",\n  \"timestamp\": \"2025-02-01T08:05:00.000Z\",\n  \"fotoUrl\": \"https://storage.example.com/fotos/foto123.jpg\",\n  \"codigoBICOcr\": \"MSCU1234567\",\n  \"ocrValidado\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/eventos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "eventos"]
+            },
+            "description": "Registra un evento fotográfico asociado a un contenedor. Solo `operador`.\n\n**Tipos de evento:**\n- `entrada_puerto`\n- `salida_puerto`\n- `llegada_almacen`\n- `devolucion`\n\n**Campos opcionales:**\n- `fotoUrl` — URL de la foto almacenada\n- `codigoBICOcr` — código BIC extraído por OCR de la foto\n- `ocrValidado` — indica si el código OCR coincide con el BIC del contenedor\n\nEl `registradoPor` se extrae automáticamente del token JWT.\n\n**Errores:**\n- `404` — contenedor no encontrado"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar eventos por contenedor",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/eventos/contenedor/{{contenedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "eventos", "contenedor", "{{contenedorId}}"]
+            },
+            "description": "Devuelve todos los eventos de un contenedor ordenados cronológicamente (del más antiguo al más reciente)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Informes",
+      "description": "Auditoría de exportaciones PDF de ciclos cerrados. Todos los endpoints requieren rol `gestor`.",
+      "item": [
+        {
+          "name": "Listar informes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/informes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "informes"],
+              "query": [
+                { "key": "cliente",      "value": "Mercadona",        "disabled": true, "description": "Búsqueda parcial insensible a mayúsculas" },
+                { "key": "contenedorId", "value": "{{contenedorId}}", "disabled": true }
+              ]
+            },
+            "description": "Lista todos los informes registrados. Acepta filtros opcionales.\n\n**Filtros (todos opcionales):**\n- `cliente` — búsqueda parcial e insensible a mayúsculas en el nombre del cliente\n- `contenedorId` — ID del contenedor"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar informes por contenedor",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/informes/contenedor/{{contenedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "informes", "contenedor", "{{contenedorId}}"]
+            },
+            "description": "Devuelve todos los informes de un contenedor concreto, del más reciente al más antiguo."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener informe por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/informes/{{informeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "informes", "{{informeId}}"]
+            },
+            "description": "Devuelve un informe concreto con los datos del ciclo populados.\n\n**Errores:**\n- `404` — informe no encontrado"
+          },
+          "response": []
+        },
+        {
+          "name": "Generar informe (registrar exportación PDF)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const body = pm.response.json();",
+                  "    pm.collectionVariables.set('informeId', body._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contenedorId\": \"{{contenedorId}}\",\n  \"cicloId\": \"{{cicloId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/informes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "informes"]
+            },
+            "description": "Registra que el gestor ha exportado el PDF de un ciclo cerrado. El PDF lo genera el frontend (jsPDF); este endpoint solo persiste la auditoría (quién exportó qué y cuándo). El `generadoPor` se extrae del token JWT. El ID se guarda en `informeId`.\n\n**Errores:**\n- `404` — contenedor o ciclo no encontrado\n- `422` — el ciclo aún no está cerrado (tiene costes parciales)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Semáforo",
+      "description": "Dashboard de riesgo D&D en tiempo real. Requiere rol `gestor`.",
+      "item": [
+        {
+          "name": "Obtener contenedores agrupados por riesgo",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/semaforo",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "semaforo"]
+            },
+            "description": "Devuelve todos los contenedores agrupados por nivel de riesgo D&D calculado en tiempo real.\n\n**Grupos:**\n- `inactivos` — contenedores en estado `INACTIVO`\n- `freeTime` — activos con 0 días facturables (dentro de los días libres)\n- `primerTramo` — activos en el primer tramo de tarifa\n- `segundoTramo` — activos en el segundo tramo o superior\n\nCada contenedor activo incluye el campo `_semaforo` con `diasTranscurridos`, `diasFacturables` y `cliente`."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

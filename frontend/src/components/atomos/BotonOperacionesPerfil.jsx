@@ -1,0 +1,20 @@
+const LABELS = {
+  'cambiar-nombre':      'Cambiar el nombre',
+  'cambiar-contrasenia': 'Cambiar la contraseña',
+  'cerrar-sesion':       'Cerrar Sesión',
+}
+
+function BotonOperacionesPerfil({ variante = 'cambiar-nombre', onClick, disabled = false }) {
+  return (
+    <button
+      type="button"
+      className="btn-operaciones-perfil"
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {LABELS[variante]}
+    </button>
+  )
+}
+
+export default BotonOperacionesPerfil

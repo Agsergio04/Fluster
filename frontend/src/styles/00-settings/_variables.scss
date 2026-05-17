@@ -1,0 +1,142 @@
+/* Variables Sass — fuente única de valores (sin output CSS propio) */
+
+// ── Colores Primarios ──────────────────────────────────────────────
+$color-primary:       #4FB2F8;
+$color-primary-hover: #69C1FF;
+$color-primary-off:   #C8E7FD;
+
+$color-primary-dark:       #245070;
+$color-primary-dark-hover: #1D435E;
+$color-primary-dark-off:   #122736;
+
+// ── Colores Secundarios ────────────────────────────────────────────
+$color-secondary:       #F28C28;
+$color-secondary-hover: #F6A656;
+$color-secondary-off:   #FBDBBC;
+
+$color-secondary-dark:       #844B16;
+$color-secondary-dark-hover: #784514;
+$color-secondary-dark-off:   #55310E;
+
+// ── Fondos de página ───────────────────────────────────────────────
+$color-bg-light:      #F9FAFB;
+$color-surface-light: #FFFFFF;
+
+$color-bg-dark:       #111827;
+$color-surface-dark:  #1F2937;
+
+// ── Texto y bordes ─────────────────────────────────────────────────
+$color-text-light:        #111827;
+$color-text-subtle-light: #6B7280;
+$color-border-light:      #E5E7EB;
+
+$color-text-dark:        #F9FAFB;
+$color-text-subtle-dark: #9CA3AF;
+$color-border-dark:      #374151;
+
+// ── Cajas ──────────────────────────────────────────────────────────
+$color-box-border-light: #FFFFFF;
+$color-box-text-light:   #040404;
+
+$color-box-border-dark: #FFFFFF;
+$color-box-text-dark:   #FFFFFF;
+
+// ── Semáforo — Sin costes (verde) ──────────────────────────────────
+$color-sin-costes:            #35C65B;
+$color-sin-costes-inner:      #3DAC5C;
+$color-sin-costes-dark:       #195E2B;
+$color-sin-costes-dark-inner: #19622C;
+
+// ── Semáforo — Primer tramo (amarillo) ─────────────────────────────
+$color-primer-tramo:            #FFFC4B;
+$color-primer-tramo-inner:      #ACA82E;
+$color-primer-tramo-dark:       #686920;
+$color-primer-tramo-dark-inner: #787620;
+
+// ── Semáforo — Segundo tramo (rojo) ───────────────────────────────
+$color-segundo-tramo:            #F66B6B;
+$color-segundo-tramo-inner:      #EA7D7D;
+$color-segundo-tramo-dark:       #7A0000;
+$color-segundo-tramo-dark-inner: #AB0404;
+
+// ── Semáforo — Inactivo ────────────────────────────────────────────
+$color-inactivo:            #B0AEAE;
+$color-inactivo-inner:      #A5A0A0;
+$color-inactivo-dark:       #5A5656;
+$color-inactivo-dark-inner: #4C4A4A;
+
+// ── Cards ──────────────────────────────────────────────────────────
+$color-card-almacen-light:  #4FB2F8;
+$color-card-semaforo-light: #F8944F;
+
+$color-card-almacen-dark:  #2F6891;
+$color-card-semaforo-dark: #955A31;
+
+// ── Tipografía — Familias ──────────────────────────────────────────
+$font-heading: 'Crimson Text', serif;
+$font-body:    'Poppins', sans-serif;
+
+// ── Tipografía — Escala (base 8px) ────────────────────────────────
+$text-8:  0.5rem;    //  8px
+$text-16: 1rem;      // 16px
+$text-24: 1.5rem;    // 24px
+$text-32: 2rem;      // 32px
+$text-40: 2.5rem;    // 40px
+$text-48: 3rem;      // 48px
+$text-56: 3.5rem;    // 56px
+$text-64: 4rem;      // 64px
+
+// ── Tipografía — Pesos ─────────────────────────────────────────────
+$font-weight-light:    300;
+$font-weight-regular:  400;
+$font-weight-medium:   500;
+$font-weight-semibold: 600;
+$font-weight-bold:     700;
+
+// ── Tipografía — Interlineado ──────────────────────────────────────
+$leading-tight:   1.2;
+$leading-snug:    1.35;
+$leading-normal:  1.5;
+$leading-relaxed: 1.75;
+
+// ── Espaciado (base 8px) ───────────────────────────────────────────
+$space-8:       0.5rem;   //  8px
+$space-16:      1rem;     // 16px
+$space-24:      1.5rem;   // 24px
+$space-32:      2rem;     // 32px
+$space-40:      2.5rem;   // 40px
+$space-48:      3rem;     // 48px
+$space-56:      3.5rem;   // 56px
+$space-64:      4rem;     // 64px
+$space-72:      4.5rem;   // 72px
+$space-80:      5rem;     // 80px
+$space-88:      5.5rem;   // 88px
+$space-96:      6rem;     // 96px
+$space-input-y: 0.5rem;
+$space-input-x: 1rem;
+
+// ── Anchos de campo ────────────────────────────────────────────────
+$tamanio_normal:       42.4375rem; // 679px
+$tamanio_pequenio:     10.9375rem; // 175px
+$tamanio_card_usuario: 21rem;      // 336px
+
+// ── Radio de borde ─────────────────────────────────────────────────
+$radius: 12px;
+
+// ── Transiciones ───────────────────────────────────────────────────
+$transition-fast: 150ms ease-in-out;
+$transition-base: 300ms ease-in-out;
+$transition-slow: 500ms ease-in-out;
+
+// ── Sombras ────────────────────────────────────────────────────────
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.08);
+$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+
+// ── Overlay ────────────────────────────────────────────────────────
+$color-overlay: rgba(0, 0, 0, 0.45);
+
+// ── Breakpoints ────────────────────────────────────────────────────
+$breakpoint-mobile: 767px;
+$breakpoint-tablet: 1023px;

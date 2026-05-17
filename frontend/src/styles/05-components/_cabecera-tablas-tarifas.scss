@@ -1,0 +1,20 @@
+.cabecera-tablas-tarifas {
+  display:     flex;
+  flex-wrap:   wrap;
+  align-items: stretch;
+  width:       48rem; // 8×6rem = 768px
+}
+
+.cabecera-tablas-tarifas-navieras {
+  display:     flex;
+  align-items: flex-end;
+
+  .celda-tabla--naviera .celda-tabla__texto,
+  .celda-tabla--naviera .celda-tabla__input {
+    font-size: 0.75rem;
+  }
+
+  &__acciones {
+    flex: 1; // ocupa el mismo espacio que los botones de las filas de datos
+  }
+}

@@ -1,0 +1,25 @@
+.btn-menu-hamburguesa {
+  display:          inline-flex;
+  align-items:      center;
+  justify-content:  center;
+  padding:          var(--space-8);
+  background-color: var(--color-primary);
+  border-radius:    var(--radius);
+  color:            var(--color-box-text);
+  transition:       background-color var(--transition-fast);
+
+  svg {
+    width:       1.5rem;
+    height:      auto;
+    flex-shrink: 0;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--color-primary-off);
+    cursor:           not-allowed;
+  }
+}

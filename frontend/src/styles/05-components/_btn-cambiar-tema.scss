@@ -1,0 +1,21 @@
+.btn-cambiar-tema {
+  display:          inline-flex;
+  align-items:      center;
+  justify-content:  center;
+  width:            2.9375rem;
+  padding:          var(--space-8);
+  background-color: var(--color-primary);
+  border-radius:    var(--radius);
+  color:            var(--color-box-text);
+  transition:       background-color var(--transition-fast);
+
+  svg {
+    width:       1.5rem;
+    height:      1.5rem;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+}

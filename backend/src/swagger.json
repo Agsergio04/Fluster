@@ -1,0 +1,870 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Fluster API",
+    "version": "1.0.0",
+    "description": "API REST del sistema de seguimiento de contenedores con cálculo de costes D&D (Demurrage & Detention).\n\n## Autenticación\nTodos los endpoints protegidos requieren un token JWT en la cabecera:\n```\nAuthorization: Bearer <token>\n```\nObtén el token con `POST /api/auth/login`.\n\n## Roles\n- **admin** — gestión de usuarios\n- **gestor** — clientes, navieras, ciclo de vida de contenedores, informes y semáforo\n- **operador** — alta de contenedores y registro de eventos fotográficos"
+  },
+  "servers": [
+    { "url": "http://localhost:3000", "description": "Desarrollo local" }
+  ],
+  "tags": [
+    { "name": "Auth",         "description": "Autenticación y registro" },
+    { "name": "Usuarios",     "description": "Gestión de usuarios (solo admin)" },
+    { "name": "Clientes",     "description": "CRUD de clientes (gestor)" },
+    { "name": "Navieras",     "description": "CRUD de navieras con tarifas D&D (gestor)" },
+    { "name": "Contenedores", "description": "Ciclo de vida de contenedores y cálculo de costes" },
+    { "name": "Eventos",      "description": "Registro fotográfico de hitos del contenedor" },
+    { "name": "Informes",     "description": "Auditoría de exportaciones PDF de ciclos cerrados (gestor)" },
+    { "name": "Semáforo",     "description": "Dashboard de riesgo D&D en tiempo real (gestor)" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "mensaje": { "type": "string", "example": "Recurso no encontrado" }
+        }
+      },
+      "Tramo": {
+        "type": "object",
+        "required": ["desdeDia", "precioPorDia"],
+        "properties": {
+          "desdeDia":     { "type": "integer", "example": 1,    "description": "Día de inicio del tramo (inclusive)" },
+          "hastaDia":     { "type": "integer", "nullable": true, "example": 5, "description": "Día de fin del tramo. null = sin límite" },
+          "precioPorDia": { "type": "number",  "example": 50,   "description": "Coste en € por día dentro del tramo" }
+        }
+      },
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "_id":      { "type": "string", "example": "664a1b2c3d4e5f6a7b8c9d0e" },
+          "nombre":   { "type": "string", "example": "Ana García" },
+          "correo":   { "type": "string", "format": "email", "example": "ana@fluster.com" },
+          "rol":      { "type": "string", "enum": ["admin", "gestor", "operador"] },
+          "creadoEn": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Cliente": {
+        "type": "object",
+        "properties": {
+          "_id":      { "type": "string", "example": "664a1b2c3d4e5f6a7b8c9d0e" },
+          "nombre":   { "type": "string", "example": "Mercadona S.A." },
+          "creadoEn": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Naviera": {
+        "type": "object",
+        "properties": {
+          "_id":                  { "type": "string" },
+          "nombre":               { "type": "string", "example": "MSC Mediterranean Shipping" },
+          "codigo":               { "type": "string", "example": "MSC" },
+          "diasLibresDemurrage":  { "type": "integer", "example": 5 },
+          "diasLibresDetention":  { "type": "integer", "example": 7 },
+          "diasDemurrage":        { "type": "array", "items": { "$ref": "#/components/schemas/Tramo" } },
+          "diasDetention":        { "type": "array", "items": { "$ref": "#/components/schemas/Tramo" } },
+          "creadoEn":             { "type": "string", "format": "date-time" }
+        }
+      },
+      "Contenedor": {
+        "type": "object",
+        "properties": {
+          "_id":                 { "type": "string" },
+          "codigoBIC":           { "type": "string", "example": "MSCU1234567" },
+          "tipo":                { "type": "string", "example": "20DC" },
+          "estado":              { "type": "string", "enum": ["INACTIVO", "CARGADO", "CLIENTE"] },
+          "navieraId":           { "type": "string", "description": "ID o objeto Naviera populado" },
+          "fechaInicioLibre":    { "type": "string", "format": "date-time" },
+          "fechaEntradaPuerto":  { "type": "string", "format": "date-time", "nullable": true },
+          "fechaSalidaPuerto":   { "type": "string", "format": "date-time", "nullable": true },
+          "fechaDevolucion":     { "type": "string", "format": "date-time", "nullable": true },
+          "creadoPor":           { "type": "string" },
+          "creadoEn":            { "type": "string", "format": "date-time" }
+        }
+      },
+      "Ciclo": {
+        "type": "object",
+        "properties": {
+          "_id":         { "type": "string" },
+          "contenedorId":{ "type": "string" },
+          "clienteId":   { "type": "string", "description": "ID o objeto Cliente populado" },
+          "demurrage": {
+            "type": "object",
+            "properties": {
+              "diasLibres":       { "type": "integer" },
+              "fechaInicio":      { "type": "string", "format": "date-time" },
+              "fechaFin":         { "type": "string", "format": "date-time", "nullable": true },
+              "diasTranscurridos":{ "type": "integer", "nullable": true },
+              "diasFacturables":  { "type": "integer", "nullable": true },
+              "costeTotal":       { "type": "number",  "nullable": true }
+            }
+          },
+          "detention": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "diasLibres":       { "type": "integer" },
+              "fechaInicio":      { "type": "string", "format": "date-time" },
+              "fechaFin":         { "type": "string", "format": "date-time", "nullable": true },
+              "diasTranscurridos":{ "type": "integer", "nullable": true },
+              "diasFacturables":  { "type": "integer", "nullable": true },
+              "costeTotal":       { "type": "number",  "nullable": true }
+            }
+          },
+          "costeTotal":   { "type": "number", "nullable": true },
+          "fechaCierre":  { "type": "string", "format": "date-time", "nullable": true },
+          "creadoEn":     { "type": "string", "format": "date-time" }
+        }
+      },
+      "Evento": {
+        "type": "object",
+        "properties": {
+          "_id":          { "type": "string" },
+          "contenedorId": { "type": "string" },
+          "tipo":         { "type": "string", "enum": ["entrada_puerto", "salida_puerto", "llegada_almacen", "devolucion"] },
+          "timestamp":    { "type": "string", "format": "date-time" },
+          "fotoUrl":      { "type": "string", "nullable": true },
+          "codigoBICOcr": { "type": "string", "nullable": true },
+          "ocrValidado":  { "type": "boolean" },
+          "registradoPor":{ "type": "string" }
+        }
+      },
+      "Informe": {
+        "type": "object",
+        "properties": {
+          "_id":          { "type": "string" },
+          "contenedorId": { "type": "string" },
+          "cicloId":      { "type": "string" },
+          "codigoBIC":    { "type": "string", "example": "MSCU1234567" },
+          "cliente":      { "type": "string", "example": "Mercadona S.A." },
+          "generadoPor":  { "type": "string" },
+          "generadoEn":   { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Token no proporcionado o inválido",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" }, "example": { "mensaje": "Acceso no autorizado: token no proporcionado" } } }
+      },
+      "Forbidden": {
+        "description": "El usuario no tiene el rol requerido",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" }, "example": { "mensaje": "No tienes permisos para realizar esta acción" } } }
+      },
+      "NotFound": {
+        "description": "Recurso no encontrado",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" }, "example": { "mensaje": "Recurso no encontrado" } } }
+      },
+      "Conflict": {
+        "description": "Conflicto con el estado actual del recurso",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "UnprocessableEntity": {
+        "description": "Transición de estado no válida",
+        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }
+      }
+    }
+  },
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "description": "Comprueba que el servidor está en funcionamiento.",
+        "security": [],
+        "responses": {
+          "200": { "description": "Servidor operativo", "content": { "application/json": { "example": { "ok": true } } } }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Iniciar sesión",
+        "description": "Autentica al usuario y devuelve un token JWT.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["correo", "contrasena"],
+                "properties": {
+                  "correo":    { "type": "string", "format": "email", "example": "admin@fluster.com" },
+                  "contrasena":{ "type": "string", "example": "Admin1234" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login correcto",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                  "usuario": { "id": "664a...", "nombre": "Admin", "correo": "admin@fluster.com", "rol": "admin" }
+                }
+              }
+            }
+          },
+          "401": { "description": "Credenciales incorrectas", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" }, "example": { "mensaje": "Credenciales incorrectas" } } } }
+        }
+      }
+    },
+    "/api/auth/registro": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Registrar usuario (solo admin)",
+        "description": "Crea un nuevo usuario en el sistema. Solo accesible para el rol `admin`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre", "correo", "contrasena", "rol"],
+                "properties": {
+                  "nombre":    { "type": "string", "example": "Carlos López" },
+                  "correo":    { "type": "string", "format": "email", "example": "carlos@fluster.com" },
+                  "contrasena":{ "type": "string", "example": "Segura1234" },
+                  "rol":       { "type": "string", "enum": ["admin", "gestor", "operador"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Usuario creado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usuario" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      }
+    },
+    "/api/usuarios": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Listar usuarios",
+        "description": "Devuelve todos los usuarios sin sus contraseñas. Solo `admin`.",
+        "responses": {
+          "200": { "description": "Lista de usuarios", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Usuario" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/api/usuarios/{id}": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Obtener usuario por ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Usuario encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usuario" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "tags": ["Usuarios"],
+        "summary": "Actualizar usuario",
+        "description": "Actualiza nombre, correo o rol. Solo `admin`. No permite cambiar la contraseña por esta vía.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "correo": { "type": "string", "format": "email" },
+                  "rol":    { "type": "string", "enum": ["admin", "gestor", "operador"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Usuario actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usuario" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      },
+      "delete": {
+        "tags": ["Usuarios"],
+        "summary": "Eliminar usuario",
+        "description": "Elimina un usuario. No permite eliminar al único admin del sistema.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Usuario eliminado" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      }
+    },
+    "/api/usuarios/{id}/contrasena": {
+      "patch": {
+        "tags": ["Usuarios"],
+        "summary": "Cambiar contraseña propia",
+        "description": "Cualquier rol autenticado puede cambiar su propia contraseña. Requiere verificar la contraseña actual.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["contrasenaActual", "contrasenaNueva"],
+                "properties": {
+                  "contrasenaActual": { "type": "string", "example": "Admin1234" },
+                  "contrasenaNueva":  { "type": "string", "example": "NuevaClave5678" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Contraseña actualizada" },
+          "401": { "description": "Contraseña actual incorrecta o token inválido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/clientes": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Listar clientes",
+        "responses": {
+          "200": { "description": "Lista de clientes", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Cliente" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      },
+      "post": {
+        "tags": ["Clientes"],
+        "summary": "Crear cliente",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre"],
+                "properties": { "nombre": { "type": "string", "example": "Mercadona S.A." } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Cliente creado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Cliente" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/api/clientes/{id}": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Obtener cliente por ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Cliente encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Cliente" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "tags": ["Clientes"],
+        "summary": "Actualizar cliente",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre"],
+                "properties": { "nombre": { "type": "string", "example": "Mercadona S.A. (actualizado)" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cliente actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Cliente" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "tags": ["Clientes"],
+        "summary": "Eliminar cliente",
+        "description": "Solo es posible si el cliente no tiene ciclos D&D asociados.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Cliente eliminado" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "description": "El cliente tiene ciclos asociados", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/navieras": {
+      "get": {
+        "tags": ["Navieras"],
+        "summary": "Listar navieras",
+        "responses": {
+          "200": { "description": "Lista de navieras", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Naviera" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      },
+      "post": {
+        "tags": ["Navieras"],
+        "summary": "Crear naviera",
+        "description": "Crea una naviera con sus tramos de tarifa D&D.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre", "codigo", "diasLibresDemurrage", "diasLibresDetention", "diasDemurrage", "diasDetention"],
+                "properties": {
+                  "nombre":              { "type": "string", "example": "MSC Mediterranean Shipping" },
+                  "codigo":              { "type": "string", "example": "MSC" },
+                  "diasLibresDemurrage": { "type": "integer", "example": 5 },
+                  "diasLibresDetention": { "type": "integer", "example": 7 },
+                  "diasDemurrage":       { "type": "array", "items": { "$ref": "#/components/schemas/Tramo" } },
+                  "diasDetention":       { "type": "array", "items": { "$ref": "#/components/schemas/Tramo" } }
+                }
+              },
+              "example": {
+                "nombre": "MSC Mediterranean Shipping",
+                "codigo": "MSC",
+                "diasLibresDemurrage": 5,
+                "diasLibresDetention": 7,
+                "diasDemurrage": [
+                  { "desdeDia": 1, "hastaDia": 5,   "precioPorDia": 50 },
+                  { "desdeDia": 6, "hastaDia": 10,  "precioPorDia": 100 },
+                  { "desdeDia": 11,"hastaDia": null, "precioPorDia": 150 }
+                ],
+                "diasDetention": [
+                  { "desdeDia": 1, "hastaDia": 5,   "precioPorDia": 30 },
+                  { "desdeDia": 6, "hastaDia": null, "precioPorDia": 60 }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Naviera creada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Naviera" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "409": { "description": "Código de naviera duplicado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/navieras/{id}": {
+      "get": {
+        "tags": ["Navieras"],
+        "summary": "Obtener naviera por ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Naviera encontrada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Naviera" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "tags": ["Navieras"],
+        "summary": "Actualizar naviera",
+        "description": "Si se cambia el `codigo`, verifica que no exista duplicado.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Naviera" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Naviera actualizada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Naviera" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      },
+      "delete": {
+        "tags": ["Navieras"],
+        "summary": "Eliminar naviera",
+        "description": "Solo posible si ningún contenedor la referencia.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Naviera eliminada" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "description": "La naviera tiene contenedores asociados", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/contenedores": {
+      "get": {
+        "tags": ["Contenedores"],
+        "summary": "Listar contenedores",
+        "description": "Roles permitidos: `operador`, `gestor`.",
+        "parameters": [
+          { "name": "estado",    "in": "query", "schema": { "type": "string", "enum": ["INACTIVO", "CARGADO", "CLIENTE"] }, "description": "Filtra por estado" },
+          { "name": "navieraId", "in": "query", "schema": { "type": "string" }, "description": "Filtra por naviera" },
+          { "name": "clienteId", "in": "query", "schema": { "type": "string" }, "description": "Filtra por cliente (busca en ciclos)" }
+        ],
+        "responses": {
+          "200": { "description": "Lista de contenedores", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Contenedor" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      },
+      "post": {
+        "tags": ["Contenedores"],
+        "summary": "Crear contenedor",
+        "description": "Da de alta un contenedor en estado `INACTIVO`. Solo `operador`. El `creadoPor` se extrae del token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["codigoBIC", "tipo", "navieraId", "fechaInicioLibre"],
+                "properties": {
+                  "codigoBIC":        { "type": "string", "example": "MSCU1234567" },
+                  "tipo":             { "type": "string", "example": "20DC" },
+                  "navieraId":        { "type": "string", "example": "664a1b2c3d4e5f6a7b8c9d0e" },
+                  "fechaInicioLibre": { "type": "string", "format": "date-time", "example": "2025-01-01T00:00:00.000Z" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Contenedor creado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/api/contenedores/{id}": {
+      "get": {
+        "tags": ["Contenedores"],
+        "summary": "Obtener contenedor por ID",
+        "description": "Devuelve el contenedor con su naviera y el historial completo de ciclos D&D. Roles: `operador`, `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Contenedor con historial de ciclos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Contenedor" },
+                    { "type": "object", "properties": { "ciclos": { "type": "array", "items": { "$ref": "#/components/schemas/Ciclo" } } } }
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "tags": ["Contenedores"],
+        "summary": "Actualizar contenedor",
+        "description": "Actualiza `codigoBIC`, `tipo` o `navieraId`. El estado y las fechas de transición **no** se modifican por esta vía. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigoBIC": { "type": "string" },
+                  "tipo":      { "type": "string" },
+                  "navieraId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Contenedor actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/contenedores/{id}/entrada-puerto": {
+      "patch": {
+        "tags": ["Contenedores"],
+        "summary": "Entrada al puerto — INACTIVO → CARGADO",
+        "description": "Registra la entrada física del contenedor al puerto. Abre un nuevo ciclo D&D con el cliente indicado. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["fecha", "clienteId"],
+                "properties": {
+                  "fecha":     { "type": "string", "format": "date-time", "example": "2025-02-01T08:00:00.000Z" },
+                  "clienteId": { "type": "string", "example": "664a1b2c3d4e5f6a7b8c9d0e" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Contenedor en estado CARGADO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "El contenedor no está en estado INACTIVO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/contenedores/{id}/salida-puerto": {
+      "patch": {
+        "tags": ["Contenedores"],
+        "summary": "Salida del puerto — CARGADO → CLIENTE",
+        "description": "Cierra el tramo de demurrage calculando días y coste, y abre el tramo de detention. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["fecha"],
+                "properties": {
+                  "fecha": { "type": "string", "format": "date-time", "example": "2025-02-15T10:00:00.000Z" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Contenedor en estado CLIENTE", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "El contenedor no está en estado CARGADO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/contenedores/{id}/devolucion": {
+      "patch": {
+        "tags": ["Contenedores"],
+        "summary": "Devolución — CLIENTE → INACTIVO",
+        "description": "Cierra el tramo de detention, suma demurrage + detention y cierra el ciclo con costes definitivos. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["fecha"],
+                "properties": {
+                  "fecha": { "type": "string", "format": "date-time", "example": "2025-03-01T09:00:00.000Z" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Contenedor en estado INACTIVO, ciclo cerrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "El contenedor no está en estado CLIENTE", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/contenedores/{id}/cancelar-ciclo": {
+      "patch": {
+        "tags": ["Contenedores"],
+        "summary": "Cancelar ciclo — CARGADO → INACTIVO",
+        "description": "Cancela el ciclo activo sin registrar costes. Solo aplicable desde estado `CARGADO`. El ciclo se elimina completamente. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Ciclo cancelado, contenedor en INACTIVO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "El contenedor no está en estado CARGADO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/eventos": {
+      "post": {
+        "tags": ["Eventos"],
+        "summary": "Registrar evento fotográfico",
+        "description": "Registra un hito del contenedor con foto opcional y datos OCR. Solo `operador`. El `registradoPor` se extrae del token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["contenedorId", "tipo", "timestamp"],
+                "properties": {
+                  "contenedorId": { "type": "string" },
+                  "tipo":         { "type": "string", "enum": ["entrada_puerto", "salida_puerto", "llegada_almacen", "devolucion"] },
+                  "timestamp":    { "type": "string", "format": "date-time" },
+                  "fotoUrl":      { "type": "string", "nullable": true },
+                  "codigoBICOcr": { "type": "string", "nullable": true, "description": "Código BIC extraído por OCR de la foto" },
+                  "ocrValidado":  { "type": "boolean", "description": "true si el OCR coincide con el BIC del contenedor" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Evento registrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Evento" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "description": "Contenedor no encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/eventos/contenedor/{contenedorId}": {
+      "get": {
+        "tags": ["Eventos"],
+        "summary": "Listar eventos por contenedor",
+        "description": "Devuelve los eventos de un contenedor ordenados cronológicamente. Roles: `operador`, `gestor`.",
+        "parameters": [{ "name": "contenedorId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Lista de eventos", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Evento" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/api/informes": {
+      "get": {
+        "tags": ["Informes"],
+        "summary": "Listar informes",
+        "description": "Lista todos los informes. Acepta filtros opcionales.",
+        "parameters": [
+          { "name": "cliente",      "in": "query", "schema": { "type": "string" }, "description": "Búsqueda parcial e insensible a mayúsculas" },
+          { "name": "contenedorId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Lista de informes", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Informe" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      },
+      "post": {
+        "tags": ["Informes"],
+        "summary": "Generar informe (registrar exportación PDF)",
+        "description": "Registra que el gestor ha exportado el PDF de un ciclo cerrado. El PDF lo genera el frontend; este endpoint persiste la auditoría. El `generadoPor` se extrae del token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["contenedorId", "cicloId"],
+                "properties": {
+                  "contenedorId": { "type": "string" },
+                  "cicloId":      { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Informe registrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Informe" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "El ciclo aún no está cerrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/informes/contenedor/{contenedorId}": {
+      "get": {
+        "tags": ["Informes"],
+        "summary": "Listar informes por contenedor",
+        "parameters": [{ "name": "contenedorId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Lista de informes del contenedor", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Informe" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
+    "/api/informes/{id}": {
+      "get": {
+        "tags": ["Informes"],
+        "summary": "Obtener informe por ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Informe con ciclo populado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Informe" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/semaforo": {
+      "get": {
+        "tags": ["Semáforo"],
+        "summary": "Contenedores agrupados por nivel de riesgo D&D",
+        "description": "Devuelve todos los contenedores agrupados según su riesgo D&D calculado en tiempo real. Solo `gestor`.\n\nCada contenedor activo incluye `_semaforo` con `diasTranscurridos`, `diasFacturables` y `cliente`.",
+        "responses": {
+          "200": {
+            "description": "Contenedores agrupados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "inactivos":    { "type": "array", "items": { "$ref": "#/components/schemas/Contenedor" }, "description": "Contenedores en estado INACTIVO" },
+                    "freeTime":     { "type": "array", "items": { "$ref": "#/components/schemas/Contenedor" }, "description": "Activos con 0 días facturables" },
+                    "primerTramo":  { "type": "array", "items": { "$ref": "#/components/schemas/Contenedor" }, "description": "Activos en el primer tramo de tarifa" },
+                    "segundoTramo": { "type": "array", "items": { "$ref": "#/components/schemas/Contenedor" }, "description": "Activos en el segundo tramo o superior" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    }
+  }
+}

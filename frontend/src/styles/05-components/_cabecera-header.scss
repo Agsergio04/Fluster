@@ -1,0 +1,42 @@
+.cabecera-header {
+  display:          flex;
+  align-items:      center;
+  justify-content:  space-between;
+  width:            100%;
+  padding:          var(--space-8) var(--space-24) var(--space-8) var(--space-8);
+  background-color: var(--color-primary);
+
+  &__logo-btn {
+    background: none;
+    border:     none;
+    padding:    0;
+    cursor:     pointer;
+    flex-shrink: 0;
+  }
+
+  &__logo {
+    height:  6.8125rem;
+    width:   auto;
+    display: block;
+  }
+
+  &__controles {
+    display:     flex;
+    flex-wrap:   wrap;
+    align-items: center;
+    gap:         var(--space-24);
+    margin-left: auto;
+  }
+
+  @media (max-width: 767px) {
+    padding: var(--space-8) var(--space-16) var(--space-8) var(--space-8);
+
+    &__logo {
+      height: 3.5rem;
+    }
+
+    &__controles {
+      gap: var(--space-16);
+    }
+  }
+}

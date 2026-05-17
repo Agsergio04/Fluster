@@ -1,0 +1,38 @@
+.texto-con-entrada-datos {
+  display:        flex;
+  flex-direction: column;
+  align-items:    flex-start;
+  gap:            var(--space-40);
+  width:          var(--tamanio_normal);
+  max-width:      100%;
+
+  &__label {
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+  }
+
+  &__input {
+    width:            100%;
+    padding:          var(--space-8);
+    border:           none;
+    border-radius:    var(--radius);
+    background-color: var(--color-box-border);
+    font-family:      var(--font-body);
+    font-size:        var(--text-24);
+    font-weight:      var(--font-weight-regular);
+    line-height:      1;
+    color:            var(--color-box-text);
+
+    &::placeholder {
+      color: var(--color-box-text);
+    }
+
+    &:focus-visible {
+      outline:    none;
+      box-shadow: 0 0 0 3px var(--color-primary-off);
+    }
+  }
+}

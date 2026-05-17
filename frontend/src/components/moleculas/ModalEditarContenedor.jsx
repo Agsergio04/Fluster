@@ -1,0 +1,112 @@
+import { useState, useRef } from 'react'
+
+function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
+  const inputFotoRef = useRef(null)
+
+  const [foto,             setFoto]             = useState(item.foto ?? null)
+  const [codigoBic,        setCodigoBic]        = useState(item.codigoBic ?? '')
+  const [fechaInicioLibre, setFechaInicioLibre] = useState(
+    item.fechaInicioLibre
+      ? new Date(item.fechaInicioLibre).toISOString().split('T')[0]
+      : ''
+  )
+  const [cargando, setCargando] = useState(false)
+  const [error,    setError]    = useState('')
+
+  const handleFotoElegida = e => {
+    const fichero = e.target.files?.[0]
+    if (!fichero) return
+    e.target.value = ''
+    const reader = new FileReader()
+    reader.onload = () => setFoto(reader.result)
+    reader.readAsDataURL(fichero)
+  }
+
+  const handleActualizar = async () => {
+    setError('')
+    setCargando(true)
+    try {
+      await onActualizar(item.id, {
+        codigoBIC:        codigoBic.trim().toUpperCase() || undefined,
+        foto,
+        fechaInicioLibre: fechaInicioLibre ? new Date(fechaInicioLibre).toISOString() : undefined,
+      })
+    } catch (err) {
+      setError(err.response?.data?.message ?? 'Error al actualizar el contenedor')
+    } finally {
+      setCargando(false)
+    }
+  }
+
+  return (
+    <div className="modal-editar-contenedor" onClick={onCancelar}>
+      <div className="modal-editar-contenedor__panel" onClick={e => e.stopPropagation()}>
+
+        <div className="modal-editar-contenedor__foto-wrapper">
+          {foto
+            ? <img className="modal-editar-contenedor__foto" src={foto} alt="Foto del contenedor" />
+            : <div className="modal-editar-contenedor__foto-placeholder">Sin foto</div>
+          }
+          <input
+            ref={inputFotoRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleFotoElegida}
+          />
+          <button
+            type="button"
+            className="modal-editar-contenedor__btn-foto"
+            onClick={() => inputFotoRef.current?.click()}
+          >
+            Cambiar foto
+          </button>
+        </div>
+
+        <div className="modal-editar-contenedor__campo">
+          <label className="modal-editar-contenedor__label">Codigo BIC</label>
+          <input
+            type="text"
+            className="modal-editar-contenedor__fecha-input"
+            value={codigoBic}
+            onChange={e => setCodigoBic(e.target.value)}
+            placeholder="BLKU258036"
+          />
+        </div>
+
+        <div className="modal-editar-contenedor__campo">
+          <label className="modal-editar-contenedor__label">Fecha de Inclusion</label>
+          <input
+            type="date"
+            className="modal-editar-contenedor__fecha-input"
+            value={fechaInicioLibre}
+            onChange={e => setFechaInicioLibre(e.target.value)}
+          />
+        </div>
+
+        {error && <p className="modal-editar-contenedor__error">{error}</p>}
+
+        <div className="modal-editar-contenedor__botones">
+          <button
+            type="button"
+            className="modal-editar-contenedor__btn-actualizar"
+            onClick={handleActualizar}
+            disabled={cargando}
+          >
+            {cargando ? 'Actualizando...' : 'Actualizar'}
+          </button>
+          <button
+            type="button"
+            className="modal-editar-contenedor__btn-cancelar"
+            onClick={onCancelar}
+          >
+            Cancelar
+          </button>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
+export default ModalEditarContenedor
