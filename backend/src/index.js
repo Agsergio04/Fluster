@@ -25,6 +25,7 @@ conectarDB()
 app.use(cors())
 app.use(express.json({ limit: '20mb' }))
 
+app.get('/', (_req, res) => res.redirect('/api-docs'))
 app.get('/health', (_req, res) => res.json({ ok: true }))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
