@@ -2,6 +2,11 @@
   display:     flex;
   align-items: stretch;
 
+  .celda-tabla--naviera .celda-tabla__texto,
+  .celda-tabla--naviera .celda-tabla__input {
+    font-size: 0.75rem;
+  }
+
   &__celdas {
     display:     flex;
     align-items: stretch;
