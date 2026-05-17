@@ -1,3 +1,15 @@
-// Utilidades — clases de apoyo reutilizables
-// Alta especificidad; se aplican sobre cualquier componente
+// Utilities — clases de apoyo reutilizables de alta especificidad
 
+// Visualmente oculto pero accesible para lectores de pantalla.
+// Usar en etiquetas descriptivas que no deben verse pero sí leerse.
+.sr-only {
+  position:   absolute;
+  width:      1px;
+  height:     1px;
+  padding:    0;
+  margin:     -1px;
+  overflow:   hidden;
+  clip:       rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border:     0;
+}
