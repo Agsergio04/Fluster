@@ -36,6 +36,11 @@ describe('navieraService', () => {
   // listar
   // ---------------------------------------------------------------------------
   describe('listar', () => {
+    beforeEach(() => {
+      // recrearNavierasHuerfanas() llama a Contenedor.find().lean() internamente
+      Contenedor.find.mockReturnValue({ lean: jest.fn().mockResolvedValue([]) })
+    })
+
     it('devuelve todas las navieras', async () => {
       Naviera.find.mockReturnValue({ lean: jest.fn().mockResolvedValue([mockNaviera]) })
 
@@ -126,16 +131,15 @@ describe('navieraService', () => {
       expect(nav.deleteOne).toHaveBeenCalled()
     })
 
-    it('lanza error 409 si hay contenedores que referencian la naviera', async () => {
-      const nav = { ...mockNaviera, deleteOne: jest.fn() }
+    it('permite eliminar aunque haya contenedores asociados (se recrean como huérfanos)', async () => {
+      const nav = { ...mockNaviera, deleteOne: jest.fn().mockResolvedValue({}) }
       Naviera.findById.mockResolvedValue(nav)
-      Contenedor.exists.mockResolvedValue({ _id: 'cont-id' })
 
-      await expect(eliminar('nav-id')).rejects.toMatchObject({ status: 409 })
-      expect(nav.deleteOne).not.toHaveBeenCalled()
+      await expect(eliminar('nav-id')).resolves.not.toThrow()
+      expect(nav.deleteOne).toHaveBeenCalled()
     })
 
-    it('lanza error 404 si la naviera no existe', async () => {
+it('lanza error 404 si la naviera no existe', async () => {
       Naviera.findById.mockResolvedValue(null)
 
       await expect(eliminar('non-existent')).rejects.toMatchObject({ status: 404 })
