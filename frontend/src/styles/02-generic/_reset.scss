@@ -44,11 +44,6 @@ body {
    Reset — Tipografía
 ========================================= */
 
-h1, h2, h3, h4, h5, h6 {
-  font-size:   inherit;
-  font-weight: inherit;
-}
-
 p,
 h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
@@ -78,38 +73,6 @@ button,
 textarea,
 select {
   font: inherit;
-}
-
-button {
-  cursor:     pointer;
-  background: none;
-  border:     none;
-
-  &:focus-visible {
-    outline:    none;
-    box-shadow: 0 0 0 3px var(--color-primary-off);
-    border-radius: var(--radius);
-  }
-}
-
-
-/* =========================================
-   Reset — Listas
-========================================= */
-
-ul,
-ol {
-  list-style: none;
-}
-
-
-/* =========================================
-   Reset — Enlaces
-========================================= */
-
-a {
-  color:           inherit;
-  text-decoration: none;
 }
 
 
