@@ -4,7 +4,7 @@
   align-items:      center;
   justify-content:  center;
   padding:          var(--space-8);
-  background-color: var(--color-box-border);
+  background-color: var(--color-bg);
   border-radius:    var(--radius);
   color:            var(--color-text);
   transition:       background-color var(--transition-fast);
@@ -16,7 +16,7 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--color-surface);
+    background-color: var(--color-border);
   }
 
   &:disabled {
