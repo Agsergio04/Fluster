@@ -54,13 +54,13 @@ function Registro() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <div className="registro__body">
+      <main className="registro__body">
         <div className="registro__imagen">
           <img src={imagenRegistro} alt="Puerto de contenedores" />
         </div>
 
         <div className="registro__panel">
-          <h2 className="registro__titulo">Registro</h2>
+          <h1 className="registro__titulo">Registro</h1>
 
           <EntradaDatosRegistro
             nombre={nombre}
@@ -74,9 +74,13 @@ function Registro() {
             errorContrasenia={errorContrasenia}
           />
 
-          <div className="registro__rol">
-            <p className="registro__rol-titulo">Rol Asignado</p>
-            {errorRol && <p className="registro__rol-error">{errorRol}</p>}
+          <div
+            className="registro__rol"
+            role="group"
+            aria-labelledby="registro-rol-titulo"
+          >
+            <p className="registro__rol-titulo" id="registro-rol-titulo">Rol Asignado</p>
+            {errorRol && <p className="registro__rol-error" role="alert">{errorRol}</p>}
             <BotonesSeleccionRol
               rolSeleccionado={rol}
               onSeleccionarRol={setRol}
@@ -89,7 +93,7 @@ function Registro() {
             disabled={cargando}
           />
         </div>
-      </div>
+      </main>
     </div>
   )
 }

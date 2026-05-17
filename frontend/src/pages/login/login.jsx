@@ -51,13 +51,13 @@ function Login() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <div className="login__body">
+      <main className="login__body">
         <div className="login__imagen">
           <img src={imagenLogin} alt="Puerto de contenedores" />
         </div>
 
         <div className="login__panel">
-          <h2 className="login__titulo">Iniciar Sesion</h2>
+          <h1 className="login__titulo">Iniciar Sesion</h1>
           <EntradaDatosLogin
             correo={correo}
             onCorreoCambio={e => setCorreo(e.target.value)}
@@ -72,7 +72,7 @@ function Login() {
             disabled={cargando}
           />
         </div>
-      </div>
+      </main>
     </div>
   )
 }
