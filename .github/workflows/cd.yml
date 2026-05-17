@@ -13,9 +13,8 @@
 #   4. Si el CI falla, este workflow no se ejecuta y la versión
 #      rota nunca llega a producción.
 #
-# Además registra el despliegue en el apartado "Deployments" de
-# GitHub para que quede visible en el repositorio con la URL
-# de producción y el estado del despliegue.
+# Además registra ambos despliegues en el apartado "Deployments"
+# de GitHub con sus respectivas URLs de producción.
 #
 # Para que funcione necesita dos secrets en el repositorio:
 #   - RENDER_DEPLOY_HOOK_BACKEND  → URL del deploy hook del backend
@@ -31,24 +30,57 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
-    name: Deploy a Render
+  deploy-backend:
+    name: Deploy Backend
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       deployments: write
 
     steps:
-      - name: Crear registro de deployment en GitHub
+      - name: Crear deployment backend en GitHub
         id: deployment
         uses: chrnorm/deployment-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: production
-          environment-url: https://fluster-frontend.onrender.com
+          environment: production-backend
+          environment-url: https://fluster-vd09.onrender.com
 
       - name: Deploy Backend
         run: curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}"
+
+      - name: Marcar deployment como exitoso
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: success
+          environment-url: https://fluster-vd09.onrender.com
+
+      - name: Marcar deployment como fallido
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: failure
+
+  deploy-frontend:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      deployments: write
+
+    steps:
+      - name: Crear deployment frontend en GitHub
+        id: deployment
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: production-frontend
+          environment-url: https://fluster-frontend.onrender.com
 
       - name: Deploy Frontend
         run: curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}"
