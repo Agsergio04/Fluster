@@ -20,22 +20,24 @@ function Home() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <IntroduccionPagina
-        onIniciarSesion={() => navigate('/login')}
-        onEmpezarAhora={() => navigate('/registro')}
-      />
+      <main>
+        <IntroduccionPagina
+          onIniciarSesion={() => navigate('/login')}
+          onEmpezarAhora={() => navigate('/registro')}
+        />
 
-      <section className="home__features">
-        <article className="home__feature">
-          <InformacionHome variante="tarifas" />
-        </article>
-        <article className="home__feature">
-          <InformacionHome variante="ocr" />
-        </article>
-        <article className="home__feature home__feature--wide">
-          <InformacionHome variante="semaforo" />
-        </article>
-      </section>
+        <section className="home__features" aria-label="Funcionalidades de Fluster">
+          <article className="home__feature">
+            <InformacionHome variante="tarifas" />
+          </article>
+          <article className="home__feature">
+            <InformacionHome variante="ocr" />
+          </article>
+          <article className="home__feature home__feature--wide">
+            <InformacionHome variante="semaforo" />
+          </article>
+        </section>
+      </main>
     </div>
   )
 }

@@ -72,59 +72,61 @@ function HistorialContenedor() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <section className="historial-contenedor__intro">
-        <h1 className="historial-contenedor__titulo">Registro del contenedor</h1>
-        <p className="historial-contenedor__codigo">{contenedor?.codigoBIC ?? id}</p>
-        <p className="historial-contenedor__subtitulo">
-          Historial completo de los ciclos del contenedor con los costes de demurrage
-          y detention asociados a cada periodo de actividad
-        </p>
-      </section>
+      <main>
+        <section className="historial-contenedor__intro">
+          <h1 className="historial-contenedor__titulo">Registro del contenedor</h1>
+          <p className="historial-contenedor__codigo">{contenedor?.codigoBIC ?? id}</p>
+          <p className="historial-contenedor__subtitulo">
+            Historial completo de los ciclos del contenedor con los costes de demurrage
+            y detention asociados a cada periodo de actividad
+          </p>
+        </section>
 
-      <div className="historial-contenedor__cuerpo">
-        <div className="historial-contenedor__historial">
-          <HistorialCiclosContenedor
-            ciclos={ciclos}
-            ciclosPorPagina={2}
-            onCancelar={() => navigate(-1)}
-            onEditarDemurrage={(ciclo) => abrirModal(ciclo.cicloId, 'Demurrage', { fechaInicio: ciclo.demurrage?.fechaInicio, fechaFin: ciclo.demurrage?.fechaFin })}
-            onEditarDetention={(ciclo) => abrirModal(ciclo.cicloId, 'Detention', { fechaInicio: ciclo.detention?.fechaInicio, fechaFin: ciclo.detention?.fechaFin })}
-          />
-        </div>
+        <div className="historial-contenedor__cuerpo">
+          <section className="historial-contenedor__historial">
+            <HistorialCiclosContenedor
+              ciclos={ciclos}
+              ciclosPorPagina={2}
+              onCancelar={() => navigate(-1)}
+              onEditarDemurrage={(ciclo) => abrirModal(ciclo.cicloId, 'Demurrage', { fechaInicio: ciclo.demurrage?.fechaInicio, fechaFin: ciclo.demurrage?.fechaFin })}
+              onEditarDetention={(ciclo) => abrirModal(ciclo.cicloId, 'Detention', { fechaInicio: ciclo.detention?.fechaInicio, fechaFin: ciclo.detention?.fechaFin })}
+            />
+          </section>
 
-        <div className="historial-contenedor__informe">
-          <PanelGenerarInforme
-            variante="individual"
-            fechaDesde={fechaDesde}           onFechaDesde={e => setFechaDesde(e.target.value)}
-            fechaHasta={fechaHasta}           onFechaHasta={e => setFechaHasta(e.target.value)}
-            fechaEspecifica={fechaEspecifica} onFechaEspecifica={e => setFechaEspecifica(e.target.value)}
-            naviera={naviera}                 onNaviera={e => setNaviera(e.target.value)}
-            cliente={cliente}                 onCliente={e => setCliente(e.target.value)}
-            orden={orden}                       onOrden={setOrden}
-            ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
-            onGenerarInforme={async () => {
-              try {
-                const datosCiclos = await obtenerDatosInforme({
-                  contenedorId: id,
-                  fechaDesde, fechaHasta, fechaEspecifica,
-                  naviera, cliente,
-                  ordenAscendente:  String(orden === 'ascendente'),
-                  ordenDescendente: String(orden === 'descendente'),
-                  ordenAlfabetico:  String(ordenAlfabetico),
-                })
-                const ok = generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)
-                if (ok) {
-                  await Promise.all(
-                    datosCiclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
-                  )
+          <aside className="historial-contenedor__informe">
+            <PanelGenerarInforme
+              variante="individual"
+              fechaDesde={fechaDesde}           onFechaDesde={e => setFechaDesde(e.target.value)}
+              fechaHasta={fechaHasta}           onFechaHasta={e => setFechaHasta(e.target.value)}
+              fechaEspecifica={fechaEspecifica} onFechaEspecifica={e => setFechaEspecifica(e.target.value)}
+              naviera={naviera}                 onNaviera={e => setNaviera(e.target.value)}
+              cliente={cliente}                 onCliente={e => setCliente(e.target.value)}
+              orden={orden}                       onOrden={setOrden}
+              ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
+              onGenerarInforme={async () => {
+                try {
+                  const datosCiclos = await obtenerDatosInforme({
+                    contenedorId: id,
+                    fechaDesde, fechaHasta, fechaEspecifica,
+                    naviera, cliente,
+                    ordenAscendente:  String(orden === 'ascendente'),
+                    ordenDescendente: String(orden === 'descendente'),
+                    ordenAlfabetico:  String(ordenAlfabetico),
+                  })
+                  const ok = generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)
+                  if (ok) {
+                    await Promise.all(
+                      datosCiclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
+                    )
+                  }
+                } catch (err) {
+                  console.error('Error al generar informe:', err)
                 }
-              } catch (err) {
-                console.error('Error al generar informe:', err)
-              }
-            }}
-          />
+              }}
+            />
+          </aside>
         </div>
-      </div>
+      </main>
       {modal && (
         <ModalEditarTramo
           tramo={modal.tramo}
