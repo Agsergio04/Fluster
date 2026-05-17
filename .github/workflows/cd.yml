@@ -43,7 +43,7 @@ jobs:
         uses: chrnorm/deployment-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: production-backend
+          environment: Fluster-Backend
           environment-url: https://fluster-vd09.onrender.com
 
       - name: Deploy Backend
@@ -79,7 +79,7 @@ jobs:
         uses: chrnorm/deployment-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: production-frontend
+          environment: Fluster-Frontend
           environment-url: https://fluster-frontend.onrender.com
 
       - name: Deploy Frontend
