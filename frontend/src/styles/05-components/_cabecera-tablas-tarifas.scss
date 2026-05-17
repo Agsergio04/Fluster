@@ -9,6 +9,11 @@
   display:     flex;
   align-items: flex-end;
 
+  .celda-tabla--naviera .celda-tabla__texto,
+  .celda-tabla--naviera .celda-tabla__input {
+    font-size: 0.75rem;
+  }
+
   &__acciones {
     flex: 1; // ocupa el mismo espacio que los botones de las filas de datos
   }
