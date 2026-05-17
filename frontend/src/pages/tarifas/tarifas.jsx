@@ -22,22 +22,22 @@ const navieraAFila = n => ({
   ],
 })
 
-const valoresANaviera = (navieraOriginal, valores) => {
-  const det0Hasta = Number(valores[2])
-  const dem0Hasta = Number(valores[3])
+const num = v => { const n = Number(v); return isNaN(n) ? 0 : n }
+
+const valoresANaviera = (valores) => {
+  const det0Hasta = num(valores[2])
+  const dem0Hasta = num(valores[3])
   return {
-    diasLibresDetention: Number(valores[0]),
-    diasLibresDemurrage: Number(valores[1]),
-    diasDetention: navieraOriginal.diasDetention.map((t, i) => {
-      if (i === 0) return { ...t, hastaDia: det0Hasta, precioPorDia: Number(valores[4]) }
-      if (i === 1) return { ...t, desdeDia: det0Hasta + 1, precioPorDia: Number(valores[6]) }
-      return t
-    }),
-    diasDemurrage: navieraOriginal.diasDemurrage.map((t, i) => {
-      if (i === 0) return { ...t, hastaDia: dem0Hasta, precioPorDia: Number(valores[5]) }
-      if (i === 1) return { ...t, desdeDia: dem0Hasta + 1, precioPorDia: Number(valores[7]) }
-      return t
-    }),
+    diasLibresDetention: num(valores[0]),
+    diasLibresDemurrage: num(valores[1]),
+    diasDetention: [
+      { desdeDia: 1,              hastaDia: det0Hasta, precioPorDia: num(valores[4]) },
+      { desdeDia: det0Hasta + 1,  hastaDia: null,      precioPorDia: num(valores[6]) },
+    ],
+    diasDemurrage: [
+      { desdeDia: 1,              hastaDia: dem0Hasta, precioPorDia: num(valores[5]) },
+      { desdeDia: dem0Hasta + 1,  hastaDia: null,      precioPorDia: num(valores[7]) },
+    ],
   }
 }
 
@@ -55,9 +55,7 @@ function Tarifas() {
   }, [])
 
   const handleActualizar = async (id, valoresNuevos) => {
-    const navieraOriginal = navieras.find(n => n._id === id)
-    if (!navieraOriginal) return
-    const cambios = valoresANaviera(navieraOriginal, valoresNuevos)
+    const cambios = valoresANaviera(valoresNuevos)
     const actualizada = await actualizarNaviera(id, cambios)
     setNavieras(prev => prev.map(n => n._id === id ? actualizada : n))
   }

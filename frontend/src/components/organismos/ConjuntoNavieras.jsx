@@ -34,7 +34,7 @@ function ConjuntoNavieras({ filas = [] }) {
         <div className="conjunto-navieras__lista">
           {filasPagina.map((fila, i) => (
             <GrupoNavieraMovil
-              key={fila.naviera ?? inicio + i}
+              key={(fila._id ?? fila.naviera) + '_' + (fila.valores ?? []).join(',')}
               naviera={fila.naviera}
               valores={fila.valores}
               onActualizar={fila.onActualizar}

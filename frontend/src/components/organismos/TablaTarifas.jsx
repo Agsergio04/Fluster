@@ -10,7 +10,7 @@ function TablaTarifas({ filas = [] }) {
           <CabeceraTablasTarifasNavieras />
           {filas.map((fila, i) => (
             <FilaNavieraTarifasConBotones
-              key={fila.naviera ?? i}
+              key={(fila._id ?? fila.naviera) + '_' + (fila.valores ?? []).join(',')}
               naviera={fila.naviera}
               valores={fila.valores}
               onActualizar={fila.onActualizar}
