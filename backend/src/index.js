@@ -42,4 +42,13 @@ app.use('/api/ciclos',      cicloRoutes)
 // Debe ir al final, después de todas las rutas
 app.use(errorMiddleware)
 
-app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`))
+app.listen(PORT, () => {
+  console.log(`Servidor en puerto ${PORT}`)
+
+  const selfUrl = process.env.RENDER_EXTERNAL_URL
+  if (selfUrl) {
+    setInterval(() => {
+      fetch(`${selfUrl}/health`).catch(() => {})
+    }, 5 * 60 * 1000)
+  }
+})
