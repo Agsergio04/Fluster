@@ -24,8 +24,11 @@ function SubirFotoOcr({
 
         <div className="subir-foto-ocr__formulario">
           <div className="subir-foto-ocr__campo-bic">
-            <p className="subir-foto-ocr__bic-label">Codigo BIC</p>
+            <label htmlFor="bic-ocr" className="subir-foto-ocr__bic-label">
+              Codigo BIC
+            </label>
             <input
+              id="bic-ocr"
               className="subir-foto-ocr__bic-input"
               type="text"
               value={codigoBic}
@@ -34,7 +37,7 @@ function SubirFotoOcr({
               disabled={cargandoOcr}
             />
             {errorOcr && (
-              <p className="subir-foto-ocr__error-ocr">{errorOcr}</p>
+              <p className="subir-foto-ocr__error-ocr" role="alert">{errorOcr}</p>
             )}
           </div>
 
@@ -66,8 +69,11 @@ function SubirFotoOcr({
       <div className="subir-foto-ocr subir-foto-ocr--introducido">
         <div className="subir-foto-ocr__formulario subir-foto-ocr__formulario--solo">
           <div className="subir-foto-ocr__campo-bic">
-            <p className="subir-foto-ocr__bic-label">Codigo BIC</p>
+            <label htmlFor="bic-manual" className="subir-foto-ocr__bic-label">
+              Codigo BIC
+            </label>
             <input
+              id="bic-manual"
               className="subir-foto-ocr__bic-input"
               type="text"
               value={codigoBic}
