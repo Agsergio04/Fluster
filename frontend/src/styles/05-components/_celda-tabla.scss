@@ -36,10 +36,10 @@
     white-space: nowrap;
   }
 
-  &--sm      { width: 6rem;   }
-  &--md      { width: 12rem;  }
-  &--naviera { width: 7.5rem; }
-  &--lg      { width: 24rem;  }
+  &--sm      { width: 6rem;  }
+  &--md      { width: 12rem; }
+  &--naviera { width: 6rem;  }
+  &--lg      { width: 24rem; }
 }
 
 .celda-det-sob {
@@ -47,7 +47,7 @@
   align-items: stretch;
 
   .celda-tabla--body .celda-tabla__texto {
-    white-space:     normal;
-    overflow-wrap:   break-word;
+    font-size:   0.75rem;
+    white-space: nowrap;
   }
 }
