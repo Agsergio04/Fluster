@@ -9,7 +9,7 @@ import TablaTarifas from '../../components/organismos/TablaTarifas'
 
 const navieraAFila = n => ({
   _id: n._id,
-  naviera: n.nombre,
+  naviera: (n.codigo ?? n.nombre).slice(0, 3).toUpperCase(),
   valores: [
     n.diasLibresDetention            ?? 0,
     n.diasLibresDemurrage            ?? 0,

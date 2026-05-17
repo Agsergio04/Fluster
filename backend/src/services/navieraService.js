@@ -117,7 +117,7 @@ async function recrearNavierasHuerfanas() {
 
   const navierasPorCodigo = {}
   for (const c of huerfanos) {
-    const codigo = (c.codigoBIC ?? '').slice(0, 4).toUpperCase() || 'UNKN'
+    const codigo = (c.codigoBIC ?? '').slice(0, 3).toUpperCase() || 'UNK'
     if (!navierasPorCodigo[codigo]) {
       const existente = await Naviera.findOne({ codigo })
       navierasPorCodigo[codigo] = existente ?? await Naviera.create({
