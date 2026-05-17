@@ -74,7 +74,7 @@ function Perfil() {
   }
 
   return (
-    <div className="perfil">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="perfil"
@@ -118,7 +118,7 @@ function Perfil() {
           />
         </div>
       </main>
-    </div>
+    </>
   )
 }
 

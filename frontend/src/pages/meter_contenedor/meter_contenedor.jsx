@@ -83,7 +83,7 @@ function MeterContenedor() {
   }
 
   return (
-    <div className="meter-contenedor">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="meter-contenedor"
@@ -123,7 +123,7 @@ function MeterContenedor() {
           />
         </div>
       </main>
-    </div>
+    </>
   )
 }
 

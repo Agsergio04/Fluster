@@ -55,7 +55,7 @@ function Almacen() {
     }))
 
   return (
-    <div className="almacen">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="almacen"
@@ -136,7 +136,7 @@ function Almacen() {
         </div>
       </main>
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
-    </div>
+    </>
   )
 }
 

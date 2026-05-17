@@ -1,10 +1,4 @@
 .semaforo {
-  display:          flex;
-  flex-direction:   column;
-  min-height:       100dvh;
-  background-color: var(--color-primary-off);
-  overflow-x:       hidden;
-
   &__intro {
     display:        flex;
     flex-direction: column;

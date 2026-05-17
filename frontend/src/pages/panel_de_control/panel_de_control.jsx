@@ -62,7 +62,7 @@ function PanelDeControl() {
   }
 
   return (
-    <div className="panel-de-control">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="panel-de-control"
@@ -94,7 +94,7 @@ function PanelDeControl() {
       </main>
 
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
-    </div>
+    </>
   )
 }
 

@@ -46,7 +46,7 @@ function Registro() {
   }
 
   return (
-    <div className="registro">
+    <>
       <Header
         rol={null}
         tema={tema}
@@ -94,7 +94,7 @@ function Registro() {
           />
         </div>
       </main>
-    </div>
+    </>
   )
 }
 

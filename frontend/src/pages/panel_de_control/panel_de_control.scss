@@ -1,9 +1,4 @@
 .panel-de-control {
-  display:          flex;
-  flex-direction:   column;
-  min-height:       100dvh;
-  background-color: var(--color-primary-off);
-
   &__intro {
     display:        flex;
     flex-direction: column;

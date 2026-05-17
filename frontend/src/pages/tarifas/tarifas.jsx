@@ -72,7 +72,7 @@ function Tarifas() {
   }))
 
   return (
-    <div className="tarifas">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="tarifas"
@@ -94,7 +94,7 @@ function Tarifas() {
           <TablaTarifas filas={filas} />
         </div>
       </main>
-    </div>
+    </>
   )
 }
 

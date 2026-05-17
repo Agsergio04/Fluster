@@ -43,7 +43,7 @@ function Login() {
   }
 
   return (
-    <div className="login">
+    <>
       <Header
         rol={null}
         tema={tema}
@@ -73,7 +73,7 @@ function Login() {
           />
         </div>
       </main>
-    </div>
+    </>
   )
 }
 

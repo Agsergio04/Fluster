@@ -63,7 +63,7 @@ function HistorialContenedor() {
   const [ordenAlfabetico,  setOrdenAlfabetico]  = useState(false)
 
   return (
-    <div className="historial-contenedor">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="seguimiento"
@@ -136,7 +136,7 @@ function HistorialContenedor() {
           onCancelar={cerrarModal}
         />
       )}
-    </div>
+    </>
   )
 }
 

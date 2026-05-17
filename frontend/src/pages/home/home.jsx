@@ -12,7 +12,7 @@ function Home() {
   const usuario = getUsuario()
 
   return (
-    <div className="home">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         tema={tema}
@@ -38,7 +38,7 @@ function Home() {
           </article>
         </section>
       </main>
-    </div>
+    </>
   )
 }
 

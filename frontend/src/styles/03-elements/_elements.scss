@@ -48,3 +48,16 @@ button {
     border-radius: var(--radius);
   }
 }
+
+
+/* =========================================
+   Raíz de la aplicación
+========================================= */
+
+#root {
+  display:          flex;
+  flex-direction:   column;
+  min-height:       100dvh;
+  background-color: var(--color-primary-off);
+  overflow-x:       hidden;
+}

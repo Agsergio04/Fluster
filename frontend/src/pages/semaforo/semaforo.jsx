@@ -165,7 +165,7 @@ function Semaforo() {
       })
 
   return (
-    <div className="semaforo">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="seguimiento"
@@ -212,7 +212,7 @@ function Semaforo() {
           onCancelar={() => setModalFecha(null)}
         />
       )}
-    </div>
+    </>
   )
 }
 

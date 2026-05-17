@@ -48,7 +48,7 @@ function Contenedores() {
   }
 
   return (
-    <div className="contenedores">
+    <>
       <Header
         rol={usuario?.rol ?? null}
         seccionActiva="contenedores"
@@ -86,7 +86,7 @@ function Contenedores() {
           onCancelar={() => setEditando(null)}
         />
       )}
-    </div>
+    </>
   )
 }
 
