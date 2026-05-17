@@ -27,6 +27,10 @@
     outline:            none;
 
     &[readonly] { cursor: default; }
+
+    &:focus-visible:not([readonly]) {
+      box-shadow: 0 0 0 3px var(--color-primary-off);
+    }
   }
 
   &--body &__texto,

@@ -9,6 +9,7 @@ function BuscadorCard({ value, onChange, onBuscar, placeholder = 'Buscar' }) {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        onKeyDown={e => e.key === 'Enter' && onBuscar?.()}
       />
       <BotonBusqueda onClick={onBuscar} />
     </div>
