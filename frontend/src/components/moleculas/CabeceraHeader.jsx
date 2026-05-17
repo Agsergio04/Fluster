@@ -4,7 +4,7 @@ import BotonCambiarTema from '../atomos/BotonCambiarTema'
 
 function CabeceraHeader({ loggeado = false, tema = 'light', onToggleTema, onMenuHamburguesa, onLogoClick }) {
   return (
-    <header className="cabecera-header">
+    <div className="cabecera-header">
       <button
         type="button"
         className="cabecera-header__logo-btn"
@@ -23,7 +23,7 @@ function CabeceraHeader({ loggeado = false, tema = 'light', onToggleTema, onMenu
         )}
         <BotonCambiarTema tema={tema} onClick={onToggleTema} />
       </div>
-    </header>
+    </div>
   )
 }
 

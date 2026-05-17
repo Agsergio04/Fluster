@@ -6,7 +6,7 @@ function Header({ rol = null, seccionActiva, tema = 'light', onToggleTema, onNav
   const [menuAbierto, setMenuAbierto] = useState(false)
 
   return (
-    <div className={`header${menuAbierto ? ' header--abierto' : ''}`}>
+    <header className={`header${menuAbierto ? ' header--abierto' : ''}`}>
       <CabeceraHeader
         loggeado={!!rol}
         tema={tema}
@@ -21,7 +21,7 @@ function Header({ rol = null, seccionActiva, tema = 'light', onToggleTema, onNav
           onNavegar={onNavegar}
         />
       )}
-    </div>
+    </header>
   )
 }
 

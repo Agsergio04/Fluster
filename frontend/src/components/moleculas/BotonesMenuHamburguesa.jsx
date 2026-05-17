@@ -27,7 +27,7 @@ const ITEMS = {
 function BotonesMenuHamburguesa({ rol = 'gestor', seccionActiva, onNavegar }) {
   const items = ITEMS[rol] ?? []
   return (
-    <nav className="botones-menu-hamburguesa">
+    <nav className="botones-menu-hamburguesa" aria-label="Navegación principal">
       {items.map(({ id, label, icon, ruta }) => (
         <BotonDesplegableHamburguesa
           key={id}
