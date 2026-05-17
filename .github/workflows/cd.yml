@@ -70,7 +70,34 @@ jobs:
     name: Deploy Frontend
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      deployments: write
 
     steps:
+      - name: Crear deployment frontend en GitHub
+        id: deployment
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: Fluster-Frontend
+          environment-url: https://fluster-frontend.onrender.com
+
       - name: Deploy Frontend
         run: curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}"
+
+      - name: Marcar deployment como exitoso
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: success
+          environment-url: https://fluster-frontend.onrender.com
+
+      - name: Marcar deployment como fallido
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+          state: failure
