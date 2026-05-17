@@ -10,6 +10,7 @@ function BotonRolesCardUsuario({ rol = 'operador', active = true, seleccionado =
     <button
       className={`btn-roles-card-usuario${modificador ? ` btn-roles-card-usuario${modificador}` : ''}`}
       type="button"
+      aria-pressed={seleccionado}
       disabled={disabled}
       onClick={onClick}
     >
