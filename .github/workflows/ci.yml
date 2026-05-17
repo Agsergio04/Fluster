@@ -1,3 +1,23 @@
+# ─────────────────────────────────────────────────────────────────
+# CI — Integración Continua
+#
+# Este workflow se ejecuta automáticamente cada vez que se sube
+# código a las ramas main o dev, y también cuando se abre un
+# Pull Request hacia alguna de esas dos ramas.
+#
+# Su objetivo es comprobar que el código que se acaba de subir
+# no rompe nada antes de que llegue a producción. Hace dos cosas
+# en paralelo:
+#
+#   1. Ejecuta todos los tests unitarios del backend (Jest).
+#      Si algún test falla, el workflow se marca como fallido
+#      y Render no desplegará ese código (ver cd.yml).
+#
+#   2. Compila el frontend con Vite para asegurarse de que el
+#      build de producción no tiene errores. Si la compilación
+#      falla, también se bloquea el despliegue.
+# ─────────────────────────────────────────────────────────────────
+
 name: CI
 
 on:
