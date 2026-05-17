@@ -36,11 +36,10 @@
     white-space: nowrap;
   }
 
-  // tamaños Figma-exact
-  &--sm      { width: 7.5rem;  } // 120px
-  &--md      { width: 15rem;   } // 240px
-  &--naviera { width: 10rem;   } // 160px
-  &--lg      { width: 30rem;   } // 480px
+  &--sm      { width: 6rem;   }
+  &--md      { width: 12rem;  }
+  &--naviera { width: 7.5rem; }
+  &--lg      { width: 24rem;  }
 }
 
 .celda-det-sob {
