@@ -3,23 +3,25 @@
   align-items:      center;
   width:            100%;
   border-radius:    var(--radius);
-  background-color: var(--color-box-border);
+  background-color: var(--color-bg);
+  border:           1px solid var(--color-border);
 
   &__input {
-    flex:         1 0 0;
-    min-width:    1px;
-    padding:      0.625rem;
-    background:   transparent;
-    border:       none;
+    flex:          1 0 0;
+    min-width:     1px;
+    padding:       0.625rem;
+    background:    transparent;
+    border:        none;
     border-radius: var(--radius);
-    font-family:  var(--font-body);
-    font-size:    var(--text-16);
-    font-weight:  var(--font-weight-regular);
-    line-height:  1;
-    color:        var(--color-box-text);
+    font-family:   var(--font-body);
+    font-size:     var(--text-16);
+    font-weight:   var(--font-weight-regular);
+    line-height:   1;
+    color:         var(--color-text);
 
     &::placeholder {
-      color: var(--color-box-text);
+      color: var(--color-text);
+      opacity: 0.5;
     }
 
     &:focus {
