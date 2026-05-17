@@ -7,5 +7,9 @@
 
 .cabecera-tablas-tarifas-navieras {
   display:     flex;
-  align-items: flex-end; // columna naviera baja hasta la última fila
+  align-items: flex-end;
+
+  &__acciones {
+    flex: 1; // ocupa el mismo espacio que los botones de las filas de datos
+  }
 }

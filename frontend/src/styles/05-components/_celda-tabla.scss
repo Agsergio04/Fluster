@@ -45,4 +45,9 @@
 .celda-det-sob {
   display:     flex;
   align-items: center;
+
+  .celda-tabla--body .celda-tabla__texto {
+    white-space:     normal;
+    overflow-wrap:   break-word;
+  }
 }
