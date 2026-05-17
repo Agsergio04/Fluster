@@ -92,34 +92,37 @@ function MeterContenedor() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <section className="meter-contenedor__intro">
-        <h1 className="meter-contenedor__titulo">Meter contenedor</h1>
-        <p className="meter-contenedor__subtitulo">
-          Puedes introducir el contenedor mediante una foto o metiendo directamente el codigo BIC
-        </p>
-      </section>
+      <main>
+        <section className="meter-contenedor__intro">
+          <h1 className="meter-contenedor__titulo">Meter contenedor</h1>
+          <p className="meter-contenedor__subtitulo">
+            Puedes introducir el contenedor mediante una foto o metiendo directamente el codigo BIC
+          </p>
+        </section>
 
-      <div className="meter-contenedor__contenido">
-        <input
-          ref={inputFotoRef}
-          type="file"
-          accept="image/*"
-          style={{ display: 'none' }}
-          onChange={handleFotoElegida}
-        />
-        <SubirFotoOcr
-          estado={estado}
-          onSeleccionarFoto={handleSeleccionarFoto}
-          onIntroducirManual={handleIntroducirManual}
-          foto={foto}
-          codigoBic={codigoBic}
-          errorOcr={errorOcr}
-          onCodigoBicCambio={e => { setCodigoBic(e.target.value); setErrorOcr('') }}
-          cargandoOcr={cargandoOcr || cargando}
-          onIntroducir={handleIntroducir}
-          onCancelar={handleCancelar}
-        />
-      </div>
+        <div className="meter-contenedor__contenido">
+          <input
+            ref={inputFotoRef}
+            type="file"
+            accept="image/*"
+            aria-hidden="true"
+            style={{ display: 'none' }}
+            onChange={handleFotoElegida}
+          />
+          <SubirFotoOcr
+            estado={estado}
+            onSeleccionarFoto={handleSeleccionarFoto}
+            onIntroducirManual={handleIntroducirManual}
+            foto={foto}
+            codigoBic={codigoBic}
+            errorOcr={errorOcr}
+            onCodigoBicCambio={e => { setCodigoBic(e.target.value); setErrorOcr('') }}
+            cargandoOcr={cargandoOcr || cargando}
+            onIntroducir={handleIntroducir}
+            onCancelar={handleCancelar}
+          />
+        </div>
+      </main>
     </div>
   )
 }

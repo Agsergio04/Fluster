@@ -83,39 +83,41 @@ function Perfil() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <section className="perfil__intro">
-        <h1 className="perfil__titulo">Perfil</h1>
-        <p className="perfil__subtitulo">
-          Aqui se encuentra tanto la informacion personal como el cambio de credenciales
-        </p>
-      </section>
+      <main>
+        <section className="perfil__intro">
+          <h1 className="perfil__titulo">Perfil</h1>
+          <p className="perfil__subtitulo">
+            Aqui se encuentra tanto la informacion personal como el cambio de credenciales
+          </p>
+        </section>
 
-      <div className="perfil__contenido">
-        <PerfilCredenciales
-          foto={foto}
-          nombre={usuario?.nombre ?? ''}
-          rol={usuario?.rol ?? ''}
-          correo={usuario?.correo ?? ''}
-          onActualizarFoto={handleActualizarFoto}
-          nuevoNombre={nuevoNombre}
-          onNuevoNombreCambio={e => setNuevoNombre(e.target.value)}
-          errorNombre={errorNombre}
-          onConfirmarNombre={handleConfirmarNombre}
-          disabledNombre={cargando}
-          contraseniaActual={contraseniaActual}
-          onContraseniaActualCambio={e => setContraseniaActual(e.target.value)}
-          errorContraseniaActual={errorContraseniaActual}
-          contrasenia={contrasenia}
-          onContraseniaCambio={e => setContrasenia(e.target.value)}
-          confirmacion={confirmacion}
-          onConfirmacionCambio={e => setConfirmacion(e.target.value)}
-          errorContrasenia={errorContrasenia}
-          errorConfirmacion={errorConfirmacion}
-          onConfirmarContrasenia={handleConfirmarContrasenia}
-          disabledContrasenia={cargando}
-          onCerrarSesion={handleCerrarSesion}
-        />
-      </div>
+        <div className="perfil__contenido">
+          <PerfilCredenciales
+            foto={foto}
+            nombre={usuario?.nombre ?? ''}
+            rol={usuario?.rol ?? ''}
+            correo={usuario?.correo ?? ''}
+            onActualizarFoto={handleActualizarFoto}
+            nuevoNombre={nuevoNombre}
+            onNuevoNombreCambio={e => setNuevoNombre(e.target.value)}
+            errorNombre={errorNombre}
+            onConfirmarNombre={handleConfirmarNombre}
+            disabledNombre={cargando}
+            contraseniaActual={contraseniaActual}
+            onContraseniaActualCambio={e => setContraseniaActual(e.target.value)}
+            errorContraseniaActual={errorContraseniaActual}
+            contrasenia={contrasenia}
+            onContraseniaCambio={e => setContrasenia(e.target.value)}
+            confirmacion={confirmacion}
+            onConfirmacionCambio={e => setConfirmacion(e.target.value)}
+            errorContrasenia={errorContrasenia}
+            errorConfirmacion={errorConfirmacion}
+            onConfirmarContrasenia={handleConfirmarContrasenia}
+            disabledContrasenia={cargando}
+            onCerrarSesion={handleCerrarSesion}
+          />
+        </div>
+      </main>
     </div>
   )
 }

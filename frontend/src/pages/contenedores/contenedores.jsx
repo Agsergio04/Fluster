@@ -57,25 +57,27 @@ function Contenedores() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <section className="contenedores__intro">
-        <h1 className="contenedores__titulo">Contenedores</h1>
-        <p className="contenedores__subtitulo">
-          Aqui se encuentra todos los contenedores que has introducido
-        </p>
-      </section>
+      <main>
+        <section className="contenedores__intro">
+          <h1 className="contenedores__titulo">Contenedores</h1>
+          <p className="contenedores__subtitulo">
+            Aqui se encuentra todos los contenedores que has introducido
+          </p>
+        </section>
 
-      <div className="contenedores__contenido">
-        <ConjuntoCards
-          variante="contenedores"
-          itemsPorPagina={9}
-          busqueda={busqueda}
-          onBusquedaCambio={e => setBusqueda(e.target.value)}
-          onBuscar={() => {}}
-          items={items}
-          onEditar={item => setEditando(item)}
-          onEliminar={handleEliminar}
-        />
-      </div>
+        <div className="contenedores__contenido">
+          <ConjuntoCards
+            variante="contenedores"
+            itemsPorPagina={9}
+            busqueda={busqueda}
+            onBusquedaCambio={e => setBusqueda(e.target.value)}
+            onBuscar={() => {}}
+            items={items}
+            onEditar={item => setEditando(item)}
+            onEliminar={handleEliminar}
+          />
+        </div>
+      </main>
 
       {editando && (
         <ModalEditarContenedor

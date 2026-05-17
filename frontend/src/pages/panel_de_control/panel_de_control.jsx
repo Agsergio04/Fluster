@@ -71,25 +71,27 @@ function PanelDeControl() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <section className="panel-de-control__intro">
-        <h1 className="panel-de-control__titulo">Panel de control</h1>
-        <p className="panel-de-control__subtitulo">
-          Aquí puedes gestionar los usuarios de la plataforma
-        </p>
-      </section>
+      <main>
+        <section className="panel-de-control__intro">
+          <h1 className="panel-de-control__titulo">Panel de control</h1>
+          <p className="panel-de-control__subtitulo">
+            Aquí puedes gestionar los usuarios de la plataforma
+          </p>
+        </section>
 
-      <div className="panel-de-control__contenido">
-        <ConjuntoCards
-          variante="usuarios"
-          itemsPorPagina={9}
-          busqueda={busqueda}
-          onBusquedaCambio={e => setBusqueda(e.target.value)}
-          onBuscar={() => {}}
-          items={items}
-          onCambiarRol={handleCambiarRol}
-          onEliminar={handleEliminar}
-        />
-      </div>
+        <div className="panel-de-control__contenido">
+          <ConjuntoCards
+            variante="usuarios"
+            itemsPorPagina={9}
+            busqueda={busqueda}
+            onBusquedaCambio={e => setBusqueda(e.target.value)}
+            onBuscar={() => {}}
+            items={items}
+            onCambiarRol={handleCambiarRol}
+            onEliminar={handleEliminar}
+          />
+        </div>
+      </main>
 
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </div>

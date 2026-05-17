@@ -174,28 +174,31 @@ function Semaforo() {
         onNavegar={ruta => navigate(ruta)}
       />
 
-      <section className="semaforo__intro">
-        <h1 className="semaforo__titulo">Estado de los contenedores</h1>
-        <p className="semaforo__subtitulo">
-          Visualizacion en tiempo real del estado de los contenedores y los costes
-          asociados a la detencion y sobreestadía de dichos contenedores
-        </p>
-      </section>
+      <main>
+        <section className="semaforo__intro">
+          <h1 className="semaforo__titulo">Estado de los contenedores</h1>
+          <p className="semaforo__subtitulo">
+            Visualizacion en tiempo real del estado de los contenedores y los costes
+            asociados a la detencion y sobreestadía de dichos contenedores
+          </p>
+        </section>
 
-      <div className="semaforo__contenido">
-        {TRAMOS.map(tramo => (
-          <ConjuntoCards
-            key={tramo}
-            variante="semaforo"
-            tramo={tramo}
-            itemsPorPagina={9}
-            busqueda={busquedas[tramo]}
-            onBusquedaCambio={e => handleBusquedaCambio(tramo, e.target.value)}
-            onBuscar={() => {}}
-            items={itemsFiltrados(tramo)}
-          />
-        ))}
-      </div>
+        <div className="semaforo__contenido">
+          {TRAMOS.map(tramo => (
+            <ConjuntoCards
+              key={tramo}
+              variante="semaforo"
+              tramo={tramo}
+              itemsPorPagina={9}
+              busqueda={busquedas[tramo]}
+              onBusquedaCambio={e => handleBusquedaCambio(tramo, e.target.value)}
+              onBuscar={() => {}}
+              items={itemsFiltrados(tramo)}
+            />
+          ))}
+        </div>
+      </main>
+
       {modalPuerto && (
         <ModalEntradaPuerto
           onConfirmar={handleEntradaPuerto}
