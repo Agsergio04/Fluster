@@ -8,19 +8,15 @@ jobs:
   build-push-backend:
     name: Build & Push — Backend
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Login a GitHub Container Registry
+      - name: Login a Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build y push imagen backend
         uses: docker/build-push-action@v6
@@ -28,25 +24,21 @@ jobs:
           context: ./backend
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/fluster-backend:latest
-            ghcr.io/${{ github.repository_owner }}/fluster-backend:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-backend:${{ github.sha }}
 
   build-push-frontend:
     name: Build & Push — Frontend
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Login a GitHub Container Registry
+      - name: Login a Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build y push imagen frontend
         uses: docker/build-push-action@v6
@@ -54,5 +46,5 @@ jobs:
           context: ./frontend
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/fluster-frontend:latest
-            ghcr.io/${{ github.repository_owner }}/fluster-frontend:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-frontend:${{ github.sha }}
