@@ -7,6 +7,7 @@ import { listarContenedores, actualizarContenedor, eliminarContenedor } from '..
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEditarContenedor from '../../components/moleculas/ModalEditarContenedor'
+import Notificacion from '../../components/atomos/Notificacion'
 
 function Contenedores() {
   const navigate = useNavigate()
@@ -16,11 +17,14 @@ function Contenedores() {
   const [busqueda,     setBusqueda]     = useState('')
   const [contenedores, setContenedores] = useState([])
   const [editando,     setEditando]     = useState(null)
+  const [aviso,        setAviso]        = useState('')
+  const [cargando,     setCargando]     = useState(true)
 
   useEffect(() => {
     listarContenedores()
       .then(data => setContenedores(data))
-      .catch(() => {})
+      .catch(() => setAviso('No se pudieron cargar los contenedores'))
+      .finally(() => setCargando(false))
   }, [])
 
   const items = contenedores
@@ -37,14 +41,22 @@ function Contenedores() {
     }))
 
   const handleActualizar = async (id, datos) => {
-    const actualizado = await actualizarContenedor(id, datos)
-    setContenedores(prev => prev.map(c => c._id === id ? { ...c, ...actualizado } : c))
-    setEditando(null)
+    try {
+      const actualizado = await actualizarContenedor(id, datos)
+      setContenedores(prev => prev.map(c => c._id === id ? { ...c, ...actualizado } : c))
+      setEditando(null)
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo actualizar el contenedor')
+    }
   }
 
   const handleEliminar = async (item) => {
-    await eliminarContenedor(item.id)
-    setContenedores(prev => prev.filter(c => c._id !== item.id))
+    try {
+      await eliminarContenedor(item.id)
+      setContenedores(prev => prev.filter(c => c._id !== item.id))
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el contenedor')
+    }
   }
 
   return (
@@ -66,16 +78,20 @@ function Contenedores() {
         </section>
 
         <div className="contenedores__contenido">
-          <ConjuntoCards
-            variante="contenedores"
-            itemsPorPagina={9}
-            busqueda={busqueda}
-            onBusquedaCambio={e => setBusqueda(e.target.value)}
-            onBuscar={() => {}}
-            items={items}
-            onEditar={item => setEditando(item)}
-            onEliminar={handleEliminar}
-          />
+          {cargando ? (
+            <p className="contenedores__cargando">Cargando contenedores...</p>
+          ) : (
+            <ConjuntoCards
+              variante="contenedores"
+              itemsPorPagina={9}
+              busqueda={busqueda}
+              onBusquedaCambio={e => setBusqueda(e.target.value)}
+              onBuscar={() => {}}
+              items={items}
+              onEditar={item => setEditando(item)}
+              onEliminar={handleEliminar}
+            />
+          )}
         </div>
       </main>
 
@@ -86,6 +102,8 @@ function Contenedores() {
           onCancelar={() => setEditando(null)}
         />
       )}
+
+      <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>
   )
 }

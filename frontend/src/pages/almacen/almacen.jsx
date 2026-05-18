@@ -19,6 +19,7 @@ function Almacen() {
   const [busqueda,     setBusqueda]     = useState('')
   const [contenedores, setContenedores] = useState([])
   const [aviso,        setAviso]        = useState('')
+  const [cargando,     setCargando]     = useState(true)
 
   const [fechaDesde,       setFechaDesde]       = useState('')
   const [fechaHasta,       setFechaHasta]       = useState('')
@@ -32,7 +33,8 @@ function Almacen() {
   useEffect(() => {
     listarContenedores()
       .then(data => setContenedores(data))
-      .catch(() => {})
+      .catch(() => setAviso('No se pudieron cargar los contenedores'))
+      .finally(() => setCargando(false))
   }, [])
 
   const ultimaFecha = c => {
@@ -53,6 +55,35 @@ function Almacen() {
       fechaInclusion:  new Date(c.creadoEn).toLocaleDateString('es-ES'),
       operador:        c.creadoPor?.nombre ?? '-',
     }))
+
+  const handleBorrar = async (item) => {
+    try {
+      await eliminarContenedor(item.id)
+      setContenedores(prev => prev.filter(c => c._id !== item.id))
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el contenedor')
+    }
+  }
+
+  const handleGenerarInforme = async () => {
+    try {
+      const ciclos = await obtenerDatosInforme({
+        fechaDesde, fechaHasta, fechaEspecifica,
+        naviera, cliente, codigoBic,
+        ordenAscendente:  String(orden === 'ascendente'),
+        ordenDescendente: String(orden === 'descendente'),
+        ordenAlfabetico:  String(ordenAlfabetico),
+      })
+      const ok = generarPDFGeneral(ciclos)
+      if (ok) {
+        await Promise.all(
+          ciclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
+        )
+      }
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo generar el informe')
+    }
+  }
 
   return (
     <>
@@ -75,23 +106,20 @@ function Almacen() {
         </section>
 
         <div className="almacen__contenido">
-          <ConjuntoCards
-            variante="almacen"
-            itemsPorPagina={9}
-            busqueda={busqueda}
-            onBusquedaCambio={e => setBusqueda(e.target.value)}
-            onBuscar={() => {}}
-            items={items}
-            onVerRegistro={item => navigate(`/almacen/historial/${item.id}`)}
-            onBorrar={async item => {
-              try {
-                await eliminarContenedor(item.id)
-                setContenedores(prev => prev.filter(c => c._id !== item.id))
-              } catch (err) {
-                setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el contenedor')
-              }
-            }}
-          />
+          {cargando ? (
+            <p className="almacen__cargando">Cargando contenedores...</p>
+          ) : (
+            <ConjuntoCards
+              variante="almacen"
+              itemsPorPagina={9}
+              busqueda={busqueda}
+              onBusquedaCambio={e => setBusqueda(e.target.value)}
+              onBuscar={() => {}}
+              items={items}
+              onVerRegistro={item => navigate(`/almacen/historial/${item.id}`)}
+              onBorrar={handleBorrar}
+            />
+          )}
         </div>
 
         <section className="almacen__informe-intro">
@@ -113,28 +141,11 @@ function Almacen() {
             codigoBic={codigoBic}             onCodigoBic={e => setCodigoBic(e.target.value)}
             orden={orden}                       onOrden={setOrden}
             ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
-            onGenerarInforme={async () => {
-              try {
-                const ciclos = await obtenerDatosInforme({
-                  fechaDesde, fechaHasta, fechaEspecifica,
-                  naviera, cliente, codigoBic,
-                  ordenAscendente:  String(orden === 'ascendente'),
-                  ordenDescendente: String(orden === 'descendente'),
-                  ordenAlfabetico:  String(ordenAlfabetico),
-                })
-                const ok = generarPDFGeneral(ciclos)
-                if (ok) {
-                  await Promise.all(
-                    ciclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))
-                  )
-                }
-              } catch (err) {
-                console.error('Error al generar informe:', err)
-              }
-            }}
+            onGenerarInforme={handleGenerarInforme}
           />
         </div>
       </main>
+
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>
   )

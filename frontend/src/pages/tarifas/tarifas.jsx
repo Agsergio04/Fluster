@@ -6,6 +6,7 @@ import { getUsuario } from '../../services/session'
 import { listarNavieras, actualizarNaviera, eliminarNaviera } from '../../services/navieraService'
 import Header from '../../components/organismos/Header'
 import TablaTarifas from '../../components/organismos/TablaTarifas'
+import Notificacion from '../../components/atomos/Notificacion'
 
 const navieraAFila = n => ({
   _id: n._id,
@@ -47,22 +48,33 @@ function Tarifas() {
   const [tema, toggleTema] = useTema()
 
   const [navieras, setNavieras] = useState([])
+  const [aviso,    setAviso]    = useState('')
+  const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
     listarNavieras()
       .then(data => setNavieras(data))
-      .catch(() => {})
+      .catch(() => setAviso('No se pudieron cargar las tarifas'))
+      .finally(() => setCargando(false))
   }, [])
 
   const handleActualizar = async (id, valoresNuevos) => {
-    const cambios = valoresANaviera(valoresNuevos)
-    const actualizada = await actualizarNaviera(id, cambios)
-    setNavieras(prev => prev.map(n => n._id === id ? actualizada : n))
+    try {
+      const cambios = valoresANaviera(valoresNuevos)
+      const actualizada = await actualizarNaviera(id, cambios)
+      setNavieras(prev => prev.map(n => n._id === id ? actualizada : n))
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo actualizar la tarifa')
+    }
   }
 
   const handleEliminar = async (id) => {
-    await eliminarNaviera(id)
-    setNavieras(prev => prev.filter(n => n._id !== id))
+    try {
+      await eliminarNaviera(id)
+      setNavieras(prev => prev.filter(n => n._id !== id))
+    } catch (err) {
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar la naviera')
+    }
   }
 
   const filas = navieras.map(n => ({
@@ -91,9 +103,15 @@ function Tarifas() {
         </section>
 
         <div className="tarifas__contenido">
-          <TablaTarifas filas={filas} />
+          {cargando ? (
+            <p className="tarifas__cargando">Cargando tarifas...</p>
+          ) : (
+            <TablaTarifas filas={filas} />
+          )}
         </div>
       </main>
+
+      <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>
   )
 }
