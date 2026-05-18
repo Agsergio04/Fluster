@@ -8,18 +8,23 @@ function Footer() {
         <img src={LogoConLetras} alt="Fluster" className="footer__logo" />
       </div>
 
-      <h3 className="footer__titulo-seccion">Enlaces referentes</h3>
-      <h3 className="footer__titulo-seccion">Legal</h3>
-
-      <ul className="footer__lista">
-        <li><Link to="/guia-estilos" className="footer__enlace">Guía de Estilos</Link></li>
-      </ul>
-      <ul className="footer__lista">
-        <li><Link to="/terminos-de-servicio"   className="footer__enlace">Términos de Servicio</Link></li>
-        <li><Link to="/politica-de-privacidad" className="footer__enlace">Política de Privacidad</Link></li>
-        <li><Link to="/cookies"                className="footer__enlace">Cookies</Link></li>
-        <li><Link to="/contacto"               className="footer__enlace">Contacto</Link></li>
-      </ul>
+      <div className="footer__secciones">
+        <div className="footer__seccion">
+          <h3 className="footer__titulo-seccion">Enlaces referentes</h3>
+          <ul className="footer__lista">
+            <li><Link to="/guia-estilos" className="footer__enlace">Guía de Estilos</Link></li>
+          </ul>
+        </div>
+        <div className="footer__seccion">
+          <h3 className="footer__titulo-seccion">Legal</h3>
+          <ul className="footer__lista">
+            <li><Link to="/terminos-de-servicio"   className="footer__enlace">Términos de Servicio</Link></li>
+            <li><Link to="/politica-de-privacidad" className="footer__enlace">Política de Privacidad</Link></li>
+            <li><Link to="/cookies"                className="footer__enlace">Cookies</Link></li>
+            <li><Link to="/contacto"               className="footer__enlace">Contacto</Link></li>
+          </ul>
+        </div>
+      </div>
     </footer>
   )
 }
