@@ -1,5 +1,13 @@
 import { useState } from 'react'
 
+/**
+ * Modal para registrar la entrada a puerto de un contenedor (INACTIVO → PUERTO).
+ * Requiere el nombre del cliente que usará el contenedor para abrir el ciclo.
+ * El clic fuera del panel cancela la operación para no bloquear el flujo.
+ *
+ * @param {function} onConfirmar - Recibe el nombre del cliente como string
+ * @param {function} onCancelar
+ */
 function ModalEntradaPuerto({ onConfirmar, onCancelar }) {
   const [nombre, setNombre] = useState('')
 
