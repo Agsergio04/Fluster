@@ -1,6 +1,7 @@
 import Input          from '../atomos/Input'
 import InputContrasenia from '../atomos/InputContrasenia'
 
+/** Campos de nombre, correo y contraseña del formulario de registro de cuenta nueva. */
 function EntradaDatosRegistro({
   nombre = '',      onNombreCambio,
   correo = '',      onCorreoCambio,

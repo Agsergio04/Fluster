@@ -1,6 +1,10 @@
 import BotonEditar from '../atomos/BotonEditar'
 import BotonEliminar from '../atomos/BotonEliminar'
 
+/**
+ * Tarjeta de contenedor en la vista del operador.
+ * Muestra foto opcional, código BIC y fecha de inclusión con acciones de editar y eliminar.
+ */
 function CardContenedor({ foto, codigoBic, fechaInclusion, onEditar, onEliminar }) {
   return (
     <div className="card-contenedor">

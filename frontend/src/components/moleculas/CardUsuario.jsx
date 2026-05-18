@@ -3,8 +3,15 @@ import BotonRolesCardUsuario from '../atomos/BotonRolesCardUsuario'
 import BotonBorrarUsuario from '../atomos/BotonBorrarUsuario'
 import imagenUsuarioDefault from '../../assets/images/imagen-usuario.png'
 
+// Los tres roles posibles se listan explícitamente para controlar el orden
+// visual de los botones de cambio de rol
 const ROLES = ['admin', 'gestor', 'operador']
 
+/**
+ * Tarjeta de usuario para el panel de control del administrador.
+ * Permite ver los datos del usuario, cambiar su rol pulsando uno de los
+ * tres botones de rol, y eliminar la cuenta de forma permanente.
+ */
 function CardUsuario({ foto, nombre, correo, rol = 'operador', onCambiarRol, onEliminar }) {
   return (
     <div className="card-usuario">

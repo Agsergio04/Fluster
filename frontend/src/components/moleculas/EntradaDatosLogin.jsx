@@ -1,6 +1,7 @@
 import Input          from '../atomos/Input'
 import InputContrasenia from '../atomos/InputContrasenia'
 
+/** Campos de correo y contraseña del formulario de inicio de sesión. */
 function EntradaDatosLogin({
   correo = '',         onCorreoCambio,
   contrasenia = '',    onContraseniaCambio,
