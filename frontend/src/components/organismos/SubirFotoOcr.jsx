@@ -1,6 +1,15 @@
 import BotonSeleccionarFoto from '../atomos/BotonSeleccionarFoto'
 import IntroducirFotoIcon from '../../assets/icons/Icono Introducr mediante foto.svg?react'
 
+/**
+ * Componente de entrada de contenedor con tres modos visuales:
+ * - 'subiendo': pantalla inicial — el usuario elige foto o cambia a entrada manual
+ * - 'introducido': foto cargada, muestra previsualización y el campo BIC (rellenado por OCR)
+ * - 'manual': formulario solo con el campo BIC sin foto
+ *
+ * El estado activo lo controla la página padre (meter_contenedor) para mantener
+ * la lógica de transición separada de la presentación.
+ */
 function SubirFotoOcr({
   estado = 'subiendo',
   onSeleccionarFoto,
@@ -33,6 +42,7 @@ function SubirFotoOcr({
               type="text"
               value={codigoBic}
               onChange={onCodigoBicCambio}
+              // El placeholder indica si el OCR sigue procesando
               placeholder={cargandoOcr ? 'Detectando...' : 'BLKU258036'}
               disabled={cargandoOcr}
             />
