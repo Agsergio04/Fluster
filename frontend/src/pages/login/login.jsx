@@ -85,7 +85,7 @@ function Login() {
           <BotonesLogin
             onIniciarSesion={handleIniciarSesion}
             onIrRegistro={() => navigate('/registro')}
-            disabled={cargando}
+            cargando={cargando}
           />
         </div>
       </main>
