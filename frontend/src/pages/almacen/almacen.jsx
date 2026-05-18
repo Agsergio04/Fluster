@@ -12,6 +12,15 @@ import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
 import Notificacion from '../../components/atomos/Notificacion'
 
+/**
+ * Página de consulta del almacén para el gestor.
+ * Muestra el listado paginado de todos los contenedores registrados
+ * y permite navegar al historial individual o eliminar los que están en INACTIVO.
+ *
+ * También incluye el panel de generación de informes generales PDF con filtros
+ * por fechas, naviera, cliente, código BIC y criterio de ordenación.
+ * Las transiciones de estado NO se realizan aquí sino en el Semáforo.
+ */
 function Almacen() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
@@ -20,6 +29,7 @@ function Almacen() {
   const { contenedores, setContenedores, cargando, aviso, setAviso } = useContenedores()
   const [busqueda,       setBusqueda]       = useState('')
 
+  // Filtros del panel de generación de informe general
   const [fechaDesde,       setFechaDesde]       = useState('')
   const [fechaHasta,       setFechaHasta]       = useState('')
   const [fechaEspecifica,  setFechaEspecifica]  = useState('')
@@ -29,11 +39,21 @@ function Almacen() {
   const [orden,            setOrden]            = useState('')
   const [ordenAlfabetico,  setOrdenAlfabetico]  = useState(false)
 
+  /**
+   * Devuelve la fecha de la última operación conocida del contenedor.
+   * El recorrido va de la más reciente (devolución) a la más antigua
+   * (inicio del período libre) para mostrar siempre el último evento.
+   *
+   * @param {object} c - Contenedor del servidor
+   * @returns {string} Fecha formateada o '-' si no hay ninguna
+   */
   const ultimaFecha = c => {
     const fecha = c.fechaDevolucion ?? c.fechaSalidaPuerto ?? c.fechaEntradaPuerto ?? c.fechaInicioLibre
     return fecha ? new Date(fecha).toLocaleDateString('es-ES') : '-'
   }
 
+  // Normalización de los contenedores al formato que espera ConjuntoCards,
+  // aplicando el filtro de búsqueda por código BIC en el cliente
   const items = contenedores
     .filter(c =>
       !busqueda.trim() ||
@@ -48,6 +68,13 @@ function Almacen() {
       operador:        c.creadoPor?.nombre ?? '-',
     }))
 
+  /**
+   * Elimina un contenedor del sistema y actualiza la lista local
+   * sin necesidad de recargar todos los datos desde el servidor.
+   * El backend rechaza la eliminación si el contenedor no está en INACTIVO.
+   *
+   * @param {{ id: string }} item - Ítem de la tarjeta con el ID del contenedor
+   */
   const handleBorrar = async (item) => {
     try {
       await eliminarContenedor(item.id)
@@ -57,6 +84,13 @@ function Almacen() {
     }
   }
 
+  /**
+   * Genera un informe PDF con todos los ciclos que cumplen los filtros aplicados.
+   * Tras generar el PDF, registra cada ciclo incluido en el historial de informes
+   * para tener traza de qué se ha exportado y cuándo.
+   * Los registros fallidos se ignoran con .catch(() => {}) para no bloquear
+   * la descarga si algún ciclo ya estaba registrado previamente.
+   */
   const handleGenerarInforme = async () => {
     try {
       const ciclos = await obtenerDatosInforme({
