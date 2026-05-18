@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './almacen.scss'
 import useTema from '../../hooks/useTema'
+import useContenedores from '../../hooks/useContenedores'
 import { getUsuario } from '../../services/session'
-import { listarContenedores, eliminarContenedor } from '../../services/contenedorService'
+import { eliminarContenedor } from '../../services/contenedorService'
 import { obtenerDatosInforme, registrarInforme } from '../../services/informeService'
 import { generarPDFGeneral } from '../../services/pdfService'
 import Header from '../../components/organismos/Header'
@@ -16,10 +17,8 @@ function Almacen() {
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [busqueda,     setBusqueda]     = useState('')
-  const [contenedores, setContenedores] = useState([])
-  const [aviso,        setAviso]        = useState('')
-  const [cargando,     setCargando]     = useState(true)
+  const { contenedores, setContenedores, cargando, aviso, setAviso } = useContenedores()
+  const [busqueda,       setBusqueda]       = useState('')
 
   const [fechaDesde,       setFechaDesde]       = useState('')
   const [fechaHasta,       setFechaHasta]       = useState('')
@@ -29,13 +28,6 @@ function Almacen() {
   const [codigoBic,        setCodigoBic]        = useState('')
   const [orden,            setOrden]            = useState('')
   const [ordenAlfabetico,  setOrdenAlfabetico]  = useState(false)
-
-  useEffect(() => {
-    listarContenedores()
-      .then(data => setContenedores(data))
-      .catch(() => setAviso('No se pudieron cargar los contenedores'))
-      .finally(() => setCargando(false))
-  }, [])
 
   const ultimaFecha = c => {
     const fecha = c.fechaDevolucion ?? c.fechaSalidaPuerto ?? c.fechaEntradaPuerto ?? c.fechaInicioLibre

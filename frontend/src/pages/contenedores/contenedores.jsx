@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './contenedores.scss'
 import useTema from '../../hooks/useTema'
+import useContenedores from '../../hooks/useContenedores'
 import { getUsuario } from '../../services/session'
-import { listarContenedores, actualizarContenedor, eliminarContenedor } from '../../services/contenedorService'
+import { actualizarContenedor, eliminarContenedor } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEditarContenedor from '../../components/moleculas/ModalEditarContenedor'
@@ -14,18 +15,9 @@ function Contenedores() {
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [busqueda,     setBusqueda]     = useState('')
-  const [contenedores, setContenedores] = useState([])
-  const [editando,     setEditando]     = useState(null)
-  const [aviso,        setAviso]        = useState('')
-  const [cargando,     setCargando]     = useState(true)
-
-  useEffect(() => {
-    listarContenedores()
-      .then(data => setContenedores(data))
-      .catch(() => setAviso('No se pudieron cargar los contenedores'))
-      .finally(() => setCargando(false))
-  }, [])
+  const { contenedores, setContenedores, cargando, aviso, setAviso } = useContenedores()
+  const [busqueda, setBusqueda] = useState('')
+  const [editando, setEditando] = useState(null)
 
   const items = contenedores
     .filter(c =>
