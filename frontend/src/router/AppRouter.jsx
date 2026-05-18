@@ -13,6 +13,7 @@ import Registro from '../pages/registro/registro'
 import Semaforo from '../pages/semaforo/semaforo'
 import Tarifas from '../pages/tarifas/tarifas'
 import Error from '../pages/error/error'
+import Footer from '../components/organismos/Footer'
 
 const GESTOR     = ['gestor']
 const OPERADOR   = ['operador']
@@ -56,6 +57,7 @@ function AppRouter() {
 
         <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }
