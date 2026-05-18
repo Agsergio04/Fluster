@@ -4,7 +4,11 @@
 
 **URL de la aplicación:** [https://fluster-frontend.onrender.com](https://fluster-frontend.onrender.com)
 
+![Pantalla de inicio](./src/assets/imgs/prototipado/home.png)
+
 ### 1.1 Iniciar sesión
+
+![Pantalla de login](./src/assets/imgs/prototipado/login.png)
 
 1. Abre la URL en tu navegador. Llegarás a la página de inicio pública.
 2. Haz clic en el botón **Iniciar sesión** o navega directamente a `/login`.
@@ -32,6 +36,8 @@ El rol de gestor da acceso a las secciones de semáforo, almacén, tarifas e his
 
 ### 2.1 Configurar una naviera y sus tarifas
 
+![Pantalla de tarifas](./src/assets/imgs/prototipado/tarifas.png)
+
 1. Navega a la sección **Tarifas** (`/tarifas`) desde el menú de navegación.
 2. Verás una tabla con todas las navieras registradas. Cada fila muestra el nombre/código de la naviera y sus parámetros tarifarios actuales.
 3. Para editar una naviera, haz clic en el botón de editar de su fila. Los campos de la fila se vuelven editables.
@@ -47,6 +53,8 @@ El rol de gestor da acceso a las secciones de semáforo, almacén, tarifas e his
 > **Nota:** el segundo tramo empieza automáticamente el día siguiente al «Hasta día» del tramo 1 y no tiene límite superior.
 
 ### 2.2 Revisar el semáforo de riesgo y gestionar transiciones
+
+![Pantalla de semáforo](./src/assets/imgs/prototipado/semaforo.png)
 
 El semáforo (`/semaforo`) es la **pantalla principal de gestión operativa**. Desde aquí se visualizan todos los contenedores activos y se ejecutan todas las transiciones de estado.
 
@@ -104,6 +112,8 @@ Si la salida se registró por error:
 
 ### 2.3 Gestionar el almacén
 
+![Pantalla de almacén](./src/assets/imgs/prototipado/almacen.png)
+
 El almacén (`/almacen`) es una **vista de consulta y generación de informes**. No permite ejecutar transiciones de estado (eso se hace desde el semáforo).
 
 1. Navega a la sección **Almacén** (`/almacen`) desde el menú de navegación.
@@ -114,6 +124,8 @@ El almacén (`/almacen`) es una **vista de consulta y generación de informes**.
    - **Eliminar**: borra el contenedor del sistema (solo disponible si está en estado `INACTIVO`).
 
 ### 2.4 Ver el historial de un contenedor
+
+![Pantalla de historial](./src/assets/imgs/prototipado/historial.png)
 
 1. Desde `/almacen`, localiza el contenedor y haz clic en **Ver registro**.
 2. La página `/almacen/historial/:id` muestra el código BIC como título y, debajo, la lista de ciclos del contenedor paginados.
@@ -153,6 +165,8 @@ Los clientes se crean automáticamente al registrar la entrada a puerto de un co
 El rol de operador permite registrar nuevos contenedores y consultar los propios.
 
 ### 3.1 Registrar un nuevo contenedor
+
+![Pantalla meter contenedor](./src/assets/imgs/prototipado/meter.png)
 
 El formulario de registro solo requiere el **código BIC** del contenedor y, opcionalmente, una **foto** del mismo. El resto de datos (naviera, tarifa, cliente, días libres) los completará el gestor posteriormente.
 
@@ -199,6 +213,8 @@ El rol de administrador da acceso exclusivo al panel de control de usuarios.
 
 ### 4.1 Acceder al panel de control
 
+![Pantalla panel de control](./src/assets/imgs/prototipado/panel.png)
+
 1. Inicia sesión con una cuenta con rol `admin`.
 2. Navega a **Panel de control** (`/panel-de-control`) desde el menú de navegación.
 
@@ -229,6 +245,8 @@ Aunque los usuarios eligen su rol al registrarse, el administrador puede modific
 ---
 
 ## 5. Gestión del perfil (todos los roles)
+
+![Pantalla de perfil](./src/assets/imgs/prototipado/perfil.png)
 
 Cualquier usuario autenticado puede gestionar su perfil accediendo a `/perfil` desde el icono de usuario en la cabecera.
 

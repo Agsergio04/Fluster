@@ -27,6 +27,18 @@ El proyecto de diseño se encuentra en Figma e incluye tres artefactos diferenci
 
 El prototipo recoge las pantallas principales de la aplicación, los estados interactivos de los componentes y el sistema de diseño alineado con los tokens descritos en esta guía.
 
+### Wireframes principales
+
+Los wireframes de baja/media fidelidad recogen la estructura y jerarquía de cada pantalla antes de aplicar el sistema visual definitivo.
+
+| Pantalla | Wireframe |
+|---|---|
+| **Login** | ![Wireframe Login](./src/assets/imgs/wireframe/login.png) |
+| **Semáforo** | ![Wireframe Semáforo](./src/assets/imgs/wireframe/semaforo.png) |
+| **Almacén** | ![Wireframe Almacén](./src/assets/imgs/wireframe/almacen.png) |
+| **Tarifas** | ![Wireframe Tarifas](./src/assets/imgs/wireframe/tarifas.png) |
+| **Panel de control** | ![Wireframe Panel](./src/assets/imgs/wireframe/panel.png) |
+
 ---
 
 ## 2. Arquitectura CSS — ITCSS
