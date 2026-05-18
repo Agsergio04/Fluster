@@ -10,6 +10,7 @@ import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
 import ModalEditarFecha from '../../components/organismos/ModalEditarFecha'
+import Notificacion from '../../components/atomos/Notificacion'
 
 const TRAMOS = ['sin-coste', 'primer-tramo', 'segundo-tramo', 'inactivo']
 
@@ -52,8 +53,10 @@ function Semaforo() {
   const [grupos,      setGrupos]      = useState({
     'sin-coste': [], 'primer-tramo': [], 'segundo-tramo': [], 'inactivo': [],
   })
-  const [modalPuerto,  setModalPuerto]  = useState(null) // null | { id }
-  const [modalFecha,   setModalFecha]   = useState(null) // null | { id, fechaInicioLibre }
+  const [modalPuerto,  setModalPuerto]  = useState(null)
+  const [modalFecha,   setModalFecha]   = useState(null)
+  const [aviso,        setAviso]        = useState('')
+  const [cargando,     setCargando]     = useState(true)
 
   const cargarGrupos = useCallback(() => {
     obtenerAgrupados()
@@ -63,7 +66,8 @@ function Semaforo() {
         'segundo-tramo': (data.segundoTramo ?? []).map(c => mapearContenedor(c, 'segundo-tramo')),
         'inactivo':      (data.inactivos    ?? []).map(c => mapearContenedor(c, 'inactivo')),
       }))
-      .catch(() => {})
+      .catch(() => setAviso('No se pudieron cargar los contenedores'))
+      .finally(() => setCargando(false))
   }, [])
 
   useEffect(() => { cargarGrupos() }, [cargarGrupos])
@@ -75,7 +79,7 @@ function Semaforo() {
       setModalPuerto(null)
       cargarGrupos()
     } catch (err) {
-      console.error('Error en entrada a puerto:', err)
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo registrar la entrada a puerto')
     }
   }
 
@@ -84,7 +88,7 @@ function Semaforo() {
       await cancelarCiclo(id)
       cargarGrupos()
     } catch (err) {
-      console.error('Error al cancelar ciclo:', err)
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo cancelar el ciclo')
     }
   }
 
@@ -93,7 +97,7 @@ function Semaforo() {
       await salidaPuerto(id)
       cargarGrupos()
     } catch (err) {
-      console.error('Error en salida a puerto:', err)
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo registrar la salida a puerto')
     }
   }
 
@@ -105,7 +109,7 @@ function Semaforo() {
       setModalFecha(null)
       cargarGrupos()
     } catch (err) {
-      console.error('Error al editar fecha:', err)
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo actualizar la fecha')
     }
   }
 
@@ -114,7 +118,7 @@ function Semaforo() {
       await revertirSalidaPuerto(id)
       cargarGrupos()
     } catch (err) {
-      console.error('Error al revertir salida:', err)
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo revertir la salida')
     }
   }
 
@@ -123,7 +127,7 @@ function Semaforo() {
       await devolucion(id)
       cargarGrupos()
     } catch (err) {
-      console.error('Error en devolucion:', err)
+      setAviso(err.response?.data?.mensaje ?? 'No se pudo registrar la devolucion')
     }
   }
 
@@ -183,20 +187,24 @@ function Semaforo() {
           </p>
         </section>
 
-        <div className="semaforo__contenido">
-          {TRAMOS.map(tramo => (
-            <ConjuntoCards
-              key={tramo}
-              variante="semaforo"
-              tramo={tramo}
-              itemsPorPagina={9}
-              busqueda={busquedas[tramo]}
-              onBusquedaCambio={e => handleBusquedaCambio(tramo, e.target.value)}
-              onBuscar={() => {}}
-              items={itemsFiltrados(tramo)}
-            />
-          ))}
-        </div>
+        {cargando ? (
+          <p className="semaforo__cargando">Cargando contenedores...</p>
+        ) : (
+          <div className="semaforo__contenido">
+            {TRAMOS.map(tramo => (
+              <ConjuntoCards
+                key={tramo}
+                variante="semaforo"
+                tramo={tramo}
+                itemsPorPagina={9}
+                busqueda={busquedas[tramo]}
+                onBusquedaCambio={e => handleBusquedaCambio(tramo, e.target.value)}
+                onBuscar={() => {}}
+                items={itemsFiltrados(tramo)}
+              />
+            ))}
+          </div>
+        )}
       </main>
 
       {modalPuerto && (
@@ -212,6 +220,8 @@ function Semaforo() {
           onCancelar={() => setModalFecha(null)}
         />
       )}
+
+      <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>
   )
 }
