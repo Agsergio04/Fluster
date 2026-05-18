@@ -1,6 +1,11 @@
 import EstadoAnteriorIcon from '../../assets/icons/Icono Estado anterior.svg?react'
 import EstadoPosteriorIcon from '../../assets/icons/Icono estado Posterior.svg?react'
 
+/**
+ * Control de navegación de estado para la CardSemaforo.
+ * Las flechas se ocultan condicionalmente para no mostrar controles sin efecto:
+ * el primer contenedor del grupo no tiene anterior y el último no tiene siguiente.
+ */
 function BotonCambiarEstado({
   mostrarAnterior  = true,
   mostrarSiguiente = true,

@@ -1,3 +1,8 @@
+/**
+ * Botón de navegación del menú hamburguesa con icono y etiqueta.
+ * Cuando está activo (página actual) muestra un separador visual a la izquierda
+ * y usa aria-current="page" para lectores de pantalla.
+ */
 function BotonDesplegableHamburguesa({ icon, label, active = false, disabled = false, onClick }) {
   return (
     <button

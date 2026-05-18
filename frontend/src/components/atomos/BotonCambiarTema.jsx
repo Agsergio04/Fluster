@@ -1,6 +1,11 @@
 import SolIcon from '../../assets/icons/Icono modo claro.svg?react'
 import LunaIcon from '../../assets/icons/Icono modo oscuro.svg?react'
 
+/**
+ * Botón de alternancia de tema claro/oscuro.
+ * Muestra el icono del modo al que se cambiará al pulsar (no el modo actual):
+ * en modo claro muestra la luna (cambiar a oscuro) y viceversa.
+ */
 function BotonCambiarTema({ tema = 'light', onClick }) {
   return (
     <button

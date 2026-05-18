@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+// Iconos de ojo definidos como sub-componentes inline para mantener
+// la dependencia de SVG dentro del mismo fichero sin imports adicionales
 function EyeOpenIcon() {
   return (
     <svg width="16" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -18,6 +20,11 @@ function EyeClosedIcon() {
   )
 }
 
+/**
+ * Campo de contraseña con botón de mostrar/ocultar integrado.
+ * autoComplete="current-password" ayuda a los gestores de contraseñas a
+ * identificar el campo y rellenarlo correctamente.
+ */
 function InputContrasenia({
   id,
   label,
