@@ -2,6 +2,19 @@ import { useState } from 'react'
 import TarjetaCicloContenedor from '../moleculas/TarjetaCicloContenedor'
 import BotonesMovimientoCard from '../moleculas/BotonesMovimientoCard'
 
+/**
+ * Lista paginada de ciclos históricos de un contenedor.
+ * Por defecto muestra un ciclo por página para que los datos de cada ciclo
+ * tengan suficiente espacio sin necesidad de scroll.
+ * Los botones de editar fechas permiten corregir Demurrage y Detention de
+ * ciclos ya cerrados si los datos fueron registrados incorrectamente.
+ *
+ * @param {object[]} ciclos         - Ciclos del contenedor ordenados por fecha
+ * @param {number}   ciclosPorPagina
+ * @param {function} onCancelar      - Cierra el historial sin guardar cambios
+ * @param {function} onEditarDemurrage - Recibe el ciclo seleccionado
+ * @param {function} onEditarDetention
+ */
 function HistorialCiclosContenedor({
   ciclos = [],
   ciclosPorPagina = 1,
