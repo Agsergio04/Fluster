@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './historial_contenedor.scss'
 import useTema from '../../hooks/useTema'
+import useHistorial from '../../hooks/useHistorial'
 import { getUsuario } from '../../services/session'
-import { obtenerContenedor } from '../../services/contenedorService'
 import { editarDemurrageCiclo, editarDetentionCiclo } from '../../services/cicloService'
 import { obtenerDatosInforme, registrarInforme } from '../../services/informeService'
 import { generarPDFIndividual } from '../../services/pdfService'
@@ -19,29 +19,16 @@ function HistorialContenedor() {
   const usuario         = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  const [contenedor, setContenedor] = useState(null)
-  const [ciclos,     setCiclos]     = useState([])
-  const [modal,      setModal]      = useState(null)
-  const [aviso,      setAviso]      = useState('')
-  const [cargando,   setCargando]   = useState(true)
+  const { contenedor, ciclos, cargando, aviso, setAviso, recargar } = useHistorial(id)
 
-  const cargarContenedor = () =>
-    obtenerContenedor(id)
-      .then(data => {
-        setContenedor(data)
-        setCiclos(
-          (data.ciclos ?? []).map(c => ({
-            cicloId:   c._id,
-            cliente:   c.clienteId?.nombre ?? '-',
-            demurrage: c.demurrage,
-            detention: c.detention,
-          }))
-        )
-      })
-      .catch(() => setAviso('No se pudo cargar el historial del contenedor'))
-      .finally(() => setCargando(false))
-
-  useEffect(() => { cargarContenedor() }, [id])
+  const [modal,          setModal]          = useState(null)
+  const [fechaDesde,     setFechaDesde]     = useState('')
+  const [fechaHasta,     setFechaHasta]     = useState('')
+  const [fechaEspecifica, setFechaEspecifica] = useState('')
+  const [naviera,        setNaviera]        = useState('')
+  const [cliente,        setCliente]        = useState('')
+  const [orden,          setOrden]          = useState('')
+  const [ordenAlfabetico, setOrdenAlfabetico] = useState(false)
 
   const abrirModal = (cicloId, tramo, fechas) =>
     setModal({ cicloId, tramo, ...fechas })
@@ -56,7 +43,7 @@ function HistorialContenedor() {
         await editarDetentionCiclo(modal.cicloId, fechas)
       }
       cerrarModal()
-      cargarContenedor()
+      recargar()
     } catch (err) {
       setAviso(err.response?.data?.mensaje ?? 'No se pudo guardar el tramo')
     }
@@ -82,14 +69,6 @@ function HistorialContenedor() {
       setAviso(err.response?.data?.mensaje ?? 'No se pudo generar el informe')
     }
   }
-
-  const [fechaDesde,      setFechaDesde]      = useState('')
-  const [fechaHasta,      setFechaHasta]      = useState('')
-  const [fechaEspecifica, setFechaEspecifica] = useState('')
-  const [naviera,         setNaviera]         = useState('')
-  const [cliente,         setCliente]         = useState('')
-  const [orden,            setOrden]            = useState('')
-  const [ordenAlfabetico,  setOrdenAlfabetico]  = useState(false)
 
   return (
     <>
