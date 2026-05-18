@@ -2,6 +2,11 @@ import BotonCambioSeccion from '../atomos/BotonCambioSeccion'
 import BotonIrIzquierda from '../atomos/BotonIrIzquierda'
 import BotonIrDerecha from '../atomos/BotonIrDerecha'
 
+/**
+ * Paginador con botones de página numerados y flechas de anterior/siguiente.
+ * Las flechas solo se renderizan cuando hay página anterior o siguiente,
+ * respectivamente, para no mostrar controles sin efecto.
+ */
 function BotonesMovimientoCard({ paginaActual = 1, totalPaginas = 1, onCambiarPagina }) {
   return (
     <div className="botones-movimiento-card">

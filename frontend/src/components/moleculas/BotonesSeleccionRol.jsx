@@ -2,6 +2,15 @@ import BotonRol      from '../atomos/BotonRol'
 import OperadorIcon from '../../assets/icons/Icono Operador.svg?react'
 import GestorIcon   from '../../assets/icons/Icono Gestor.svg?react'
 
+/**
+ * Par de botones de selección de rol para el formulario de registro.
+ * Cada botón alterna entre seleccionado y deseleccionado: pulsar el rol
+ * ya activo lo deselecciona (devuelve null al padre). El otro botón
+ * recibe la prop `off` para atenuarse visualmente sin bloquearse.
+ *
+ * @param {'operador'|'gestor'|null} rolSeleccionado
+ * @param {function} onSeleccionarRol - Recibe el nuevo rol o null si se deselecciona
+ */
 function BotonesSeleccionRol({ rolSeleccionado, onSeleccionarRol }) {
   return (
     <div className="botones-seleccion-rol">

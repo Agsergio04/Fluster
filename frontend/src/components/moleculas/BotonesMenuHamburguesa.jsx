@@ -6,6 +6,8 @@ import PerfilIcon          from '../../assets/icons/Icono Perfil.svg?react'
 import ContenedoresFotoIcon from '../../assets/icons/Icono de contenedores por foto.svg?react'
 import PanelControlIcon    from '../../assets/icons/Icono panel de control.svg?react'
 
+// Elementos de navegación por rol. El id coincide con la clave seccionActiva
+// que recibe el Header para marcar el botón activo de la página actual.
 const ITEMS = {
   gestor: [
     { id: 'seguimiento', label: 'Seguimiento',      icon: <GestorIcon />,           ruta: '/semaforo' },
@@ -24,6 +26,14 @@ const ITEMS = {
   ],
 }
 
+/**
+ * Menú de navegación desplegado por el botón hamburguesa.
+ * Solo muestra las rutas accesibles para el rol activo.
+ *
+ * @param {'gestor'|'operador'|'admin'} rol
+ * @param {string} seccionActiva - Id del ítem que debe aparecer como activo
+ * @param {function} onNavegar
+ */
 function BotonesMenuHamburguesa({ rol = 'gestor', seccionActiva, onNavegar }) {
   const items = ITEMS[rol] ?? []
   return (
