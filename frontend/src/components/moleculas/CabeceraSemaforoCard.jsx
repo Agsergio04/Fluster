@@ -1,6 +1,10 @@
 import EstadoContenedorSemaforo from '../atomos/EstadoContenedorSemaforo'
 import BotonCambiarEstado from '../atomos/BotonCambiarEstado'
 
+/**
+ * Cabecera de la CardSemaforo: badge de estado y botones de navegación
+ * para moverse entre contenedores del mismo grupo naviera/cliente.
+ */
 function CabeceraSemaforoCard({
   estado           = 'inactivo',
   mostrarAnterior  = false,
