@@ -20,10 +20,19 @@ import Cookies from '../pages/cookies/cookies'
 import Contacto from '../pages/contacto/contacto'
 import Footer from '../components/organismos/Footer'
 
-const GESTOR     = ['gestor']
-const OPERADOR   = ['operador']
+// Grupos de roles para las rutas protegidas, definidos aquí para evitar
+// arrays literales repetidos en cada Route y facilitar cambios futuros
+const GESTOR      = ['gestor']
+const OPERADOR    = ['operador']
 const AUTENTICADO = ['gestor', 'operador', 'admin']
 
+/**
+ * Árbol de rutas de la aplicación.
+ * - Rutas públicas (/, /login, /registro): redirigen al área del usuario si ya hay sesión activa
+ * - Rutas protegidas: comprueban autenticación y rol; redirigen a /error si no se cumplen
+ * - Ruta comodín (*): redirige a /error para cubrir URLs desconocidas
+ * - Footer se monta fuera de Routes para que aparezca en todas las páginas
+ */
 function AppRouter() {
   return (
     <BrowserRouter>
