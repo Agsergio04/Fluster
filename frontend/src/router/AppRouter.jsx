@@ -13,6 +13,11 @@ import Registro from '../pages/registro/registro'
 import Semaforo from '../pages/semaforo/semaforo'
 import Tarifas from '../pages/tarifas/tarifas'
 import Error from '../pages/error/error'
+import GuiaEstilos from '../pages/guia_estilos/guia_estilos'
+import Terminos from '../pages/terminos/terminos'
+import Privacidad from '../pages/privacidad/privacidad'
+import Cookies from '../pages/cookies/cookies'
+import Contacto from '../pages/contacto/contacto'
 import Footer from '../components/organismos/Footer'
 
 const GESTOR     = ['gestor']
@@ -54,6 +59,12 @@ function AppRouter() {
         <Route path="/perfil" element={
           <RutaProtegida roles={AUTENTICADO}><Perfil /></RutaProtegida>
         } />
+
+        <Route path="/guia-estilos"            element={<GuiaEstilos />} />
+        <Route path="/terminos-de-servicio"    element={<Terminos />} />
+        <Route path="/politica-de-privacidad"  element={<Privacidad />} />
+        <Route path="/cookies"                 element={<Cookies />} />
+        <Route path="/contacto"                element={<Contacto />} />
 
         <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
