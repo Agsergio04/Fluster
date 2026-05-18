@@ -1,3 +1,4 @@
+/** Campo de formulario genérico con label y entrada de texto. */
 function TextoConEntradaDatos({ id, label, placeholder, value, onChange, type = 'text' }) {
   return (
     <div className="texto-con-entrada-datos">
