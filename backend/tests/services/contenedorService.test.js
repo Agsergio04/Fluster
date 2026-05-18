@@ -430,19 +430,17 @@ describe('contenedorService', () => {
   // ---------------------------------------------------------------------------
   describe('crear', () => {
     it('crea un contenedor en estado INACTIVO con los datos proporcionados', async () => {
-      const datos = {
-        codigoBIC: 'MSCU1234567',
-        tipo: '20DC',
-        navieraId: 'nav-id',
-        fechaInicioLibre: new Date('2025-01-01'),
-        creadoPor: 'user-id',
-      }
-      const mockContenedor = { _id: 'cont-id', estado: 'INACTIVO', ...datos }
+      const datos = { codigoBIC: 'MSCU1234567', creadoPor: 'user-id' }
+      const mockContenedor = { _id: 'cont-id', estado: 'INACTIVO', ...datos, navieraId: 'nav-id' }
+      Naviera.findOne.mockResolvedValue({ _id: 'nav-id' })
       Contenedor.create.mockResolvedValue(mockContenedor)
 
       const result = await crear(datos)
 
-      expect(Contenedor.create).toHaveBeenCalledWith(datos)
+      expect(Naviera.findOne).toHaveBeenCalledWith({ codigo: 'MSC' })
+      expect(Contenedor.create).toHaveBeenCalledWith(
+        expect.objectContaining({ codigoBIC: 'MSCU1234567', navieraId: 'nav-id', creadoPor: 'user-id' })
+      )
       expect(result).toEqual(mockContenedor)
     })
   })
@@ -454,8 +452,10 @@ describe('contenedorService', () => {
     const mockPopulateSortLean = (data) =>
       Contenedor.find.mockReturnValue({
         populate: jest.fn().mockReturnValue({
-          sort: jest.fn().mockReturnValue({
-            lean: jest.fn().mockResolvedValue(data),
+          populate: jest.fn().mockReturnValue({
+            sort: jest.fn().mockReturnValue({
+              lean: jest.fn().mockResolvedValue(data),
+            }),
           }),
         }),
       })

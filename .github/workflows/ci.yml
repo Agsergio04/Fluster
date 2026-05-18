@@ -1,0 +1,74 @@
+# ─────────────────────────────────────────────────────────────────
+# CI — Integración Continua
+#
+# Este workflow se ejecuta automáticamente cada vez que se sube
+# código a las ramas main o dev, y también cuando se abre un
+# Pull Request hacia alguna de esas dos ramas.
+#
+# Su objetivo es comprobar que el código que se acaba de subir
+# no rompe nada antes de que llegue a producción. Hace dos cosas
+# en paralelo:
+#
+#   1. Ejecuta todos los tests unitarios del backend (Jest).
+#      Si algún test falla, el workflow se marca como fallido
+#      y Render no desplegará ese código (ver cd.yml).
+#
+#   2. Compila el frontend con Vite para asegurarse de que el
+#      build de producción no tiene errores. Si la compilación
+#      falla, también se bloquea el despliegue.
+# ─────────────────────────────────────────────────────────────────
+
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  test-backend:
+    name: Tests — Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Ejecutar tests
+        working-directory: ./backend
+        run: npm test
+        env:
+          JWT_SECRET: test-secret
+
+  build-frontend:
+    name: Build — Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Verificar build
+        working-directory: ./frontend
+        run: npm run build
+        env:
+          VITE_API_URL: http://localhost:3000/api

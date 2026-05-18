@@ -1,0 +1,107 @@
+# ─────────────────────────────────────────────────────────────────
+# Docker — Publicación de imágenes
+#
+# Este workflow construye las imágenes Docker del backend y del
+# frontend, y las sube a dos registros distintos cada vez que
+# se hace un push a main:
+#
+#   - Docker Hub: registro público, útil para que cualquiera
+#     pueda descargar y ejecutar Fluster con un simple
+#     "docker pull".
+#
+#   - GitHub Container Registry (ghcr.io): registro vinculado
+#     al propio repositorio de GitHub, visible en el apartado
+#     "Packages" del repo.
+#
+# Cada imagen se etiqueta con dos tags:
+#   - "latest"    → siempre apunta a la versión más reciente.
+#   - <sha commit> → permite recuperar exactamente qué versión
+#                    del código hay dentro de cada imagen.
+#
+# Para que funcione necesita dos secrets en el repositorio:
+#   - DOCKERHUB_USERNAME → usuario de Docker Hub
+#   - DOCKERHUB_TOKEN    → access token de Docker Hub
+#                          (Account Settings → Personal access tokens)
+# ─────────────────────────────────────────────────────────────────
+
+name: Docker
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-push-backend:
+    name: Build & Push — Backend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ghcr.io exige el nombre del propietario en minúsculas
+      - name: Owner en minúsculas
+        run: echo "OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login a GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build y push imagen backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-backend:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/fluster-backend:latest
+            ghcr.io/${{ env.OWNER }}/fluster-backend:${{ github.sha }}
+
+  build-push-frontend:
+    name: Build & Push — Frontend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Owner en minúsculas
+        run: echo "OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login a GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build y push imagen frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-frontend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-frontend:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/fluster-frontend:latest
+            ghcr.io/${{ env.OWNER }}/fluster-frontend:${{ github.sha }}
