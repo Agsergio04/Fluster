@@ -76,27 +76,47 @@ async function crear({ codigoBIC, foto, creadoPor }) {
 }
 
 /**
- * Lista contenedores con filtros opcionales.
+ * Lista contenedores con filtros, ordenación y paginación opcionales.
  * Si se filtra por clienteId busca primero los ciclos de ese cliente para
  * obtener los contenedorIds, ya que el cliente vive en el Ciclo, no en el Contenedor.
+ * Sin page/limit devuelve todos los documentos (compatibilidad con el frontend actual).
  *
- * @param {{ estado?: string, navieraId?: string, clienteId?: string }} filtros
- * @returns {Promise<object[]>}
+ * @param {{ estado?: string, navieraId?: string, clienteId?: string, busqueda?: string, orden?: 'asc'|'desc', page?: number, limit?: number }} filtros
+ * @returns {Promise<object[]|{ data: object[], total: number, page: number, limit: number, totalPages: number }>}
  */
 async function listar(filtros = {}) {
   const query = {}
-  if (filtros.estado) query.estado = filtros.estado
+  if (filtros.estado)    query.estado    = filtros.estado
   if (filtros.navieraId) query.navieraId = filtros.navieraId
+  if (filtros.busqueda)  query.codigoBIC = { $regex: filtros.busqueda, $options: 'i' }
 
   if (filtros.clienteId) {
     const ids = await Ciclo.find({ clienteId: filtros.clienteId }).distinct('contenedorId')
     query._id = { $in: ids }
   }
 
+  const sort = filtros.orden === 'asc' ? { creadoEn: 1 } : { creadoEn: -1 }
+
+  if (filtros.page !== undefined || filtros.limit !== undefined) {
+    const page  = Math.max(1, parseInt(filtros.page)  || 1)
+    const limit = Math.min(100, Math.max(1, parseInt(filtros.limit) || 20))
+    const [total, data] = await Promise.all([
+      Contenedor.countDocuments(query),
+      Contenedor.find(query)
+        .populate('navieraId', 'nombre codigo')
+        .populate('creadoPor', 'nombre')
+        .sort(sort)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean(),
+    ])
+    return { data, total, page, limit, totalPages: Math.ceil(total / limit) }
+  }
+
   return Contenedor.find(query)
     .populate('navieraId', 'nombre codigo')
     .populate('creadoPor', 'nombre')
-    .sort({ creadoEn: -1 })
+    .sort(sort)
     .lean()
 }
 

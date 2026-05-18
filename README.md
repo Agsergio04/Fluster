@@ -108,7 +108,7 @@ El archivo `backend/.env` debe contener las siguientes variables:
 | 02 | [Descripción del sistema](./docs/02-descripcion.md) | Visión general del sistema y sus componentes |
 | 03 | [Instalación](./docs/03-instalacion.md) | Guía de instalación y configuración del entorno |
 | 04 | [Guía de estilos](./docs/04-guia-estilos.md) | Convenciones de código, SCSS/ITCSS y Atomic Design |
-| 05 | [Diseño](./docs/05-diseño.md) | Decisiones de diseño UI/UX y prototipado |
+| 05 | [Diseño](./docs/05-diseno.md) | Decisiones de diseño UI/UX y prototipado |
 | 06 | [Desarrollo](./docs/06-desarrollo.md) | Arquitectura, modelo de datos y lógica de negocio |
 | 07 | [Pruebas](./docs/07-pruebas.md) | Estrategia de tests, cobertura y ejecución con Jest |
 | 08 | [Despliegue](./docs/08-despliegue.md) | CI/CD con GitHub Actions, configuración de Render y Docker |
