@@ -1,10 +1,21 @@
 import { useState, useRef } from 'react'
 
+/**
+ * Modal para editar la foto, el código BIC y la fecha de inclusión de un contenedor.
+ * La foto se lee como data URL para previsualizarla antes de enviarla al servidor.
+ * El input file se limpia tras la selección para permitir elegir el mismo fichero
+ * dos veces seguidas (el navegador no dispara onChange si el valor no cambia).
+ *
+ * @param {object}   item          - Datos actuales del contenedor (id, foto, codigoBic, fechaInicioLibre)
+ * @param {function} onActualizar  - Recibe (id, { codigoBIC, foto, fechaInicioLibre })
+ * @param {function} onCancelar
+ */
 function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
   const inputFotoRef = useRef(null)
 
   const [foto,             setFoto]             = useState(item.foto ?? null)
   const [codigoBic,        setCodigoBic]        = useState(item.codigoBic ?? '')
+  // El input[type=date] necesita formato YYYY-MM-DD; ISO incluye la hora que hay que recortar
   const [fechaInicioLibre, setFechaInicioLibre] = useState(
     item.fechaInicioLibre
       ? new Date(item.fechaInicioLibre).toISOString().split('T')[0]
@@ -16,6 +27,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
   const handleFotoElegida = e => {
     const fichero = e.target.files?.[0]
     if (!fichero) return
+    // Limpiar el valor del input para que pueda re-seleccionarse el mismo fichero
     e.target.value = ''
     const reader = new FileReader()
     reader.onload = () => setFoto(reader.result)

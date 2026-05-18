@@ -8,6 +8,11 @@ import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import Notificacion from '../../components/atomos/Notificacion'
 
+/**
+ * Página de administración de usuarios. Solo accesible con rol 'admin'.
+ * Permite buscar usuarios por nombre o correo, cambiar su rol
+ * y eliminar cuentas del sistema de forma permanente.
+ */
 function PanelDeControl() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
@@ -16,13 +21,16 @@ function PanelDeControl() {
   const [busqueda, setBusqueda] = useState('')
   const [usuarios, setUsuarios] = useState([])
   const [aviso,    setAviso]    = useState('')
+  const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
     listarUsuarios()
       .then(data => setUsuarios(data))
-      .catch(() => {})
+      .catch(() => setAviso('No se pudieron cargar los usuarios'))
+      .finally(() => setCargando(false))
   }, [])
 
+  // Filtro de búsqueda por nombre y correo aplicado en el cliente
   const items = usuarios
     .filter(u =>
       !busqueda.trim() ||
@@ -37,6 +45,14 @@ function PanelDeControl() {
       rol:    u.rol,
     }))
 
+  /**
+   * Cambia el rol de un usuario y actualiza la lista local.
+   * Se protege contra el cambio del propio rol del administrador en sesión:
+   * hacerlo podría dejarlo sin acceso al panel de control de inmediato.
+   *
+   * @param {{ id: string }} item  - Tarjeta del usuario a modificar
+   * @param {string}         nuevoRol - 'admin' | 'gestor' | 'operador'
+   */
   const handleCambiarRol = async (item, nuevoRol) => {
     if (item.id === usuario?.id) {
       setAviso('No puedes cambiar tu propio rol')
@@ -51,6 +67,13 @@ function PanelDeControl() {
     }
   }
 
+  /**
+   * Elimina un usuario del sistema de forma permanente y lo quita
+   * de la lista local. Los contenedores que hubiera registrado
+   * permanecen en el sistema (no se eliminan en cascada).
+   *
+   * @param {{ id: string }} item - Tarjeta del usuario a eliminar
+   */
   const handleEliminar = async (item) => {
     try {
       await eliminarUsuario(item.id)
@@ -80,16 +103,20 @@ function PanelDeControl() {
         </section>
 
         <div className="panel-de-control__contenido">
-          <ConjuntoCards
-            variante="usuarios"
-            itemsPorPagina={9}
-            busqueda={busqueda}
-            onBusquedaCambio={e => setBusqueda(e.target.value)}
-            onBuscar={() => {}}
-            items={items}
-            onCambiarRol={handleCambiarRol}
-            onEliminar={handleEliminar}
-          />
+          {cargando ? (
+            <p className="panel-de-control__cargando">Cargando usuarios...</p>
+          ) : (
+            <ConjuntoCards
+              variante="usuarios"
+              itemsPorPagina={9}
+              busqueda={busqueda}
+              onBusquedaCambio={e => setBusqueda(e.target.value)}
+              onBuscar={() => {}}
+              items={items}
+              onCambiarRol={handleCambiarRol}
+              onEliminar={handleEliminar}
+            />
+          )}
         </div>
       </main>
 

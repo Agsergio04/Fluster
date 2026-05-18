@@ -1,5 +1,6 @@
 import HamburguesaIcon from '../../assets/icons/Icono del menu de hamburguesa.svg?react'
 
+/** Botón de tres líneas que abre y cierra el menú de navegación. */
 function BotonMenuHamburguesa({ disabled = false, onClick }) {
   return (
     <button

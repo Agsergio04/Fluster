@@ -7,9 +7,20 @@ import CardUsuario from '../moleculas/CardUsuario'
 import CardContenedoresAlmacen from '../moleculas/CardContenedoresAlmacen'
 import CardContenedor from '../moleculas/CardContenedor'
 
+// En móvil se muestran menos tarjetas para que quepan en pantalla sin scroll excesivo
 const MOVIL_QUERY = '(max-width: 1023px)'
 const ITEMS_MOVIL  = 3
 
+/**
+ * Contenedor paginado de tarjetas reutilizable para cuatro variantes:
+ * 'semaforo', 'usuarios', 'almacen' y 'contenedores'.
+ * La paginación se adapta automáticamente al ancho de pantalla
+ * escuchando el MediaQueryList para no depender de resize events.
+ *
+ * @param {'semaforo'|'usuarios'|'almacen'|'contenedores'} variante
+ * @param {object[]} items           - Elementos ya filtrados por la página padre
+ * @param {number}   itemsPorPagina  - Columnas visibles en escritorio
+ */
 function ConjuntoCards({
   variante = 'semaforo',
   tramo,
@@ -25,6 +36,7 @@ function ConjuntoCards({
   onCambiarRol,
 }) {
   const [pagina,       setPagina]       = useState(1)
+  // Inicialización directa con la query para evitar un flash de paginación incorrecta
   const [itemsActivos, setItemsActivos] = useState(
     () => window.matchMedia(MOVIL_QUERY).matches ? ITEMS_MOVIL : itemsPorPagina
   )
@@ -39,6 +51,7 @@ function ConjuntoCards({
     return () => mq.removeEventListener('change', handler)
   }, [itemsPorPagina])
 
+  // Volver a la primera página cada vez que cambia la búsqueda
   useEffect(() => { setPagina(1) }, [busqueda])
 
   const totalPaginas = Math.max(1, Math.ceil(items.length / itemsActivos))

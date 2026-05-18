@@ -1,0 +1,67 @@
+.footer {
+  width:            100%;
+  border-top:       1px solid var(--color-border);
+  background-color: var(--color-primary);
+  padding:          0 var(--space-32);
+  display:          flex;
+  align-items:      center;
+  gap:              var(--space-32);
+  margin-top:       auto;
+
+  &__marca {
+    display:     flex;
+    align-items: center;
+    padding:     var(--space-8) 0;
+    flex-shrink: 0;
+  }
+
+  &__logo {
+    height:           10rem;
+    width:            auto;
+    object-fit:       contain;
+    object-position:  left center;
+  }
+
+  &__secciones {
+    display: flex;
+    flex:    1;
+    gap:     var(--space-16);
+  }
+
+  &__seccion {
+    display:        flex;
+    flex-direction: column;
+  }
+
+  &__titulo-seccion {
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    padding:         var(--space-8) 0 2px;
+    font-family:     var(--font-body);
+    font-size:       var(--text-16);
+    font-weight:     var(--font-weight-semibold);
+    color:           var(--color-box-text);
+  }
+
+  &__lista {
+    display:        flex;
+    flex-direction: column;
+    gap:            2px;
+    list-style:     none;
+    align-items:    center;
+    padding:        0 0 var(--space-8);
+  }
+
+  &__enlace {
+    font-family:     var(--font-body);
+    font-size:       var(--text-8);
+    color:           var(--color-box-text);
+    text-decoration: none;
+    transition:      opacity var(--transition-fast);
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

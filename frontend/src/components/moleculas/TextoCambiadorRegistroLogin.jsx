@@ -1,3 +1,4 @@
+/** Línea de texto + botón inline para cambiar de registro a login. */
 function TextoCambiadorRegistroLogin({ texto, labelBoton, onClick }) {
   return (
     <div className="texto-cambiador-login-registro">

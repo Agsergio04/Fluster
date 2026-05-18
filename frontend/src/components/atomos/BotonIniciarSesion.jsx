@@ -1,3 +1,4 @@
+/** Botón de submit del formulario de inicio de sesión. */
 function BotonIniciarSesion({ disabled = false, onClick }) {
   return (
     <button

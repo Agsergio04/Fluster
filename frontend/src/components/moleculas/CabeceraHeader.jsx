@@ -2,6 +2,10 @@ import LogoFluster from '../../assets/images/Fluster logo con letras.png'
 import BotonMenuHamburguesa from '../atomos/BotonMenuHamburguesa'
 import BotonCambiarTema from '../atomos/BotonCambiarTema'
 
+/**
+ * Barra superior fija del header: logo, botón hamburguesa y selector de tema.
+ * El botón hamburguesa solo se monta si el usuario tiene sesión (loggeado=true).
+ */
 function CabeceraHeader({ loggeado = false, tema = 'light', onToggleTema, onMenuHamburguesa, onLogoClick }) {
   return (
     <div className="cabecera-header">

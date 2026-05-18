@@ -4,6 +4,7 @@ const LABELS = {
   operador: 'Operador',
 }
 
+/** Badge de rol para mostrar el rol asignado al usuario en la tarjeta de usuario. */
 function RolAsignado({ rol = 'operador' }) {
   return (
     <span className="rol-asignado">

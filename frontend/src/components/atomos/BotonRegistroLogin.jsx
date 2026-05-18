@@ -1,3 +1,4 @@
+/** Botón principal de los formularios de login y registro; acepta cualquier texto como children. */
 function BotonRegistroLogin({ children, onClick, disabled = false, type = 'button' }) {
   return (
     <button

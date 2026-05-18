@@ -5,6 +5,15 @@ import BotonAccionTarifa from '../atomos/BotonAccionTarifa'
 import BotonOperacionesPerfil from '../atomos/BotonOperacionesPerfil'
 import imagenUsuarioDefault from '../../assets/images/imagen-usuario.png'
 
+/**
+ * Panel de perfil de usuario con foto, datos de sesión y formularios de cambio
+ * de nombre y contraseña. La foto se lee como data URL mediante FileReader
+ * y se envía directamente al padre sin pasar por un estado propio,
+ * ya que la lógica de subida reside en la página Perfil.
+ *
+ * El input file está oculto y se dispara desde el botón visible para
+ * aplicar estilos custom sin restricciones del aspecto nativo del input.
+ */
 function PerfilCredenciales({
   foto,
   nombre,
@@ -37,6 +46,7 @@ function PerfilCredenciales({
     const reader = new FileReader()
     reader.onload = () => onActualizarFoto(reader.result)
     reader.readAsDataURL(fichero)
+    // Limpiar el valor para que pueda re-seleccionarse el mismo fichero
     e.target.value = ''
   }
 

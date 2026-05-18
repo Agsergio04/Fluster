@@ -1,6 +1,7 @@
 import Input from '../atomos/Input'
 import BotonRegistroLogin from '../atomos/BotonRegistroLogin'
 
+/** Formulario de un campo para actualizar el nombre de visualización del usuario. */
 function CambiarNombre({
   nombre = '',        onNombreCambio,
   errorNombre,

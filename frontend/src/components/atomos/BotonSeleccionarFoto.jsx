@@ -1,3 +1,4 @@
+/** Botón que dispara el input file oculto para seleccionar una foto de contenedor. */
 function BotonSeleccionarFoto({ disabled = false, onClick }) {
   return (
     <button

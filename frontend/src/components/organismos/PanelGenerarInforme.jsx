@@ -1,6 +1,17 @@
 import OpcionFiltro from '../moleculas/OpcionFiltro'
 import BotonGenerarInforme from '../atomos/BotonGenerarInforme'
 
+/**
+ * Panel de filtros para la generación de informes PDF.
+ * Tiene dos variantes visuales:
+ * - 'general': incluye filtros de cliente, naviera y código BIC
+ * - 'individual': solo naviera y cliente (el contenedor ya está fijado por contexto)
+ *
+ * Todos los valores y callbacks son controlados por la página padre; este
+ * componente es puramente presentacional.
+ *
+ * @param {'general'|'individual'} variante
+ */
 function PanelGenerarInforme({
   variante = 'general',
   fechaDesde = '',       onFechaDesde,

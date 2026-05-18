@@ -1,3 +1,7 @@
+/**
+ * Botón de filtro con círculo indicador de estado seleccionado/deseleccionado.
+ * Usa aria-pressed para que lectores de pantalla anuncien el estado toggle.
+ */
 function OpcionFiltro({ label, selected = false, onClick }) {
   return (
     <button

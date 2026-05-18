@@ -1,5 +1,17 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
+/**
+ * Modal para corregir las fechas de inicio y fin de un tramo (Demurrage o Detention).
+ * El nombre del tramo se muestra en el título para que el usuario sepa qué está editando.
+ * Las fechas se convierten a ISO antes de enviarlas al padre para que el servicio
+ * las reciba en el formato que espera la API.
+ *
+ * @param {'Demurrage'|'Detention'} tramo
+ * @param {string}   fechaInicio - Fecha actual en formato ISO o compatible con Date()
+ * @param {string}   fechaFin
+ * @param {function} onGuardar  - Recibe { fechaInicio, fechaFin } en ISO; puede ser async
+ * @param {function} onCancelar
+ */
 function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar }) {
   const toInputDate = (fecha) =>
     fecha ? new Date(fecha).toISOString().split('T')[0] : ''
@@ -8,6 +20,11 @@ function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar 
   const [fin,      setFin]      = useState(toInputDate(fechaFin))
   const [cargando, setCargando] = useState(false)
   const [error,    setError]    = useState('')
+  const inicioRef = useRef(null)
+
+  // Mover el foco al primer campo al abrir el modal para que los usuarios
+  // de teclado no necesiten tabular desde el inicio de la página
+  useEffect(() => { inicioRef.current?.focus() }, [])
 
   const handleGuardar = async () => {
     setError('')
@@ -42,6 +59,7 @@ function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar 
             Fecha de inicio
           </label>
           <input
+            ref={inicioRef}
             id="editar-tramo-inicio"
             type="date"
             className="modal-editar-contenedor__fecha-input"

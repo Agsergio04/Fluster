@@ -1,3 +1,9 @@
+/**
+ * Campo de formulario genérico con label, mensaje de error y hint.
+ * El error toma precedencia sobre el hint: si ambos están presentes,
+ * solo se muestra el error para no sobrecargar la UI con texto.
+ * El modificador `input--error` en el label aplica el borde rojo a todo el bloque.
+ */
 function Input({
   id,
   label,

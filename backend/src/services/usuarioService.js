@@ -10,12 +10,32 @@ const Usuario = require('../models/Usuario')
 const SALT_ROUNDS = 10
 
 /**
- * Devuelve todos los usuarios del sistema sin sus contraseñas.
+ * Devuelve usuarios del sistema sin contraseñas.
+ * Admite búsqueda por nombre/correo, filtro por rol y paginación opcional.
+ * Sin page/limit devuelve todos (compatibilidad con el panel de control actual).
  *
- * @returns {Promise<object[]>}
+ * @param {{ busqueda?: string, rol?: string, page?: number, limit?: number }} filtros
+ * @returns {Promise<object[]|{ data: object[], total: number, page: number, limit: number, totalPages: number }>}
  */
-async function listar() {
-  return Usuario.find().select('-contrasena').lean()
+async function listar(filtros = {}) {
+  const query = {}
+  if (filtros.busqueda) {
+    const re = { $regex: filtros.busqueda, $options: 'i' }
+    query.$or = [{ nombre: re }, { correo: re }]
+  }
+  if (filtros.rol) query.rol = filtros.rol
+
+  if (filtros.page !== undefined || filtros.limit !== undefined) {
+    const page  = Math.max(1, parseInt(filtros.page)  || 1)
+    const limit = Math.min(100, Math.max(1, parseInt(filtros.limit) || 20))
+    const [total, data] = await Promise.all([
+      Usuario.countDocuments(query),
+      Usuario.find(query).select('-contrasena').sort({ creadoEn: -1 }).skip((page - 1) * limit).limit(limit).lean(),
+    ])
+    return { data, total, page, limit, totalPages: Math.ceil(total / limit) }
+  }
+
+  return Usuario.find(query).select('-contrasena').lean()
 }
 
 /**

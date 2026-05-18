@@ -1,6 +1,7 @@
 import BotonRegistroLogin           from '../atomos/BotonRegistroLogin'
 import TextoCambiadorRegistroLogin  from './TextoCambiadorRegistroLogin'
 
+/** Agrupa el botón de crear cuenta y el enlace de cambio a login. */
 function BotonesRegistro({ onCrearCuenta, onIrLogin }) {
   return (
     <div className="botones-registro">

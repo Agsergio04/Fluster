@@ -7,11 +7,19 @@ import { actualizarFoto, actualizarNombre, cambiarContrasena } from '../../servi
 import Header from '../../components/organismos/Header'
 import PerfilCredenciales from '../../components/organismos/PerfilCredenciales'
 
+/**
+ * Página de gestión del perfil de usuario.
+ * Permite cambiar el nombre de visualización, la foto de perfil
+ * y la contraseña de acceso. Todos los cambios se reflejan de inmediato
+ * en la sesión local (localStorage) sin necesidad de cerrar sesión.
+ */
 function Perfil() {
   const navigate        = useNavigate()
   const usuario         = getUsuario()
   const [tema, toggleTema] = useTema()
 
+  // La foto se inicializa desde la sesión guardada para mostrarse
+  // sin esperar una nueva petición al servidor
   const [foto,          setFoto]          = useState(usuario?.foto ?? null)
   const [nuevoNombre,          setNuevoNombre]          = useState('')
   const [contraseniaActual,    setContraseniaActual]    = useState('')
@@ -23,6 +31,10 @@ function Perfil() {
   const [errorConfirmacion,    setErrorConfirmacion]    = useState('')
   const [cargando, setCargando] = useState(false)
 
+  /**
+   * Actualiza el nombre en el servidor y sincroniza la sesión local
+   * para que la cabecera muestre el nuevo nombre sin recargar la página.
+   */
   const handleConfirmarNombre = async () => {
     setErrorNombre('')
     if (!nuevoNombre.trim()) { setErrorNombre('Introduce tu nuevo nombre'); return }
@@ -38,6 +50,12 @@ function Perfil() {
     }
   }
 
+  /**
+   * Cambia la contraseña del usuario. Requiere la contraseña actual para
+   * prevenir cambios no autorizados en sesiones desatendidas.
+   * La confirmación se valida en cliente para dar feedback inmediato
+   * antes de enviar la petición al servidor.
+   */
   const handleConfirmarContrasenia = async () => {
     setErrorContraseniaActual('')
     setErrorContrasenia('')
@@ -58,6 +76,13 @@ function Perfil() {
     }
   }
 
+  /**
+   * Sube la nueva foto de perfil al servidor y actualiza tanto el estado
+   * local del componente como la sesión guardada en localStorage para que
+   * el avatar en la cabecera se actualice sin recargar.
+   *
+   * @param {string} fotoBase64 - Imagen en formato data URL (base64)
+   */
   const handleActualizarFoto = async fotoBase64 => {
     try {
       await actualizarFoto(usuario.id, fotoBase64)
@@ -68,6 +93,7 @@ function Perfil() {
     }
   }
 
+  /** Limpia el token y los datos de sesión y redirige a la página de inicio. */
   const handleCerrarSesion = () => {
     limpiarSesion()
     navigate('/')

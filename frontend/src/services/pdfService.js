@@ -1,10 +1,13 @@
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
+/** Formatea una fecha a dd/mm/aaaa; devuelve '-' si el valor es nulo. */
 const fmt  = date => date ? new Date(date).toLocaleDateString('es-ES') : '-'
+/** Formatea un número como importe en euros; devuelve '-' si el valor es nulo. */
 const eur  = n    => n != null ? `${n} €` : '-'
 
-const HEAD_COLOR = [79, 178, 248]   // --color-primary
+// Color primario de la aplicación tomado del token CSS --color-primary
+const HEAD_COLOR = [79, 178, 248]
 const ROW_ALT    = [240, 248, 255]
 
 const TABLE_STYLES = {

@@ -2,6 +2,7 @@ import TarifasIcon          from '../../assets/icons/Icono Tarifas.svg?react'
 import ContenedoresFotoIcon from '../../assets/icons/Icono de contenedores por foto.svg?react'
 import SemaforoIcon         from '../../assets/icons/semaforo.svg?react'
 
+// Mapa de variantes a contenido estático para la sección de características de la home
 const VARIANTES = {
   'tarifas': {
     icon:        <TarifasIcon />,
@@ -20,6 +21,10 @@ const VARIANTES = {
   },
 }
 
+/**
+ * Bloque de característica de la página de inicio.
+ * @param {'tarifas'|'ocr'|'semaforo'} variante
+ */
 function InformacionHome({ variante = 'tarifas' }) {
   const { icon, titulo, descripcion } = VARIANTES[variante]
   return (

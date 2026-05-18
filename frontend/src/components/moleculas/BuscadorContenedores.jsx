@@ -1,5 +1,6 @@
 import BuscadorCard from './BuscadorCard'
 
+/** Sección con título y campo de búsqueda para filtrar listas de tarjetas. */
 function BuscadorContenedores({ value, onChange, onBuscar }) {
   return (
     <section className="buscador-contenedores" aria-label="Buscador rápido">

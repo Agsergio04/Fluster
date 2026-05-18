@@ -1,8 +1,14 @@
 import TramoDeFechas from './TramoDeFechas'
 
+/** Formatea un importe con dos decimales y símbolo de euro. */
 const formatCoste = (n) =>
   (n ?? 0).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'
 
+/**
+ * Tarjeta resumen de un ciclo cerrado con los tramos Demurrage y Detention.
+ * Calcula el coste total sumando ambos costes para no depender de un campo
+ * calculado del servidor que podría estar desactualizado si se editan fechas.
+ */
 function TarjetaCicloContenedor({
   cliente,
   demurrage,

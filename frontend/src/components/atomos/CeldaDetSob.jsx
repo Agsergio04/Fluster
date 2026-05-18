@@ -1,5 +1,6 @@
 import CeldaTabla from './CeldaTabla'
 
+/** Par de celdas Detención/Sobrestadía para la cabecera de la tabla de tarifas. */
 function CeldaDetSob() {
   return (
     <div className="celda-det-sob">

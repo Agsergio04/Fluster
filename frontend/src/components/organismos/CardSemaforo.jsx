@@ -4,6 +4,23 @@ import CalendarioIcon from '../../assets/icons/Icono calendario.svg?react'
 import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
 import TarifasIcon from '../../assets/icons/Icono Tarifas.svg?react'
 
+/**
+ * Tarjeta de seguimiento de un contenedor en el semáforo.
+ * La sección de tarifa acumulada solo se muestra si el contenedor
+ * tiene un ciclo activo (estado !== 'inactivo'), ya que en estado
+ * inactivo no hay costes en curso.
+ *
+ * @param {'inactivo'|'puerto'|'cliente'|'vuelta_puerto'} estado
+ * @param {string}   codigoBic
+ * @param {string}   ultimaOperacion - Fecha de la última transición de estado
+ * @param {string}   cliente         - Nombre del cliente o null si no asignado
+ * @param {number}   tarifaAcumulada - Coste acumulado hasta el momento (€)
+ * @param {boolean}  mostrarAnterior - Controla el botón de navegación izquierda
+ * @param {boolean}  mostrarSiguiente
+ * @param {function} onAnterior
+ * @param {function} onSiguiente
+ * @param {function} onEditarFecha   - Abre el modal de corrección de fecha
+ */
 function CardSemaforo({
   estado = 'inactivo',
   codigoBic,

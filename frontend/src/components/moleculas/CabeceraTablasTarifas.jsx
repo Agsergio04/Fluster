@@ -1,6 +1,13 @@
 import CeldaTabla  from '../atomos/CeldaTabla'
 import CeldaDetSob from '../atomos/CeldaDetSob'
 
+/**
+ * Cabecera de tres niveles para la tabla de tarifas:
+ * fila 1 — grupos principales (Tiempo / Tarifas),
+ * fila 2 — subgrupos (free time, límite tramo 1, tramo 1, tramo 2),
+ * fila 3 — par Detención/Sobrestadía por cada subgrupo.
+ * Solo tiene contenido estático, sin props ni estado.
+ */
 function CabeceraTablasTarifas() {
   return (
     <div className="cabecera-tablas-tarifas">

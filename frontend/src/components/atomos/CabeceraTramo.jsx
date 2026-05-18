@@ -5,6 +5,14 @@ const LABELS = {
   'inactivo':      'Inactivos',
 }
 
+/**
+ * Cabecera de sección del semáforo que muestra el tramo activo y el número de contenedores.
+ * Pluraliza el contador automáticamente (1 contenedor / N contenedores).
+ * El modificador BEM controla el color del badge según el tramo (verde/ámbar/rojo).
+ *
+ * @param {'sin-coste'|'primer-tramo'|'segundo-tramo'|'inactivo'} tramo
+ * @param {number} cantidad
+ */
 function CabeceraTramo({ tramo = 'inactivo', cantidad = 0 }) {
   return (
     <div className={`cabecera-tramo cabecera-tramo--${tramo}`}>

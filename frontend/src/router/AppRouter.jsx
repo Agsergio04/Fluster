@@ -13,11 +13,26 @@ import Registro from '../pages/registro/registro'
 import Semaforo from '../pages/semaforo/semaforo'
 import Tarifas from '../pages/tarifas/tarifas'
 import Error from '../pages/error/error'
+import GuiaEstilos from '../pages/guia_estilos/guia_estilos'
+import Terminos from '../pages/terminos/terminos'
+import Privacidad from '../pages/privacidad/privacidad'
+import Cookies from '../pages/cookies/cookies'
+import Contacto from '../pages/contacto/contacto'
+import Footer from '../components/organismos/Footer'
 
-const GESTOR     = ['gestor']
-const OPERADOR   = ['operador']
+// Grupos de roles para las rutas protegidas, definidos aquí para evitar
+// arrays literales repetidos en cada Route y facilitar cambios futuros
+const GESTOR      = ['gestor']
+const OPERADOR    = ['operador']
 const AUTENTICADO = ['gestor', 'operador', 'admin']
 
+/**
+ * Árbol de rutas de la aplicación.
+ * - Rutas públicas (/, /login, /registro): redirigen al área del usuario si ya hay sesión activa
+ * - Rutas protegidas: comprueban autenticación y rol; redirigen a /error si no se cumplen
+ * - Ruta comodín (*): redirige a /error para cubrir URLs desconocidas
+ * - Footer se monta fuera de Routes para que aparezca en todas las páginas
+ */
 function AppRouter() {
   return (
     <BrowserRouter>
@@ -54,8 +69,15 @@ function AppRouter() {
           <RutaProtegida roles={AUTENTICADO}><Perfil /></RutaProtegida>
         } />
 
+        <Route path="/guia-estilos"            element={<GuiaEstilos />} />
+        <Route path="/terminos-de-servicio"    element={<Terminos />} />
+        <Route path="/politica-de-privacidad"  element={<Privacidad />} />
+        <Route path="/cookies"                 element={<Cookies />} />
+        <Route path="/contacto"                element={<Contacto />} />
+
         <Route path="*" element={<Navigate to="/error" replace />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }

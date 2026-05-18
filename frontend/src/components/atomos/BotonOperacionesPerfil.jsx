@@ -4,6 +4,10 @@ const LABELS = {
   'cerrar-sesion':       'Cerrar Sesión',
 }
 
+/**
+ * Botón de acción del panel de perfil.
+ * @param {'cambiar-nombre'|'cambiar-contrasenia'|'cerrar-sesion'} variante
+ */
 function BotonOperacionesPerfil({ variante = 'cambiar-nombre', onClick, disabled = false }) {
   return (
     <button

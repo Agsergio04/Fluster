@@ -1,3 +1,11 @@
+/**
+ * Botón de selección de rol grande con icono, título y descripción.
+ * Tiene dos estados adicionales al estándar activo/inactivo:
+ * - active: este rol está seleccionado (relleno de color)
+ * - off: el otro rol está seleccionado (atenuado pero clickable para cambiar)
+ * El modificador off permite dar feedback visual de que hay una selección activa
+ * sin deshabilitar el botón.
+ */
 function BotonRol({ icon, titulo, descripcion, active = false, off = false, onClick }) {
   return (
     <button

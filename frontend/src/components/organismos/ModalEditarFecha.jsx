@@ -1,5 +1,15 @@
 import { useState } from 'react'
 
+/**
+ * Modal para corregir la fecha de inicio libre de un contenedor.
+ * La fecha se inicializa con el valor actual para que el usuario
+ * solo tenga que modificar lo que quiera cambiar.
+ * El clic fuera del panel cancela sin guardar.
+ *
+ * @param {string}   fechaActual - Fecha en formato ISO o compatible con Date()
+ * @param {function} onConfirmar - Recibe la nueva fecha en formato 'YYYY-MM-DD'
+ * @param {function} onCancelar
+ */
 function ModalEditarFecha({ fechaActual, onConfirmar, onCancelar }) {
   const [fecha, setFecha] = useState(
     fechaActual ? new Date(fechaActual).toISOString().split('T')[0] : ''

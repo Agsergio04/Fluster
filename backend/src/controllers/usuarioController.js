@@ -2,7 +2,7 @@ const usuarioService = require('../services/usuarioService')
 
 async function listar(req, res, next) {
   try {
-    const usuarios = await usuarioService.listar()
+    const usuarios = await usuarioService.listar(req.query)
     res.json(usuarios)
   } catch (err) {
     next(err)

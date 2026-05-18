@@ -1,6 +1,11 @@
 import InputContrasenia from '../atomos/InputContrasenia'
 import BotonRegistroLogin from '../atomos/BotonRegistroLogin'
 
+/**
+ * Formulario de cambio de contraseña con tres campos: actual, nueva y confirmación.
+ * La validación de coincidencia se hace en el padre (página Perfil) antes de
+ * llamar a la API, para dar feedback inmediato sin una petición extra.
+ */
 function CambiarContrasenia({
   contraseniaActual = '',  onContraseniaActualCambio,
   contrasenia = '',        onContraseniaCambio,
