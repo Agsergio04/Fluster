@@ -9,12 +9,20 @@ import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
 import BotonesRegistro from '../../components/moleculas/BotonesRegistro'
 import imagenRegistro from '../../assets/images/imagen_registro-login.png'
 
+/**
+ * Página de creación de cuenta nueva.
+ * El rol se elige en el mismo formulario mediante botones de selección;
+ * el formulario no permite enviar sin haber elegido uno.
+ * Tras el registro exitoso redirige al login para que el usuario
+ * inicie sesión con las credenciales recién creadas.
+ */
 function Registro() {
   const navigate = useNavigate()
   const [tema, toggleTema] = useTema()
   const [nombre, setNombre] = useState('')
   const [correo, setCorreo] = useState('')
   const [contrasenia, setContrasenia] = useState('')
+  // null mientras no se selecciona ningún botón de rol
   const [rol, setRol] = useState(null)
   const [errorNombre, setErrorNombre] = useState('')
   const [errorCorreo, setErrorCorreo] = useState('')
@@ -22,6 +30,11 @@ function Registro() {
   const [errorRol, setErrorRol] = useState('')
   const [cargando, setCargando] = useState(false)
 
+  /**
+   * Valida cada campo de forma secuencial y detiene el proceso
+   * en el primer error encontrado para mostrar un único mensaje de error
+   * claro sin saturar el formulario con múltiples alertas a la vez.
+   */
   const handleCrearCuenta = async () => {
     setErrorNombre('')
     setErrorCorreo('')
@@ -38,6 +51,8 @@ function Registro() {
       await registro(nombre.trim(), correo.trim(), contrasenia, rol)
       navigate('/login')
     } catch (err) {
+      // Los errores del servidor (p. ej. correo ya registrado) se muestran
+      // bajo el campo de correo, que es el más probable origen del conflicto
       const mensaje = err.response?.data?.mensaje ?? 'Error al crear la cuenta'
       setErrorCorreo(mensaje)
     } finally {
@@ -74,6 +89,7 @@ function Registro() {
             errorContrasenia={errorContrasenia}
           />
 
+          {/* Grupo de selección de rol con etiqueta accesible via aria-labelledby */}
           <div
             className="registro__rol"
             role="group"
