@@ -1,5 +1,6 @@
 import EditarIcon from '../../assets/icons/Icono editar.svg?react'
 
+/** Botón de editar con texto e icono para las tarjetas de contenedor del operador. */
 function BotonEditar({ disabled = false, onClick }) {
   return (
     <button

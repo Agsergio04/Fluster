@@ -1,5 +1,6 @@
 import EstadoPosteriorIcon from '../../assets/icons/Icono estado Posterior.svg?react'
 
+/** Flecha derecha del paginador para ir a la página siguiente. */
 function BotonIrDerecha({ disabled = false, onClick }) {
   return (
     <button

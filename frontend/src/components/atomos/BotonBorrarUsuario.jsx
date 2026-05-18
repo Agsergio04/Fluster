@@ -1,5 +1,6 @@
 import BorrarIcon from '../../assets/icons/Icono borrar.svg?react'
 
+/** Botón de eliminación de usuario con icono y texto para la tarjeta de usuario. */
 function BotonBorrarUsuario({ disabled = false, onClick }) {
   return (
     <button

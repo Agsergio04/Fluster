@@ -1,3 +1,4 @@
+/** Botón de acción principal del panel de generación de informes PDF. */
 function BotonGenerarInforme({ disabled = false, onClick }) {
   return (
     <button

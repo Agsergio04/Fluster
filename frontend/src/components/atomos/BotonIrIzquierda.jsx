@@ -1,5 +1,6 @@
 import EstadoAnteriorIcon from '../../assets/icons/Icono Estado anterior.svg?react'
 
+/** Flecha izquierda del paginador para ir a la página anterior. */
 function BotonIrIzquierda({ disabled = false, onClick }) {
   return (
     <button

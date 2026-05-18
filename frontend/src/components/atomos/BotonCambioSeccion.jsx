@@ -1,3 +1,4 @@
+/** Botón de número de página del paginador; resaltado cuando corresponde a la página actual. */
 function BotonCambioSeccion({ children, active = false, disabled = false, onClick }) {
   return (
     <button

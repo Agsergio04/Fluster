@@ -1,5 +1,6 @@
 import BuscarIcon from '../../assets/icons/icono buscar.svg?react'
 
+/** Botón de lupa para el campo de búsqueda; el texto visible lo aporta aria-label. */
 function BotonBusqueda({ disabled = false, onClick }) {
   return (
     <button
