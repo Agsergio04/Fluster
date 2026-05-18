@@ -1,5 +1,17 @@
 import { useState } from 'react'
 
+/**
+ * Modal para corregir las fechas de inicio y fin de un tramo (Demurrage o Detention).
+ * El nombre del tramo se muestra en el título para que el usuario sepa qué está editando.
+ * Las fechas se convierten a ISO antes de enviarlas al padre para que el servicio
+ * las reciba en el formato que espera la API.
+ *
+ * @param {'Demurrage'|'Detention'} tramo
+ * @param {string}   fechaInicio - Fecha actual en formato ISO o compatible con Date()
+ * @param {string}   fechaFin
+ * @param {function} onGuardar  - Recibe { fechaInicio, fechaFin } en ISO; puede ser async
+ * @param {function} onCancelar
+ */
 function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar }) {
   const toInputDate = (fecha) =>
     fecha ? new Date(fecha).toISOString().split('T')[0] : ''
