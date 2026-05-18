@@ -12,19 +12,39 @@ import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
 import ModalEditarFecha from '../../components/organismos/ModalEditarFecha'
 import Notificacion from '../../components/atomos/Notificacion'
 
+// Orden de las columnas del semáforo tal como las muestra la interfaz
 const TRAMOS = ['sin-coste', 'primer-tramo', 'segundo-tramo', 'inactivo']
 
+// Sufijo que se añade al estado backend para generar la variante visual de la tarjeta
+// (p. ej. "puerto-free", "puerto-primer", "cliente-segundo")
 const TRAMO_SUFIJO = {
   'sin-coste':     'free',
   'primer-tramo':  'primer',
   'segundo-tramo': 'segundo',
 }
 
+/**
+ * Devuelve la fecha más reciente de un contenedor formateada en español.
+ * El recorrido va de la más reciente (devolución) a la más antigua (inicio libre)
+ * para mostrar siempre el último evento conocido en la tarjeta del semáforo.
+ *
+ * @param {object} c - Contenedor tal como llega del servidor
+ * @returns {string} Fecha formateada o '-' si no hay ninguna
+ */
 const ultimaFecha = c => {
   const fecha = c.fechaDevolucion ?? c.fechaSalidaPuerto ?? c.fechaEntradaPuerto ?? c.fechaInicioLibre
   return fecha ? new Date(fecha).toLocaleDateString('es-ES') : '-'
 }
 
+/**
+ * Transforma un contenedor tal como llega del servidor en el objeto
+ * normalizado que espera el componente CardContenedor.
+ * El campo estado combina el estado del backend con el tramo de tarifa
+ * activo para que la tarjeta muestre el color correcto.
+ *
+ * @param {object} c     - Contenedor del servidor
+ * @param {string} tramo - Clave del tramo ('sin-coste' | 'primer-tramo' | ...)
+ */
 const mapearContenedor = (c, tramo) => {
   const estadoBackend = c.estado
   const estado = estadoBackend === 'INACTIVO'
@@ -42,22 +62,37 @@ const mapearContenedor = (c, tramo) => {
   }
 }
 
+/**
+ * Página principal de gestión operativa del gestor.
+ * Muestra cuatro columnas (sin coste, primer tramo, segundo tramo e inactivos)
+ * con las tarjetas de todos los contenedores activos, y permite ejecutar
+ * todas las transiciones de estado del ciclo de vida de un contenedor.
+ */
 function Semaforo() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
 
+  // Un objeto por tramo para los campos de búsqueda de cada columna
   const [busquedas,   setBusquedas]   = useState({
     'sin-coste': '', 'primer-tramo': '', 'segundo-tramo': '', 'inactivo': '',
   })
+  // Contenedores agrupados por tramo de coste
   const [grupos,      setGrupos]      = useState({
     'sin-coste': [], 'primer-tramo': [], 'segundo-tramo': [], 'inactivo': [],
   })
+  // Datos del contenedor sobre el que se quiere abrir el modal de entrada a puerto
   const [modalPuerto,  setModalPuerto]  = useState(null)
+  // Datos del contenedor cuya fecha de inicio libre se quiere editar
   const [modalFecha,   setModalFecha]   = useState(null)
   const [aviso,        setAviso]        = useState('')
   const [cargando,     setCargando]     = useState(true)
 
+  /**
+   * Pide al servidor los contenedores ya clasificados por tramo y actualiza
+   * el estado local. Se usa useCallback para estabilizar la referencia y
+   * poder llamarlo desde distintos manejadores sin recrear la función.
+   */
   const cargarGrupos = useCallback(() => {
     obtenerAgrupados()
       .then(data => setGrupos({
@@ -72,6 +107,13 @@ function Semaforo() {
 
   useEffect(() => { cargarGrupos() }, [cargarGrupos])
 
+  /**
+   * Crea el cliente si no existe y registra la entrada a puerto del contenedor.
+   * Se separa la creación del cliente de la transición de estado porque el modal
+   * solo recoge el nombre: el ID real lo devuelve el servidor tras el POST.
+   *
+   * @param {string} nombre - Nombre del cliente introducido en el modal
+   */
   const handleEntradaPuerto = async (nombre) => {
     try {
       const cliente = await crearCliente(nombre)
@@ -83,6 +125,7 @@ function Semaforo() {
     }
   }
 
+  /** Cancela el ciclo activo y devuelve el contenedor a INACTIVO. */
   const handleCancelarCiclo = async (id) => {
     try {
       await cancelarCiclo(id)
@@ -92,6 +135,7 @@ function Semaforo() {
     }
   }
 
+  /** Registra la salida de puerto: el contenedor pasa de PUERTO a CLIENTE. */
   const handleSalidaPuerto = async (id) => {
     try {
       await salidaPuerto(id)
@@ -101,6 +145,13 @@ function Semaforo() {
     }
   }
 
+  /**
+   * Actualiza la fecha de inicio del período libre del contenedor.
+   * Esto recalcula automáticamente todos los costes D&D acumulados
+   * a partir de la nueva fecha en el backend.
+   *
+   * @param {string} nuevaFecha - Fecha en formato YYYY-MM-DD del input
+   */
   const handleEditarFecha = async (nuevaFecha) => {
     try {
       await actualizarContenedor(modalFecha.id, {
@@ -113,6 +164,10 @@ function Semaforo() {
     }
   }
 
+  /**
+   * Revierte la salida a cliente: el contenedor vuelve de CLIENTE a PUERTO.
+   * Útil para corregir un registro de salida introducido por error.
+   */
   const handleRevertirSalida = async (id) => {
     try {
       await revertirSalidaPuerto(id)
@@ -122,6 +177,7 @@ function Semaforo() {
     }
   }
 
+  /** Registra la devolución del contenedor: pasa de CLIENTE a VUELTA_PUERTO. */
   const handleDevolucion = async (id) => {
     try {
       await devolucion(id)
@@ -134,6 +190,16 @@ function Semaforo() {
   const handleBusquedaCambio = (tramo, valor) =>
     setBusquedas(prev => ({ ...prev, [tramo]: valor }))
 
+  /**
+   * Filtra los contenedores de un tramo por el texto de búsqueda
+   * y añade a cada ítem los manejadores de acción correspondientes
+   * según su estado en el backend:
+   *   - INACTIVO → botón "Siguiente" abre el modal de entrada a puerto
+   *   - PUERTO   → "Anterior" cancela el ciclo, "Siguiente" registra salida
+   *   - CLIENTE  → "Anterior" revierte la salida, "Siguiente" registra devolución
+   *
+   * @param {string} tramo - Clave de la columna a procesar
+   */
   const itemsFiltrados = tramo =>
     grupos[tramo]
       .filter(item =>
