@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 /**
  * Celda de la tabla de tarifas con tres modos de comportamiento:
@@ -20,6 +20,13 @@ function CeldaTabla({ label, tamanio = 'md', fuente = 'heading', editable = fals
   // cuando no está enfocado se muestra siempre el label del padre
   const [displayValue, setDisplayValue] = useState(label)
   const [focused,      setFocused]      = useState(false)
+  const inputRef = useRef(null)
+
+  // Enfocar el input cuando la fila entra en modo edición para que el usuario
+  // pueda escribir directamente sin necesidad de un clic adicional
+  useEffect(() => {
+    if (editable && !readonly) inputRef.current?.focus()
+  }, [editable, readonly])
 
   const clases = `celda-tabla celda-tabla--${tamanio}${fuente === 'body' ? ' celda-tabla--body' : ''}`
 
@@ -27,6 +34,7 @@ function CeldaTabla({ label, tamanio = 'md', fuente = 'heading', editable = fals
     return (
       <div className={clases}>
         <input
+          ref={inputRef}
           className="celda-tabla__input"
           // Fuera del foco muestra siempre el valor autoritativo del padre
           value={focused ? displayValue : label}
