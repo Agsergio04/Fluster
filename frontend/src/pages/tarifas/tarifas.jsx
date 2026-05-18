@@ -8,6 +8,15 @@ import Header from '../../components/organismos/Header'
 import TablaTarifas from '../../components/organismos/TablaTarifas'
 import Notificacion from '../../components/atomos/Notificacion'
 
+/**
+ * Transforma un objeto naviera del servidor en la estructura de fila
+ * que espera TablaTarifas: un array plano de 8 valores en el orden
+ * [diasLibresDet, diasLibresDem, hastaDet, hastaDem,
+ *  precioTr1Det, precioTr1Dem, precioTr2Det, precioTr2Dem].
+ * Este orden coincide exactamente con las columnas de la tabla.
+ *
+ * @param {object} n - Naviera del servidor
+ */
 const navieraAFila = n => ({
   _id: n._id,
   naviera: (n.codigo ?? n.nombre).slice(0, 3).toUpperCase(),
@@ -23,8 +32,17 @@ const navieraAFila = n => ({
   ],
 })
 
+/** Convierte cualquier valor a número; devuelve 0 si el resultado es NaN. */
 const num = v => { const n = Number(v); return isNaN(n) ? 0 : n }
 
+/**
+ * Reconstruye el objeto naviera completo a partir del array plano de valores
+ * editados en la tabla. El tramo 2 empieza el día siguiente al límite del tramo 1
+ * y no tiene límite superior (hastaDia: null), tal como define el modelo de datos.
+ *
+ * @param {Array} valores - Array de 8 valores editados por el usuario
+ * @returns {object} Campos de naviera listos para enviar al servidor
+ */
 const valoresANaviera = (valores) => {
   const det0Hasta = num(valores[2])
   const dem0Hasta = num(valores[3])
@@ -42,6 +60,11 @@ const valoresANaviera = (valores) => {
   }
 }
 
+/**
+ * Página de gestión de navieras y tarifas para el gestor.
+ * Muestra las navieras en una tabla editable en línea; cada fila
+ * se puede editar y guardar de forma independiente sin afectar al resto.
+ */
 function Tarifas() {
   const navigate           = useNavigate()
   const usuario            = getUsuario()
@@ -58,6 +81,14 @@ function Tarifas() {
       .finally(() => setCargando(false))
   }, [])
 
+  /**
+   * Transforma los valores editados al formato del servidor, guarda los cambios
+   * y actualiza solo la fila afectada en el estado local para evitar recargar
+   * toda la lista.
+   *
+   * @param {string} id           - ID de la naviera a actualizar
+   * @param {Array}  valoresNuevos - Array plano de 8 valores editados
+   */
   const handleActualizar = async (id, valoresNuevos) => {
     try {
       const cambios = valoresANaviera(valoresNuevos)
@@ -68,6 +99,13 @@ function Tarifas() {
     }
   }
 
+  /**
+   * Elimina la naviera del sistema y la quita de la lista local.
+   * El backend puede rechazar la operación si la naviera tiene
+   * contenedores activos asociados.
+   *
+   * @param {string} id - ID de la naviera a eliminar
+   */
   const handleEliminar = async (id) => {
     try {
       await eliminarNaviera(id)
@@ -77,6 +115,8 @@ function Tarifas() {
     }
   }
 
+  // Se añaden los manejadores a cada fila para que TablaTarifas no necesite
+  // conocer el ID de la naviera ni la lógica de actualización
   const filas = navieras.map(n => ({
     ...navieraAFila(n),
     onActualizar: valoresNuevos => handleActualizar(n._id, valoresNuevos),
