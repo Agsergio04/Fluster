@@ -33,11 +33,11 @@ Los wireframes de baja/media fidelidad recogen la estructura y jerarquía de cad
 
 | Pantalla | Wireframe |
 |---|---|
-| **Login** | ![Wireframe Login](./assets/img/wireframes/wireframe/login-v1.png) |
-| **Semáforo** | ![Wireframe Semáforo](./assets/img/wireframes/wireframe/semaforo.png) |
-| **Almacén** | ![Wireframe Almacén](./assets/img/wireframes/wireframe/almacen.png) |
-| **Tarifas** | ![Wireframe Tarifas](./assets/img/wireframes/wireframe/tarifas.png) |
-| **Panel de control** | ![Wireframe Panel](./assets/img/wireframes/wireframe/panel.png) |
+| **Login** | ![Wireframe Login](./assets/img/wireframes/login-v1.png) |
+| **Semáforo** | ![Wireframe Semáforo](./assets/img/wireframes/semaforo.png) |
+| **Almacén** | ![Wireframe Almacén](./assets/img/wireframes/almacen.png) |
+| **Tarifas** | ![Wireframe Tarifas](./assets/img/wireframes/tarifas.png) |
+| **Panel de control** | ![Wireframe Panel](./assets/img/wireframes/panel.png) |
 
 ---
 
