@@ -27,6 +27,18 @@ El proyecto de diseño se encuentra en Figma e incluye tres artefactos diferenci
 
 El prototipo recoge las pantallas principales de la aplicación, los estados interactivos de los componentes y el sistema de diseño alineado con los tokens descritos en esta guía.
 
+### Wireframes principales
+
+Los wireframes de baja/media fidelidad recogen la estructura y jerarquía de cada pantalla antes de aplicar el sistema visual definitivo.
+
+| Pantalla | Wireframe |
+|---|---|
+| **Login** | ![Wireframe Login](./assets/img/wireframes/wireframe/login-v1.png) |
+| **Semáforo** | ![Wireframe Semáforo](./assets/img/wireframes/wireframe/semaforo.png) |
+| **Almacén** | ![Wireframe Almacén](./assets/img/wireframes/wireframe/almacen.png) |
+| **Tarifas** | ![Wireframe Tarifas](./assets/img/wireframes/wireframe/tarifas.png) |
+| **Panel de control** | ![Wireframe Panel](./assets/img/wireframes/wireframe/panel.png) |
+
 ---
 
 ## 2. Arquitectura CSS — ITCSS
@@ -216,6 +228,7 @@ Ejemplos del proyecto:
 | `Notificacion.jsx` | Notificación/toast individual |
 | `CeldaTabla.jsx` | Celda de tabla con soporte a edición inline |
 | `RolAsignado.jsx` | Etiqueta de rol asignado a un usuario |
+| `Spinner.jsx` | Indicador de carga accesible con animación CSS |
 
 #### Moléculas — `src/components/moleculas/`
 
@@ -672,3 +685,88 @@ Al crear un nuevo archivo de componente en `05-components`, hay que registrarlo 
 | Desktop | `> 1024px` | (sin mixin, es el estilo base) |
 
 El enfoque es **desktop-first**: los estilos base se escriben para desktop y los mixins `mobile` y `tablet` sobreescriben para pantallas más pequeñas.
+
+---
+
+## 11. Feedback de carga — componente `Spinner`
+
+### Por qué es una buena práctica
+
+Toda operación asíncrona (llamada a la API, envío de formulario, carga de datos) introduce un tiempo de espera durante el cual el sistema no responde a los clics del usuario. Sin retroalimentación visual el usuario no sabe si la acción se registró, lo que provoca clics repetidos y sensación de error.
+
+Un indicador de carga cumple tres principios fundamentales de UX:
+
+1. **Visibilidad del estado del sistema** (Nielsen heurístico #1): el usuario siempre sabe que el sistema está trabajando.
+2. **Prevención de errores**: el botón queda deshabilitado mientras dura la operación, evitando dobles envíos.
+3. **Accesibilidad**: el atributo `role="status"` y `aria-label="Cargando"` permite a los lectores de pantalla anunciar el estado de carga sin depender únicamente del elemento visual.
+
+### El componente `Spinner`
+
+`Spinner` es un átomo CSS puro (sin librerías externas) que usa los tokens del sistema de diseño.
+
+```jsx
+// Uso dentro de un botón (sustituye el texto durante la carga)
+import Spinner from '../atomos/Spinner'
+
+<button disabled={cargando}>
+  {cargando ? <Spinner tamanio="sm" /> : 'Iniciar Sesión'}
+</button>
+```
+
+| Prop | Tipo | Valores | Descripción |
+|---|---|---|---|
+| `tamanio` | `string` | `'sm'` \| `'md'` \| `'lg'` | Tamaño del indicador |
+
+| Tamaño | Dimensión | Uso típico |
+|---|---|---|
+| `sm` | 1 rem | Dentro de botones (inline) |
+| `md` | 1.5 rem | Indicador de sección o componente |
+| `lg` | 3 rem | Indicador de pantalla completa |
+
+### Aplicación en el formulario de login
+
+En la página de login, el estado `cargando` se activa en el momento en que se llama al servicio de autenticación y se desactiva cuando el servidor responde (con éxito o con error). Durante ese intervalo, `BotonesLogin` sustituye el texto del botón por el `Spinner` y deshabilita el elemento:
+
+```jsx
+// BotonesLogin.jsx
+function BotonesLogin({ onIniciarSesion, onIrRegistro, cargando = false }) {
+  return (
+    <BotonRegistroLogin onClick={onIniciarSesion} disabled={cargando}>
+      {cargando ? <Spinner tamanio="sm" /> : 'Iniciar Sesión'}
+    </BotonRegistroLogin>
+  )
+}
+
+// login.jsx — el estado cargando envuelve la llamada async
+const handleIniciarSesion = async () => {
+  try {
+    setCargando(true)
+    const usuario = await login(correo, contrasenia)
+    navigate(RUTA_POR_ROL[usuario.rol] ?? '/')
+  } catch (err) {
+    setErrorContrasenia(err.response?.data?.mensaje ?? 'Credenciales incorrectas')
+  } finally {
+    setCargando(false) // siempre se restaura, con éxito o con error
+  }
+}
+```
+
+El bloque `finally` garantiza que el spinner nunca quede activo de forma permanente aunque la petición falle o se rechace, respetando el principio de **recuperación ante errores** (Nielsen heurístico #9).
+
+### Implementación CSS
+
+La animación es CSS puro con `@keyframes`, sin JavaScript ni librerías. Usa los tokens `--color-primary` (arco activo) y `--color-primary-off` (pista), lo que asegura la coherencia con el sistema de colores y el soporte automático del tema oscuro:
+
+```scss
+.spinner {
+  border:           3px solid var(--color-primary-off); // pista
+  border-top-color: var(--color-primary);               // arco activo
+  animation:        spinner-giro 700ms linear infinite;
+}
+
+@keyframes spinner-giro {
+  to { transform: rotate(360deg); }
+}
+```
+
+La duración de 700 ms es deliberada: es suficientemente rápida para no parecer lenta, pero evita el parpadeo que produciría una duración inferior a 500 ms en peticiones que resuelven rápido.

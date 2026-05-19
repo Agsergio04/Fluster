@@ -301,7 +301,7 @@ contenedores ──< informes       (contenedorId)
 
 ## 2.4 Diagrama de casos de uso
 
-> 📋 **Versión interactiva en FigJam:** [Diagrama de Flujo — Fluster](https://www.figma.com/board/RElpnz7nwahpUixOCr4vMq/Diagrama-de-Flujo---Fluster?node-id=0-1)
+> **Versión interactiva en FigJam:** [Diagrama de Flujo — Fluster](https://www.figma.com/board/RElpnz7nwahpUixOCr4vMq/Diagrama-de-Flujo---Fluster?node-id=0-1)
 
 ```mermaid
 flowchart TD
@@ -365,7 +365,7 @@ flowchart TD
 
 ## 2.5 Diagramas de flujo
 
-> 📋 **Versión interactiva en FigJam:** [Diagrama de Flujo — Fluster](https://www.figma.com/board/RElpnz7nwahpUixOCr4vMq/Diagrama-de-Flujo---Fluster?node-id=0-1)
+> **Versión interactiva en FigJam:** [Diagrama de Flujo — Fluster](https://www.figma.com/board/RElpnz7nwahpUixOCr4vMq/Diagrama-de-Flujo---Fluster?node-id=0-1)
 
 ### Ciclo de vida del contenedor
 
@@ -373,14 +373,14 @@ flowchart TD
 flowchart TD
     START([Inicio]) --> A
 
-    A["🟤 Operador registra el contenedor
+    A["Operador registra el contenedor
     ─────────────────────────────
     codigoBIC · naviera · cliente
     tarifa · diasLibres · fechaInicioLibre
     POST /api/contenedores"]
 
     A --> B(["Estado: INACTIVO
-    ⚪ Free time en curso
+    Free time en curso
     Sin coste acumulado"])
 
     B --> C{"¿Acción del gestor?"}
@@ -390,7 +390,7 @@ flowchart TD
     C -->|"Cancelar / eliminar"| Z(["Contenedor eliminado"])
 
     D --> E(["Estado: PUERTO
-    🟡 / 🔴 Demurrage activo
+    Demurrage activo
     Coste = días en puerto × tarifa"])
 
     E --> F{"¿Acción del gestor?"}
@@ -400,7 +400,7 @@ flowchart TD
     F -->|"PATCH cancelar-ciclo"| B
 
     G --> H(["Estado: CLIENTE
-    🟡 / 🔴 Detention activo
+    Detention activo
     Coste = días con cliente × tarifa"])
 
     H --> I{"¿Acción del gestor?"}
@@ -411,7 +411,7 @@ flowchart TD
     I -->|"PATCH cancelar-ciclo"| B
 
     J --> K(["Estado: VUELTA_PUERTO
-    ✅ Ciclo cerrado
+    Ciclo cerrado
     Coste total fijado"])
 
     K --> L{"¿Generar informe?"}
@@ -486,10 +486,10 @@ flowchart TD
     F --> G
     G --> H[Suma coste total acumulado]
     H --> I{Clasifica semáforo}
-    I -->|Sin costes aún\nfree time activo| J[🟢 SIN_COSTES]
-    I -->|Primer tramo\nde tarifa activo| K[🟡 PRIMER_TRAMO]
-    I -->|Segundo tramo\no superior activo| L[🔴 SEGUNDO_TRAMO]
-    I -->|Estado INACTIVO| M[⚪ INACTIVO]
+    I -->|Sin costes aún\nfree time activo| J[SIN_COSTES]
+    I -->|Primer tramo\nde tarifa activo| K[PRIMER_TRAMO]
+    I -->|Segundo tramo\no superior activo| L[SEGUNDO_TRAMO]
+    I -->|Estado INACTIVO| M[INACTIVO]
     J & K & L & M --> N([Respuesta agrupada\npor estado de riesgo])
 ```
 

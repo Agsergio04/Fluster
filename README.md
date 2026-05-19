@@ -17,7 +17,8 @@ Aplicación web para que empresas PYME de logística controlen y gestionen los c
 5. [Inicio rápido](#inicio-rápido)
 6. [Variables de entorno](#variables-de-entorno)
 7. [Documentación](#documentación)
-8. [Contribuir](#contribuir)
+8. [Recuperaciones](#recuperaciones)
+9. [Contribuir](#contribuir)
 
 ---
 
@@ -84,7 +85,7 @@ cp backend/.env.example backend/.env
 docker compose up --build
 ```
 
-Una vez iniciado, la aplicación estará disponible en `http://localhost:5173` y la API en `http://localhost:3000`.
+Una vez iniciado, la aplicación estará disponible en `http://localhost` (puerto 80, servido por nginx). La API es accesible a través del proxy en `http://localhost/api`.
 
 ---
 
@@ -114,6 +115,15 @@ El archivo `backend/.env` debe contener las siguientes variables:
 | 08 | [Despliegue](./docs/08-despliegue.md) | CI/CD con GitHub Actions, configuración de Render y Docker |
 | 09 | [Manual de usuario](./docs/09-manual-usuario.md) | Guía de uso por rol: admin, gestor y operador |
 | 10 | [Conclusiones](./docs/10-conclusiones.md) | Valoración del proyecto, mejoras futuras y aprendizajes |
+---
+
+## Recuperaciones
+
+Documentos elaborados para la recuperación de resultados de aprendizaje pendientes del módulo de **Despliegue de Aplicaciones Web** y **Desarrollo de Intefaces Web** .
+
+| Módulo | Documento | RA pendiente |
+|--------|-----------|-------------|
+| Despliegue de Aplicaciones Web | [Despliegue de la aplicación web](./docs/Despliegue.md) | RA1 — Unidad 2 (Docker y arquitectura) |
 
 ---
 
