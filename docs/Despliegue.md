@@ -294,6 +294,8 @@ fluster-backend-1      fluster-backend    running
 fluster-mongo-1        mongo:7            running
 ```
 
+![docker compose ps — solo el puerto 80 expuesto al host](./assets/img/despliegue/c2-a.png)
+
 ```bash
 # Logs de arranque del backend
 docker compose logs backend
@@ -303,6 +305,8 @@ docker compose logs backend
 fluster-backend-1  | Servidor en puerto 3000
 fluster-backend-1  | Conectado a MongoDB
 ```
+
+![Logs de arranque del backend](./assets/img/despliegue/c2-b.png)
 
 ```bash
 # Health check a través del proxy nginx
@@ -358,6 +362,12 @@ Las imágenes se construyen y publican automáticamente por [`docker.yml`](../.g
 
 Esto permite reproducir cualquier versión anterior por SHA: `docker pull ghcr.io/agsergio04/fluster-backend:a1b2c3d`
 
+![GHCR — imagen fluster-backend con tags publicados](./assets/img/despliegue/c2-c.png)
+
+![GHCR — imagen fluster-backend](./assets/img/despliegue/c7-a-backend.png)
+
+![GHCR — imagen fluster-frontend](./assets/img/despliegue/c7-a-frontend.png)
+
 ### Datos persistentes
 
 | Dato | Dónde | Cómo se conserva |
@@ -369,6 +379,8 @@ Backup manual del volumen en un VPS:
 docker run --rm -v fluster_mongo_data:/data -v $(pwd):/backup \
   alpine tar czf /backup/mongo-backup.tar.gz /data
 ```
+
+![docker volume ls — volumen mongo_data persistente](./assets/img/despliegue/c7-b.png)
 
 ### Resumen de artefactos
 
@@ -447,6 +459,8 @@ fluster-mongo-1        mongo:7            running
 
 Solo `frontend` tiene un puerto mapeado al host (`0.0.0.0:80->80/tcp`). `backend` y `mongo` no tienen puertos publicados.
 
+![docker compose ps — estado real de los contenedores](./assets/img/despliegue/c8-a.png)
+
 ### Prueba 2 — acceso al frontend
 
 ```bash
@@ -485,6 +499,8 @@ curl: (7) Failed to connect to localhost port 3000: Connection refused
 
 El puerto 3000 no está expuesto al host. Solo es accesible dentro de `fluster-net`. Esta es la configuración correcta: el exterior solo llega al backend a través del proxy nginx.
 
+![Pruebas curl — frontend 200, proxy 401, backend directo connection refused](./assets/img/despliegue/c8-b.png)
+
 ### Prueba 5 — flujo completo (login real)
 
 ```bash
@@ -520,6 +536,8 @@ docker exec fluster-backend-1 node -e \
 ```
 
 Docker resuelve `mongo` a la IP interna del contenedor MongoDB. No se necesita `/etc/hosts` ni DNS externo; la red `fluster-net` lo gestiona automáticamente.
+
+![docker network inspect — IPs internas de los contenedores en fluster-net](./assets/img/despliegue/c8-c.png)
 
 ### Prueba 7 — producción con HTTPS (Render)
 
