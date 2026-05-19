@@ -115,6 +115,7 @@ El archivo `backend/.env` debe contener las siguientes variables:
 | 08 | [Despliegue](./docs/08-despliegue.md) | CI/CD con GitHub Actions, configuración de Render y Docker |
 | 09 | [Manual de usuario](./docs/09-manual-usuario.md) | Guía de uso por rol: admin, gestor y operador |
 | 10 | [Conclusiones](./docs/10-conclusiones.md) | Valoración del proyecto, mejoras futuras y aprendizajes |
+
 ---
 
 ## Recuperaciones
@@ -123,7 +124,7 @@ Documentos elaborados para la recuperación de resultados de aprendizaje pendien
 
 | Módulo | Documento | RA pendiente |
 |--------|-----------|-------------|
-| Despliegue de Aplicaciones Web | [Despliegue de la aplicación web](./docs/Despliegue.md) | RA1 — Unidad 2 (Docker y arquitectura) |
+| Despliegue de Aplicaciones Web | [Despliegue de la aplicación web](./docs/08-despliegue-eval.md) | RA1 — Unidad 2 (Docker y arquitectura) |
 
 ---
 

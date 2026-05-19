@@ -1,5 +1,7 @@
 # 08 - Guía de despliegue
 
+> Evaluación de criterios de rúbrica (C1, C2, C7, C8): [08-despliegue-eval.md](./08-despliegue-eval.md).
+
 Esta guía describe la infraestructura de producción de Fluster, los workflows de CI/CD y los pasos necesarios para realizar el primer despliegue o actualizar la aplicación.
 
 ---
