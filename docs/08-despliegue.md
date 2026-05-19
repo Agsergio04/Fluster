@@ -320,10 +320,10 @@ Salida esperada:
 
 ```
 [+] Running 4/4
- ✔ Network fluster_fluster-net  Created
- ✔ Container fluster-mongo-1    Started
- ✔ Container fluster-backend-1  Started
- ✔ Container fluster-frontend-1 Started
+ - Network fluster_fluster-net  Created
+ - Container fluster-mongo-1    Started
+ - Container fluster-backend-1  Started
+ - Container fluster-frontend-1 Started
 ```
 
 ### Estado de los contenedores
