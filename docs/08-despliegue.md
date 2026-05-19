@@ -155,6 +155,8 @@ Sigue estos pasos para configurar el entorno de producción desde cero.
 
 5. Despliega el sitio.
 
+> **SPA routing en Render:** el fichero `frontend/public/_redirects` contiene la regla `/* /index.html 200`, que le indica a Render que sirva siempre `index.html` ante cualquier ruta desconocida. Sin él, recargar la página en una ruta como `/panel-de-control` devuelve 404 porque Render busca un fichero físico con ese nombre. React Router recibe entonces la URL original y renderiza el componente correcto en el cliente. El equivalente en Docker es el `try_files $uri $uri/ /index.html` del `nginx.conf`.
+
 ### Paso 4 — Configurar los secrets en GitHub
 
 1. En Render, ve a la configuración de cada servicio y copia la URL del **Deploy Hook**.
