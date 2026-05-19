@@ -119,7 +119,7 @@ El archivo `backend/.env` debe contener las siguientes variables:
 
 ## Recuperaciones
 
-Documentos elaborados para la recuperación de resultados de aprendizaje pendientes del módulo de **Despliegue de Aplicaciones Web**.
+Documentos elaborados para la recuperación de resultados de aprendizaje pendientes del módulo de **Despliegue de Aplicaciones Web** y **Desarrollo de Intefaces Web** .
 
 | Módulo | Documento | RA pendiente |
 |--------|-----------|-------------|
