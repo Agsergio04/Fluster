@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import RutaProtegida from './RutaProtegida'
-import RutaPublica from './RutaPublica'
 import Login from '../pages/login/login'
 import Home from '../pages/home/home'
 import Almacen from '../pages/almacen/almacen'
@@ -26,19 +25,12 @@ const GESTOR      = ['gestor']
 const OPERADOR    = ['operador']
 const AUTENTICADO = ['gestor', 'operador', 'admin']
 
-/**
- * Árbol de rutas de la aplicación.
- * - Rutas públicas (/, /login, /registro): redirigen al área del usuario si ya hay sesión activa
- * - Rutas protegidas: comprueban autenticación y rol; redirigen a /error si no se cumplen
- * - Ruta comodín (*): redirige a /error para cubrir URLs desconocidas
- * - Footer se monta fuera de Routes para que aparezca en todas las páginas
- */
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login"    element={<RutaPublica><Login /></RutaPublica>} />
-        <Route path="/registro" element={<RutaPublica><Registro /></RutaPublica>} />
+        <Route path="/login"    element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
         <Route path="/"         element={<Home />} />
         <Route path="/error"    element={<Error />} />
 
