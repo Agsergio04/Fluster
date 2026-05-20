@@ -1,5 +1,7 @@
 # 08 - Guía de despliegue
 
+> Evaluación de criterios de rúbrica (C1, C2, C7, C8): [08-despliegue-eval.md](./08-despliegue-eval.md).
+
 Esta guía describe la infraestructura de producción de Fluster, los workflows de CI/CD y los pasos necesarios para realizar el primer despliegue o actualizar la aplicación.
 
 ---
@@ -152,6 +154,8 @@ Sigue estos pasos para configurar el entorno de producción desde cero.
 | `VITE_API_URL` | `https://fluster-vd09.onrender.com/api` |
 
 5. Despliega el sitio.
+
+> **SPA routing en Render:** el fichero `frontend/public/_redirects` contiene la regla `/* /index.html 200`, que le indica a Render que sirva siempre `index.html` ante cualquier ruta desconocida. Sin él, recargar la página en una ruta como `/panel-de-control` devuelve 404 porque Render busca un fichero físico con ese nombre. React Router recibe entonces la URL original y renderiza el componente correcto en el cliente. El equivalente en Docker es el `try_files $uri $uri/ /index.html` del `nginx.conf`.
 
 ### Paso 4 — Configurar los secrets en GitHub
 

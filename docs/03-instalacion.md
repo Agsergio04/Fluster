@@ -191,7 +191,45 @@ Accede a http://localhost:3000/api-docs, autentícate con el token JWT obtenido 
 
 ---
 
-## 7. Solución de problemas frecuentes
+## 7. Ejecutar los tests
+
+### Tests del backend (Jest)
+
+```bash
+cd backend
+
+# Ejecutar todos los tests
+npm test
+
+# Con informe de cobertura
+npm test -- --coverage
+
+# Modo watch (reejecutar al guardar cambios)
+npm test -- --watch
+```
+
+Los tests cubren 203 casos en 21 suites (servicios, controladores y middlewares). No requieren base de datos real ni variables de entorno adicionales; Jest mockea todos los modelos de Mongoose internamente.
+
+### Tests del frontend (Vitest + React Testing Library)
+
+```bash
+cd frontend
+
+# Ejecutar todos los tests
+npm test
+
+# Modo watch
+npm run test:watch
+
+# Con informe de cobertura
+npm run test:coverage
+```
+
+Los tests cubren 58 casos en 7 suites (utilidades de sesión, hooks y componentes atómicos). Se ejecutan sobre jsdom sin necesidad de navegador real.
+
+---
+
+## 8. Solución de problemas frecuentes
 
 | Problema | Causa probable | Solución |
 |---|---|---|

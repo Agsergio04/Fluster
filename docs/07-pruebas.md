@@ -6,25 +6,29 @@ Este documento describe la estrategia de pruebas aplicada en Fluster, los tipos 
 
 ## 1. Metodología de pruebas
 
-La estrategia de pruebas de Fluster se centra en el **backend**, donde reside la lógica de negocio crítica (cálculo de costes D&D, autenticación, control de acceso). El enfoque es de tests unitarios con aislamiento de dependencias externas (base de datos, servicios OCR), inspirado en TDD para las capas de servicio: los servicios de cálculo se diseñaron pensando en su testabilidad antes de escribir su implementación.
+La estrategia de pruebas de Fluster cubre **backend y frontend** con herramientas distintas adaptadas a cada entorno.
 
-Las pruebas se organizan en tres niveles:
+En el **backend**, el foco es la lógica de negocio crítica (cálculo de costes D&D, autenticación, control de acceso). El enfoque es de tests unitarios con aislamiento de dependencias externas (base de datos, servicios OCR), inspirado en TDD para las capas de servicio: los servicios de cálculo se diseñaron pensando en su testabilidad antes de escribir su implementación.
+
+En el **frontend**, los tests cubren las utilidades de sesión, los hooks personalizados y los componentes atómicos más reutilizables de la aplicación, verificando comportamiento, accesibilidad e interacciones del usuario.
+
+Las pruebas se organizan en cinco niveles:
 
 | Nivel | Qué se prueba | Herramienta |
 |---|---|---|
-| Servicios | Lógica de negocio pura | Jest |
-| Controladores | Ciclo petición/respuesta HTTP | Jest + mocks de servicios |
-| Middlewares | Autenticación y autorización | Jest |
+| Servicios (backend) | Lógica de negocio pura | Jest |
+| Controladores (backend) | Ciclo petición/respuesta HTTP | Jest + mocks de servicios |
+| Middlewares (backend) | Autenticación y autorización | Jest |
+| Utilidades y hooks (frontend) | `session.js`, `useTema`, `useContenedores` | Vitest + React Testing Library |
+| Componentes (frontend) | `Spinner`, `Input`, `InputContrasenia`, `Notificacion` | Vitest + React Testing Library |
 
-**No se implementaron tests de frontend** en este proyecto. Los componentes React se probaron mediante pruebas manuales de los flujos de usuario. La adición de tests de frontend con React Testing Library y jsdom está identificada como mejora futura prioritaria.
-
-**Integración continua:** los tests se ejecutan automáticamente en cada `push` o Pull Request a las ramas `main` o `dev` mediante el workflow `ci.yml` de GitHub Actions, garantizando que el código en `main` siempre pasa todos los tests.
+**Integración continua:** los tests de ambas capas se ejecutan automáticamente en cada `push` o Pull Request a las ramas `main` o `dev` mediante el workflow `ci.yml` de GitHub Actions, garantizando que el código en `main` siempre pasa todos los tests.
 
 ---
 
 ## 2. Tipos de pruebas realizadas
 
-### 2.1 Pruebas unitarias de servicios (9 archivos)
+### 2.1 Pruebas unitarias de servicios — backend (9 archivos)
 
 Los tests de servicios validan la lógica de negocio en aislamiento, sin conexión a la base de datos. Los modelos de Mongoose se sustituyen por mocks de Jest para que los tests sean rápidos y deterministas.
 
@@ -42,7 +46,7 @@ Los tests de servicios validan la lógica de negocio en aislamiento, sin conexi�
 
 El test más representativo de la lógica de negocio es `contenedorService.test.js`, que incluye casos con un único tramo tarifario, con dos tramos, con días en el límite exacto entre tramos y con periodo dentro de los días libres (coste cero esperado).
 
-### 2.2 Pruebas de controladores (11 archivos)
+### 2.2 Pruebas de controladores — backend (11 archivos)
 
 Los tests de controladores validan el ciclo completo de petición HTTP → llamada al servicio → respuesta HTTP. Los servicios se mockean con `jest.fn()` para aislar el controlador de la lógica de negocio ya probada en los tests de servicios.
 
@@ -67,7 +71,7 @@ Para cada controlador se prueban al menos los siguientes escenarios:
 | `cicloController.test.js` | Edición manual de tramos de ciclo |
 | `healthController.test.js` | `GET /health` |
 
-### 2.3 Pruebas de middlewares (2 archivos)
+### 2.3 Pruebas de middlewares — backend (2 archivos)
 
 Los tests de middlewares verifican el comportamiento del sistema de autenticación y autorización de forma independiente del resto de la aplicación.
 
@@ -86,13 +90,80 @@ Los tests de middlewares verifican el comportamiento del sistema de autenticaci�
 | Usuario con rol incluido en los roles permitidos | Se llama a `next()` |
 | Usuario con rol NO incluido en los roles permitidos | Respuesta 403 |
 
+### 2.4 Pruebas de utilidades y hooks — frontend (3 archivos)
+
+Los tests de frontend se ejecutan con **Vitest** y **jsdom** como entorno de navegador simulado. Los módulos externos (servicios Axios) se mockean con `vi.mock()` para aislar los hooks de la red.
+
+**`session.test.js`** — cubre las 6 funciones de `services/session.js`:
+
+| Escenario | Resultado esperado |
+|---|---|
+| `guardarSesion(token, usuario)` | Persiste token y usuario serializado en `sessionStorage` |
+| `limpiarSesion()` | Elimina token y usuario de `sessionStorage` |
+| `getToken()` con sesión activa | Devuelve el token guardado |
+| `getToken()` sin sesión | Devuelve `null` |
+| `getUsuario()` con sesión activa | Devuelve el objeto usuario deserializado |
+| `getUsuario()` sin sesión | Devuelve `null` |
+| `isAuthenticated()` con token | Devuelve `true` |
+| `isAuthenticated()` sin token | Devuelve `false` |
+| `actualizarUsuario(cambios)` | Aplica merge parcial conservando propiedades no modificadas |
+| `actualizarUsuario()` sin sesión | No modifica `sessionStorage` |
+
+**`useTema.test.jsx`** — cubre el hook `hooks/useTema.js`:
+
+| Escenario | Resultado esperado |
+|---|---|
+| Sin preferencia guardada ni de sistema | Devuelve `'light'` |
+| Preferencia del sistema `dark` | Devuelve `'dark'` |
+| Valor guardado en `localStorage` | Tiene prioridad sobre la preferencia del sistema |
+| Primer render | Aplica `data-theme` en `documentElement` |
+| `toggleTema()` desde `light` | Cambia a `'dark'` |
+| `toggleTema()` desde `dark` | Cambia a `'light'` |
+| `toggleTema()` | Persiste el nuevo valor en `localStorage` y actualiza `data-theme` |
+
+**`useContenedores.test.jsx`** — cubre el hook `hooks/useContenedores.js`:
+
+| Escenario | Resultado esperado |
+|---|---|
+| Estado inicial | `contenedores = []`, `cargando = true`, `aviso = ''` |
+| Petición exitosa | `contenedores` se rellena, `cargando` pasa a `false` |
+| Petición fallida | `aviso` se rellena con el mensaje de error, `cargando` pasa a `false` |
+| `setContenedores(nuevos)` | Actualiza la lista localmente sin nueva petición |
+
+### 2.5 Pruebas de componentes — frontend (4 archivos)
+
+**`Spinner.test.jsx`** — cubre `components/atomos/Spinner.jsx`:
+- Renderiza con tamaño por defecto (`md`) y con tamaños `sm` y `lg`.
+- Siempre tiene la clase base `spinner`.
+- Tiene `role="status"` y `aria-label="Cargando"` para accesibilidad.
+
+**`Input.test.jsx`** — cubre `components/atomos/Input.jsx`:
+- Renderiza el label cuando se proporciona; no lo renderiza si se omite.
+- Muestra el mensaje de error y aplica la clase `input--error`.
+- Muestra el hint solo cuando no hay error (el error tiene prioridad).
+- Muestra el indicador de campo requerido (`<abbr title="required">`) cuando `required=true`.
+- Llama a `onChange` al escribir en el campo.
+- Deshabilita el input cuando `disabled=true`.
+
+**`InputContrasenia.test.jsx`** — cubre `components/atomos/InputContrasenia.jsx`:
+- El input es de tipo `password` por defecto.
+- El botón del ojo tiene `aria-label="Mostrar contraseña"` inicialmente.
+- Al pulsar el botón, el input pasa a tipo `text` y el aria-label cambia a `"Ocultar contraseña"`.
+- Al pulsar dos veces vuelve al tipo `password`.
+- El hint no aparece cuando hay error.
+
+**`Notificacion.test.jsx`** — cubre `components/atomos/Notificacion.jsx`:
+- No renderiza nada cuando `mensaje` está vacío.
+- Renderiza el mensaje con `role="alert"`.
+- Llama a `onCerrar` al hacer clic en el botón de cierre.
+- Llama a `onCerrar` automáticamente tras 4000 ms (duración por defecto).
+- Respeta una duración personalizada sin llamar a `onCerrar` antes de tiempo.
+
 ---
 
 ## 3. Estrategia de mocking
 
-El aislamiento de las dependencias externas es fundamental para que los tests sean rápidos, deterministas y ejecutables sin infraestructura real.
-
-### 3.1 Modelos de Mongoose
+### 3.1 Modelos de Mongoose — backend
 
 Los modelos de la base de datos se mockean completamente con `jest.mock()`:
 
@@ -104,7 +175,7 @@ jest.mock('../models/Naviera')
 
 Esto sustituye el modelo real por un objeto con métodos mock (`find`, `findById`, `save`, etc.) que devuelven los valores que el test define. Las pruebas nunca abren una conexión real a MongoDB.
 
-### 3.2 Servicios en tests de controladores
+### 3.2 Servicios en tests de controladores — backend
 
 Cuando se prueban controladores, los servicios que estos invocan se mockean con `jest.fn()`:
 
@@ -115,20 +186,49 @@ contenedorService.listarContenedores.mockResolvedValue([...])
 
 Esto permite probar que el controlador maneja correctamente tanto los casos de éxito como los de error del servicio, sin depender de la implementación real del servicio.
 
-### 3.3 Dependencias externas
+### 3.3 Dependencias externas — backend
 
 - **Tesseract.js:** se mockea en los tests de `ocrController` para evitar el coste computacional del motor OCR real y garantizar resultados deterministas. El mock devuelve un código BIC predefinido en el caso de éxito o un resultado vacío en el caso de fallo.
 - **bcrypt:** se espía con `jest.spyOn(bcrypt, 'hash')` y `jest.spyOn(bcrypt, 'compare')` en los tests de `authService` para verificar que se invoca correctamente sin ejecutar el hash real.
 - **jsonwebtoken:** se espía con `jest.spyOn(jwt, 'sign')` y `jest.spyOn(jwt, 'verify')` en los tests de autenticación y middleware.
 
+### 3.4 Servicios Axios en hooks — frontend
+
+Los hooks que realizan peticiones HTTP se prueban con el servicio Axios mockeado mediante `vi.mock()` de Vitest:
+
+```javascript
+vi.mock('../../services/contenedorService', () => ({
+  listarContenedores: vi.fn(),
+}))
+```
+
+Esto permite simular respuestas exitosas (`mockResolvedValue`) y errores de red (`mockRejectedValue`) de forma determinista sin necesidad de red real.
+
+### 3.5 APIs del navegador — frontend
+
+Los hooks que acceden a APIs del navegador (`localStorage`, `matchMedia`) se prueban con el entorno jsdom de Vitest. `localStorage` y `sessionStorage` están disponibles en jsdom; `window.matchMedia` se mockea manualmente ya que jsdom no lo implementa:
+
+```javascript
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: prefersDark,
+    media: query,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+})
+```
+
 ---
 
 ## 4. Cómo ejecutar los tests
 
-Todos los tests se encuentran en el directorio `backend/tests/`, organizado en subdirectorios `controllers/`, `services/` y `middlewares/`.
+### Backend
+
+Todos los tests del backend se encuentran en `backend/tests/`, organizado en subdirectorios `controllers/`, `services/` y `middlewares/`.
 
 ```bash
-# Entrar en el directorio del backend
 cd backend
 
 # Ejecutar todos los tests
@@ -137,20 +237,39 @@ npm test
 # Ejecutar con informe de cobertura
 npm test -- --coverage
 
-# Modo watch (reejecutar al guardar cambios — útil durante el desarrollo)
+# Modo watch (reejecutar al guardar cambios)
 npm test -- --watch
 
 # Ejecutar solo un archivo específico
 npm test -- authService
 ```
 
-El comando `npm test` está configurado en `backend/package.json` y ejecuta Jest con las opciones por defecto del proyecto. No requiere ninguna variable de entorno real; el workflow de CI la proporciona como `JWT_SECRET=test-secret`.
+El comando `npm test` no requiere variables de entorno reales; el workflow de CI la proporciona como `JWT_SECRET=test-secret`.
+
+### Frontend
+
+Los tests del frontend se encuentran en `frontend/src/tests/`, organizado en subdirectorios `services/`, `hooks/` y `components/`.
+
+```bash
+cd frontend
+
+# Ejecutar todos los tests
+npm test
+
+# Modo watch
+npm run test:watch
+
+# Ejecutar con informe de cobertura
+npm run test:coverage
+```
 
 ---
 
 ## 5. Cobertura
 
-Resultados reales obtenidos ejecutando `npm test -- --coverage` sobre la suite completa (**203 tests, 21 suites**):
+### Backend
+
+Resultados obtenidos ejecutando `npm test -- --coverage` sobre la suite completa (**203 tests, 21 suites**):
 
 ```
 --------------------------|---------|----------|---------|---------|-----------------------
@@ -172,13 +291,6 @@ All files                 |   83.31 |    68.04 |   84.76 |   84.89 |
   authMiddleware.js       |     100 |      100 |     100 |     100 |
   rolMiddleware.js        |     100 |      100 |     100 |     100 |
  models                   |     100 |      100 |     100 |     100 |
-  Ciclo.js                |     100 |      100 |     100 |     100 |
-  Cliente.js              |     100 |      100 |     100 |     100 |
-  Contenedor.js           |     100 |      100 |     100 |     100 |
-  Evento.js               |     100 |      100 |     100 |     100 |
-  Informe.js              |     100 |      100 |     100 |     100 |
-  Naviera.js              |     100 |      100 |     100 |     100 |
-  Usuario.js              |     100 |      100 |     100 |     100 |
  services                 |   75.73 |    64.21 |   72.88 |   78.25 |
   authService.js          |     100 |      100 |     100 |     100 |
   cicloService.js         |     100 |      100 |     100 |     100 |
@@ -193,7 +305,7 @@ All files                 |   83.31 |    68.04 |   84.76 |   84.89 |
 --------------------------|---------|----------|---------|---------|-----------------------
 ```
 
-**Resumen por capa:**
+**Resumen backend:**
 
 | Capa | Sentencias | Ramas | Funciones | Líneas |
 |---|---|---|---|---|
@@ -205,19 +317,46 @@ All files                 |   83.31 |    68.04 |   84.76 |   84.89 |
 
 La baja cobertura de ramas en servicios se debe principalmente a `informeService.js` (lógica de generación de PDF con jsPDF, difícil de testear sin entorno de browser real) y `ocrService.js` (integración con Tesseract.js, mockeada en los tests de controlador pero no probada internamente).
 
-**Lo que no está cubierto:**
+### Frontend
 
-- **Tests de integración con base de datos real:** los modelos de Mongoose están mockeados; no hay tests que verifiquen el comportamiento del ORM contra una instancia real de MongoDB.
-- **Tests end-to-end:** no hay tests que simulen un flujo completo a través del navegador.
-- **Tests de frontend:** los componentes React no tienen tests automatizados.
+Resultados obtenidos ejecutando `npm run test:coverage` sobre la suite completa (**58 tests, 7 suites**):
+
+```
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------|---------|----------|---------|---------|-------------------
+All files          |     100 |    91.07 |     100 |     100 |
+ components/atomos |     100 |    89.13 |     100 |     100 |
+  Input.jsx        |     100 |    88.88 |     100 |     100 | 25-26
+  InputContrasenia |     100 |    86.36 |     100 |     100 | 46,55,84
+ hooks             |     100 |      100 |     100 |     100 |
+  useTema.js       |     100 |      100 |     100 |     100 |
+  useContenedores  |     100 |      100 |     100 |     100 |
+ services          |     100 |      100 |     100 |     100 |
+  session.js       |     100 |      100 |     100 |     100 |
+-------------------|---------|----------|---------|---------|-------------------
+```
+
+**Resumen frontend:**
+
+| Capa | Sentencias | Ramas | Funciones | Líneas |
+|---|---|---|---|---|
+| **Servicios (session.js)** | 100 % | 100 % | 100 % | 100 % |
+| **Hooks** | 100 % | 100 % | 100 % | 100 % |
+| **Componentes** | 100 % | 89.13 % | 100 % | 100 % |
+| **Total** | **100 %** | **91.07 %** | **100 %** | **100 %** |
+
+Las ramas no cubiertas en los componentes corresponden a las props opcionales `variant` y `size` de `Input` (modificadores CSS) y al renderizado condicional del `hint` sin label en `InputContrasenia`; son ramas de presentación sin lógica de negocio.
 
 ---
 
 ## 6. Resultados
 
-Todos los tests pasan en el entorno de CI de GitHub Actions. El workflow `ci.yml` ejecuta `npm test` en el job `test-backend` en cada push o Pull Request a `main` o `dev`. El badge de estado del CI en el `README.md` refleja el estado actual de la rama `main`.
+**Backend:** todos los tests pasan en el entorno de CI de GitHub Actions. El workflow `ci.yml` ejecuta `npm test` en el job `test-backend` en cada push o Pull Request a `main` o `dev`. El número total de tests es **203** distribuidos en **21 suites** (11 de controladores + 9 de servicios + 2 de middlewares), con cero fallos en la ejecución final del proyecto.
 
-El número total de tests es **203** distribuidos en **21 suites** (11 de controladores + 9 de servicios + 2 de middlewares), con cero fallos en la ejecución final del proyecto.
+**Frontend:** todos los tests pasan con **58 tests** en **7 suites** (4 de componentes + 2 de hooks + 1 de servicios), 100% de sentencias y funciones cubiertas.
+
+**Total combinado: 261 tests, 28 suites.**
 
 ---
 
@@ -239,10 +378,10 @@ Además de los tests automatizados, se realizaron pruebas manuales sistemáticas
 
 Las siguientes mejoras están identificadas como trabajo pendiente, ordenadas por prioridad:
 
-1. **Tests de componentes React con React Testing Library:** cubrir los componentes críticos del frontend (formularios de registro de eventos, lógica del semáforo, generación de informes) con tests de renderizado y simulación de interacciones de usuario usando jsdom.
+1. **Tests de integración con MongoDB de prueba:** crear un conjunto de tests que conecte a una instancia de MongoDB en memoria (usando `mongodb-memory-server`) para verificar el comportamiento real de los esquemas de Mongoose, las validaciones y los índices únicos.
 
-2. **Tests de integración con MongoDB de prueba:** crear un conjunto de tests que conecte a una instancia de MongoDB en memoria (usando `mongodb-memory-server`) para verificar el comportamiento real de los esquemas de Mongoose, las validaciones y los índices únicos.
+2. **Ampliar cobertura de componentes React:** añadir tests para los componentes más complejos del frontend (formularios de registro de eventos, lógica del semáforo, generación de informes) con simulación de interacciones de usuario usando `userEvent` de Testing Library.
 
 3. **Tests end-to-end con Playwright o Cypress:** automatizar los flujos de usuario más críticos (ciclo completo del contenedor, login/logout, generación de PDF) para detectar regresiones de integración que los tests unitarios no pueden capturar.
 
-4. **Umbral mínimo de cobertura en CI:** configurar Jest para fallar el workflow de CI si la cobertura de líneas cae por debajo de un umbral definido (por ejemplo, 80% en servicios), previniendo la introducción de código no probado.
+4. **Umbral mínimo de cobertura en CI:** configurar Jest y Vitest para fallar el workflow de CI si la cobertura de líneas cae por debajo de un umbral definido (por ejemplo, 80% en el backend y 90% en el frontend), previniendo la introducción de código no probado.

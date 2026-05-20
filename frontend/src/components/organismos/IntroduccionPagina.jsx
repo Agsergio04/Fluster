@@ -18,7 +18,15 @@ function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
       </div>
 
       <div className="introduccion-pagina__imagen">
-        <img src={imagenHome} alt="Puerto de contenedores" />
+        <picture>
+          <img
+            src={imagenHome}
+            alt="Puerto de contenedores"
+            width="600"
+            height="400"
+            loading="eager"
+          />
+        </picture>
       </div>
     </div>
   )
