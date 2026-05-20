@@ -54,14 +54,6 @@ La guía de estilos interactiva del proyecto está disponible en la ruta [`/guia
 
 ---
 
-## Accesibilidad
-
-| Herramienta | Documento | Descripción |
-|---|---|---|
-| WAVE | [WAVE — Evaluación de accesibilidad](wave-accesibilidad.md) | Qué es WAVE, errores detectados, correcciones aplicadas y resultados por página |
-
----
-
 ## Documentación general del proyecto
 
 Los documentos técnicos generales del proyecto están en la carpeta raíz de `docs/`:
