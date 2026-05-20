@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './perfil.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario, limpiarSesion, actualizarUsuario } from '../../services/session'
 import { actualizarFoto, actualizarNombre, cambiarContrasena } from '../../services/usuarioService'
 import Header from '../../components/organismos/Header'
@@ -18,8 +19,8 @@ function Perfil() {
   const usuario         = getUsuario()
   const [tema, toggleTema] = useTema()
 
-  // La foto se inicializa desde la sesión guardada para mostrarse
-  // sin esperar una nueva petición al servidor
+  useDocumentTitle(`Perfil de ${usuario?.nombre ?? 'usuario'} | Fluster`)
+
   const [foto,          setFoto]          = useState(usuario?.foto ?? null)
   const [nuevoNombre,          setNuevoNombre]          = useState('')
   const [contraseniaActual,    setContraseniaActual]    = useState('')
@@ -31,11 +32,7 @@ function Perfil() {
   const [errorConfirmacion,    setErrorConfirmacion]    = useState('')
   const [cargando, setCargando] = useState(false)
 
-  /**
-   * Actualiza el nombre en el servidor y sincroniza la sesión local
-   * para que la cabecera muestre el nuevo nombre sin recargar la página.
-   */
-  const handleConfirmarNombre = async () => {
+  const handleConfirmarNombre = useCallback(async () => {
     setErrorNombre('')
     if (!nuevoNombre.trim()) { setErrorNombre('Introduce tu nuevo nombre'); return }
     try {
@@ -48,15 +45,9 @@ function Perfil() {
     } finally {
       setCargando(false)
     }
-  }
+  }, [nuevoNombre, usuario])
 
-  /**
-   * Cambia la contraseña del usuario. Requiere la contraseña actual para
-   * prevenir cambios no autorizados en sesiones desatendidas.
-   * La confirmación se valida en cliente para dar feedback inmediato
-   * antes de enviar la petición al servidor.
-   */
-  const handleConfirmarContrasenia = async () => {
+  const handleConfirmarContrasenia = useCallback(async () => {
     setErrorContraseniaActual('')
     setErrorContrasenia('')
     setErrorConfirmacion('')
@@ -74,16 +65,9 @@ function Perfil() {
     } finally {
       setCargando(false)
     }
-  }
+  }, [contraseniaActual, contrasenia, confirmacion, usuario])
 
-  /**
-   * Sube la nueva foto de perfil al servidor y actualiza tanto el estado
-   * local del componente como la sesión guardada en localStorage para que
-   * el avatar en la cabecera se actualice sin recargar.
-   *
-   * @param {string} fotoBase64 - Imagen en formato data URL (base64)
-   */
-  const handleActualizarFoto = async fotoBase64 => {
+  const handleActualizarFoto = useCallback(async fotoBase64 => {
     try {
       await actualizarFoto(usuario.id, fotoBase64)
       setFoto(fotoBase64)
@@ -91,13 +75,12 @@ function Perfil() {
     } catch (err) {
       console.error('Error al actualizar foto:', err.response?.data ?? err.message)
     }
-  }
+  }, [usuario])
 
-  /** Limpia el token y los datos de sesión y redirige a la página de inicio. */
-  const handleCerrarSesion = () => {
+  const handleCerrarSesion = useCallback(() => {
     limpiarSesion()
     navigate('/')
-  }
+  }, [navigate])
 
   return (
     <>
