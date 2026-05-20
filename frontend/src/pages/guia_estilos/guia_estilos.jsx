@@ -69,23 +69,23 @@ function GuiaEstilos() {
           <div className="pagina-estatica__tipografias">
             <div className="pagina-estatica__tipo-ejemplo">
               <span className="pagina-estatica__tipo-label">64px</span>
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-64)', color: 'var(--color-text)', lineHeight: 1 }}>Fluster</span>
+              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-64)', color: 'var(--color-box-text)', lineHeight: 1 }}>Fluster</span>
             </div>
             <div className="pagina-estatica__tipo-ejemplo">
               <span className="pagina-estatica__tipo-label">48px</span>
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-48)', color: 'var(--color-text)', lineHeight: 1 }}>Fluster</span>
+              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-48)', color: 'var(--color-box-text)', lineHeight: 1 }}>Fluster</span>
             </div>
             <div className="pagina-estatica__tipo-ejemplo">
               <span className="pagina-estatica__tipo-label">32px</span>
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-32)', color: 'var(--color-text)', lineHeight: 1 }}>Fluster</span>
+              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-32)', color: 'var(--color-box-text)', lineHeight: 1 }}>Fluster</span>
             </div>
             <div className="pagina-estatica__tipo-ejemplo">
               <span className="pagina-estatica__tipo-label">24px</span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-24)', color: 'var(--color-text)', lineHeight: 1 }}>Texto de cuerpo</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-24)', color: 'var(--color-box-text)', lineHeight: 1 }}>Texto de cuerpo</span>
             </div>
             <div className="pagina-estatica__tipo-ejemplo">
               <span className="pagina-estatica__tipo-label">16px</span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-16)', color: 'var(--color-text)', lineHeight: 1 }}>Texto de cuerpo</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-16)', color: 'var(--color-box-text)', lineHeight: 1 }}>Texto de cuerpo</span>
             </div>
           </div>
         </section>
