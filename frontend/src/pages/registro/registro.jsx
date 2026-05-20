@@ -71,13 +71,21 @@ function Registro() {
 
       <main className="registro__body">
         <div className="registro__imagen">
-          <img
-            src={imagenRegistro}
-            alt="Puerto de contenedores"
-            width="955"
-            height="809"
-            fetchpriority="high"
-          />
+          <picture>
+            {/* ≥768 px: imagen visible a ~50 % del viewport */}
+            <source
+              media="(min-width: 768px)"
+              srcSet={imagenRegistro}
+              sizes="50vw"
+            />
+            <img
+              src={imagenRegistro}
+              alt="Puerto de contenedores"
+              width="955"
+              height="809"
+              fetchpriority="high"
+            />
+          </picture>
         </div>
 
         <div className="registro__panel">

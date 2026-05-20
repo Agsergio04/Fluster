@@ -69,7 +69,21 @@ function Login() {
 
       <main className="login__body">
         <div className="login__imagen">
-          <img src={imagenLogin} alt="Puerto de contenedores" />
+          <picture>
+            {/* ≥768 px: imagen visible a ~50 % del viewport */}
+            <source
+              media="(min-width: 768px)"
+              srcSet={imagenLogin}
+              sizes="50vw"
+            />
+            <img
+              src={imagenLogin}
+              alt="Puerto de contenedores"
+              width="955"
+              height="809"
+              fetchpriority="high"
+            />
+          </picture>
         </div>
 
         <div className="login__panel">
