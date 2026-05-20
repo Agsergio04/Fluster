@@ -2,19 +2,22 @@
   display:          inline-flex;
   align-self:       flex-start;
   align-items:      center;
-  gap:              var(--space-16);
+  justify-content:  space-between;
+  gap:              var(--space-8);
   padding:          var(--space-8);
+  width:            clamp(7rem, 20vw, 10rem);
   border-radius:    var(--radius);
   background-color: var(--color-secondary);
   color:            var(--color-box-text);
   font-family:      var(--font-body);
-  font-size:        var(--text-16);
+  font-size:        clamp(0.75rem, 2vw, 1rem);
   font-weight:      var(--font-weight-regular);
   line-height:      1;
   white-space:      nowrap;
 
   &__label {
-    flex-shrink: 0;
+    flex:       1 0 0;
+    text-align: center;
   }
 
   &__flecha {
@@ -25,7 +28,7 @@
     transition:  opacity var(--transition-fast);
 
     svg {
-      width:  1rem;
+      width:  clamp(0.625rem, 1.5vw, 1rem);
       height: auto;
     }
 

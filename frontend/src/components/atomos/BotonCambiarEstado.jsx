@@ -1,11 +1,6 @@
 import EstadoAnteriorIcon from '../../assets/icons/Icono Estado anterior.svg?react'
 import EstadoPosteriorIcon from '../../assets/icons/Icono estado Posterior.svg?react'
 
-/**
- * Control de navegación de estado para la CardSemaforo.
- * Las flechas se ocultan condicionalmente para no mostrar controles sin efecto:
- * el primer contenedor del grupo no tiene anterior y el último no tiene siguiente.
- */
 function BotonCambiarEstado({
   mostrarAnterior  = true,
   mostrarSiguiente = true,
@@ -14,27 +9,29 @@ function BotonCambiarEstado({
 }) {
   return (
     <div className="btn-cambiar-estado">
-      {mostrarAnterior && (
-        <button
-          className="btn-cambiar-estado__flecha"
-          type="button"
-          aria-label="Estado anterior"
-          onClick={onAnterior}
-        >
-          <EstadoAnteriorIcon aria-hidden="true" />
-        </button>
-      )}
+      <button
+        className="btn-cambiar-estado__flecha"
+        type="button"
+        aria-label="Estado anterior"
+        aria-hidden={mostrarAnterior ? undefined : 'true'}
+        tabIndex={mostrarAnterior ? undefined : -1}
+        onClick={onAnterior}
+        style={{ visibility: mostrarAnterior ? 'visible' : 'hidden' }}
+      >
+        <EstadoAnteriorIcon aria-hidden="true" />
+      </button>
       <span className="btn-cambiar-estado__label">Estado</span>
-      {mostrarSiguiente && (
-        <button
-          className="btn-cambiar-estado__flecha"
-          type="button"
-          aria-label="Estado siguiente"
-          onClick={onSiguiente}
-        >
-          <EstadoPosteriorIcon aria-hidden="true" />
-        </button>
-      )}
+      <button
+        className="btn-cambiar-estado__flecha"
+        type="button"
+        aria-label="Estado siguiente"
+        aria-hidden={mostrarSiguiente ? undefined : 'true'}
+        tabIndex={mostrarSiguiente ? undefined : -1}
+        onClick={onSiguiente}
+        style={{ visibility: mostrarSiguiente ? 'visible' : 'hidden' }}
+      >
+        <EstadoPosteriorIcon aria-hidden="true" />
+      </button>
     </div>
   )
 }
