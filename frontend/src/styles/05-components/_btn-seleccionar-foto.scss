@@ -3,12 +3,13 @@
   align-self:       flex-start;
   align-items:      center;
   justify-content:  center;
-  min-width:        15.375rem;
+  width:            100%;
+  max-width:        15.375rem;
   padding:          var(--space-8);
   background-color: var(--color-secondary);
   border-radius:    var(--radius);
   font-family:      var(--font-body);
-  font-size:        var(--text-24);
+  font-size:        clamp(1rem, 4vw, 1.5rem);
   font-weight:      var(--font-weight-regular);
   color:            var(--color-box-text);
   transition:       background-color var(--transition-fast);
