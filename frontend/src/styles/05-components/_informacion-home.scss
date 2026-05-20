@@ -26,16 +26,15 @@
 
   &__titulo {
     font-family: var(--font-body);
-    font-size:   var(--text-32);
+    font-size:   var(--texto-tamanio-32);
     font-weight: var(--font-weight-regular);
     line-height: 1;
     color:       var(--color-box-text);
-    white-space: nowrap;
   }
 
   &__descripcion {
     font-family: var(--font-body);
-    font-size:   var(--text-24);
+    font-size:   var(--texto-tamanio-24);
     font-weight: var(--font-weight-regular);
     line-height: 1;
     color:       var(--color-box-text);
