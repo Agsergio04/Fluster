@@ -81,8 +81,8 @@ function AppRouter() {
 
           <Route path="*" element={<Navigate to="/error" replace />} />
         </Routes>
+        <Footer />
       </Suspense>
-      <Footer />
     </BrowserRouter>
   )
 }
