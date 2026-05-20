@@ -150,28 +150,32 @@ function Almacen() {
           )}
         </div>
 
-        <section className="almacen__informe-intro">
-          <h2 className="almacen__titulo">Generar informe general</h2>
-          <p className="almacen__subtitulo">
-            Mediantes estos parametros puedes generar un informe de cada contenedor
-            filtrando por estas caracteristicas
-          </p>
-        </section>
+        {!cargando && (
+          <>
+            <section className="almacen__informe-intro">
+              <h2 className="almacen__titulo">Generar informe general</h2>
+              <p className="almacen__subtitulo">
+                Mediantes estos parametros puedes generar un informe de cada contenedor
+                filtrando por estas caracteristicas
+              </p>
+            </section>
 
-        <div className="almacen__informe">
-          <PanelGenerarInforme
-            variante="general"
-            fechaDesde={fechaDesde}           onFechaDesde={e => setFechaDesde(e.target.value)}
-            fechaHasta={fechaHasta}           onFechaHasta={e => setFechaHasta(e.target.value)}
-            fechaEspecifica={fechaEspecifica} onFechaEspecifica={e => setFechaEspecifica(e.target.value)}
-            naviera={naviera}                 onNaviera={e => setNaviera(e.target.value)}
-            cliente={cliente}                 onCliente={e => setCliente(e.target.value)}
-            codigoBic={codigoBic}             onCodigoBic={e => setCodigoBic(e.target.value)}
-            orden={orden}                       onOrden={setOrden}
-            ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
-            onGenerarInforme={handleGenerarInforme}
-          />
-        </div>
+            <div className="almacen__informe">
+              <PanelGenerarInforme
+                variante="general"
+                fechaDesde={fechaDesde}           onFechaDesde={e => setFechaDesde(e.target.value)}
+                fechaHasta={fechaHasta}           onFechaHasta={e => setFechaHasta(e.target.value)}
+                fechaEspecifica={fechaEspecifica} onFechaEspecifica={e => setFechaEspecifica(e.target.value)}
+                naviera={naviera}                 onNaviera={e => setNaviera(e.target.value)}
+                cliente={cliente}                 onCliente={e => setCliente(e.target.value)}
+                codigoBic={codigoBic}             onCodigoBic={e => setCodigoBic(e.target.value)}
+                orden={orden}                       onOrden={setOrden}
+                ordenAlfabetico={ordenAlfabetico}   onOrdenAlfabetico={() => setOrdenAlfabetico(v => !v)}
+                onGenerarInforme={handleGenerarInforme}
+              />
+            </div>
+          </>
+        )}
       </main>
 
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
