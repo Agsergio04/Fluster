@@ -71,7 +71,13 @@ function Registro() {
 
       <main className="registro__body">
         <div className="registro__imagen">
-          <img src={imagenRegistro} alt="Puerto de contenedores" />
+          <img
+            src={imagenRegistro}
+            alt="Puerto de contenedores"
+            width="955"
+            height="809"
+            fetchpriority="high"
+          />
         </div>
 
         <div className="registro__panel">
