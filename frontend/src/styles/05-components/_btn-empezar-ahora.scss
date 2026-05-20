@@ -9,7 +9,7 @@
   background-color: var(--color-secondary);
   border-radius:    var(--radius);
   font-family:      var(--font-body);
-  font-size:        var(--text-32);
+  font-size:        clamp(1rem, 5.5vw, 2rem);
   font-weight:      var(--font-weight-regular);
   color:            var(--color-box-text);
   white-space:      nowrap;

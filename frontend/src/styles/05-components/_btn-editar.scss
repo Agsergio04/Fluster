@@ -4,12 +4,13 @@
   align-items:      center;
   justify-content:  center;
   gap:              var(--space-8);
-  width:            8.6875rem;
+  width:            100%;
+  max-width:        8.6875rem;
   padding:          var(--space-8);
   background-color: var(--color-secondary);
   border-radius:    var(--radius);
   font-family:      var(--font-heading);
-  font-size:        var(--text-24);
+  font-size:        clamp(0.875rem, 4vw, 1.5rem);
   font-weight:      var(--font-weight-regular);
   color:            var(--color-box-text);
   white-space:      nowrap;
