@@ -18,13 +18,13 @@ function Footer() {
 
       <div className="footer__secciones">
         <div className="footer__seccion">
-          <h3 className="footer__titulo-seccion">Enlaces referentes</h3>
+          <h2 className="footer__titulo-seccion">Enlaces referentes</h2>
           <ul className="footer__lista">
             <li><Link to="/guia-estilos" className="footer__enlace">Guía de Estilos</Link></li>
           </ul>
         </div>
         <div className="footer__seccion">
-          <h3 className="footer__titulo-seccion">Legal</h3>
+          <h2 className="footer__titulo-seccion">Legal</h2>
           <ul className="footer__lista">
             <li><Link to="/terminos-de-servicio"   className="footer__enlace">Términos de Servicio</Link></li>
             <li><Link to="/politica-de-privacidad" className="footer__enlace">Política de Privacidad</Link></li>

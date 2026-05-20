@@ -96,7 +96,7 @@ function HistorialContenedor() {
         ordenDescendente: String(orden === 'descendente'),
         ordenAlfabetico:  String(ordenAlfabetico),
       })
-      const ok = generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)
+      const ok = await generarPDFIndividual(datosCiclos, contenedor?.codigoBIC ?? id)
       if (ok) {
         await Promise.all(
           datosCiclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))

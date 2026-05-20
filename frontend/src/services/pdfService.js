@@ -1,5 +1,3 @@
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
 
 /** Formatea una fecha a dd/mm/aaaa; devuelve '-' si el valor es nulo. */
 const fmt  = date => date ? new Date(date).toLocaleDateString('es-ES') : '-'
@@ -21,8 +19,11 @@ const TABLE_STYLES = {
  * @param {object[]} ciclos - Ciclos devueltos por /informes/generar-datos
  * @returns {boolean} false si no hay datos
  */
-export function generarPDFGeneral(ciclos) {
+export async function generarPDFGeneral(ciclos) {
   if (!ciclos.length) return false
+
+  const { default: jsPDF }     = await import('jspdf')
+  const { default: autoTable } = await import('jspdf-autotable')
 
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' })
 
@@ -74,8 +75,11 @@ export function generarPDFGeneral(ciclos) {
  * @param {string}   codigoBIC - Código BIC para el título y nombre de fichero
  * @returns {boolean} false si no hay datos
  */
-export function generarPDFIndividual(ciclos, codigoBIC) {
+export async function generarPDFIndividual(ciclos, codigoBIC) {
   if (!ciclos.length) return false
+
+  const { default: jsPDF }     = await import('jspdf')
+  const { default: autoTable } = await import('jspdf-autotable')
 
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' })
 
