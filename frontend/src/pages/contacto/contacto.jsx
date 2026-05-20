@@ -46,8 +46,8 @@ function Contacto() {
               <h2 className="pagina-estatica__seccion-titulo">Información de contacto</h2>
               <div className="pagina-estatica__contacto-card">
                 <span className="pagina-estatica__contacto-tipo">Correo electrónico</span>
-                <a href="mailto:sergioaragongarcia@gmail.com" className="pagina-estatica__contacto-valor">
-                  sergioaragongarcia@gmail.com
+                <a href="mailto:agsergio@iesrafaelalberti.es" className="pagina-estatica__contacto-valor">
+                  agsergio@iesrafaelalberti.es
                 </a>
                 <p className="pagina-estatica__seccion-texto">
                   Respuesta en 24–48 horas.
