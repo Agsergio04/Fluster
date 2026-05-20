@@ -71,7 +71,7 @@ function Terminos() {
           <h2 className="pagina-estatica__seccion-titulo">5. Contacto</h2>
           <p className="pagina-estatica__seccion-texto">
             Para cualquier consulta sobre estos términos puedes contactarnos a través
-            de la página de <a href="/contacto" style={{ color: 'var(--color-primary)' }}>Contacto</a>.
+            de la página de <a href="/contacto" className="pagina-estatica__contacto-valor">Contacto</a>.
           </p>
         </section>
       </main>

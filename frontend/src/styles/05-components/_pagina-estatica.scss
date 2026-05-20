@@ -1,51 +1,66 @@
 .pagina-estatica {
-  max-width:  56rem;
-  margin:     0 auto;
-  padding:    var(--space-64) var(--space-40);
-  display:    flex;
+  display:        flex;
   flex-direction: column;
-  gap:        var(--space-48);
+  width:          100%;
 
   &__intro {
     display:        flex;
     flex-direction: column;
+    align-items:    center;
     gap:            var(--space-16);
-    border-bottom:  1px solid var(--color-border);
-    padding-bottom: var(--space-32);
+    padding:        var(--space-48) var(--space-24) var(--space-32);
+    text-align:     center;
   }
 
   &__titulo {
     font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-48);
+    font-size:   var(--texto-tamanio-64);
     font-weight: var(--font-weight-regular);
-    color:       var(--color-text);
-    line-height: var(--leading-tight);
+    line-height: 1;
+    color:       var(--color-box-text);
+    margin:      0;
   }
 
   &__subtitulo {
     font-family: var(--font-body);
-    font-size:   var(--text-16);
-    color:       var(--color-text-subtle);
-    line-height: var(--leading-relaxed);
+    font-size:   var(--texto-tamanio-32);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-normal);
+    color:       var(--color-box-text);
+    max-width:   56rem;
   }
 
   &__seccion {
     display:        flex;
     flex-direction: column;
     gap:            var(--space-16);
+    max-width:      56rem;
+    width:          100%;
+    margin:         0 auto;
+    padding:        0 var(--space-24);
+
+    & + & {
+      margin-top: var(--space-32);
+    }
+
+    &:last-child {
+      padding-bottom: var(--space-64);
+    }
   }
 
   &__seccion-titulo {
     font-family: var(--font-heading);
-    font-size:   var(--text-24);
+    font-size:   var(--texto-tamanio-32);
     font-weight: var(--font-weight-regular);
-    color:       var(--color-text);
+    color:       var(--color-box-text);
+    line-height: var(--leading-tight);
+    margin:      0;
   }
 
   &__seccion-texto {
     font-family: var(--font-body);
     font-size:   var(--text-16);
-    color:       var(--color-text-subtle);
+    color:       var(--color-box-text);
     line-height: var(--leading-relaxed);
   }
 
@@ -59,15 +74,16 @@
     li {
       font-family: var(--font-body);
       font-size:   var(--text-16);
-      color:       var(--color-text-subtle);
+      color:       var(--color-box-text);
       line-height: var(--leading-relaxed);
     }
   }
 
+  // ── Guía de estilos ────────────────────────────────────────────────
   &__paleta {
-    display:   grid;
+    display:               grid;
     grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-    gap:       var(--space-16);
+    gap:                   var(--space-16);
   }
 
   &__color {
@@ -87,7 +103,7 @@
   &__color-nombre {
     font-family: var(--font-body);
     font-size:   var(--text-16);
-    color:       var(--color-text-subtle);
+    color:       var(--color-box-text);
     text-align:  center;
   }
 
@@ -104,12 +120,13 @@
   }
 
   &__tipo-label {
-    font-family:  var(--font-body);
-    font-size:    var(--text-16);
-    color:        var(--color-text-subtle);
-    min-width:    5rem;
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-box-text);
+    min-width:   5rem;
   }
 
+  // ── Contacto ───────────────────────────────────────────────────────
   &__contacto-grid {
     display:               grid;
     grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
@@ -117,8 +134,7 @@
   }
 
   &__contacto-card {
-    background-color: var(--color-surface);
-    border:           1px solid var(--color-border);
+    background-color: var(--color-card-almacen);
     border-radius:    var(--radius);
     padding:          var(--space-24);
     display:          flex;
@@ -130,17 +146,28 @@
     font-family: var(--font-body);
     font-size:   var(--text-16);
     font-weight: var(--font-weight-semibold);
-    color:       var(--color-text);
+    color:       var(--color-box-text);
   }
 
   &__contacto-valor {
-    font-family: var(--font-body);
-    font-size:   var(--text-16);
-    color:       var(--color-primary);
+    font-family:     var(--font-body);
+    font-size:       var(--text-16);
+    color:           var(--color-primary);
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  // ── Responsive ─────────────────────────────────────────────────────
+  @media (max-width: 767px) {
+    &__intro {
+      padding: var(--space-32) var(--space-16) var(--space-24);
+    }
+
+    &__seccion {
+      padding: 0 var(--space-16);
     }
   }
 }
