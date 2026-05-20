@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './panel_de_control.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
 import { listarUsuarios, actualizarRol, eliminarUsuario } from '../../services/usuarioService'
 import Header from '../../components/organismos/Header'
@@ -17,6 +18,7 @@ function PanelDeControl() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Panel de control | Fluster')
 
   const [busqueda, setBusqueda] = useState('')
   const [usuarios, setUsuarios] = useState([])

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './historial_contenedor.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import useHistorial from '../../hooks/useHistorial'
 import { getUsuario } from '../../services/session'
 import { editarDemurrageCiclo, editarDetentionCiclo } from '../../services/cicloService'
@@ -31,6 +32,7 @@ function HistorialContenedor() {
   const [tema, toggleTema] = useTema()
 
   const { contenedor, ciclos, cargando, aviso, setAviso, recargar } = useHistorial(id)
+  useDocumentTitle(contenedor?.codigoBIC ? `Historial ${contenedor.codigoBIC} | Fluster` : 'Historial | Fluster')
 
   // Estado del modal de edición de tramo (null = cerrado)
   const [modal,          setModal]          = useState(null)

@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './meter_contenedor.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
 import { extraerCodigoBic } from '../../services/ocrService'
 import { crearContenedor } from '../../services/contenedorService'
@@ -24,6 +25,7 @@ function MeterContenedor() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Meter contenedor | Fluster')
 
   // Referencia al input[type=file] oculto para abrirlo programáticamente
   // sin mostrar el elemento nativo del navegador en el DOM visual

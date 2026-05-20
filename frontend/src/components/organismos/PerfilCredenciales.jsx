@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, memo } from 'react'
 import CambiarNombre from '../moleculas/CambiarNombre'
 import CambiarContrasenia from '../moleculas/CambiarContrasenia'
 import BotonAccionTarifa from '../atomos/BotonAccionTarifa'
@@ -56,9 +56,10 @@ function PerfilCredenciales({
         <div className="perfil-credenciales__foto-seccion">
           <img
             src={foto || imagenUsuarioDefault}
-            alt={nombre}
+            alt={nombre || 'Foto de perfil'}
             className="perfil-credenciales__foto"
-            loading="lazy"
+            width="220"
+            height="212"
             decoding="async"
           />
           <input
@@ -66,6 +67,7 @@ function PerfilCredenciales({
             type="file"
             accept="image/*"
             aria-label="Subir foto de perfil"
+            aria-hidden="true"
             style={{ display: 'none' }}
             onChange={handleSeleccionarFoto}
           />
@@ -113,4 +115,4 @@ function PerfilCredenciales({
   )
 }
 
-export default PerfilCredenciales
+export default memo(PerfilCredenciales)

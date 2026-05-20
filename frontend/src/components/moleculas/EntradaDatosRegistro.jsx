@@ -18,6 +18,7 @@ function EntradaDatosRegistro({
         value={nombre}
         onChange={onNombreCambio}
         error={errorNombre}
+        autoComplete="name"
       />
       <Input
         id="registro-correo"
@@ -27,6 +28,7 @@ function EntradaDatosRegistro({
         value={correo}
         onChange={onCorreoCambio}
         error={errorCorreo}
+        autoComplete="email"
       />
       <InputContrasenia
         id="registro-contrasenia"

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import './home.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 import IntroduccionPagina from '../../components/organismos/IntroduccionPagina'
@@ -10,6 +11,7 @@ function Home() {
   const navigate = useNavigate()
   const [tema, toggleTema] = useTema()
   const usuario = getUsuario()
+  useDocumentTitle('Fluster | Gestión de contenedores marítimos')
 
   return (
     <>
