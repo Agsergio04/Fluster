@@ -46,6 +46,7 @@
     line-height:  var(--leading-tight);
     text-align:   center;
     white-space:  pre-wrap;
+    margin:       0;
   }
 
   &__descripcion {
@@ -78,6 +79,7 @@
     color:       var(--color-box-text);
     line-height: var(--leading-tight);
     width:       100%;
+    margin:      0;
   }
 
   &__foto {
@@ -149,8 +151,8 @@
 
     .btn-seleccionar-foto,
     .subir-foto-ocr__btn-manual {
-      width:      100%;
-      align-self: stretch;
+      width:     100%;
+      max-width: none;
     }
   }
 
@@ -162,7 +164,7 @@
     background-color: var(--color-secondary);
     border-radius:    var(--radius);
     font-family:      var(--font-body);
-    font-size:        var(--text-24);
+    font-size:        var(--texto-tamanio-24);
     font-weight:      var(--font-weight-regular);
     color:            var(--color-box-text);
     transition:       background-color var(--transition-fast);
@@ -201,6 +203,7 @@
     display:          inline-flex;
     align-items:      center;
     justify-content:  center;
+    width:            100%;
     padding:          var(--space-8);
     background-color: var(--color-secondary);
     border-radius:    var(--radius);

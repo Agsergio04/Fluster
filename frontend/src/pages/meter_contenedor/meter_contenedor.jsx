@@ -139,6 +139,7 @@ function MeterContenedor() {
             ref={inputFotoRef}
             type="file"
             accept="image/*"
+            aria-label="Seleccionar foto del contenedor"
             aria-hidden="true"
             style={{ display: 'none' }}
             onChange={handleFotoElegida}
