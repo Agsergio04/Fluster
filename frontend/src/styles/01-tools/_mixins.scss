@@ -45,7 +45,11 @@
   $peso:         vars.$font-weight-regular,
   $interlineado: vars.$leading-normal
 ) {
-  font-family:  if($familia == heading, vars.$font-heading, vars.$font-body);
+  @if $familia == heading {
+    font-family: vars.$font-heading;
+  } @else {
+    font-family: vars.$font-body;
+  }
   font-size:    $tamanio;
   font-weight:  $peso;
   line-height:  $interlineado;
