@@ -12,7 +12,8 @@
     flex-direction: column;
     align-items:    center;
     gap:            5.375rem; // 86px, Figma-exact
-    width:          24.4375rem; // 391px, Figma-exact
+    width:          100%;
+    max-width:      24.4375rem; // 391px, Figma-exact
   }
 
   &__icono {
@@ -66,8 +67,8 @@
     gap:            0.375rem; // 6px, Figma-exact
     align-items:    center;
     padding:        var(--space-24) var(--space-8);
-    width:          29.0625rem; // 465px, Figma-exact
-    flex-shrink:    0;
+    width:          100%;
+    max-width:      29.0625rem; // 465px, Figma-exact
   }
 
   &__previsualizacion-titulo {
@@ -80,11 +81,10 @@
   }
 
   &__foto {
-    width:         20.5rem; // 328px, Figma-exact
-    height:        27.1875rem; // 435px, Figma-exact
+    width:         min(20.5rem, 100%); // 328px, Figma-exact
+    aspect-ratio:  328 / 435;
     border-radius: var(--radius);
     object-fit:    cover;
-    flex-shrink:   0;
   }
 
   &__formulario {
@@ -176,6 +176,45 @@
     display:        inline-flex;
     flex-direction: column;
     gap:            var(--space-40);
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+
+    &__cuerpo {
+      gap: var(--space-24);
+    }
+
+    &__titulo {
+      font-size: clamp(1.5rem, 6vw, 2.5rem);
+    }
+
+    &__descripcion {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+    }
+
+    &__bic-label {
+      font-size: clamp(1.5rem, 6vw, 3.5rem);
+    }
+
+    &__bic-input {
+      font-size: clamp(1rem, 4vw, 2rem);
+    }
+
+    &__btn-introducir,
+    &__btn-cancelar {
+      font-size: clamp(1rem, 4vw, 2rem);
+    }
+
+    &__botones-accion {
+      flex-direction: row;
+      width:          100%;
+
+      .subir-foto-ocr__btn-introducir,
+      .subir-foto-ocr__btn-cancelar {
+        flex: 1;
+      }
+    }
   }
 
   &__btn-introducir,
