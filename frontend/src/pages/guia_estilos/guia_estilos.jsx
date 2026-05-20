@@ -106,6 +106,37 @@ function GuiaEstilos() {
             <li>Radio de borde unificado mediante <code>--radius</code></li>
           </ul>
         </section>
+
+        <section className="pagina-estatica__seccion">
+          <h2 className="pagina-estatica__seccion-titulo">Documentación técnica</h2>
+          <p className="pagina-estatica__seccion-texto">
+            La documentación completa del módulo de Diseño de Interfaces Web, incluyendo
+            todos los Resultados de Aprendizaje y el informe de accesibilidad WAVE,
+            está disponible en el repositorio del proyecto.
+          </p>
+          <ul className="pagina-estatica__lista">
+            <li>
+              <a
+                href="https://github.com/Agsergio04/Fluster/blob/main/docs/dise%C3%B1o/README.md"
+                className="pagina-estatica__contacto-valor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Índice de Resultados de Aprendizaje (docs/diseño/README.md)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/Agsergio04/Fluster/blob/main/docs/dise%C3%B1o/wave-accesibilidad.md"
+                className="pagina-estatica__contacto-valor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Evaluación de accesibilidad WAVE (docs/diseño/wave-accesibilidad.md)
+              </a>
+            </li>
+          </ul>
+        </section>
       </main>
     </>
   )
