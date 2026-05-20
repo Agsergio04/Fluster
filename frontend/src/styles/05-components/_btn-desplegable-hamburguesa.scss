@@ -3,13 +3,14 @@
   align-self:       flex-start;
   align-items:      center;
   gap:              var(--space-8);
-  width:            16.625rem;
+  width:            100%;
+  max-width:        16.625rem;
   height:           3.5625rem;
   padding:          var(--space-8);
   background-color: var(--color-primary);
   border-radius:    var(--radius);
   font-family:      var(--font-heading);
-  font-size:        var(--text-24);
+  font-size:        clamp(1rem, 4vw, 1.5rem);
   font-weight:      var(--font-weight-regular);
   color:            var(--color-box-text);
   white-space:      nowrap;

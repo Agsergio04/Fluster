@@ -24,7 +24,7 @@
   box-shadow:       var(--shadow-lg);
   animation:        notificacion-entrada var(--transition-base) ease-out;
   z-index:          9999;
-  max-width:        40rem;
+  max-width:        min(40rem, calc(100vw - var(--space-32)));
   width:            max-content;
 
   &__mensaje {

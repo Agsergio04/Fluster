@@ -4,7 +4,8 @@
   flex-direction: column;
   gap:            var(--space-16);
   align-items:    center;
-  width:          16.75rem; // 268px, Figma-exact
+  width:          100%;
+  max-width:      16.75rem; // 268px, Figma-exact
 
   .btn-registro-login {
     width: 100%;
