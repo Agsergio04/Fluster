@@ -10,7 +10,7 @@
 
   &__titulo {
     font-family: var(--font-heading);
-    font-size:   var(--text-64);
+    font-size:   clamp(2rem, 8vw, 4rem);
     font-weight: var(--font-weight-regular);
     line-height: 1;
     color:       var(--color-box-text);
@@ -18,7 +18,7 @@
 
   &__subtitulo {
     font-family: var(--font-body);
-    font-size:   var(--text-32);
+    font-size:   clamp(1rem, 3.5vw, 2rem);
     font-weight: var(--font-weight-regular);
     line-height: var(--leading-normal);
     color:       var(--color-box-text);
@@ -30,5 +30,15 @@
     flex-direction: column;
     align-items:    center;
     padding:        0 var(--space-24) var(--space-64);
+  }
+
+  @media (max-width: 767px) {
+    &__intro {
+      padding: var(--space-32) var(--space-16) var(--space-24);
+    }
+
+    &__contenido {
+      padding: 0 var(--space-16) var(--space-32);
+    }
   }
 }
