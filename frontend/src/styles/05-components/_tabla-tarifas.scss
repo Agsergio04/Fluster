@@ -15,7 +15,7 @@
 }
 
 // ── Visibilidad desktop / tablet+móvil ──────────────────────────────
-.tabla-tarifas-wrapper--desktop { display: block; }
+.tabla-tarifas-wrapper--desktop { display: flex; }
 .tabla-tarifas-wrapper--movil   { display: none;  }
 
 @media (max-width: 1023px) {

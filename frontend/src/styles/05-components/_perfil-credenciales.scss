@@ -38,12 +38,13 @@
 
   &__etiqueta {
     font-family:  var(--font-heading);
-    font-size:    var(--text-32);
+    font-size:    var(--texto-tamanio-32);
     font-weight:  var(--font-weight-regular);
     line-height:  1;
     color:        var(--color-box-text);
     width:        100%;
     text-align:   center;
+    margin:       0;
   }
 
   &__valor {
@@ -76,12 +77,13 @@
 
   &__titulo {
     font-family:  var(--font-heading);
-    font-size:    var(--text-32);
+    font-size:    var(--texto-tamanio-32);
     font-weight:  var(--font-weight-regular);
     line-height:  1;
     color:        var(--color-box-text);
     white-space:  nowrap;
     text-align:   center;
+    margin:       0;
   }
 
   .btn-accion-tarifa {

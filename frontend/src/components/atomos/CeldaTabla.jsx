@@ -15,7 +15,7 @@ import { useState, useRef, useEffect } from 'react'
  * @param {boolean}  readonly  - Input no editable; mantiene el aspecto de input sin funcionalidad
  * @param {function} onChange  - (nuevoValor: string) → void
  */
-function CeldaTabla({ label, tamanio = 'md', fuente = 'heading', editable = false, readonly = false, onChange }) {
+function CeldaTabla({ label, ariaLabel, tamanio = 'md', fuente = 'heading', editable = false, readonly = false, onChange }) {
   // displayValue gestiona el valor interno mientras el input está enfocado;
   // cuando no está enfocado se muestra siempre el label del padre
   const [displayValue, setDisplayValue] = useState(label)
@@ -36,6 +36,7 @@ function CeldaTabla({ label, tamanio = 'md', fuente = 'heading', editable = fals
         <input
           ref={inputRef}
           className="celda-tabla__input"
+          aria-label={ariaLabel ?? label}
           // Fuera del foco muestra siempre el valor autoritativo del padre
           value={focused ? displayValue : label}
           readOnly={readonly}
