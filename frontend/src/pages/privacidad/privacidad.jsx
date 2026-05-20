@@ -69,7 +69,7 @@ function Privacidad() {
             Conforme al RGPD tienes derecho a acceder, rectificar, suprimir,
             limitar el tratamiento y portar tus datos. Para ejercer estos
             derechos contacta con nosotros a través de la página de{' '}
-            <a href="/contacto" style={{ color: 'var(--color-primary)' }}>Contacto</a>.
+            <a href="/contacto" className="pagina-estatica__contacto-valor">Contacto</a>.
           </p>
         </section>
 
