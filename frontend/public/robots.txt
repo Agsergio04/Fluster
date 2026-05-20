@@ -1,7 +1,2 @@
 User-agent: *
 Allow: /
-Disallow: /panel
-Disallow: /contenedores
-Disallow: /almacen
-Disallow: /tarifas
-Disallow: /perfil
