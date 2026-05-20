@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './tarifas.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
 import { listarNavieras, actualizarNaviera, eliminarNaviera } from '../../services/navieraService'
 import Header from '../../components/organismos/Header'
@@ -69,6 +70,7 @@ function Tarifas() {
   const navigate           = useNavigate()
   const usuario            = getUsuario()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Tarifas | Fluster')
 
   const [navieras, setNavieras] = useState([])
   const [aviso,    setAviso]    = useState('')

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 
@@ -7,6 +8,7 @@ function GuiaEstilos() {
   const navigate = useNavigate()
   const [tema, toggleTema] = useTema()
   const usuario = getUsuario()
+  useDocumentTitle('Guía de estilos | Fluster')
 
   return (
     <>

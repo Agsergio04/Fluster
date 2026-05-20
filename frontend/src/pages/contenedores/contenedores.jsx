@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './contenedores.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import useContenedores from '../../hooks/useContenedores'
 import { getUsuario } from '../../services/session'
 import { actualizarContenedor, eliminarContenedor } from '../../services/contenedorService'
@@ -20,6 +21,7 @@ function Contenedores() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Contenedores | Fluster')
 
   const { contenedores, setContenedores, cargando, aviso, setAviso } = useContenedores()
   const [busqueda, setBusqueda] = useState('')

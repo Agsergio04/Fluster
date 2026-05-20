@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './registro.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { registro } from '../../services/authService'
 import Header from '../../components/organismos/Header'
 import EntradaDatosRegistro from '../../components/moleculas/EntradaDatosRegistro'
@@ -19,6 +20,7 @@ import imagenRegistro from '../../assets/images/imagen_registro-login.jpg'
 function Registro() {
   const navigate = useNavigate()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Registro | Fluster')
   const [nombre, setNombre] = useState('')
   const [correo, setCorreo] = useState('')
   const [contrasenia, setContrasenia] = useState('')

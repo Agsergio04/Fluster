@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './login.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { login } from '../../services/authService'
 import Header from '../../components/organismos/Header'
 import EntradaDatosLogin from '../../components/moleculas/EntradaDatosLogin'
@@ -26,6 +27,7 @@ const RUTA_POR_ROL = {
 function Login() {
   const navigate = useNavigate()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Iniciar sesión | Fluster')
   const [correo, setCorreo] = useState('')
   const [contrasenia, setContrasenia] = useState('')
   const [errorCorreo, setErrorCorreo] = useState('')

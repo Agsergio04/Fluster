@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './almacen.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import useContenedores from '../../hooks/useContenedores'
 import { getUsuario } from '../../services/session'
 import { eliminarContenedor } from '../../services/contenedorService'
@@ -25,6 +26,7 @@ function Almacen() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Almacén | Fluster')
 
   const { contenedores, setContenedores, cargando, aviso, setAviso } = useContenedores()
   const [busqueda,       setBusqueda]       = useState('')

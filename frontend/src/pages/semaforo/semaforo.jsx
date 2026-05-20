@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './semaforo.scss'
 import useTema from '../../hooks/useTema'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
 import { obtenerAgrupados } from '../../services/semaforoService'
 import { crearCliente } from '../../services/clienteService'
@@ -72,6 +73,7 @@ function Semaforo() {
   const navigate = useNavigate()
   const usuario  = getUsuario()
   const [tema, toggleTema] = useTema()
+  useDocumentTitle('Semáforo | Fluster')
 
   // Un objeto por tramo para los campos de búsqueda de cada columna
   const [busquedas,   setBusquedas]   = useState({
