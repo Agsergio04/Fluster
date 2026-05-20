@@ -160,6 +160,11 @@
     }
   }
 
+  // ── Contacto — sección más ancha para el layout de dos columnas ───
+  &__seccion--contacto {
+    max-width: 72rem;
+  }
+
   // ── Responsive ─────────────────────────────────────────────────────
   @media (max-width: 767px) {
     &__intro {
@@ -170,4 +175,104 @@
       padding: 0 var(--space-16);
     }
   }
+}
+
+// ── Layout dos columnas de la página de contacto ──────────────────────
+.contacto-layout {
+  display:               grid;
+  grid-template-columns: 1fr 2fr;
+  gap:                   var(--space-48);
+  width:                 100%;
+
+  &__info {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+  }
+
+  &__formulario {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-16);
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    gap:                   var(--space-32);
+  }
+}
+
+// ── Formulario de contacto ────────────────────────────────────────────
+.contacto-form {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-16);
+
+  &__grupo {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-8);
+  }
+
+  &__label {
+    font-family:  var(--font-body);
+    font-size:    var(--text-16);
+    font-weight:  var(--font-weight-semibold);
+    color:        var(--color-box-text);
+  }
+
+  &__input,
+  &__textarea {
+    font-family:      var(--font-body);
+    font-size:        var(--text-16);
+    color:            var(--color-box-text);
+    background-color: var(--color-surface);
+    border:           1px solid var(--color-border);
+    border-radius:    var(--radius);
+    padding:          var(--space-8) var(--space-16);
+    width:            100%;
+    outline:          none;
+    transition:       border-color 0.2s;
+
+    &::placeholder {
+      color:   var(--color-text-subtle);
+      opacity: 1;
+    }
+
+    &:focus {
+      border-color: var(--color-primary);
+    }
+  }
+
+  &__textarea {
+    resize:     vertical;
+    min-height: 8rem;
+  }
+
+  &__boton {
+    font-family:      var(--font-heading);
+    font-size:        var(--texto-tamanio-32);
+    color:            var(--color-bg);
+    background-color: var(--color-primary);
+    border:           none;
+    border-radius:    var(--radius);
+    padding:          var(--space-8) var(--space-24);
+    cursor:           pointer;
+    align-self:       flex-start;
+    transition:       background-color 0.2s;
+
+    &:hover {
+      background-color: var(--color-primary-hover);
+    }
+  }
+}
+
+// ── Mensaje de éxito ──────────────────────────────────────────────────
+.contacto-exito {
+  background-color: var(--color-success);
+  border-radius:    var(--radius);
+  padding:          var(--space-16) var(--space-24);
+  font-family:      var(--font-body);
+  font-size:        var(--text-16);
+  color:            var(--color-box-text);
 }
