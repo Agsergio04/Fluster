@@ -16,7 +16,7 @@
 
   &__titulo {
     font-family: var(--font-heading);
-    font-size:   var(--text-48);
+    font-size:   clamp(1.5rem, 5vw, 3rem);
     font-weight: var(--font-weight-regular);
     color:       var(--color-text);
     line-height: var(--leading-tight);
