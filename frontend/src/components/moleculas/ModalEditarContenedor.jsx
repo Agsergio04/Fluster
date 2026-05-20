@@ -56,7 +56,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
 
         <div className="modal-editar-contenedor__foto-wrapper">
           {foto
-            ? <img className="modal-editar-contenedor__foto" src={foto} alt="Foto del contenedor" />
+            ? <img className="modal-editar-contenedor__foto" src={foto} alt="Foto del contenedor" loading="lazy" decoding="async" />
             : <div className="modal-editar-contenedor__foto-placeholder">Sin foto</div>
           }
           <input

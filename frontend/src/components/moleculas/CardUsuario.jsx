@@ -21,6 +21,8 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', onCambiarRol, onE
             src={foto || imagenUsuarioDefault}
             alt={nombre}
             className="card-usuario__imagen"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="card-usuario__datos">
