@@ -17,6 +17,7 @@ function EntradaDatosLogin({
         value={correo}
         onChange={onCorreoCambio}
         error={errorCorreo}
+        autoComplete="email"
       />
       <InputContrasenia
         id="login-contrasenia"

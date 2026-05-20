@@ -16,6 +16,7 @@ function Input({
   error,
   hint,
   name,
+  autoComplete,
   variant,
   size,
 }) {
@@ -50,6 +51,7 @@ function Input({
         disabled={disabled}
         required={required}
         name={name}
+        autoComplete={autoComplete}
       />
 
       {hint && !error && (

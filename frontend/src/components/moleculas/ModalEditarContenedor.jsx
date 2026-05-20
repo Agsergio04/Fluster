@@ -52,7 +52,13 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
 
   return (
     <div className="modal-editar-contenedor" onClick={onCancelar}>
-      <div className="modal-editar-contenedor__panel" onClick={e => e.stopPropagation()}>
+      <div
+        className="modal-editar-contenedor__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Editar contenedor"
+        onClick={e => e.stopPropagation()}
+      >
 
         <div className="modal-editar-contenedor__foto-wrapper">
           {foto
@@ -63,6 +69,8 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
             ref={inputFotoRef}
             type="file"
             accept="image/*"
+            aria-label="Cambiar foto del contenedor"
+            aria-hidden="true"
             style={{ display: 'none' }}
             onChange={handleFotoElegida}
           />
@@ -76,8 +84,9 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
         </div>
 
         <div className="modal-editar-contenedor__campo">
-          <label className="modal-editar-contenedor__label">Codigo BIC</label>
+          <label className="modal-editar-contenedor__label" htmlFor="modal-editar-bic">Código BIC</label>
           <input
+            id="modal-editar-bic"
             type="text"
             className="modal-editar-contenedor__fecha-input"
             value={codigoBic}
@@ -87,8 +96,9 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
         </div>
 
         <div className="modal-editar-contenedor__campo">
-          <label className="modal-editar-contenedor__label">Fecha de Inclusion</label>
+          <label className="modal-editar-contenedor__label" htmlFor="modal-editar-fecha">Fecha de inclusión</label>
           <input
+            id="modal-editar-fecha"
             type="date"
             className="modal-editar-contenedor__fecha-input"
             value={fechaInicioLibre}
