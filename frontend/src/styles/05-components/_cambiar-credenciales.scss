@@ -2,7 +2,8 @@
   display:        flex;
   flex-direction: column;
   gap:            var(--space-16);
-  width:          16.3125rem; // 261px, Figma-exact
+  width:          100%;
+  max-width:      16.3125rem; // 261px, Figma-exact
 
   .input {
     width:   100%;
@@ -23,7 +24,8 @@
   display:        flex;
   flex-direction: column;
   gap:            var(--space-16);
-  width:          16.3125rem; // 261px, Figma-exact
+  width:          100%;
+  max-width:      16.3125rem; // 261px, Figma-exact
 
   .input {
     width:   100%;
