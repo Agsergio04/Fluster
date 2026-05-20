@@ -1,82 +1,46 @@
 # 05. Diseño del Sistema
 
+## Documentación de Diseño de Interfaces Web — Recuperación
+
+Los siguientes documentos desarrollan cada Resultado de Aprendizaje del módulo **Diseño de Interfaces Web** aplicado al proyecto Fluster:
+
+| RA | Documento | Contenido |
+|---|---|---|
+| RA1.a | [Comunicación visual](./diseño/RA1a-comunicacion-visual.md) | Los 5 principios visuales: jerarquía, contraste, alineación, proximidad y repetición |
+| RA1.f | [Plantillas de diseño](./diseño/RA1f-plantillas-diseno.md) | Átomos, moléculas, organismos, layout global y Style Guide |
+| RA2.a | [Modificar etiquetas HTML](./diseño/RA2a-etiquetas-html.md) | Selectores de elemento, de clase BEM y combinados |
+| RA2.c | [Estilos globales](./diseño/RA2c-estilos-globales.md) | Variables Sass, CSS Custom Properties en `:root` y layout global |
+| RA2.d | [Hojas alternativas — temas](./diseño/RA2d-hojas-alternativas.md) | Sistema light/dark con `[data-theme]`, `prefers-color-scheme` y `useTema` |
+| RA2.e | [Redefinir estilos](./diseño/RA2e-redefinir-estilos.md) | Reset, estados interactivos y modificadores BEM |
+| RA2.f | [Propiedades de elementos](./diseño/RA2f-propiedades-elementos.md) | HTML semántico, landmarks ARIA y jerarquía de encabezados |
+| RA2.g | [Clases de estilos](./diseño/RA2g-clases-estilos.md) | Catálogo de 76 componentes BEM, variantes y estados |
+| RA2.j | [Preprocesadores de estilos](./diseño/RA2j-preprocesadores.md) | SCSS, arquitectura ITCSS, 8 mixins y compilación con Vite |
+| RA3.b | [Formatos multimedia](./diseño/RA3b-formatos-multimedia.md) | PNG, SVG y JPEG: criterios de elección y comparativa |
+| RA3.c | [Herramientas multimedia](./diseño/RA3c-herramientas-multimedia.md) | Vite, SVGO, Squoosh y Tesseract.js |
+| RA3.d | [Tratamiento de imagen](./diseño/RA3d-tratamiento-imagen.md) | Optimización antes/después, tabla de resultados y responsividad |
+| RA3.f | [Importar/exportar multimedia](./diseño/RA3f-multimedia-formatos.md) | `<picture>`, `srcset`, `loading="lazy"` y exportación PDF |
+| RA3.g | [Animaciones CSS](./diseño/RA3g-animaciones-css.md) | `@keyframes` spinner y notificación, transiciones y micro-interacciones |
+| RA3.h | [Aplicación de guía de estilo](./diseño/RA3h-guia-estilo.md) | Atomic Design, BEM, Style Guide y consistencia total |
+| RA4.a | [Tecnologías multimedia](./diseño/RA4a-tecnologias-multimedia.md) | `<picture>`, `srcset`, `sizes`, `loading="lazy"` y soporte de navegadores |
+| RA4.e | [Agregar multimedia](./diseño/RA4e-agregar-multimedia.md) | SVG como componente, PNG con atributos completos, fotos dinámicas y PDF |
+
+---
+
 ## Índice
-1. [Arquitectura general](#1-arquitectura-general)
-2. [Base de datos](#2-base-de-datos)
-   - 2.1 [Diagrama Entidad-Relación](#21-diagrama-entidad-relación)
-   - 2.2 [Diccionario de datos](#22-diccionario-de-datos)
-     - [usuarios](#usuarios)
-     - [navieras](#navieras)
-     - [clientes](#clientes)
-     - [tarifas](#tarifas)
-     - [contenedores](#contenedores)
-     - [eventos](#eventos)
-     - [informes](#informes)
-   - 2.3 [Relaciones entre colecciones](#23-relaciones-entre-colecciones)
-   - 2.4 [Diagrama de casos de uso](#24-diagrama-de-casos-de-uso)
-   - 2.5 [Diagramas de flujo](#25-diagramas-de-flujo)
-3. [Backend](#3-backend)
-   - 3.1 [Estructura de carpetas](#31-estructura-de-carpetas)
-   - 3.2 [Diseño de la API REST](#32-diseño-de-la-api-rest)
-4. [Frontend](#4-frontend)
-   - 4.1 [Estructura de carpetas](#41-estructura-de-carpetas)
-   - 4.2 [Diseño de la interfaz](#42-diseño-de-la-interfaz)
+
+1. [Diagrama entidad-relación de la base de datos](#1-diagrama-entidad-relación-de-la-base-de-datos)
+2. [Diagrama de casos de uso](#2-diagrama-de-casos-de-uso)
+3. [Diagramas de flujo de los procesos principales](#3-diagramas-de-flujo-de-los-procesos-principales)
+4. [Arquitectura de la aplicación](#4-arquitectura-de-la-aplicación)
+5. [Diseño de la API (endpoints, métodos, respuestas)](#5-diseño-de-la-api-endpoints-métodos-respuestas)
 
 ---
 
-## 1. Arquitectura general
-
-La aplicación sigue una arquitectura de **tres capas** desacopladas: un frontend SPA, un backend API REST y una base de datos en la nube. La comunicación entre capas se realiza exclusivamente mediante HTTP/JSON con autenticación JWT.
-
-```
-┌──────────────────────────────┐
-│        FRONTEND (SPA)        │
-│  React 19 · Vite · SCSS      │
-│  React Router 7 · Axios      │
-│  JWT en localStorage         │
-└──────────────┬───────────────┘
-               │ HTTP/REST (JSON)
-               │ Authorization: Bearer <JWT>
-┌──────────────▼───────────────┐
-│         BACKEND (API)        │
-│  Node.js 22 · Express 5      │
-│  Bcrypt · JWT · Tesseract.js │
-│  Swagger UI en /api-docs     │
-│  Motor de cálculo D&D        │
-└──────────────┬───────────────┘
-               │ Mongoose ODM
-┌──────────────▼───────────────┐
-│       BASE DE DATOS          │
-│  MongoDB Atlas M0 (cloud)    │
-│  7 colecciones               │
-└──────────────────────────────┘
-```
-
-### Responsabilidades de cada capa
-
-| Capa | Tecnología | Responsabilidad |
-| :--- | :--- | :--- |
-| Frontend | React 19 + Vite | Interfaz de usuario, navegación, consumo de la API |
-| Backend | Node.js 22 + Express 5 | Lógica de negocio, autenticación, cálculo D&D, OCR |
-| Base de datos | MongoDB Atlas M0 | Persistencia de documentos |
-
-### Flujo de una petición protegida
-
-1. El frontend envía la cabecera `Authorization: Bearer <token>` junto a la petición.
-2. El `authMiddleware` verifica la firma del JWT y adjunta `req.usuario` (con `id`, `correo` y `rol`).
-3. El `rolMiddleware` comprueba que `req.usuario.rol` se encuentra entre los roles permitidos para esa ruta.
-4. El controlador delega la lógica en la capa de servicios.
-5. El servicio accede al modelo Mongoose correspondiente.
-6. La respuesta JSON viaja de vuelta hasta el frontend.
-
----
-
-## 2. Base de datos
+## 1. Diagrama entidad-relación de la base de datos
 
 La base de datos utilizada es **MongoDB Atlas** (plan gratuito M0). El modelo sigue un esquema orientado a documentos con 7 colecciones. Los campos calculados (días de demurrage, coste acumulado, semáforo de riesgo) no se persisten — se calculan en el backend bajo demanda para mantener las colecciones ligeras.
 
-
-### 2.1 Diagrama Entidad-Relación
+### Diagrama Entidad-Relación
 
 ```mermaid
 erDiagram
@@ -153,7 +117,7 @@ erDiagram
     contenedores ||--o{ informes    : "genera (contenedorId)"
 ```
 
-### 2.2 Diccionario de datos
+### Diccionario de datos
 
 #### `usuarios`
 
@@ -283,7 +247,7 @@ Documento generado por el gestor al finalizar un movimiento. Almacena un snapsho
 
 ---
 
-### 2.3 Relaciones entre colecciones
+### Relaciones entre colecciones
 
 ```
 usuarios     ──< contenedores   (creadoPor)
@@ -299,7 +263,7 @@ contenedores ──< informes       (contenedorId)
 
 ---
 
-## 2.4 Diagrama de casos de uso
+## 2. Diagrama de casos de uso
 
 > **Versión interactiva en FigJam:** [Diagrama de Flujo — Fluster](https://www.figma.com/board/RElpnz7nwahpUixOCr4vMq/Diagrama-de-Flujo---Fluster?node-id=0-1)
 
@@ -363,7 +327,7 @@ flowchart TD
 
 ---
 
-## 2.5 Diagramas de flujo
+## 3. Diagramas de flujo de los procesos principales
 
 > **Versión interactiva en FigJam:** [Diagrama de Flujo — Fluster](https://www.figma.com/board/RElpnz7nwahpUixOCr4vMq/Diagrama-de-Flujo---Fluster?node-id=0-1)
 
@@ -495,81 +459,54 @@ flowchart TD
 
 ---
 
-## 3. Backend
+## 4. Arquitectura de la aplicación
 
-### 3.1 Estructura de carpetas
-
-El backend sigue una arquitectura en capas (rutas → controladores → servicios → modelos) que separa claramente las responsabilidades. Los middlewares transversales (autenticación, roles, errores) se aplican en el punto de montaje de rutas.
+La aplicación sigue una arquitectura de **tres capas** desacopladas: un frontend SPA, un backend API REST y una base de datos en la nube. La comunicación entre capas se realiza exclusivamente mediante HTTP/JSON con autenticación JWT.
 
 ```
-backend/
-├── Dockerfile
-├── package.json
-└── src/
-    ├── index.js              # App Express, montaje de rutas, arranque del servidor
-    ├── swagger.json          # Especificación OpenAPI para Swagger UI
-    ├── config/
-    │   └── db.js             # Conexión a MongoDB Atlas mediante Mongoose
-    ├── controllers/          # Capa fina: recibe req/res y delega en servicios
-    │   ├── authController.js
-    │   ├── cicloController.js
-    │   ├── clienteController.js
-    │   ├── contenedorController.js
-    │   ├── eventoController.js
-    │   ├── informeController.js
-    │   ├── navieraController.js
-    │   ├── ocrController.js
-    │   ├── semaforoController.js
-    │   └── usuarioController.js
-    ├── services/             # Lógica de negocio (cálculo D&D, validaciones)
-    │   ├── authService.js
-    │   ├── cicloService.js
-    │   ├── clienteService.js
-    │   ├── contenedorService.js
-    │   ├── eventoService.js
-    │   ├── informeService.js
-    │   ├── navieraService.js
-    │   ├── ocrService.js
-    │   ├── semaforoService.js
-    │   └── usuarioService.js
-    ├── models/               # Esquemas Mongoose (uno por colección)
-    │   ├── Usuario.js
-    │   ├── Naviera.js
-    │   ├── Cliente.js
-    │   ├── Tarifa.js
-    │   ├── Contenedor.js
-    │   ├── Evento.js
-    │   └── Informe.js
-    ├── routes/               # Routers Express con guardas de rol
-    │   ├── auth.js
-    │   ├── ciclos.js
-    │   ├── clientes.js
-    │   ├── contenedores.js
-    │   ├── eventos.js
-    │   ├── informes.js
-    │   ├── navieras.js
-    │   ├── ocr.js
-    │   ├── semaforo.js
-    │   └── usuarios.js
-    ├── middlewares/
-    │   ├── authMiddleware.js  # Verificación JWT; adjunta req.usuario (id, correo, rol)
-    │   ├── rolMiddleware.js   # Control de acceso por rol: verificarRol('gestor', ...)
-    │   └── errorMiddleware.js # Manejador centralizado de errores (status + mensaje)
-    └── tests/                # Tests unitarios con Jest
-        ├── controllers/      # Tests de controladores (servicios mockeados)
-        ├── services/         # Tests de servicios (modelos mockeados)
-        └── middlewares/      # Tests de middlewares (req/res mockeados)
+┌──────────────────────────────┐
+│        FRONTEND (SPA)        │
+│  React 19 · Vite · SCSS      │
+│  React Router 7 · Axios      │
+│  JWT en localStorage         │
+└──────────────┬───────────────┘
+               │ HTTP/REST (JSON)
+               │ Authorization: Bearer <JWT>
+┌──────────────▼───────────────┐
+│         BACKEND (API)        │
+│  Node.js 22 · Express 5      │
+│  Bcrypt · JWT · Tesseract.js │
+│  Swagger UI en /api-docs     │
+│  Motor de cálculo D&D        │
+└──────────────┬───────────────┘
+               │ Mongoose ODM
+┌──────────────▼───────────────┐
+│       BASE DE DATOS          │
+│  MongoDB Atlas M0 (cloud)    │
+│  7 colecciones               │
+└──────────────────────────────┘
 ```
 
-**Convenciones de la capa de servicios**
+### Responsabilidades de cada capa
 
-- Los servicios nunca acceden directamente a `req` ni `res`; reciben parámetros planos y devuelven datos o lanzan errores.
-- El motor de cálculo D&D reside en `cicloService.js` y `semaforoService.js`. Aplica los tramos de tarifa sobre las fechas del contenedor para obtener el coste acumulado y el nivel de riesgo sin necesidad de persistir esos valores.
-- `ocrService.js` encapsula la invocación de Tesseract.js para la extracción del código BIC a partir de la imagen recibida.
+| Capa | Tecnología | Responsabilidad |
+| :--- | :--- | :--- |
+| Frontend | React 19 + Vite | Interfaz de usuario, navegación, consumo de la API |
+| Backend | Node.js 22 + Express 5 | Lógica de negocio, autenticación, cálculo D&D, OCR |
+| Base de datos | MongoDB Atlas M0 | Persistencia de documentos |
+
+### Flujo de una petición protegida
+
+1. El frontend envía la cabecera `Authorization: Bearer <token>` junto a la petición.
+2. El `authMiddleware` verifica la firma del JWT y adjunta `req.usuario` (con `id`, `correo` y `rol`).
+3. El `rolMiddleware` comprueba que `req.usuario.rol` se encuentra entre los roles permitidos para esa ruta.
+4. El controlador delega la lógica en la capa de servicios.
+5. El servicio accede al modelo Mongoose correspondiente.
+6. La respuesta JSON viaja de vuelta hasta el frontend.
 
 ---
 
-### 3.2 Diseño de la API REST
+## 5. Diseño de la API (endpoints, métodos, respuestas)
 
 Todos los endpoints siguen el prefijo `/api`. Las rutas están documentadas en Swagger UI bajo `/api-docs`.
 
@@ -768,112 +705,3 @@ curl -X POST http://localhost:5000/api/auth/login \
 curl http://localhost:5000/api/contenedores \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
-
----
-
-## 4. Frontend
-
-### 4.1 Estructura de carpetas
-
-El frontend sigue **Atomic Design** para los componentes y la metodología **ITCSS** para los estilos, con archivos SCSS organizados en capas de especificidad creciente.
-
-```
-frontend/
-├── Dockerfile
-├── nginx.conf               # Configuración de Nginx para enrutamiento SPA
-├── package.json
-├── vite.config.js
-└── src/
-    ├── main.jsx              # Punto de entrada React DOM
-    ├── App.jsx               # Componente raíz → AppRouter
-    ├── assets/
-    │   └── images/           # Imágenes estáticas (logos, etc.)
-    ├── components/           # Componentes organizados por Atomic Design
-    │   ├── atomos/           # Unidades mínimas reutilizables (botones, inputs, badges…)
-    │   │   └── ...
-    │   ├── moleculas/        # Composiciones de átomos (tarjetas, filas de tabla…)
-    │   │   └── ...
-    │   └── organismos/       # Componentes complejos (cabecera, modales…)
-    │       ├── Header.jsx
-    │       ├── Footer.jsx
-    │       ├── ModalEditarContenedor.jsx
-    │       └── ModalEntradaPuerto.jsx
-    ├── hooks/                # Custom hooks de React
-    │   ├── useContenedores.js  # Fetch y estado para la lista de contenedores
-    │   ├── useHistorial.js     # Fetch y estado para el historial de un contenedor
-    │   └── useTema.js          # Toggle dark/light con persistencia en localStorage
-    ├── pages/                # Páginas completas (una por ruta)
-    │   ├── home/
-    │   ├── login/
-    │   ├── registro/
-    │   ├── semaforo/
-    │   ├── tarifas/
-    │   ├── almacen/
-    │   ├── historial_contenedor/
-    │   ├── contenedores/
-    │   ├── meter_contenedor/
-    │   ├── panel_de_control/
-    │   ├── perfil/
-    │   ├── guia_estilos/
-    │   ├── terminos/
-    │   ├── privacidad/
-    │   ├── cookies/
-    │   ├── contacto/
-    │   └── error/
-    ├── router/
-    │   ├── AppRouter.jsx       # BrowserRouter + definición de todas las rutas + Footer
-    │   ├── RutaProtegida.jsx   # Guarda de ruta por rol; redirige si no autorizado
-    │   └── RutaPublica.jsx     # Redirige al inicio si el usuario ya está autenticado
-    ├── services/               # Funciones de llamada a la API con Axios
-    │   ├── session.js          # Helpers de almacenamiento y lectura del JWT
-    │   └── ...                 # Un archivo por dominio (contenedores, navieras…)
-    └── styles/                 # Arquitectura ITCSS
-        ├── main.scss           # Importa todas las capas en orden de especificidad
-        ├── 00-settings/        # Variables CSS y Sass (colores, tipografía, espaciados)
-        ├── 01-tools/           # Mixins y funciones Sass
-        ├── 02-generic/         # Reset y normalize
-        ├── 03-elements/        # Estilos base de etiquetas HTML
-        ├── 04-layout/          # Grid y estructura de página
-        ├── 05-components/      # SCSS específico de componentes (nomenclatura BEM)
-        └── 06-utilities/       # Clases de utilidad (visibilidad, alineación…)
-```
-
-**Convenciones de la capa de servicios**
-
-- Cada archivo en `services/` exporta funciones que realizan una única llamada Axios y devuelven `response.data`.
-- `session.js` centraliza la lectura (`getToken`), escritura (`setToken`) y eliminación (`removeToken`) del JWT en `localStorage`, de modo que el resto del código no accede directamente al storage.
-- Los custom hooks gestionan el estado de carga (`loading`), los datos (`data`) y los errores (`error`) de forma homogénea, evitando repetición en las páginas.
-
----
-
-### 4.2 Diseño de la interfaz
-
-La interfaz está orientada a operadores de logística que trabajan principalmente desde escritorio. El diseño prioriza la densidad de información en tablas y la claridad en los indicadores de riesgo D&D.
-
-**Paleta y tema**
-
-La aplicación soporta modo claro y modo oscuro, gestionados mediante el hook `useTema`. Los tokens de color se definen en `styles/00-settings/` como variables CSS, lo que permite cambiar el tema sin reescribir los componentes.
-
-**Páginas principales**
-
-| Página | Ruta | Roles | Descripción |
-| :--- | :--- | :--- | :--- |
-| Home | `/` | Público | Presentación de la aplicación y acceso al login |
-| Login | `/login` | Público | Formulario de autenticación |
-| Registro | `/registro` | Público | Alta de nuevo usuario |
-| Semáforo | `/semaforo` | gestor | Vista de riesgo D&D agrupada por nivel (verde / ámbar / rojo) |
-| Tarifas | `/tarifas` | gestor | Gestión de navieras y sus tramos D&D |
-| Almacén | `/almacen` | operador, gestor | Listado de contenedores en almacén con estado visual |
-| Meter contenedor | `/meter-contenedor` | operador | Formulario de alta de contenedor con OCR de código BIC |
-| Historial | `/historial/:id` | operador, gestor | Línea de tiempo de eventos de un contenedor |
-| Panel de control | `/panel` | admin | Gestión de usuarios del sistema |
-| Perfil | `/perfil` | cualquier autenticado | Edición de nombre, contraseña y foto de perfil |
-| Error | `*` | Público | Página 404 para rutas desconocidas |
-
-**Componentes clave**
-
-- **Semáforo de riesgo:** cada contenedor muestra un indicador de color (verde, ámbar, rojo) calculado en el backend según los días transcurridos respecto a los tramos de tarifa.
-- **Tabla de tarifas editable:** permite al gestor modificar los tramos D&D directamente en la celda, con guardado fila a fila mediante llamada a la API.
-- **Modal de entrada a puerto:** recoge el nombre del cliente y registra la transición de estado `INACTIVO → PUERTO`, iniciando el cómputo de demurrage.
-- **OCR de código BIC:** en el formulario de alta de contenedor, el operador puede subir una fotografía del contenedor y el sistema extrae automáticamente el código BIC mediante Tesseract.js.
-- **Rutas protegidas:** `RutaProtegida` comprueba el rol del usuario almacenado en el JWT antes de renderizar cada página; en caso de acceso no autorizado redirige a `/error`.

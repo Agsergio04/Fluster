@@ -17,8 +17,7 @@ Aplicación web para que empresas PYME de logística controlen y gestionen los c
 5. [Inicio rápido](#inicio-rápido)
 6. [Variables de entorno](#variables-de-entorno)
 7. [Documentación](#documentación)
-8. [Recuperaciones](#recuperaciones)
-9. [Contribuir](#contribuir)
+8. [Contribuir](#contribuir)
 
 ---
 
@@ -64,7 +63,7 @@ Fluster centraliza todo el ciclo de vida del contenedor, calcula automáticament
 |------|-------------|
 | **Frontend** | React 19, React Router 7, Axios, Vite, SCSS/ITCSS, Atomic Design |
 | **Backend** | Node.js, Express 5, MongoDB Atlas, Mongoose, JWT, Bcrypt, Tesseract.js, Swagger UI |
-| **Infraestructura** | Docker Compose, GitHub Actions (CI/CD), Render (despliegue), Jest (tests) |
+| **Infraestructura** | Docker Compose, GitHub Actions (CI/CD), Render (despliegue), Jest (tests backend), Vitest + React Testing Library (tests frontend) |
 
 ---
 
@@ -109,22 +108,14 @@ El archivo `backend/.env` debe contener las siguientes variables:
 | 02 | [Descripción del sistema](./docs/02-descripcion.md) | Visión general del sistema y sus componentes |
 | 03 | [Instalación](./docs/03-instalacion.md) | Guía de instalación y configuración del entorno |
 | 04 | [Guía de estilos](./docs/04-guia-estilos.md) | Convenciones de código, SCSS/ITCSS y Atomic Design |
-| 05 | [Diseño](./docs/05-diseno.md) | Decisiones de diseño UI/UX y prototipado |
-| 06 | [Desarrollo](./docs/06-desarrollo.md) | Arquitectura, modelo de datos y lógica de negocio |
-| 07 | [Pruebas](./docs/07-pruebas.md) | Estrategia de tests, cobertura y ejecución con Jest |
+| 05 | [Diseño](./docs/05-diseno.md) | Diagrama ER, casos de uso, diagramas de flujo, arquitectura y diseño de la API REST |
+| 06 | [Desarrollo](./docs/06-desarrollo.md) | Secuencia de sprints, decisiones técnicas y fragmentos de código representativos |
+| 07 | [Pruebas](./docs/07-pruebas.md) | Estrategia de tests, cobertura y ejecución con Jest (backend) y Vitest (frontend) |
 | 08 | [Despliegue](./docs/08-despliegue.md) | CI/CD con GitHub Actions, configuración de Render y Docker |
 | 09 | [Manual de usuario](./docs/09-manual-usuario.md) | Guía de uso por rol: admin, gestor y operador |
 | 10 | [Conclusiones](./docs/10-conclusiones.md) | Valoración del proyecto, mejoras futuras y aprendizajes |
 
----
-
-## Recuperaciones
-
-Documentos elaborados para la recuperación de resultados de aprendizaje pendientes del módulo de **Despliegue de Aplicaciones Web** y **Desarrollo de Intefaces Web** .
-
-| Módulo | Documento | RA pendiente |
-|--------|-----------|-------------|
-| Despliegue de Aplicaciones Web | [Despliegue de la aplicación web](./docs/08-despliegue-eval.md) | RA1 — Unidad 2 (Docker y arquitectura) |
+Los documentos de recuperación del módulo **Diseño de Interfaces Web** (RA1 a RA4) están disponibles en [`docs/diseño/`](./docs/diseño/).
 
 ---
 
@@ -137,4 +128,4 @@ Las contribuciones son bienvenidas. El flujo de trabajo es:
 3. Abrir una Pull Request hacia `dev`. Los checks de CI (lint + tests) deben pasar antes de hacer merge.
 4. Las releases a producción se realizan mediante PR de `dev` a `main`.
 
-Por favor, respeta el estilo de código existente y añade tests para cualquier nueva funcionalidad en el backend.
+Por favor, respeta el estilo de código existente y añade tests para cualquier nueva funcionalidad: Jest en el backend (`backend/tests/`) y Vitest en el frontend (`frontend/src/tests/`).

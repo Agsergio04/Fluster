@@ -8,7 +8,7 @@ El proyecto se planteó con siete objetivos obligatorios y dos opcionales. A con
 
 ### Objetivo 1 — Registro estructurado del ciclo de vida del contenedor
 
-**Cumplido.** Cada transición de estado del contenedor (INACTIVO → PUERTO → CLIENTE → VUELTA_PUERTO) queda registrada con foto adjunta, timestamp automático del servidor y código BIC del contenedor. El modelo de `Evento` y el modelo de `Ciclo` permiten reconstruir el histórico completo de cualquier contenedor en cualquier momento. La dependencia de canales informales (WhatsApp, correo, hojas de cálculo) queda eliminada para las organizaciones que adopten Fluster.
+**Cumplido.** Cada transición de estado del contenedor (INACTIVO → PUERTO → CLIENTE) queda registrada, timestamp automático del servidor y código BIC del contenedor. El modelo de `Evento` y el modelo de `Ciclo` permiten reconstruir el histórico completo de cualquier contenedor en cualquier momento. La dependencia de canales informales (WhatsApp, correo, hojas de cálculo) queda eliminada para las organizaciones que adopten Fluster.
 
 **Matiz:** la extracción automática del código BIC mediante OCR funciona correctamente en condiciones de campo favorables, pero la precisión varía con la calidad de la imagen. El fallback manual garantiza que esto nunca bloquea el flujo de trabajo, pero la robustez del OCR podría mejorarse con preprocesado de imagen (corrección de perspectiva, aumento de contraste) antes de enviarlo a Tesseract.
 
