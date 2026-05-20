@@ -64,6 +64,16 @@
   --text-56: #{vars.$text-56};
   --text-64: #{vars.$text-64};
 
+  // ── Tipografía fluida ─────────────────────────────────────────
+  --texto-tamanio-24:        clamp(0.875rem, 4vw, 1.5rem);
+  --texto-tamanio-32:        clamp(1rem, 4vw, 2rem);
+  --texto-tamanio-40:        clamp(1.25rem, 4vw, 2.5rem);
+  --texto-tamanio-48:        clamp(1.5rem, 5vw, 3rem);
+  --texto-tamanio-56:        clamp(1.5rem, 5vw, 3.5rem);
+  --texto-tamanio-64:        clamp(2rem, 8vw, 4rem);
+  --texto-tamanio-hero:      clamp(1rem, 5.5vw, 2rem);
+  --texto-tamanio-subtitulo: clamp(1rem, 3.5vw, 2rem);
+
   // ── Tipografía — Pesos ────────────────────────────────────────
   --font-weight-light:    #{vars.$font-weight-light};
   --font-weight-regular:  #{vars.$font-weight-regular};

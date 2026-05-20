@@ -22,7 +22,7 @@
     background-color: var(--color-secondary);
     border-radius:    var(--radius);
     font-family:      var(--font-body);
-    font-size:        clamp(1rem, 4vw, 2rem);
+    font-size:        var(--texto-tamanio-32);
     font-weight:      var(--font-weight-regular);
     color:            var(--color-box-text);
     text-align:       center;

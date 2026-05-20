@@ -8,7 +8,7 @@
 
   &__label {
     font-family: var(--font-heading);
-    font-size:   clamp(1.5rem, 5vw, 3rem);
+    font-size:   var(--texto-tamanio-48);
     font-weight: var(--font-weight-regular);
     line-height: 1;
     color:       var(--color-box-text);
@@ -21,7 +21,7 @@
     border-radius:    var(--radius);
     background-color: var(--color-box-border);
     font-family:      var(--font-body);
-    font-size:        clamp(1rem, 4vw, 1.5rem);
+    font-size:        var(--texto-tamanio-24);
     font-weight:      var(--font-weight-regular);
     line-height:      1;
     color:            var(--color-box-text);

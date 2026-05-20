@@ -10,7 +10,7 @@
 
   &__titulo {
     font-family: var(--font-heading);
-    font-size:   clamp(2rem, 8vw, 4rem);
+    font-size:   var(--texto-tamanio-64);
     font-weight: var(--font-weight-regular);
     line-height: 1;
     color:       var(--color-box-text);
@@ -18,7 +18,7 @@
 
   &__subtitulo {
     font-family: var(--font-body);
-    font-size:   clamp(1rem, 3.5vw, 2rem);
+    font-size:   var(--texto-tamanio-subtitulo);
     font-weight: var(--font-weight-regular);
     line-height: var(--leading-normal);
     color:       var(--color-box-text);
