@@ -11,7 +11,6 @@ function Footer() {
           className="footer__logo"
           width="120"
           height="40"
-          loading="lazy"
           decoding="async"
         />
       </div>
