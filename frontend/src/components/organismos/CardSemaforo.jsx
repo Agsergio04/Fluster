@@ -45,8 +45,8 @@ function CardSemaforo({
 
       <div className="card-semaforo__cuerpo">
         <div className="card-semaforo__bic">
-          <p className="card-semaforo__etiqueta">Código Bic :</p>
-          <p className="card-semaforo__valor">{codigoBic}</p>
+          <span className="card-semaforo__etiqueta">Código Bic :</span>
+          <span className="card-semaforo__valor">{codigoBic}</span>
         </div>
 
         <div className="card-semaforo__datos">
@@ -75,11 +75,11 @@ function CardSemaforo({
         <div className="card-semaforo__tarifa">
           <div className="card-semaforo__tarifa-titulo">
             <TarifasIcon className="card-semaforo__icono" aria-hidden="true" />
-            <p className="card-semaforo__etiqueta-lg">Tarifa acumulada</p>
+            <span className="card-semaforo__etiqueta-lg">Tarifa acumulada</span>
           </div>
-          <p className="card-semaforo__tarifa-precio">
+          <span className="card-semaforo__tarifa-precio">
             {tarifaAcumulada !== undefined ? `${tarifaAcumulada.toFixed(2)} €` : '0.00 €'}
-          </p>
+          </span>
         </div>
       )}
     </div>
