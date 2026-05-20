@@ -86,7 +86,10 @@ function Login() {
           </picture>
         </div>
 
-        <div className="login__panel">
+        <form
+          className="login__panel"
+          onSubmit={e => { e.preventDefault(); handleIniciarSesion() }}
+        >
           <h1 className="login__titulo">Iniciar Sesion</h1>
           <EntradaDatosLogin
             correo={correo}
@@ -101,7 +104,7 @@ function Login() {
             onIrRegistro={() => navigate('/registro')}
             cargando={cargando}
           />
-        </div>
+        </form>
       </main>
     </>
   )
