@@ -10,7 +10,7 @@ import TextoCambiadorLoginRegistro from './TextoCambiadorLoginRegistro'
 function BotonesLogin({ onIniciarSesion, onIrRegistro, cargando = false }) {
   return (
     <div className="botones-login">
-      <BotonRegistroLogin onClick={onIniciarSesion} disabled={cargando}>
+      <BotonRegistroLogin type="submit" onClick={onIniciarSesion} disabled={cargando}>
         {cargando ? <Spinner tamanio="sm" /> : 'Iniciar Sesión'}
       </BotonRegistroLogin>
       <TextoCambiadorLoginRegistro

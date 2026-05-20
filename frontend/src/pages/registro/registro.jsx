@@ -88,7 +88,10 @@ function Registro() {
           </picture>
         </div>
 
-        <div className="registro__panel">
+        <form
+          className="registro__panel"
+          onSubmit={e => { e.preventDefault(); handleCrearCuenta() }}
+        >
           <h1 className="registro__titulo">Registro</h1>
 
           <EntradaDatosRegistro
@@ -122,7 +125,7 @@ function Registro() {
             onIrLogin={() => navigate('/login')}
             disabled={cargando}
           />
-        </div>
+        </form>
       </main>
     </>
   )

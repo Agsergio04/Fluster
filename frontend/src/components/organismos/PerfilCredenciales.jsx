@@ -65,27 +65,28 @@ function PerfilCredenciales({
             ref={inputFotoRef}
             type="file"
             accept="image/*"
+            aria-label="Subir foto de perfil"
             style={{ display: 'none' }}
             onChange={handleSeleccionarFoto}
           />
           <BotonAccionTarifa accion="actualizar" onClick={() => inputFotoRef.current?.click()} />
           <div className="perfil-credenciales__campo">
-            <p className="perfil-credenciales__etiqueta">Nombre</p>
+            <h3 className="perfil-credenciales__etiqueta">Nombre</h3>
             <p className="perfil-credenciales__valor">{nombre}</p>
           </div>
         </div>
         <div className="perfil-credenciales__campo">
-          <p className="perfil-credenciales__etiqueta">Rol</p>
+          <h3 className="perfil-credenciales__etiqueta">Rol</h3>
           <p className="perfil-credenciales__valor">{rol}</p>
         </div>
         <div className="perfil-credenciales__campo">
-          <p className="perfil-credenciales__etiqueta">Correo</p>
+          <h3 className="perfil-credenciales__etiqueta">Correo</h3>
           <p className="perfil-credenciales__valor">{correo}</p>
         </div>
       </div>
 
       <div className="perfil-credenciales__cambios">
-        <p className="perfil-credenciales__titulo">Cambio de credenciales</p>
+        <h2 className="perfil-credenciales__titulo">Cambio de credenciales</h2>
         <CambiarNombre
           nombre={nuevoNombre}
           onNombreCambio={onNuevoNombreCambio}
