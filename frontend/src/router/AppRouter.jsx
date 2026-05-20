@@ -5,17 +5,17 @@ import Footer from '../components/organismos/Footer'
 import Spinner from '../components/atomos/Spinner'
 
 // Páginas cargadas en el bundle inicial — son las primeras que ve cualquier usuario
-import Login    from '../pages/login/login'
-import Home     from '../pages/home/home'
-import Registro from '../pages/registro/registro'
-import Error    from '../pages/error/error'
+import Login          from '../pages/login/login'
+import Home           from '../pages/home/home'
+import Registro       from '../pages/registro/registro'
+import Error          from '../pages/error/error'
+import MeterContenedor from '../pages/meter_contenedor/meter_contenedor'
 
 // Páginas con carga diferida — Vite genera un chunk independiente por cada una;
 // el navegador solo lo descarga cuando el usuario navega a esa ruta por primera vez
 const Almacen             = lazy(() => import('../pages/almacen/almacen'))
 const Contenedores        = lazy(() => import('../pages/contenedores/contenedores'))
 const HistorialContenedor = lazy(() => import('../pages/historial_contenedor/historial_contenedor'))
-const MeterContenedor     = lazy(() => import('../pages/meter_contenedor/meter_contenedor'))
 const PanelDeControl      = lazy(() => import('../pages/panel_de_control/panel_de_control'))
 const Perfil              = lazy(() => import('../pages/perfil/perfil'))
 const Semaforo            = lazy(() => import('../pages/semaforo/semaforo'))
