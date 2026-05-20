@@ -28,8 +28,8 @@ function CardContenedoresAlmacen({
   return (
     <div className="card-almacen">
       <div className="card-almacen__bic">
-        <p className="card-almacen__etiqueta">Código Bic :</p>
-        <p className="card-almacen__valor">{codigoBic}</p>
+        <span className="card-almacen__etiqueta">Código Bic :</span>
+        <span className="card-almacen__valor">{codigoBic}</span>
       </div>
 
       <div className="card-almacen__fila-fecha">
