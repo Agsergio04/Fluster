@@ -10,8 +10,8 @@ function Footer() {
             src={LogoConLetras}
             alt="Fluster"
             className="footer__logo"
-            width="120"
-            height="40"
+            width="343"
+            height="343"
             decoding="async"
           />
         </Link>
