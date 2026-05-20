@@ -58,6 +58,8 @@ function PerfilCredenciales({
             src={foto || imagenUsuarioDefault}
             alt={nombre}
             className="perfil-credenciales__foto"
+            loading="lazy"
+            decoding="async"
           />
           <input
             ref={inputFotoRef}

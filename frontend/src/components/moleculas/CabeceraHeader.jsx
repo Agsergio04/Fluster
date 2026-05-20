@@ -19,6 +19,9 @@ function CabeceraHeader({ loggeado = false, tema = 'light', onToggleTema, onMenu
           src={LogoFluster}
           alt="Fluster"
           className="cabecera-header__logo"
+          width="120"
+          height="40"
+          decoding="async"
         />
       </button>
       <div className="cabecera-header__controles">

@@ -14,6 +14,8 @@ function CardContenedor({ foto, codigoBic, fechaInclusion, onEditar, onEliminar 
             className="card-contenedor__foto"
             src={foto}
             alt={codigoBic}
+            loading="lazy"
+            decoding="async"
           />
         )}
       </div>

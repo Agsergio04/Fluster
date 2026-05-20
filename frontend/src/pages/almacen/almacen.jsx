@@ -100,7 +100,7 @@ function Almacen() {
         ordenDescendente: String(orden === 'descendente'),
         ordenAlfabetico:  String(ordenAlfabetico),
       })
-      const ok = generarPDFGeneral(ciclos)
+      const ok = await generarPDFGeneral(ciclos)
       if (ok) {
         await Promise.all(
           ciclos.map(c => registrarInforme(c.contenedorId._id, c._id).catch(() => {}))

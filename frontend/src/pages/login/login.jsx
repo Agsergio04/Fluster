@@ -6,7 +6,7 @@ import { login } from '../../services/authService'
 import Header from '../../components/organismos/Header'
 import EntradaDatosLogin from '../../components/moleculas/EntradaDatosLogin'
 import BotonesLogin from '../../components/moleculas/BotonesLogin'
-import imagenLogin from '../../assets/images/imagen_registro-login.png'
+import imagenLogin from '../../assets/images/imagen_registro-login.jpg'
 
 // Tabla de rutas de aterrizaje según el rol del usuario autenticado.
 // Cada rol tiene una sección principal diferente como punto de entrada.
@@ -69,7 +69,21 @@ function Login() {
 
       <main className="login__body">
         <div className="login__imagen">
-          <img src={imagenLogin} alt="Puerto de contenedores" />
+          <picture>
+            {/* ≥768 px: imagen visible a ~50 % del viewport */}
+            <source
+              media="(min-width: 768px)"
+              srcSet={imagenLogin}
+              sizes="50vw"
+            />
+            <img
+              src={imagenLogin}
+              alt="Puerto de contenedores"
+              width="955"
+              height="809"
+              fetchpriority="high"
+            />
+          </picture>
         </div>
 
         <div className="login__panel">

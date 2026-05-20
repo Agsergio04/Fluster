@@ -7,7 +7,7 @@ import Header from '../../components/organismos/Header'
 import EntradaDatosRegistro from '../../components/moleculas/EntradaDatosRegistro'
 import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
 import BotonesRegistro from '../../components/moleculas/BotonesRegistro'
-import imagenRegistro from '../../assets/images/imagen_registro-login.png'
+import imagenRegistro from '../../assets/images/imagen_registro-login.jpg'
 
 /**
  * Página de creación de cuenta nueva.
@@ -71,7 +71,21 @@ function Registro() {
 
       <main className="registro__body">
         <div className="registro__imagen">
-          <img src={imagenRegistro} alt="Puerto de contenedores" />
+          <picture>
+            {/* ≥768 px: imagen visible a ~50 % del viewport */}
+            <source
+              media="(min-width: 768px)"
+              srcSet={imagenRegistro}
+              sizes="50vw"
+            />
+            <img
+              src={imagenRegistro}
+              alt="Puerto de contenedores"
+              width="955"
+              height="809"
+              fetchpriority="high"
+            />
+          </picture>
         </div>
 
         <div className="registro__panel">

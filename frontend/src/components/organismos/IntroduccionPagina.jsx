@@ -1,6 +1,6 @@
 import BotonIniciarSesion from '../atomos/BotonIniciarSesion'
 import BotonEmpezarAhora from '../atomos/BotonEmpezarAhora'
-import imagenHome from '../../assets/images/imagen_home.png'
+import imagenHome from '../../assets/images/imagen_home.jpg'
 
 function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
   return (
@@ -19,12 +19,20 @@ function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
 
       <div className="introduccion-pagina__imagen">
         <picture>
+          {/* ≥768 px: imagen a la mitad del viewport */}
+          <source
+            media="(min-width: 768px)"
+            srcSet={imagenHome}
+            sizes="(min-width: 1200px) 600px, 50vw"
+          />
+          {/* <768 px: imagen a ancho completo en layout apilado */}
           <img
             src={imagenHome}
             alt="Puerto de contenedores"
             width="600"
             height="400"
             loading="eager"
+            sizes="100vw"
           />
         </picture>
       </div>
