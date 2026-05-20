@@ -28,7 +28,14 @@ function SubirFotoOcr({
       <div className="subir-foto-ocr subir-foto-ocr--introducido">
         <div className="subir-foto-ocr__previsualizacion">
           <p className="subir-foto-ocr__previsualizacion-titulo">Previsualizado de la imagen</p>
-          <img className="subir-foto-ocr__foto" src={foto} alt="Previsualizado del contenedor" />
+          <img
+            className="subir-foto-ocr__foto"
+            src={foto}
+            alt="Previsualizado del contenedor"
+            width="400"
+            height="300"
+            decoding="async"
+          />
         </div>
 
         <div className="subir-foto-ocr__formulario">
