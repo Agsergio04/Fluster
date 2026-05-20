@@ -1,6 +1,6 @@
 import BotonIniciarSesion from '../atomos/BotonIniciarSesion'
 import BotonEmpezarAhora from '../atomos/BotonEmpezarAhora'
-import imagenHome from '../../assets/images/imagen_home.png'
+import imagenHome from '../../assets/images/imagen_home.jpg'
 
 function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
   return (

@@ -6,7 +6,7 @@ import { login } from '../../services/authService'
 import Header from '../../components/organismos/Header'
 import EntradaDatosLogin from '../../components/moleculas/EntradaDatosLogin'
 import BotonesLogin from '../../components/moleculas/BotonesLogin'
-import imagenLogin from '../../assets/images/imagen_registro-login.png'
+import imagenLogin from '../../assets/images/imagen_registro-login.jpg'
 
 // Tabla de rutas de aterrizaje según el rol del usuario autenticado.
 // Cada rol tiene una sección principal diferente como punto de entrada.

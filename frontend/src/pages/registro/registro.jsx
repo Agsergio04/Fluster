@@ -7,7 +7,7 @@ import Header from '../../components/organismos/Header'
 import EntradaDatosRegistro from '../../components/moleculas/EntradaDatosRegistro'
 import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
 import BotonesRegistro from '../../components/moleculas/BotonesRegistro'
-import imagenRegistro from '../../assets/images/imagen_registro-login.png'
+import imagenRegistro from '../../assets/images/imagen_registro-login.jpg'
 
 /**
  * Página de creación de cuenta nueva.
