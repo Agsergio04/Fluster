@@ -16,9 +16,9 @@ const LABELS = {
 function CabeceraTramo({ tramo = 'inactivo', cantidad = 0 }) {
   return (
     <div className={`cabecera-tramo cabecera-tramo--${tramo}`}>
-      <p className="cabecera-tramo__label">{LABELS[tramo] ?? LABELS.inactivo}</p>
+      <h2 className="cabecera-tramo__label">{LABELS[tramo] ?? LABELS.inactivo}</h2>
       <div className="cabecera-tramo__badge">
-        <p className="cabecera-tramo__cantidad">{cantidad} {cantidad === 1 ? 'contenedor' : 'contenedores'}</p>
+        <span className="cabecera-tramo__cantidad">{cantidad} {cantidad === 1 ? 'contenedor' : 'contenedores'}</span>
       </div>
     </div>
   )

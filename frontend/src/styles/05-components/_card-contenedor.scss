@@ -33,12 +33,14 @@
   }
 
   &__bic-label {
+    display:      block;
     font-family:  var(--font-heading);
     font-size:    var(--text-24);
     font-weight:  var(--font-weight-regular);
   }
 
   &__bic-valor {
+    display:      block;
     font-family:  var(--font-body);
     font-size:    var(--text-16);
     font-weight:  var(--font-weight-regular);
@@ -56,12 +58,14 @@
   }
 
   &__fecha-label {
+    display:     block;
     font-family: var(--font-heading);
     font-size:   var(--text-24);
     font-weight: var(--font-weight-regular);
   }
 
   &__fecha-valor {
+    display:     block;
     font-family: var(--font-body);
     font-size:   var(--text-16);
     font-weight: var(--font-weight-regular);

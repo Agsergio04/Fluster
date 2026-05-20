@@ -21,13 +21,13 @@ function CardContenedor({ foto, codigoBic, fechaInclusion, onEditar, onEliminar 
       </div>
 
       <div className="card-contenedor__bic">
-        <p className="card-contenedor__bic-label">Codigo BIC</p>
-        <p className="card-contenedor__bic-valor">{codigoBic}</p>
+        <span className="card-contenedor__bic-label">Codigo BIC</span>
+        <span className="card-contenedor__bic-valor">{codigoBic}</span>
       </div>
 
       <div className="card-contenedor__fecha">
-        <p className="card-contenedor__fecha-label">Fecha de Inclusion</p>
-        <p className="card-contenedor__fecha-valor">{fechaInclusion}</p>
+        <span className="card-contenedor__fecha-label">Fecha de Inclusion</span>
+        <span className="card-contenedor__fecha-valor">{fechaInclusion}</span>
       </div>
 
       <div className="card-contenedor__botones">
