@@ -5,14 +5,16 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer__marca">
-        <img
-          src={LogoConLetras}
-          alt="Fluster"
-          className="footer__logo"
-          width="120"
-          height="40"
-          decoding="async"
-        />
+        <Link to="/">
+          <img
+            src={LogoConLetras}
+            alt="Fluster"
+            className="footer__logo"
+            width="120"
+            height="40"
+            decoding="async"
+          />
+        </Link>
       </div>
 
       <div className="footer__secciones">
