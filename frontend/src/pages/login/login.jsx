@@ -4,6 +4,7 @@ import './login.scss'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { login } from '../../services/authService'
+import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 import EntradaDatosLogin from '../../components/moleculas/EntradaDatosLogin'
 import BotonesLogin from '../../components/moleculas/BotonesLogin'
@@ -63,7 +64,7 @@ function Login() {
   return (
     <>
       <Header
-        rol={null}
+        rol={getUsuario()?.rol ?? null}
         tema={tema}
         onToggleTema={toggleTema}
         onNavegar={ruta => navigate(ruta)}

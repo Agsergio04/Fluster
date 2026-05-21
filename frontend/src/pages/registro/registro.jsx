@@ -4,6 +4,7 @@ import './registro.scss'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { registro } from '../../services/authService'
+import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 import EntradaDatosRegistro from '../../components/moleculas/EntradaDatosRegistro'
 import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
@@ -65,7 +66,7 @@ function Registro() {
   return (
     <>
       <Header
-        rol={null}
+        rol={getUsuario()?.rol ?? null}
         tema={tema}
         onToggleTema={toggleTema}
         onNavegar={ruta => navigate(ruta)}
