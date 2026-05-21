@@ -16,7 +16,9 @@ function errorMiddleware(err, req, res, next) {
     return res.status(500).json({ mensaje: 'Error interno del servidor' })
   }
 
-  res.status(status).json({ mensaje: err.message || 'Error interno del servidor' })
+  const body = { mensaje: err.message || 'Error interno del servidor' }
+  if (err.campo) body.campo = err.campo
+  res.status(status).json(body)
 }
 
 module.exports = errorMiddleware

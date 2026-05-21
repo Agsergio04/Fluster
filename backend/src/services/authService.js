@@ -49,18 +49,18 @@ async function registrar({ nombre, correo, contrasena, rol }) {
 async function login(correo, contrasena) {
   const usuario = await Usuario.findOne({ correo })
 
-  // Mismo mensaje tanto si no existe el correo como si la contraseña falla;
-  // así no se revela qué campo es incorrecto
   if (!usuario) {
-    const err = new Error('Credenciales incorrectas')
+    const err = new Error('El correo no está registrado')
     err.status = 401
+    err.campo = 'correo'
     throw err
   }
 
   const coincide = await bcrypt.compare(contrasena, usuario.contrasena)
   if (!coincide) {
-    const err = new Error('Credenciales incorrectas')
+    const err = new Error('Contraseña incorrecta')
     err.status = 401
+    err.campo = 'contrasena'
     throw err
   }
 

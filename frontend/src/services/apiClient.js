@@ -18,12 +18,13 @@ apiClient.interceptors.request.use(config => {
   return config
 })
 
-// Cierre de sesión global: cualquier 401 limpia la sesión y fuerza
-// la vuelta al login, independientemente de qué componente lanzó la petición.
+// Cierre de sesión global: si llega un 401 con sesión activa (token caducado
+// o revocado), limpia la sesión y vuelve al home. Si no hay token es un
+// intento de login fallido — el error debe llegar al componente, no redirigir.
 apiClient.interceptors.response.use(
   res => res,
   err => {
-    if (err.response?.status === 401) {
+    if (err.response?.status === 401 && sessionStorage.getItem('token')) {
       limpiarSesion()
       window.location.href = '/'
     }

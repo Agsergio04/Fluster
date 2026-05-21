@@ -52,10 +52,10 @@ function Login() {
       const usuario = await login(correo.trim(), contrasenia)
       navigate(RUTA_POR_ROL[usuario.rol] ?? '/')
     } catch (err) {
-      // El error se muestra bajo el campo de contraseña para no revelar
-      // si el correo existe en el sistema (evita enumeración de usuarios)
       const mensaje = err.response?.data?.mensaje ?? 'Credenciales incorrectas'
-      setErrorContrasenia(mensaje)
+      const campo   = err.response?.data?.campo
+      if (campo === 'correo') setErrorCorreo(mensaje)
+      else                    setErrorContrasenia(mensaje)
     } finally {
       setCargando(false)
     }
