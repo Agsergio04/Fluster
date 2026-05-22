@@ -154,7 +154,7 @@
     width:     var(--tamanio_normal);
     max-width: 100%;
 
-    .input__field,
+    .input__field          { width: var(--tamanio_normal); max-width: 100%; }
     .input__password-wrapper { width: var(--tamanio_normal); max-width: 100%; }
   }
 
@@ -163,13 +163,17 @@
     width:     var(--tamanio_pequenio);
     max-width: 100%;
 
-    .input__field,
+    .input__field          { width: var(--tamanio_pequenio); max-width: 100%; }
     .input__password-wrapper { width: var(--tamanio_pequenio); max-width: 100%; }
   }
 
   //Modificador — Error
   &--error {
-    .input__field,
+    .input__field {
+      border-color: var(--color-error);
+      box-shadow:   0 0 0 2px var(--color-error);
+    }
+
     .input__password-wrapper {
       border-color: var(--color-error);
       box-shadow:   0 0 0 2px var(--color-error);
@@ -191,7 +195,11 @@
 
   //Modificador — Éxito
   &--success {
-    .input__field,
+    .input__field {
+      border-color: var(--color-success);
+      box-shadow:   0 0 0 2px var(--color-success);
+    }
+
     .input__password-wrapper {
       border-color: var(--color-success);
       box-shadow:   0 0 0 2px var(--color-success);

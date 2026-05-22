@@ -76,8 +76,14 @@
     background-color: var(--color-card-almacen);
     border-radius:    var(--radius);
 
-    .cambiar-nombre,
-    .cambiar-contrasenia,
+    .cambiar-nombre {
+      align-self: center;
+    }
+
+    .cambiar-contrasenia {
+      align-self: center;
+    }
+
     .btn-operaciones-perfil {
       align-self: center;
     }
@@ -102,7 +108,12 @@
   @media (max-width: 1024px) {
     gap: var(--space-32);
 
-    &__info,
+    &__info {
+      flex:      1;
+      width:     auto;
+      min-width: 0;
+    }
+
     &__cambios {
       flex:      1;
       width:     auto;
@@ -111,8 +122,14 @@
 
     // Los componentes internos ocupan el ancho disponible de su columna
     &__cambios {
-      .cambiar-nombre,
-      .cambiar-contrasenia,
+      .cambiar-nombre {
+        width: 100%;
+      }
+
+      .cambiar-contrasenia {
+        width: 100%;
+      }
+
       .btn-operaciones-perfil {
         width: 100%;
       }
@@ -124,7 +141,10 @@
     flex-direction: column;
     align-items:    center;
 
-    &__info,
+    &__info {
+      width: 100%;
+    }
+
     &__cambios {
       width: 100%;
     }

@@ -149,7 +149,11 @@
     gap:            var(--space-16);
     width:          100%;
 
-    .btn-seleccionar-foto,
+    .btn-seleccionar-foto {
+      width:     100%;
+      max-width: none;
+    }
+
     .subir-foto-ocr__btn-manual {
       width:     100%;
       max-width: none;
@@ -191,14 +195,36 @@
       flex-direction: row;
       width:          100%;
 
-      .subir-foto-ocr__btn-introducir,
+      .subir-foto-ocr__btn-introducir {
+        flex: 1;
+      }
+
       .subir-foto-ocr__btn-cancelar {
         flex: 1;
       }
     }
   }
 
-  &__btn-introducir,
+  &__btn-introducir {
+    display:          inline-flex;
+    align-items:      center;
+    justify-content:  center;
+    width:            100%;
+    padding:          var(--space-8);
+    background-color: var(--color-secondary);
+    border-radius:    var(--radius);
+    font-family:      var(--font-body);
+    font-size:        var(--texto-tamanio-32);
+    font-weight:      var(--font-weight-regular);
+    color:            var(--color-box-text);
+    line-height:      var(--leading-tight);
+    transition:       background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-secondary-hover);
+    }
+  }
+
   &__btn-cancelar {
     display:          inline-flex;
     align-items:      center;

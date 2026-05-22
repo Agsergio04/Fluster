@@ -291,9 +291,12 @@ Las tarjetas de semáforo adaptan su estructura interna en tablet para reorganiz
   }
 
   @media (max-width: 767px) {
-    &__etiqueta,
-    &__valor {
+    &__etiqueta {
       font-size: var(--text-16); // tipografía reducida en mobile
+    }
+
+    &__valor {
+      font-size: var(--text-16);
     }
   }
 }

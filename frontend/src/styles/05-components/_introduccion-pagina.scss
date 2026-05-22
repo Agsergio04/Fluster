@@ -43,7 +43,10 @@
     align-items:    center;
     width:          100%;
 
-    .btn-iniciar-sesion,
+    .btn-iniciar-sesion {
+      align-self: center;
+    }
+
     .btn-empezar-ahora {
       align-self: center;
     }
@@ -90,7 +93,10 @@
     }
 
     &__botones {
-      .btn-iniciar-sesion,
+      .btn-iniciar-sesion {
+        font-size: var(--text-24);
+      }
+
       .btn-empezar-ahora {
         font-size: var(--text-24);
       }

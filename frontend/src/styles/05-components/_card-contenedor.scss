@@ -79,11 +79,16 @@
     width:       100%;
     margin-top:  auto;         // anclados al fondo de la card
 
-    .btn-editar,
-    .btn-eliminar {
+    .btn-editar {
       flex:       1 1 0;       // mismo ancho, escalan juntos (responsive)
       max-width:  none;        // ocupan su mitad sin tope fijo
       align-self: stretch;     // mismo nivel y misma altura
+    }
+
+    .btn-eliminar {
+      flex:       1 1 0;
+      max-width:  none;
+      align-self: stretch;
     }
   }
 

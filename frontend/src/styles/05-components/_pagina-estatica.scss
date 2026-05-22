@@ -221,8 +221,7 @@
     color:        var(--color-box-text);
   }
 
-  &__input,
-  &__textarea {
+  &__input {
     font-family:      var(--font-body);
     font-size:        var(--text-16);
     color:            var(--color-box-text);
@@ -245,8 +244,27 @@
   }
 
   &__textarea {
-    resize:     vertical;
-    min-height: 8rem;
+    font-family:      var(--font-body);
+    font-size:        var(--text-16);
+    color:            var(--color-box-text);
+    background-color: var(--color-surface);
+    border:           1px solid var(--color-border);
+    border-radius:    var(--radius);
+    padding:          var(--space-8) var(--space-16);
+    width:            100%;
+    outline:          none;
+    transition:       border-color 0.2s;
+    resize:           vertical;
+    min-height:       8rem;
+
+    &::placeholder {
+      color:   var(--color-text-subtle);
+      opacity: 1;
+    }
+
+    &:focus {
+      border-color: var(--color-primary);
+    }
   }
 
   &__boton {

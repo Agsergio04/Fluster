@@ -6,8 +6,7 @@
   border:          2px solid var(--color-box-text);
   flex-shrink:     0;
 
-  &__texto,
-  &__input {
+  &__texto {
     flex:        1 0 0;
     font-family: var(--font-heading);
     font-size:   var(--text-24);
@@ -19,6 +18,14 @@
   }
 
   &__input {
+    flex:        1 0 0;
+    font-family: var(--font-heading);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    color:       var(--color-box-text);
+    text-align:  center;
+    min-width:   0;
     padding:            0;
     appearance:         none;
     -webkit-appearance: none;
@@ -33,7 +40,12 @@
     }
   }
 
-  &--body &__texto,
+  &--body &__texto {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    white-space: nowrap;
+  }
+
   &--body &__input {
     font-family: var(--font-body);
     font-size:   var(--text-16);
