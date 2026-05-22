@@ -294,7 +294,7 @@ Se siguió una metodología **Scrum**: sprints cortos (1–2 semanas) y uso de G
 - **Sprint 6 – Pruebas, refinamiento, seguridad y documentación**  
     - Suite de tests con Jest (controladores, servicios y middlewares) e integración con MongoDB en memoria; tests de frontend (Vitest) y E2E (Playwright).  
     - Diseño responsive completo, accesibilidad (WAVE, contraste, foco visible), optimización de rendimiento y SEO.  
-    - Endurecimiento de seguridad: Helmet, CORS por entorno y rate limiting; contenedores Docker como usuario no-root; CI/CD reforzado con Dependabot y Trivy.  
+    - Endurecimiento de seguridad: Helmet y CORS por entorno; contenedores Docker como usuario no-root; CI/CD reforzado con Dependabot y Trivy.  
     - Documentación técnica del proyecto (`docs/`), documentación de recuperación (RA de diseño y despliegue) y ficheros de comunidad (LICENSE, SECURITY, CONTRIBUTING, CHANGELOG).  
   - **Resultado**: proyecto estable, probado, accesible, endurecido y documentado, listo para la defensa.
 
@@ -321,7 +321,7 @@ Estimación de horas dedicadas a cada tarea del proyecto.
 | OCR del código BIC (Tesseract.js) | 6 |
 | Endpoints e historial de informes | 5 |
 | Documentación de la API (Swagger) | 4 |
-| Seguridad (Helmet, CORS, rate limiting) | 4 |
+| Seguridad (Helmet, CORS) | 4 |
 | Tests backend (unitarios + integración) | 12 |
 | Estructura SPA (React Router, guards, sesión) | 8 |
 | Componentes (Atomic Design) | 20 |
@@ -355,7 +355,7 @@ Estimación de horas dedicadas a cada tarea del proyecto.
 | OCR del código BIC (Tesseract.js) | Backend |
 | Endpoints e historial de informes | Backend |
 | Documentación de la API (Swagger) | Backend |
-| Seguridad (Helmet, CORS, rate limiting) | Backend |
+| Seguridad (Helmet, CORS) | Backend |
 | Tests backend (unitarios + integración) | Backend |
 | Estructura SPA (React Router, guards, sesión) | Frontend |
 | Componentes (Atomic Design) | Frontend |

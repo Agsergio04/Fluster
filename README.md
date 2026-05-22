@@ -243,7 +243,7 @@ Los cambios entre versiones se documentan en el [CHANGELOG](./CHANGELOG.md).
 
 ## Seguridad
 
-El proyecto incorpora medidas de seguridad básicas: autenticación JWT con roles, contraseñas hasheadas con bcrypt, cabeceras HTTP con Helmet, CORS configurable, rate limiting, escaneo de dependencias con Dependabot y de vulnerabilidades con Trivy en CI.
+El proyecto incorpora medidas de seguridad básicas: autenticación JWT con roles, contraseñas hasheadas con bcrypt, cabeceras HTTP con Helmet, CORS configurable, escaneo de dependencias con Dependabot y de vulnerabilidades con Trivy en CI.
 
 Si descubres una vulnerabilidad, **no abras un issue público**: sigue la [política de seguridad](./SECURITY.md).
 

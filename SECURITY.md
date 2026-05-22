@@ -51,8 +51,6 @@ El proyecto incorpora las siguientes protecciones:
   texto plano.
 - **Helmet** para cabeceras HTTP de seguridad (`X-Content-Type-Options`,
   `X-Frame-Options`, `Strict-Transport-Security`, etc.).
-- **Rate limiting** (`express-rate-limit`): límite general de la API y límite
-  más estricto en autenticación para mitigar fuerza bruta.
 - **CORS** restringible al origen del frontend mediante la variable de entorno
   `CORS_ORIGIN`.
 - **Gestión centralizada de errores** que oculta los detalles internos de los
