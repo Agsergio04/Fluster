@@ -19,8 +19,8 @@
     "testTimeout": 60000
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Sergio Aragón García",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "bcrypt": "^6.0.0",
