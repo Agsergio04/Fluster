@@ -10,28 +10,28 @@ import {
 
 describe('session', () => {
   beforeEach(() => {
-    sessionStorage.clear()
+    localStorage.clear()
   })
 
   describe('guardarSesion', () => {
-    it('guarda el token en sessionStorage', () => {
+    it('guarda el token en localStorage', () => {
       guardarSesion('mi-token', { nombre: 'Ana' })
-      expect(sessionStorage.getItem('token')).toBe('mi-token')
+      expect(localStorage.getItem('token')).toBe('mi-token')
     })
 
     it('guarda el usuario serializado como JSON', () => {
       const usuario = { nombre: 'Ana', rol: 'operador' }
       guardarSesion('mi-token', usuario)
-      expect(JSON.parse(sessionStorage.getItem('usuario'))).toEqual(usuario)
+      expect(JSON.parse(localStorage.getItem('usuario'))).toEqual(usuario)
     })
   })
 
   describe('limpiarSesion', () => {
-    it('elimina token y usuario de sessionStorage', () => {
+    it('elimina token y usuario de localStorage', () => {
       guardarSesion('mi-token', { nombre: 'Ana' })
       limpiarSesion()
-      expect(sessionStorage.getItem('token')).toBeNull()
-      expect(sessionStorage.getItem('usuario')).toBeNull()
+      expect(localStorage.getItem('token')).toBeNull()
+      expect(localStorage.getItem('usuario')).toBeNull()
     })
   })
 
@@ -76,9 +76,9 @@ describe('session', () => {
       expect(getUsuario()).toEqual({ nombre: 'Ana García', rol: 'operador' })
     })
 
-    it('no modifica sessionStorage si no hay sesión activa', () => {
+    it('no modifica localStorage si no hay sesión activa', () => {
       actualizarUsuario({ nombre: 'Ana' })
-      expect(sessionStorage.getItem('usuario')).toBeNull()
+      expect(localStorage.getItem('usuario')).toBeNull()
     })
 
     it('conserva las propiedades no modificadas', () => {

@@ -31,11 +31,16 @@
     border-radius:    var(--radius);
     color:            var(--color-box-text);
     font-family:      var(--font-body);
-    font-size:        var(--text-8);
+    font-size:        var(--text-16);
     font-weight:      var(--font-weight-regular);
     line-height:      var(--leading-tight);
     transition:       border-color var(--transition-fast),
                       box-shadow var(--transition-fast);
+
+    // En escritorio grande, un punto más grande para mejorar la legibilidad
+    @media (min-width: 1280px) {
+      font-size: 1.125rem; // 18px
+    }
 
     &::placeholder {
       color: var(--color-box-text);
@@ -123,7 +128,7 @@
   //Pista de ayuda
   &__hint {
     order:        4;
-    font-size:    var(--text-8);
+    font-size:    var(--text-14);
     color:        var(--color-text-subtle);
     padding-left: var(--space-16);
   }
@@ -138,7 +143,7 @@
     // Rojo más oscuro que el del semáforo para que el texto blanco cumpla
     // el contraste WCAG AA (el rojo del semáforo daba ~2.9:1)
     background-color: var(--color-error-fondo);
-    font-size:        var(--text-8);
+    font-size:        var(--text-14);
     font-weight:      var(--font-weight-semibold);
     color:            #FFFFFF;
     line-height:      var(--leading-snug);

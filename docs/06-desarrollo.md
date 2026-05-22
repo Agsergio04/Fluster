@@ -58,13 +58,13 @@ Se escribió la suite completa de tests con Jest: 11 archivos de tests de contro
 
 **Razonamiento:** almacenar el coste introduce el riesgo de inconsistencia entre el valor guardado y la tarifa actualmente configurada. Si un gestor modifica los precios de una naviera, habría que recalcular y actualizar retroactivamente todos los ciclos afectados. Con el cálculo bajo demanda, el valor devuelto por la API siempre es coherente con la tarifa vigente, sin necesidad de ningún proceso de sincronización. La penalización en rendimiento es asumible dado el volumen esperado de contenedores en una PYME.
 
-### 2.2 JWT en sessionStorage vs. cookie httpOnly
+### 2.2 JWT en localStorage vs. cookie httpOnly
 
-**Decisión:** el token JWT se almacena en `sessionStorage` del navegador.
+**Decisión:** el token JWT se almacena en `localStorage` del navegador.
 
 **Alternativa considerada:** cookie httpOnly enviada por el servidor, inaccesible desde JavaScript.
 
-**Razonamiento:** las cookies httpOnly ofrecen mayor seguridad frente a ataques XSS porque el token no es accesible desde JavaScript. Sin embargo, introducen complejidad adicional en entornos SPA: hay que gestionar el atributo `SameSite` para peticiones cross-origin, el flujo de refresh de token es más complejo y la configuración de CORS debe incluir `credentials: true`. Para el alcance de este proyecto se optó por almacenar el token en `sessionStorage` en lugar de `localStorage`: la sesión se borra automáticamente al cerrar la pestaña, reduciendo la ventana de exposición frente a `localStorage` (que persiste indefinidamente). El riesgo de XSS se mitiga además con las cabeceras de seguridad de Helmet y la sanitización de entradas. El uso de cookie httpOnly se reconoce como mejora a valorar antes de un despliegue en producción con datos sensibles reales.
+**Razonamiento:** las cookies httpOnly ofrecen mayor seguridad frente a ataques XSS porque el token no es accesible desde JavaScript. Sin embargo, introducen complejidad adicional en entornos SPA: hay que gestionar el atributo `SameSite` para peticiones cross-origin, el flujo de refresh de token es más complejo y la configuración de CORS debe incluir `credentials: true`. Se optó por `localStorage` en lugar de `sessionStorage` para que la sesión persista entre pestañas y reinicios del navegador hasta que el usuario cierre sesión explícitamente, mejorando la experiencia de uso. El riesgo de XSS se mitiga con las cabeceras de seguridad de Helmet y la sanitización de entradas. El uso de cookie httpOnly se reconoce como mejora a valorar antes de un despliegue en producción con datos sensibles reales.
 
 ### 2.3 Tesseract.js vs. alternativas OCR
 
