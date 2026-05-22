@@ -12,6 +12,7 @@
 3. [Toggle desde JavaScript — hook useTema](#3-toggle-desde-javascript--hook-usetema)
 4. [Persistencia en localStorage](#4-persistencia-en-localstorage)
 5. [Soporte en navegadores](#5-soporte-en-navegadores)
+6. [Layout responsive — adaptación al dispositivo](#6-layout-responsive--adaptación-al-dispositivo)
 
 ---
 
@@ -173,3 +174,138 @@ html {
   color-scheme: light dark;
 }
 ```
+
+---
+
+## 6. Layout responsive — adaptación al dispositivo
+
+Al igual que el sistema de temas adapta la presentación visual al entorno del usuario (modo claro/oscuro), el sistema de layout responsive adapta la **estructura** de la interfaz al dispositivo. Ambos son "hojas alternativas" de presentación: una controla el color, la otra controla la disposición.
+
+### Breakpoints como tokens del sistema
+
+Los puntos de ruptura están definidos como variables Sass en `_variables.scss` y se consumen a través de mixins para garantizar consistencia:
+
+```scss
+// frontend/src/styles/00-settings/_variables.scss
+$breakpoint-mobile: 767px;
+$breakpoint-tablet: 1023px;
+
+// frontend/src/styles/01-tools/_mixins.scss
+@mixin mobile {
+  @media (max-width: #{vars.$breakpoint-mobile}) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: #{vars.$breakpoint-tablet}) { @content; }
+}
+```
+
+### Layout base — Flexbox en el esqueleto de página
+
+El layout global (`_layout.scss`) usa Flexbox para crear el esqueleto de todas las páginas, con adaptación de padding para cada breakpoint:
+
+```scss
+// frontend/src/styles/04-layout/_layout.scss
+
+.pagina {
+  display:          flex;
+  flex-direction:   column;
+  min-height:       100dvh;
+}
+
+.pagina__intro {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  padding:        var(--space-48) var(--space-24) var(--space-32);
+
+  @media (max-width: 767px) {
+    padding: var(--space-24) var(--space-16) var(--space-16);
+  }
+}
+
+.pagina__contenido {
+  padding: 0 var(--space-24) var(--space-64);
+
+  @media (max-width: 767px) {
+    padding: 0 var(--space-16) var(--space-32);
+  }
+}
+```
+
+### Grid de tarjetas — Flexbox wrap
+
+La cuadrícula de tarjetas de contenedores usa `flex-wrap` para distribuirse automáticamente según el espacio disponible, sin necesidad de media queries explícitas:
+
+```scss
+// frontend/src/styles/05-components/_conjunto-cards.scss
+
+.conjunto-cards__grid {
+  display:         flex;
+  flex-wrap:       wrap;
+  gap:             2.875rem 1.875rem;  // 46px fila · 30px columna
+  justify-content: center;
+  max-width:       76.5rem;           // 1224px máximo
+}
+```
+
+### Tipografía y layout responsive por página
+
+La vista de semáforo aplica media queries tanto al layout como a la tipografía, con tres niveles de adaptación:
+
+```scss
+// frontend/src/pages/semaforo/semaforo.scss
+
+.semaforo__titulo {
+  font-size: var(--text-48);   // desktop
+
+  @media (max-width: 1023px) { font-size: var(--text-40); }  // tablet
+  @media (max-width: 767px)  { font-size: var(--text-32); }  // mobile
+}
+
+.semaforo__contenido {
+  padding: var(--space-32) var(--space-24) var(--space-64);
+
+  @media (max-width: 1023px) { padding: var(--space-24) var(--space-16) var(--space-48); }
+  @media (max-width: 767px)  { padding: var(--space-16) var(--space-16) var(--space-32); }
+}
+```
+
+### Tarjeta responsive — adaptación de estructura interna
+
+Las tarjetas de semáforo adaptan su estructura interna en tablet para reorganizar las filas de datos:
+
+```scss
+// frontend/src/styles/05-components/_card-semaforo.scss
+
+.card-semaforo {
+  width: 24.25rem;              // 388px en desktop
+
+  @media (max-width: 1023px) {
+    width: 100%;                // ocupa todo el ancho disponible
+
+    &__fecha-izq {
+      flex-direction: column;   // los elementos se apilan verticalmente
+      align-items:    flex-start;
+    }
+  }
+
+  @media (max-width: 767px) {
+    &__etiqueta,
+    &__valor {
+      font-size: var(--text-16); // tipografía reducida en mobile
+    }
+  }
+}
+```
+
+### Resumen de la estrategia responsive
+
+| Técnica | Dónde se usa | Propósito |
+|---|---|---|
+| `flex-direction: column` | Layout global, intro de páginas | Apilado vertical base |
+| `flex-wrap: wrap` | Cuadrícula de tarjetas | Grid automático sin media queries |
+| `max-width` con `margin: auto` | Contenedores de página | Limitar anchura en pantallas grandes |
+| Media query `767px` | Layout, tipografía, padding | Adaptación a móvil |
+| Media query `1023px` | Semáforo, tarjetas, almacén | Adaptación a tablet |
+| Unidades relativas (`rem`, `dvh`) | Todo el sistema | Escalado proporcional al tamaño base |

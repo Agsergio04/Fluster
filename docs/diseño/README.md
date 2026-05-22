@@ -11,24 +11,27 @@ La guía de estilos interactiva del proyecto está disponible en la ruta [`/guia
 
 ## RA1 — Planificación de interfaces
 
-| Criterio | Documento | Descripción |
-|---|---|---|
-| RA1.a | [RA1a — Comunicación visual](RA1a-comunicacion-visual.md) | Principios de comunicación visual aplicados al diseño de Fluster |
-| RA1.f | [RA1f — Plantillas de diseño](RA1f-plantillas-diseno.md) | Uso de plantillas y sistemas de componentes reutilizables |
+| Criterio | Documento / Sección | Nota | Descripción |
+|---|---|---|---|
+| RA1.a | [RA1a — Comunicación visual](RA1a-comunicacion-visual.md) | — | Principios de comunicación visual aplicados al diseño de Fluster |
+| RA1.c | [RA1c — Análisis de alternativas](RA1c-analisis-alternativas.md) | 7/10 | Alternativas de presentación de información analizadas |
+| RA1.d | [RA1d — Guía de estilo](RA1d-guia-estilo.md) | 5/10 | Valor de definir y aplicar una guía de estilo |
+| RA1.e | [RA1e — Tecnologías de diseño](RA1e-tecnologias-diseno.md) | 2.5/10 | Uso de herramientas y tecnologías de diseño |
+| RA1.f | [RA1f — Plantillas de diseño](RA1f-plantillas-diseno.md) | 2.5/10 | Uso de plantillas y sistemas de componentes reutilizables |
 
 ---
 
 ## RA2 — Uso de estilos
 
-| Criterio | Documento | Descripción |
-|---|---|---|
-| RA2.a | [RA2a — Etiquetas HTML](RA2a-etiquetas-html.md) | Semántica HTML5 y uso correcto de etiquetas |
-| RA2.c | [RA2c — Estilos globales](RA2c-estilos-globales.md) | Arquitectura ITCSS y sistema global de tokens |
-| RA2.d | [RA2d — Hojas alternativas](RA2d-hojas-alternativas.md) | Soporte de tema claro/oscuro mediante CSS Custom Properties |
-| RA2.e | [RA2e — Redefinir estilos](RA2e-redefinir-estilos.md) | Sobrescritura controlada de estilos con especificidad BEM |
-| RA2.f | [RA2f — Propiedades de elementos](RA2f-propiedades-elementos.md) | Propiedades CSS aplicadas en cada tipo de elemento |
-| RA2.g | [RA2g — Clases de estilos](RA2g-clases-estilos.md) | Nomenclatura BEM y sistema de clases utilitarias |
-| RA2.j | [RA2j — Preprocesadores](RA2j-preprocesadores.md) | Uso de SCSS: variables, mixins, anidamiento y módulos |
+| Criterio | Documento | Nota | Descripción |
+|---|---|---|---|
+| RA2.a | [RA2a — Etiquetas HTML](RA2a-etiquetas-html.md) | 4/10 | Semántica HTML5 y uso correcto de etiquetas |
+| RA2.c | [RA2c — Estilos globales](RA2c-estilos-globales.md) | 6.5/10 | Arquitectura ITCSS y sistema global de tokens |
+| RA2.d | [RA2d — Hojas alternativas](RA2d-hojas-alternativas.md) | 1/10 | Tema claro/oscuro y layout responsive |
+| RA2.e | [RA2e — Redefinir estilos](RA2e-redefinir-estilos.md) | 6.5/10 | Sobrescritura controlada de estilos con especificidad BEM |
+| RA2.f | [RA2f — Propiedades de elementos](RA2f-propiedades-elementos.md) | 1/10 | Propiedades CSS aplicadas en cada tipo de elemento |
+| RA2.g | [RA2g — Clases de estilos](RA2g-clases-estilos.md) | 3.5/10 | Nomenclatura BEM y sistema de clases utilitarias |
+| RA2.j | [RA2j — Preprocesadores](RA2j-preprocesadores.md) | 6.5/10 | Uso de SCSS: variables, mixins, anidamiento y módulos |
 
 ---
 
@@ -54,6 +57,24 @@ La guía de estilos interactiva del proyecto está disponible en la ruta [`/guia
 
 ---
 
+## RA6 — Usabilidad
+
+| Criterio | Sección | Nota | Descripción |
+|---|---|---|---|
+| RA6.a | [RA6a — Análisis de usabilidad](RA6a-analisis-usabilidad.md) | 5.5/10 | Usabilidad analizada en el diseño de Fluster |
+| RA6.b | [RA6b — Adecuación al usuario](RA6b-adecuacion-usuario.md) | 4.5/10 | Diseño adaptado al usuario objetivo y su contexto |
+| RA6.e | [RA6e — Técnicas de verificación](RA6e-tecnicas-verificacion.md) | 7.5/10 | Técnicas aplicadas para verificar la usabilidad |
+
+---
+
+## Documentación de recuperación
+
+Para los RAs con nota inferior a 5, el siguiente documento reúne las evidencias del proyecto Fluster que cubren cada criterio:
+
+- [RAs-recuperacion — Evidencias por RA no superado](RAs-recuperacion.md)
+
+---
+
 ## Documentación general del proyecto
 
 Los documentos técnicos generales del proyecto están en la carpeta raíz de `docs/`:
@@ -68,3 +89,4 @@ Los documentos técnicos generales del proyecto están en la carpeta raíz de `d
 - [08 — Despliegue](../08-despliegue.md)
 - [09 — Manual de usuario](../09-manual-usuario.md)
 - [10 — Conclusiones](../10-conclusiones.md)
+
