@@ -391,6 +391,24 @@ fluster-frontend-1  | 172.18.0.1 - - [18/May/2026:10:23:42 +0000] "GET /api/sema
 
 Los logs muestran que nginx actúa como punto de entrada único: la petición a `/api/semaforo` llega al contenedor `frontend:80` y nginx la redirige internamente a `backend:3000` antes de devolver la respuesta al cliente.
 
+#### ¿Dónde quedan los logs de nginx?
+
+La configuración [`frontend/nginx/nginx.conf`](../frontend/nginx/nginx.conf) no redefine `access_log` ni `error_log`, por lo que hereda el comportamiento por defecto de la imagen oficial `nginx:alpine`. Esa imagen enlaza simbólicamente los ficheros de log a la salida estándar del contenedor:
+
+```
+/var/log/nginx/access.log → /dev/stdout
+/var/log/nginx/error.log  → /dev/stderr
+```
+
+Esto significa que los logs **no se guardan en un fichero dentro del contenedor**, sino que se emiten por `stdout`/`stderr` y los recoge la plataforma:
+
+| Entorno | Dónde se consultan | Comando / ubicación |
+|---|---|---|
+| Local (Docker) | Salida del contenedor `frontend` | `docker compose logs frontend` · `docker compose logs -f frontend` (en vivo) |
+| Producción (Render) | Pestaña **Logs** del servicio en el dashboard | Render captura el `stdout`/`stderr` del contenedor automáticamente |
+
+**Persistencia:** los logs son **efímeros**. Al recrear el contenedor (`docker compose down`, redeploy en Render) se pierden, ya que no hay volumen ni servicio de agregación de logs configurado. Para un proyecto académico en plan gratuito esto es suficiente: la evidencia se obtiene con `docker compose logs` o desde el dashboard de Render. Si se necesitara conservarlos, las opciones serían montar un volumen redirigiendo `access_log` a un fichero real, o enviarlos a un agregador externo (Grafana Loki, Datadog, etc.).
+
 ### HTTPS
 
 En el entorno Docker local nginx sirve en HTTP puro (puerto 80). En producción, **Render gestiona el TLS/HTTPS de forma transparente a nivel de plataforma**: termina la conexión cifrada en su balanceador y la reenvía al contenedor en HTTP interno. Por eso el `nginx.conf` no necesita configuración SSL; el certificado lo gestiona Render de forma automática.
