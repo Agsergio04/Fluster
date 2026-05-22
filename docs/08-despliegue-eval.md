@@ -309,9 +309,13 @@ fluster-backend-1  | Conectado a MongoDB
 ![Logs de arranque del backend](./assets/img/despliegue/c2-b.png)
 
 ```bash
-# Health check a través del proxy nginx
-curl -s http://localhost/api/health
-# {"ok":true}
+# El backend responde a través del proxy nginx (sin token → 401, correcto)
+curl -s -o /dev/null -w "HTTP %{http_code}\n" http://localhost/api/semaforo
+# HTTP 401
+
+# Health check del backend desde dentro de la red interna
+docker compose exec backend node -e "fetch('http://localhost:3000/health').then(r=>r.json()).then(o=>console.log(o))"
+# { ok: true }
 
 # Frontend respondiendo
 curl -I http://localhost
@@ -507,7 +511,7 @@ El puerto 3000 no está expuesto al host. Solo es accesible dentro de `fluster-n
 # Login a través del proxy
 curl -s -X POST http://localhost/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"correo":"gestor@demo.com","contrasenia":"demo1234"}'
+  -d '{"correo":"gestor@demo.com","contrasena":"demo1234"}'
 ```
 
 ```json
@@ -552,9 +556,9 @@ content-type: text/html; charset=utf-8
 ```
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" \
-  https://fluster-frontend.onrender.com/api/health
-# → 200
+# Health check del backend real (Web Service de Render)
+curl -s https://fluster-vd09.onrender.com/health
+# → {"ok":true}
 ```
 
-En producción el mismo flujo funciona sobre HTTPS. Render termina TLS en su balanceador y reenvía la petición a nginx en HTTP interno.
+En producción el mismo flujo funciona sobre HTTPS. Render termina TLS en su balanceador y reenvía la petición al servicio en HTTP interno.

@@ -741,7 +741,7 @@ function BotonesLogin({ onIniciarSesion, onIrRegistro, cargando = false }) {
 const handleIniciarSesion = async () => {
   try {
     setCargando(true)
-    const usuario = await login(correo, contrasenia)
+    const usuario = await login(correo, contrasena)
     navigate(RUTA_POR_ROL[usuario.rol] ?? '/')
   } catch (err) {
     setErrorContrasenia(err.response?.data?.mensaje ?? 'Credenciales incorrectas')

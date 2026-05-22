@@ -338,17 +338,19 @@ docker compose ps
 
 ```
 NAME                   IMAGE              COMMAND                  SERVICE    STATUS    PORTS
-fluster-backend-1      fluster-backend    "docker-entrypoint.s…"   backend    running   0.0.0.0:3000->3000/tcp
+fluster-backend-1      fluster-backend    "docker-entrypoint.s…"   backend    running
 fluster-frontend-1     fluster-frontend   "/docker-entrypoint.…"   frontend   running   0.0.0.0:80->80/tcp
-fluster-mongo-1        mongo:7            "docker-entrypoint.s…"   mongo      running   27017/tcp
+fluster-mongo-1        mongo:7            "docker-entrypoint.s…"   mongo      running
 ```
+
+Solo `frontend` expone puerto al host (80). `backend` y `mongo` solo son accesibles dentro de la red interna `fluster-net`.
 
 ### Verificación con curl
 
 ```bash
-# Health check del backend
-curl -s http://localhost:3000/health
-# → {"ok":true}
+# Health check del backend desde dentro de la red interna (no está expuesto al host)
+docker compose exec backend node -e "fetch('http://localhost:3000/health').then(r=>r.json()).then(o=>console.log(o))"
+# → { ok: true }
 
 # Cabeceras del frontend (nginx respondiendo)
 curl -I http://localhost:80
@@ -360,7 +362,7 @@ curl -I http://localhost:80
 # Proxy funcionando: petición a /api redirigida a backend:3000
 curl -s -o /dev/null -w "%{http_code}" http://localhost/api/auth/login \
   -X POST -H "Content-Type: application/json" \
-  -d '{"correo":"inexistente@test.com","contrasenia":"xxx"}'
+  -d '{"correo":"inexistente@test.com","contrasena":"xxx"}'
 # → 401
 ```
 
@@ -439,14 +441,14 @@ Todos los endpoints protegidos requieren la cabecera `Authorization: Bearer <tok
 # Login — obtener token JWT
 curl -s -X POST https://fluster-vd09.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"correo":"gestor@demo.com","contrasenia":"demo1234"}' \
+  -d '{"correo":"gestor@demo.com","contrasena":"demo1234"}' \
   | jq '.token'
 # → "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
 # Guardar el token en variable de shell para los siguientes ejemplos
 TOKEN=$(curl -s -X POST https://fluster-vd09.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"correo":"gestor@demo.com","contrasenia":"demo1234"}' | jq -r '.token')
+  -d '{"correo":"gestor@demo.com","contrasena":"demo1234"}' | jq -r '.token')
 ```
 
 ### Contenedores
