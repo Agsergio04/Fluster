@@ -1,0 +1,65 @@
+name: "🐛 Reporte de error"
+description: "Informa de un fallo para ayudarnos a corregirlo"
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar un error. Rellena los campos para que podamos reproducirlo y corregirlo lo antes posible.
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del error
+      description: Explica con claridad qué ha ocurrido.
+      placeholder: Al pulsar "Generar informe" la aplicación muestra una pantalla en blanco...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduccion
+    attributes:
+      label: Pasos para reproducir
+      description: Indica los pasos exactos para reproducir el fallo.
+      placeholder: |
+        1. Iniciar sesión como gestor
+        2. Ir a Almacén
+        3. Pulsar "Generar informe"
+        4. Ver el error
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Comportamiento esperado
+      description: ¿Qué debería haber pasado?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área afectada
+      options:
+        - Frontend
+        - Backend
+        - Despliegue / Docker
+        - Documentación
+        - No lo sé / Otro
+    validations:
+      required: true
+
+  - type: input
+    id: entorno
+    attributes:
+      label: Entorno
+      description: Navegador, sistema operativo y, si aplica, si es local o producción.
+      placeholder: "Chrome 124 · Windows 11 · producción (Render)"
+
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto adicional
+      description: Capturas de pantalla, logs o cualquier otra información útil.

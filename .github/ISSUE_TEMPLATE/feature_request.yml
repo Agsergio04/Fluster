@@ -1,0 +1,51 @@
+name: "✨ Solicitud de funcionalidad"
+description: "Propón una nueva funcionalidad o una mejora"
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tu propuesta. Describe la idea para que podamos valorarla.
+
+  - type: textarea
+    id: problema
+    attributes:
+      label: Problema o necesidad
+      description: ¿Qué problema resuelve esta funcionalidad? ¿Qué echas en falta?
+      placeholder: Como gestor, no puedo filtrar los contenedores por naviera...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solucion
+    attributes:
+      label: Solución propuesta
+      description: Describe qué te gustaría que hiciera la aplicación.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: Alternativas consideradas
+      description: Otras soluciones o enfoques que hayas valorado.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área implicada
+      options:
+        - Frontend
+        - Backend
+        - Despliegue / Docker
+        - Documentación
+        - No lo sé / Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto adicional
+      description: Bocetos, capturas o referencias que ayuden a entender la propuesta.
