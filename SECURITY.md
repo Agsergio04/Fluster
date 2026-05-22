@@ -9,10 +9,10 @@ están implementadas en el proyecto.
 Al tratarse de un proyecto académico en desarrollo activo, solo la última
 versión de la rama `main` recibe correcciones de seguridad.
 
-| Versión | Soporte |
-|---------|---------|
-| `main` (última) | ✅ |
-| Versiones anteriores | ❌ |
+| Versión |
+|---------|
+| `main` (última) |
+| Versiones anteriores |
 
 ## Cómo reportar una vulnerabilidad
 
