@@ -73,13 +73,17 @@
 
   &__botones {
     display:     flex;
-    flex-wrap:   wrap;
-    gap:         0.6875rem; // 11px
-    align-items: center;
+    flex-wrap:   nowrap;       // los dos botones siempre en la misma fila
+    gap:         0.6875rem;    // 11px
+    align-items: stretch;      // misma altura
+    width:       100%;
+    margin-top:  auto;         // anclados al fondo de la card
 
     .btn-editar,
     .btn-eliminar {
-      align-self: center;
+      flex:       1 1 0;       // mismo ancho, escalan juntos (responsive)
+      max-width:  none;        // ocupan su mitad sin tope fijo
+      align-self: stretch;     // mismo nivel y misma altura
     }
   }
 
