@@ -1,8 +1,7 @@
 # RA1.d — Guía de estilo
 
 > **RA vinculado:** RA1 — CE 1.d  
-> **Módulo:** Diseño de Interfaces Web  
-> **Nota:** 5/10
+> **Módulo:** Diseño de Interfaces Web
 
 ---
 

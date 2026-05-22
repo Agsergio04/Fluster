@@ -12,7 +12,9 @@ async function crear(req, res, next) {
 
 async function listar(req, res, next) {
   try {
-    const contenedores = await contenedorService.listar(req.query)
+    const filtros = { ...req.query }
+    if (req.usuario.rol === 'operador') filtros.creadoPorId = req.usuario.id
+    const contenedores = await contenedorService.listar(filtros)
     res.json(contenedores)
   } catch (err) {
     next(err)

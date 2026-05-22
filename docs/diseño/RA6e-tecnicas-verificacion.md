@@ -1,8 +1,7 @@
 # RA6.e — Técnicas de verificación de usabilidad
 
 > **RA vinculado:** RA6 — CE 6.e  
-> **Módulo:** Diseño de Interfaces Web  
-> **Nota:** 7.5/10
+> **Módulo:** Diseño de Interfaces Web
 
 ---
 

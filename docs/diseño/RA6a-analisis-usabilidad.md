@@ -1,8 +1,7 @@
 # RA6.a — Análisis de usabilidad
 
 > **RA vinculado:** RA6 — CE 6.a  
-> **Módulo:** Diseño de Interfaces Web  
-> **Nota:** 5.5/10
+> **Módulo:** Diseño de Interfaces Web
 
 ---
 

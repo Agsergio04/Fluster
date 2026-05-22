@@ -86,9 +86,10 @@ async function crear({ codigoBIC, foto, creadoPor }) {
  */
 async function listar(filtros = {}) {
   const query = {}
-  if (filtros.estado)    query.estado    = filtros.estado
-  if (filtros.navieraId) query.navieraId = filtros.navieraId
-  if (filtros.busqueda)  query.codigoBIC = { $regex: filtros.busqueda, $options: 'i' }
+  if (filtros.estado)      query.estado    = filtros.estado
+  if (filtros.navieraId)   query.navieraId = filtros.navieraId
+  if (filtros.busqueda)    query.codigoBIC = { $regex: filtros.busqueda, $options: 'i' }
+  if (filtros.creadoPorId) query.creadoPor = filtros.creadoPorId
 
   if (filtros.clienteId) {
     const ids = await Ciclo.find({ clienteId: filtros.clienteId }).distinct('contenedorId')

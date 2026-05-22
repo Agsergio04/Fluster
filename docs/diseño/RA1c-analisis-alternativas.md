@@ -1,8 +1,7 @@
 # RA1.c — Análisis de alternativas
 
 > **RA vinculado:** RA1 — CE 1.c  
-> **Módulo:** Diseño de Interfaces Web  
-> **Nota:** 7/10
+> **Módulo:** Diseño de Interfaces Web
 
 ---
 

@@ -150,14 +150,9 @@
   }
 
   &__contacto-valor {
-    font-family:     var(--font-body);
-    font-size:       var(--text-16);
-    color:           var(--color-primary);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-box-text);
   }
 
   // ── Contacto — sección más ancha para el layout de dos columnas ───

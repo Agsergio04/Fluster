@@ -1,23 +1,29 @@
+import { useState, useEffect } from 'react'
+import placeholder from '../../assets/images/PlaceHolder-contenedor.jpg'
 import BotonEditar from '../atomos/BotonEditar'
 import BotonEliminar from '../atomos/BotonEliminar'
 
-/**
- * Tarjeta de contenedor en la vista del operador.
- * Muestra foto opcional, código BIC y fecha de inclusión con acciones de editar y eliminar.
- */
 function CardContenedor({ foto, codigoBic, fechaInclusion, onEditar, onEliminar }) {
+  const [imgError, setImgError] = useState(false)
+
+  useEffect(() => { setImgError(false) }, [foto])
+
+  const usarPlaceholder = !foto || imgError
+  const imgSrc = usarPlaceholder ? placeholder : foto
+  // Alt vacío cuando es el placeholder: es decorativo, el BIC ya está en el texto
+  const imgAlt = usarPlaceholder ? '' : `Foto del contenedor ${codigoBic}`
+
   return (
     <div className="card-contenedor">
       <div className="card-contenedor__foto-wrapper">
-        {foto && (
-          <img
-            className="card-contenedor__foto"
-            src={foto}
-            alt={codigoBic}
-            loading="lazy"
-            decoding="async"
-          />
-        )}
+        <img
+          className="card-contenedor__foto"
+          src={imgSrc}
+          alt={imgAlt}
+          loading="lazy"
+          decoding="async"
+          onError={() => setImgError(true)}
+        />
       </div>
 
       <div className="card-contenedor__bic">
