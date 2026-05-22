@@ -621,6 +621,19 @@
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" }
         }
+      },
+      "delete": {
+        "tags": ["Contenedores"],
+        "summary": "Eliminar contenedor",
+        "description": "Elimina un contenedor y sus ciclos asociados. Solo se permite si está en estado `INACTIVO`. Roles: `operador` y `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "204": { "description": "Contenedor eliminado" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "El contenedor no está en estado INACTIVO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
       }
     },
     "/api/contenedores/{id}/entrada-puerto": {
