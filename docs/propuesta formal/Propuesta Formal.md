@@ -255,67 +255,127 @@ Para reducir barreras de entrada, el stack tecnológico se apoya en herramientas
 
 ### 7.1. Metodología de gestión
 
-Se utilizará una metodología **Scrum**: sprints cortos (1–2 semanas) y uso de GitHub Projects para visualizar tareas pendientes, en curso y finalizadas. El desarrollo se planifica para una duración aproximada de **10 semanas**, finalizando con la defensa del proyecto.
+Se siguió una metodología **Scrum**: sprints cortos (1–2 semanas) y uso de GitHub Projects para visualizar tareas pendientes, en curso y finalizadas. El desarrollo se ejecutó en **siete sprints** (aproximadamente **doce semanas**), finalizando con la defensa del proyecto.
 
-### 7.2. Cronograma orientativo
+### 7.2. Cronograma real (sprints)
 
-> Fechas adaptables según la carga de trabajo que tenga en esas semanas.
+> Cronograma seguido realmente durante el desarrollo. Cada sprint entregó un incremento funcional y desplegable.
 
-- **Sprint 1 – Planificación, stack y despliegue inicial**  
-    - Creación de la estructura del repositorio y configuración inicial de Docker Compose .  
-    - Definición del modelo de datos (colecciones `usuarios`, `contenedores`, `eventos`, `tarifasDND...`) y atributos principales.  
-    - Configuración base del proyecto React (routing, layout principal, tema de estilos ITCSS) y del backend Express (estructura de carpetas, middlewares genéricos, conexión con Mongo).  
-    - Despliegue básico en Render del backend y frontend junto al cluster de MongoDB Atlas.  
-  - **Objetivo a completar**: Entorno preparado (repositorio + Docker + Render + conexión a MongoDB) y arquitectura mínima lista para empezar a desarrollar funcionalidades reales.
+- **Sprint 1 – Infraestructura base y estructura del repositorio**  
+    - Estructura del monorepo (`backend/`, `frontend/`, `docs/`) y Docker Compose con hot-reload en ambos servicios.  
+    - Clúster MongoDB Atlas M0 conectado mediante Mongoose; frontend React + Vite con React Router.  
+    - Despliegue en Render (frontend como Static Site, backend como Web Service) y pipeline de GitHub Actions desde el primer día.  
+  - **Resultado**: entorno reproducible (repositorio + Docker + Render + MongoDB) con la arquitectura mínima lista.
 
-- **Sprint 2 – Implementación del backend y lógica de negocio básica**  
-    - Implementación del sistema de usuarios: registro, login y cifrado de contraseñas con Bcrypt.  
-    - Implementación de autenticación y autorización basada en JWT (middleware para proteger rutas y lectura de rol).  
-    - Diseño e implementación del CRUD básico de contenedores: alta, listado, detalle y actualización de datos principales (código BIC, naviera, puerto, fechas de free time...).  
-    - Creación de documentación interactiva de la API con Swagger UI para las rutas de usuarios y contenedores.  
-    - Integración mínima en el frontend: pantallas de login/registro y listado simple de contenedores consumiendo la API.  
-  - **Objetivo a completar**: Backend funcional para usuarios y contenedores con seguridad básica, y frontend capaz de autenticarse y listar contenedores.
+- **Sprint 2 – Autenticación, usuarios y API documentada**  
+    - Registro con Bcrypt, login con JWT, `authMiddleware` y `rolMiddleware` (roles admin, gestor, operador).  
+    - CRUD completo de usuarios y panel de control del administrador.  
+    - Documentación interactiva de la API con Swagger UI (`/api-docs`).  
+  - **Resultado**: acceso seguro por roles y API pública documentada.
 
-- **Sprint 3 – Modelo de tarifas y motor de cálculo D&D**  
-    - Diseño y creación de la colección/estructura de **tarifas de D&D** por naviera/puerto/cliente (tramos de días y precio por día).  
-    - Implementación del motor de cálculo: funciones que, dada la fecha de free time y los eventos, calculan días de demurrage y detention y su coste total.  
-    - Endpoints para obtener el coste actual y el estado de un contenedor (dentro de free time, en zona ámbar, en sobrecoste).  
-    - Integración de los resultados de cálculo en el backend de contenedores y del riesgo.  
-  - **Objetivo a completar**: Cálculo automático de días y costes de D&D funcionando y disponible vía API para ser consumido por el panel.
+- **Sprint 3 – Modelo de tarifas D&D y motor de cálculo**  
+    - Esquema de navieras con tramos tarifarios (`diasDemurrage`/`diasDetention`, arrays de `{ desdeDia, hastaDia, precioPorDia }`).  
+    - Motor de cálculo de costes D&D por tramos, calculado **bajo demanda** (no se persiste) para reflejar siempre la tarifa vigente.  
+    - CRUD de clientes y modelo de contenedor con sus cuatro estados de ciclo de vida.  
+  - **Resultado**: cálculo automático de días y costes D&D disponible vía API.
 
-- **Sprint 4 – Eventos con foto y OCR**  
-    - Diseño del modelo de eventos: tipo de evento (entrada/salida puerto, llegada almacén, devolución), `timestamp`, ubicación y referencia al contenedor.  
-    - Implementación de endpoints para registrar eventos, incluyendo subida de foto (almacenamiento en disco/S3/Cloudinary o similar, según el alcance del proyecto).  
-      - Integración del OCR (Tesseract OCR con Tess4J) en el backend para leer el código BIC desde la foto y validar que el evento se vincula al contenedor correcto.  
-    - Lógica de actualización automática del contenedor al registrar eventos (recalcular estado, días y costes).  
-    - En React, creación de un formulario de alta de eventos con subida de imagen y visualización básica de la línea temporal de eventos por contenedor.  
-  - **Objetivo a completar**: Poder registrar eventos con foto y que el sistema vincule y recalcule automáticamente la situación de cada contenedor.
+- **Sprint 4 – Eventos, ciclos y OCR**  
+    - Transiciones de estado del contenedor (entrada a puerto, salida a cliente, devolución, reversión, cancelación de ciclo) con su evento (foto + timestamp).  
+    - Integración de **Tesseract.js** en `POST /api/ocr/extraer-bic` para leer el código BIC desde la imagen. Las fotos se almacenan como data URL (base64) en MongoDB.  
+    - Modelo de ciclos (`Ciclo`) que agrupa los periodos de demurrage y detention.  
+  - **Resultado**: flujo operativo completo del contenedor con recálculo automático.
 
-- **Sprint 5 – Panel React y generación de informes PDF**  
-  - Desarrollo del panel principal en React:  
-    - Listado de contenedores activos con indicadores de riesgo tipo semáforo (verde/ámbar/rojo).  
-    - Filtros por estado, naviera, cliente o rango de fechas.  
-    - Vista de detalle de contenedor con timeline de eventos y desglose de días/costes.  
-    - Implementación de la parte de informes:  
-      - Endpoint para obtener datos agregados (por rango de fechas, naviera, cliente).  
-      - Botón “Exportar informe” en el panel que genera un PDF con jsPDF + jsPDF-AutoTable.  
-    - Ajustes de estilos con ITCSS para asegurar una interfaz consistente y mantenible.  
-  - **Objetivo a completar**: Panel de monitorización usable, con vista de lista y detalle, y generación de informes PDF listos para comparar con facturas de naviera.
+- **Sprint 5 – Frontend completo e informes PDF**  
+    - Páginas: semáforo de riesgo, tarifas por naviera, almacén con historial, panel de control de admin y perfil.  
+    - Generación de informes PDF (individual y general con filtros) con jsPDF + jsPDF-AutoTable.  
+    - Custom hooks de fetch y tema claro/oscuro con persistencia en localStorage.  
+  - **Resultado**: interfaz completa conectada al backend.
 
-- **Sprint 6 – Refinos, pruebas, documentación y demo final**  
-    - Pruebas end-to-end básicas del flujo completo: alta de contenedor → registro de eventos → cálculo de D&D → visualización en panel → exportación de informe.  
-    - Corrección de bugs, mejoras de validaciones (formularios, mensajes de error claros) y pequeños refinos de UX/UI.  
-    - Documentación técnica del proyecto (arquitectura, endpoints, modelos de datos) y guía rápida de uso para un usuario no técnico.  
-    - Preparación de la demo final:  
-      - Datos de ejemplo que ilustren varios casos de D&D.  
-      - Guion de presentación y, si se requiere, grabación en vídeo del flujo principal usando OBS.  
-  - **Objetivo a completar**: Proyecto estable, documentado, con caso de uso de principio a fin listo para demostrar en la defensa.
+- **Sprint 6 – Testing, corrección de errores y documentación**  
+    - Suite de tests con Jest (controladores, servicios y middlewares).  
+    - Corrección de errores y revisión de UX/accesibilidad básica.  
+    - Documentación técnica del proyecto en `docs/`.  
+  - **Resultado**: proyecto estable, probado y documentado.
+
+- **Sprint 7 – Endurecimiento, seguridad, despliegue y recuperación**  
+    - Seguridad: Helmet, CORS por entorno y rate limiting; contenedores Docker ejecutados como usuario no-root.  
+    - CI/CD reforzado: Dependabot (actualización de dependencias) y Trivy (escaneo de vulnerabilidades).  
+    - Tests de integración con MongoDB en memoria y ampliación de tests de frontend (Vitest) y E2E (Playwright).  
+    - Accesibilidad (WAVE, contraste, foco visible) y responsive; documentación de recuperación (RA de diseño y despliegue) y ficheros de comunidad (LICENSE, SECURITY, CONTRIBUTING, CHANGELOG).  
+  - **Resultado**: proyecto endurecido, con buenas prácticas de seguridad y DevOps, y documentación de recuperación completa.
 
 ### 7.3. Herramientas de seguimiento
 
 - **GitHub Projects**: Tablero Kanban para gestión de tareas y visualización del avance por sprint.  
 - **Toggl Track**: Para medir el tiempo real dedicado a cada funcionalidad y ajustar el esfuerzo.  
 - **Herramienta de grabación (OBS o similar)**: Para generar vídeos de las demos parciales o de la demo final.  
+
+### 7.4. Estimación de esfuerzo por tarea
+
+Estimación de horas dedicadas a cada tarea del proyecto.
+
+| Tarea | Horas estimadas |
+|---|---|
+| Prototipado y wireframes en Figma | 16 |
+| Sistema/guía de estilos (paleta, tipografía, tokens) | 8 |
+| Diagramas (ER, casos de uso, flujo) | 6 |
+| Modelo de datos MongoDB y relaciones | 8 |
+| Arquitectura API REST + MVC | 10 |
+| Autenticación JWT y roles | 8 |
+| Motor de cálculo D&D por tramos | 12 |
+| Transiciones de estado del contenedor | 8 |
+| OCR del código BIC (Tesseract.js) | 6 |
+| Endpoints e historial de informes | 5 |
+| Documentación de la API (Swagger) | 4 |
+| Seguridad (Helmet, CORS, rate limiting) | 4 |
+| Tests backend (unitarios + integración) | 12 |
+| Estructura SPA (React Router, guards, sesión) | 8 |
+| Componentes (Atomic Design) | 20 |
+| Estilos SCSS/ITCSS/BEM + responsive | 18 |
+| Tema claro/oscuro | 4 |
+| Páginas (login, semáforo, almacén, tarifas, perfil…) | 22 |
+| Generación de PDF (jsPDF) | 6 |
+| Accesibilidad (WAVE, ARIA, contraste) | 6 |
+| Tests frontend (Vitest + Playwright) | 8 |
+| Dockerización (Dockerfiles, compose, nginx) | 8 |
+| CI/CD (GitHub Actions, Render, Dependabot, Trivy) | 8 |
+| Documentación del proyecto (01–10) | 16 |
+| Documentación de recuperación (RA diseño + despliegue) | 10 |
+| README y ficheros de comunidad | 4 |
+| **Total** | **245** |
+
+### 7.5. Categorización de tareas por tipo
+
+| Tarea | Tipo |
+|---|---|
+| Prototipado y wireframes en Figma | Diseño |
+| Sistema/guía de estilos (paleta, tipografía, tokens) | Diseño |
+| Diagramas (ER, casos de uso, flujo) | Diseño |
+| Modelo de datos MongoDB y relaciones | BD |
+| Arquitectura API REST + MVC | Backend |
+| Autenticación JWT y roles | Backend |
+| Motor de cálculo D&D por tramos | Backend |
+| Transiciones de estado del contenedor | Backend |
+| OCR del código BIC (Tesseract.js) | Backend |
+| Endpoints e historial de informes | Backend |
+| Documentación de la API (Swagger) | Backend |
+| Seguridad (Helmet, CORS, rate limiting) | Backend |
+| Tests backend (unitarios + integración) | Backend |
+| Estructura SPA (React Router, guards, sesión) | Frontend |
+| Componentes (Atomic Design) | Frontend |
+| Estilos SCSS/ITCSS/BEM + responsive | Frontend |
+| Tema claro/oscuro | Frontend |
+| Páginas (login, semáforo, almacén, tarifas, perfil…) | Frontend |
+| Generación de PDF (jsPDF) | Frontend |
+| Accesibilidad (WAVE, ARIA, contraste) | Frontend |
+| Tests frontend (Vitest + Playwright) | Frontend |
+| Dockerización (Dockerfiles, compose, nginx) | Despliegue |
+| CI/CD (GitHub Actions, Render, Dependabot, Trivy) | Despliegue |
+| Documentación del proyecto (01–10) | Documentación |
+| Documentación de recuperación (RA diseño + despliegue) | Documentación |
+| README y ficheros de comunidad | Documentación |
+
+**Resumen por tipo:** Diseño 30 h · BD 8 h · Backend 69 h · Frontend 92 h · Despliegue 16 h · Documentación 30 h → **245 h**.
 
 
 
