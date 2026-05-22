@@ -255,7 +255,7 @@ docker compose up -d --build
 
 ## 9. Servidor web / Reverse proxy (nginx)
 
-El contenedor `frontend` usa una imagen multietapa: Vite compila el bundle en la fase `builder` y el resultado se copia a una imagen `nginx:alpine` mínima. La configuración de nginx (`frontend/nginx.conf`) hace tres cosas:
+El contenedor `frontend` usa una imagen multietapa: Vite compila el bundle en la fase `builder` y el resultado se copia a una imagen `nginx:alpine` mínima. La configuración de nginx (`frontend/nginx/nginx.conf`) hace tres cosas:
 
 1. Sirve los estáticos de la SPA.
 2. Redirige cualquier ruta desconocida a `index.html` para que React Router la maneje en el cliente.
@@ -305,7 +305,7 @@ RUN npm run build
 # Fase 2: servir el build con nginx (imagen mínima)
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```

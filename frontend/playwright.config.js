@@ -2,9 +2,10 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: './tests/e2e',
+  outputDir: './tests/test-results',
   fullyParallel: false,
   retries: 0,
-  reporter: [['html', { open: 'never' }], ['line']],
+  reporter: [['html', { outputFolder: './tests/playwright-report', open: 'never' }], ['line']],
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',

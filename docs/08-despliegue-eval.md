@@ -215,7 +215,7 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
@@ -331,7 +331,7 @@ curl -I http://localhost
 | `docker-compose.yml` | [`/docker-compose.yml`](../docker-compose.yml) | Define los 3 servicios, redes y volúmenes |  Sí |
 | `Dockerfile` (backend) | [`/backend/Dockerfile`](../backend/Dockerfile) | Imagen del servidor Node.js |  Sí |
 | `Dockerfile` (frontend) | [`/frontend/Dockerfile`](../frontend/Dockerfile) | Imagen multi-stage Vite + nginx |  Sí |
-| `nginx.conf` | [`/frontend/nginx.conf`](../frontend/nginx.conf) | Configuración del servidor web y proxy |  Sí |
+| `nginx.conf` | [`/frontend/nginx/nginx.conf`](../frontend/nginx/nginx.conf) | Configuración del servidor web y proxy |  Sí |
 
 ### Variables de entorno
 
@@ -393,7 +393,7 @@ Repositorio GitHub (lo que SE sube)
 │   └── src/                   ← código fuente
 └── frontend/
     ├── Dockerfile             ← imagen multi-stage del frontend
-    ├── nginx.conf             ← configuración del proxy
+    ├── nginx/nginx.conf       ← configuración del proxy
     └── src/                   ← código fuente
 
 Lo que NO se sube (generado o secreto)
