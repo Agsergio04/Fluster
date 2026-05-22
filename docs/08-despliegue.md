@@ -255,7 +255,7 @@ docker compose up -d --build
 
 ## 9. Servidor web / Reverse proxy (nginx)
 
-El contenedor `frontend` usa una imagen multietapa: Vite compila el bundle en la fase `builder` y el resultado se copia a una imagen `nginx:alpine` mínima. La configuración de nginx (`frontend/nginx/nginx.conf`) hace tres cosas:
+El contenedor `frontend` usa una imagen multietapa: Vite compila el bundle en la fase `builder` y el resultado se copia a una imagen `nginx-unprivileged:alpine` mínima. La configuración de nginx (`frontend/nginx/nginx.conf`) hace tres cosas:
 
 1. Sirve los estáticos de la SPA.
 2. Redirige cualquier ruta desconocida a `index.html` para que React Router la maneje en el cliente.
@@ -263,7 +263,7 @@ El contenedor `frontend` usa una imagen multietapa: Vite compila el bundle en la
 
 ```nginx
 server {
-    listen      80;
+    listen      8080;
     server_name localhost;
     root        /usr/share/nginx/html;
     index       index.html;
@@ -302,11 +302,12 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Fase 2: servir el build con nginx (imagen mínima)
-FROM nginx:alpine
+# Fase 2: servir el build con nginx (imagen no-root)
+FROM nginxinc/nginx-unprivileged:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+USER nginx
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
@@ -339,7 +340,7 @@ docker compose ps
 ```
 NAME                   IMAGE              COMMAND                  SERVICE    STATUS    PORTS
 fluster-backend-1      fluster-backend    "docker-entrypoint.s…"   backend    running
-fluster-frontend-1     fluster-frontend   "/docker-entrypoint.…"   frontend   running   0.0.0.0:80->80/tcp
+fluster-frontend-1     fluster-frontend   "/docker-entrypoint.…"   frontend   running   0.0.0.0:80->8080/tcp
 fluster-mongo-1        mongo:7            "docker-entrypoint.s…"   mongo      running
 ```
 
@@ -393,7 +394,7 @@ Los logs muestran que nginx actúa como punto de entrada único: la petición a 
 
 #### ¿Dónde quedan los logs de nginx?
 
-La configuración [`frontend/nginx/nginx.conf`](../frontend/nginx/nginx.conf) no redefine `access_log` ni `error_log`, por lo que hereda el comportamiento por defecto de la imagen oficial `nginx:alpine`. Esa imagen enlaza simbólicamente los ficheros de log a la salida estándar del contenedor:
+La configuración [`frontend/nginx/nginx.conf`](../frontend/nginx/nginx.conf) no redefine `access_log` ni `error_log`, por lo que hereda el comportamiento por defecto de la imagen oficial `nginx-unprivileged:alpine`. Esa imagen enlaza simbólicamente los ficheros de log a la salida estándar del contenedor:
 
 ```
 /var/log/nginx/access.log → /dev/stdout

@@ -36,7 +36,7 @@ La aplicación está dividida en **tres servicios completamente independientes**
 
 | Servicio | Tecnología | Responsabilidad | Puerto expuesto al host |
 |---|---|---|---|
-| `frontend` | React 19 + Vite + nginx:alpine | Sirve la SPA y actúa como reverse proxy | **80** (único punto de entrada) |
+| `frontend` | React 19 + Vite + nginx-unprivileged:alpine | Sirve la SPA y actúa como reverse proxy | **80** (host) → 8080 (contenedor, no-root) |
 | `backend` | Node.js 22 + Express 5 | API REST, lógica de negocio, autenticación JWT | Ninguno — solo red interna |
 | `mongo` | MongoDB 7 | Persistencia de datos | Ninguno — solo red interna |
 
@@ -54,7 +54,7 @@ Navegador (cliente)
        │  HTTPS (Render) / HTTP en local
        ▼
 ┌──────────────────────────────────┐
-│   frontend — nginx:alpine        │  Puerto 80 → EXPUESTO al host
+│   frontend — nginx (no-root)     │  Puerto 80 (host) → 8080 (contenedor)
 │                                  │
 │   /              → index.html    │  (SPA React 19)
 │   /assets/*      → bundle JS/CSS │
@@ -122,7 +122,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "80:8080"
     depends_on:
       - backend
     networks:
@@ -151,7 +151,7 @@ docker compose ps
 
 ```
 NAME                   IMAGE              STATUS    PORTS
-fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->80/tcp
+fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->8080/tcp
 fluster-backend-1      fluster-backend    running
 fluster-mongo-1        mongo:7            running
 ```
@@ -182,6 +182,9 @@ RUN npm ci --omit=dev
 
 COPY src/ ./src/
 
+# Ejecutar como usuario no-root (incluido en la imagen oficial de Node)
+USER node
+
 EXPOSE 3000
 
 CMD ["node", "src/index.js"]
@@ -211,13 +214,16 @@ COPY . .
 RUN npm run build
 
 
-# ─── Fase 2: servir el build con nginx (imagen mínima) ────────
-FROM nginx:alpine
+# ─── Fase 2: servir el build con nginx (imagen no-root) ───────
+FROM nginxinc/nginx-unprivileged:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+# Corre como el usuario "nginx" (UID 101), no como root
+USER nginx
+
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
 ```
@@ -226,10 +232,11 @@ CMD ["nginx", "-g", "daemon off;"]
 
 La imagen final no contiene Node.js, solo el bundle compilado y nginx.
 
-- **Tamaño:** `nginx:alpine` pesa ~5 MB frente a ~50 MB de `node:22-alpine`. Node.js no es necesario en producción para servir ficheros estáticos.
+- **Tamaño:** `nginx-unprivileged:alpine` pesa ~5 MB frente a ~50 MB de `node:22-alpine`. Node.js no es necesario en producción para servir ficheros estáticos.
 - **Seguridad:** la imagen de producción no contiene código fuente React, ficheros de configuración de Vite ni `node_modules`. La superficie de ataque es mínima.
+- **Sin privilegios:** ambos contenedores corren como usuario **no-root** (`node` en el backend, `nginx` en el frontend). nginx escucha en el puerto 8080 (un usuario no-root no puede usar puertos < 1024) y el host lo publica como 80. Esto cumple la recomendación de seguridad de no ejecutar procesos como root (Trivy DS-0002).
 
-Fase 1 (builder): instala dependencias y ejecuta `npm run build`, produciendo `dist/` (HTML + JS + CSS optimizados). Fase 2: parte de cero con `nginx:alpine`, copia solo `dist/` y `nginx.conf`.
+Fase 1 (builder): instala dependencias y ejecuta `npm run build`, produciendo `dist/` (HTML + JS + CSS optimizados). Fase 2: parte de cero con `nginx-unprivileged:alpine`, copia solo `dist/` y `nginx.conf`.
 
 ### Variables de entorno — [`backend/.env.example`](../backend/.env.example)
 
@@ -289,7 +296,7 @@ docker compose ps
 
 ```
 NAME                   IMAGE              STATUS    PORTS
-fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->80/tcp
+fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->8080/tcp
 fluster-backend-1      fluster-backend    running
 fluster-mongo-1        mongo:7            running
 ```
@@ -444,7 +451,7 @@ nginx (frontend:80)  ←── único punto de entrada público
 
 | Contenedor | Puerto interno | Puerto expuesto al host | Accesible desde exterior |
 |---|---|---|---|
-| `frontend` (nginx) | 80 | **80** | Si — único punto de entrada |
+| `frontend` (nginx) | 8080 | **80** | Si — único punto de entrada |
 | `backend` (Node.js) | 3000 | Ninguno | No — solo red interna |
 | `mongo` (MongoDB) | 27017 | Ninguno | No — solo red interna |
 
@@ -456,12 +463,12 @@ docker compose ps
 
 ```
 NAME                   IMAGE              STATUS    PORTS
-fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->80/tcp
+fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->8080/tcp
 fluster-backend-1      fluster-backend    running
 fluster-mongo-1        mongo:7            running
 ```
 
-Solo `frontend` tiene un puerto mapeado al host (`0.0.0.0:80->80/tcp`). `backend` y `mongo` no tienen puertos publicados.
+Solo `frontend` tiene un puerto mapeado al host (`0.0.0.0:80->8080/tcp`). `backend` y `mongo` no tienen puertos publicados.
 
 ![docker compose ps — estado real de los contenedores](./assets/img/despliegue/c8-a.png)
 
