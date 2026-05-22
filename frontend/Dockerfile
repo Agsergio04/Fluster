@@ -10,12 +10,16 @@ COPY . .
 RUN npm run build
 
 
-# ─── Fase 2: servir el build con nginx (imagen mínima) ────────
-FROM nginx:alpine
+# ─── Fase 2: servir el build con nginx (imagen no-root) ───────
+# nginx-unprivileged corre como el usuario "nginx" (UID 101), no como root,
+# y escucha en el puerto 8080 (un usuario no-root no puede usar el 80).
+FROM nginxinc/nginx-unprivileged:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+USER nginx
+
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
