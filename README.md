@@ -7,15 +7,6 @@ Aplicación web para que empresas PYME de logística controlen y gestionen los c
 [![Security](https://github.com/Agsergio04/Fluster/actions/workflows/security.yml/badge.svg)](https://github.com/Agsergio04/Fluster/actions/workflows/security.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-<!-- Stack tecnológico -->
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
-[![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)](https://nodejs.org)
-[![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com)
-[![MongoDB](https://img.shields.io/badge/MongoDB-7-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
-[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev)
-[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
-[![API Docs](https://img.shields.io/badge/API-Swagger-85EA2D?logo=swagger&logoColor=black)](https://fluster-vd09.onrender.com/api-docs)
-
 ---
 
 ## Tabla de contenidos
@@ -76,9 +67,9 @@ Fluster centraliza todo el ciclo de vida del contenedor, calcula automáticament
 
 | Capa | Tecnologías |
 |------|-------------|
-| **Frontend** | React 19, React Router 7, Axios, Vite, SCSS/ITCSS, Atomic Design |
-| **Backend** | Node.js, Express 5, MongoDB Atlas, Mongoose, JWT, Bcrypt, Tesseract.js, Swagger UI |
-| **Infraestructura** | Docker Compose, GitHub Actions (CI/CD), Render (despliegue), Jest (tests backend), Vitest + React Testing Library (tests frontend) |
+| **Frontend** | [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev) [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev) · React Router 7 · Axios · SCSS/ITCSS · Atomic Design |
+| **Backend** | [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)](https://nodejs.org) [![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com) [![MongoDB](https://img.shields.io/badge/MongoDB-7-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com) [![API Docs](https://img.shields.io/badge/API-Swagger-85EA2D?logo=swagger&logoColor=black)](https://fluster-vd09.onrender.com/api-docs) · Mongoose · JWT · Bcrypt · Tesseract.js |
+| **Infraestructura** | [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](./docker-compose.yml) · GitHub Actions (CI/CD) · Render (despliegue) · Jest · Vitest + React Testing Library |
 
 ---
 
@@ -228,7 +219,10 @@ La integración continua (GitHub Actions) ejecuta los tests del backend y la bui
 | 09 | [Manual de usuario](./docs/09-manual-usuario.md) | Guía de uso por rol: admin, gestor y operador |
 | 10 | [Conclusiones](./docs/10-conclusiones.md) | Valoración del proyecto, mejoras futuras y aprendizajes |
 
-Los documentos de recuperación del módulo **Diseño de Interfaces Web** (RA1 a RA4) están disponibles en [`docs/diseño/`](./docs/diseño/).
+### Documentación de recuperación
+
+- **Diseño de Interfaces Web** — índice con todos los RA y sus evidencias: [`docs/diseño/README.md`](./docs/diseño/README.md).
+- **Despliegue de Aplicaciones Web** — criterios C1, C2, C7 y C8 con evidencias (RA1 a recuperar): [`docs/08-despliegue-eval.md`](./docs/08-despliegue-eval.md).
 
 ---
 
