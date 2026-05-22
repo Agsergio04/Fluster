@@ -113,15 +113,21 @@ describe('authService', () => {
       await expect(login('test@test.com', 'wrong')).rejects.toMatchObject({ status: 401 })
     })
 
-    it('devuelve el mismo mensaje de error tanto si no existe el correo como si la contraseña falla', async () => {
+    it('distingue el error por campo: correo no registrado marca el campo "correo"', async () => {
       Usuario.findOne.mockResolvedValue(null)
-      const err1 = await login('no@existe.com', '1234').catch(e => e)
+      const err = await login('no@existe.com', '1234').catch(e => e)
 
+      expect(err.campo).toBe('correo')
+      expect(err.message).toBe('El correo no está registrado')
+    })
+
+    it('distingue el error por campo: contraseña incorrecta marca el campo "contrasena"', async () => {
       Usuario.findOne.mockResolvedValue({ correo: 'test@test.com', contrasena: 'hashed' })
       bcrypt.compare.mockResolvedValue(false)
-      const err2 = await login('test@test.com', 'wrong').catch(e => e)
+      const err = await login('test@test.com', 'wrong').catch(e => e)
 
-      expect(err1.message).toBe(err2.message)
+      expect(err.campo).toBe('contrasena')
+      expect(err.message).toBe('Contraseña incorrecta')
     })
   })
 })

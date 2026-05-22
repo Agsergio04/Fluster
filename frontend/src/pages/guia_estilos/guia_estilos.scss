@@ -30,5 +30,15 @@
     border:           1px solid var(--color-border);
     border-radius:    var(--radius);
     padding:          var(--space-16);
+
+    // El campo usa --color-surface con borde transparente: sobre la caja
+    // crema de la guía se confunde con el fondo. Le damos borde visible
+    // para que destaque, pero sin pisar los bordes de error/éxito.
+    .input:not(.input--error):not(.input--success) {
+      .input__field,
+      .input__password-wrapper {
+        border-color: var(--color-border);
+      }
+    }
   }
 }
