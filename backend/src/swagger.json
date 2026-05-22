@@ -13,7 +13,7 @@
     { "name": "Usuarios",     "description": "Gestión de usuarios (solo admin)" },
     { "name": "Clientes",     "description": "CRUD de clientes (gestor)" },
     { "name": "Navieras",     "description": "CRUD de navieras con tarifas D&D (gestor)" },
-    { "name": "Contenedores", "description": "Ciclo de vida de contenedores y cálculo de costes" },
+    { "name": "Contenedores", "description": "Ciclo de vida de contenedores y cálculo de costes.\n\n**Diseño de rutas:** el CRUD básico sigue REST puro (`GET/POST/PUT/DELETE /contenedores`). Las transiciones de estado (`entrada-puerto`, `salida-puerto`, `devolucion`, `cancelar-ciclo`, `revertir-salida`) se modelan como **comandos sobre una máquina de estados** (INACTIVO → CARGADO → CLIENTE → INACTIVO), no como mutaciones CRUD. Cada una aplica reglas de negocio y validaciones de transición que un `PUT` genérico no puede expresar, por lo que se exponen como sub-recursos de acción con verbo explícito —patrón habitual y aceptado para recursos con ciclo de vida (estilo CQRS)." },
     { "name": "Eventos",      "description": "Registro fotográfico de hitos del contenedor" },
     { "name": "Informes",     "description": "Auditoría de exportaciones PDF de ciclos cerrados (gestor)" },
     { "name": "Semáforo",     "description": "Dashboard de riesgo D&D en tiempo real (gestor)" }
