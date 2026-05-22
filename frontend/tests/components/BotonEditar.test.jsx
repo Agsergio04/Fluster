@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import BotonEditar from '../../components/atomos/BotonEditar'
+import BotonEditar from '../../src/components/atomos/BotonEditar'
 
 describe('BotonEditar', () => {
   it('renderiza el texto "Editar"', () => {

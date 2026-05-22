@@ -1,12 +1,12 @@
 import { renderHook, waitFor, act } from '@testing-library/react'
 import { describe, it, expect, vi, afterEach } from 'vitest'
 
-vi.mock('../../services/contenedorService', () => ({
+vi.mock('../../src/services/contenedorService', () => ({
   listarContenedores: vi.fn(),
 }))
 
-import { listarContenedores } from '../../services/contenedorService'
-import useContenedores from '../../hooks/useContenedores'
+import { listarContenedores } from '../../src/services/contenedorService'
+import useContenedores from '../../src/hooks/useContenedores'
 
 describe('useContenedores', () => {
   afterEach(() => {

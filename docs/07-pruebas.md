@@ -248,7 +248,7 @@ El comando `npm test` no requiere variables de entorno reales; el workflow de CI
 
 ### Frontend
 
-Los tests del frontend se encuentran en `frontend/src/tests/`, organizado en subdirectorios `services/`, `hooks/` y `components/`.
+Los tests del frontend se encuentran en `frontend/tests/` (junto a `src/`), organizado en subdirectorios `components/`, `hooks/` y `services/` para los unitarios (Vitest) y `e2e/` para los end-to-end (Playwright).
 
 ```bash
 cd frontend

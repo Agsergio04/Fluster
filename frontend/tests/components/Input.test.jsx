@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import Input from '../../components/atomos/Input'
+import Input from '../../src/components/atomos/Input'
 
 describe('Input', () => {
   it('renderiza el label cuando se proporciona', () => {

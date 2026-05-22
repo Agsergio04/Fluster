@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import CeldaTabla from '../../components/atomos/CeldaTabla'
+import CeldaTabla from '../../src/components/atomos/CeldaTabla'
 
 describe('CeldaTabla', () => {
   describe('modo estático (por defecto)', () => {

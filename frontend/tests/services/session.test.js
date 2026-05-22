@@ -6,7 +6,7 @@ import {
   getUsuario,
   isAuthenticated,
   actualizarUsuario,
-} from '../../services/session'
+} from '../../src/services/session'
 
 describe('session', () => {
   beforeEach(() => {

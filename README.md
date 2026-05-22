@@ -24,10 +24,14 @@ Aplicación web para que empresas PYME de logística controlen y gestionen los c
 2. [Demo](#demo)
 3. [Características principales](#características-principales)
 4. [Stack tecnológico](#stack-tecnológico)
-5. [Inicio rápido](#inicio-rápido)
-6. [Variables de entorno](#variables-de-entorno)
-7. [Documentación](#documentación)
-8. [Contribuir](#contribuir)
+5. [Estructura del proyecto](#estructura-del-proyecto)
+6. [Inicio rápido](#inicio-rápido)
+7. [Desarrollo local (sin Docker)](#desarrollo-local-sin-docker)
+8. [Datos de prueba (seed)](#datos-de-prueba-seed)
+9. [Variables de entorno](#variables-de-entorno)
+10. [Pruebas](#pruebas)
+11. [Documentación](#documentación)
+
 
 ---
 
@@ -77,6 +81,39 @@ Fluster centraliza todo el ciclo de vida del contenedor, calcula automáticament
 
 ---
 
+## Estructura del proyecto
+
+```
+Fluster/
+├── backend/                # API REST (Express + MongoDB)
+│   ├── src/
+│   │   ├── routes/         # Definición de endpoints
+│   │   ├── controllers/    # Entrada/salida HTTP
+│   │   ├── services/       # Lógica de negocio
+│   │   ├── models/         # Esquemas de Mongoose
+│   │   ├── middlewares/    # Auth, roles, errores
+│   │   ├── scripts/        # Seed de datos
+│   │   ├── app.js          # App Express (sin arrancar el servidor)
+│   │   └── index.js        # Punto de entrada (arranque)
+│   ├── tests/              # Tests unitarios y de integración (Jest)
+│   └── Dockerfile
+├── frontend/               # SPA (React + Vite)
+│   ├── src/
+│   │   ├── components/     # Atomic Design: átomos, moléculas, organismos
+│   │   ├── pages/          # Vistas por ruta
+│   │   ├── hooks/          # Hooks reutilizables
+│   │   ├── services/       # Cliente HTTP (Axios)
+│   │   └── styles/         # ITCSS + SCSS
+│   ├── tests/              # Tests Vitest (unitarios) y Playwright (e2e/)
+│   ├── nginx/              # Configuración del reverse proxy
+│   └── Dockerfile
+├── docs/                   # Documentación del proyecto (01–10 + diseño)
+├── .github/workflows/      # CI, CD, Docker y escaneo de seguridad
+└── docker-compose.yml      # Orquestación de los 3 servicios
+```
+
+---
+
 ## Inicio rápido
 
 Requisitos previos: [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/) instalados.
@@ -98,6 +135,51 @@ Una vez iniciado, la aplicación estará disponible en `http://localhost` (puert
 
 ---
 
+## Desarrollo local (sin Docker)
+
+Si prefieres ejecutar los servicios directamente (por ejemplo, para desarrollar con recarga en caliente), necesitas **Node.js 22+** y una instancia de **MongoDB** (local o Atlas).
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/Agsergio04/Fluster.git
+cd Fluster
+
+# 2. Backend
+cd backend
+npm ci
+cp .env.example .env          # configurar MONGO_URI, JWT_SECRET (y CORS_ORIGIN si aplica)
+npm run dev                   # arranca en http://localhost:3000 con recarga (nodemon)
+
+# 3. Frontend (en otra terminal)
+cd frontend
+npm ci
+cp .env.example .env          # configurar VITE_API_URL=http://localhost:3000/api
+npm run dev                   # arranca en http://localhost:5173 (Vite)
+```
+
+El frontend de desarrollo (Vite) queda en `http://localhost:5173` y llama al backend mediante la variable `VITE_API_URL`.
+
+---
+
+## Datos de prueba (seed)
+
+El backend incluye scripts para poblar la base de datos sin tener que crear los datos a mano:
+
+```bash
+cd backend
+
+# Crear un usuario administrador inicial
+npm run seed
+
+# Poblar la BD con datos de demostración (usuarios, navieras, clientes,
+# contenedores en distintos estados, ciclos y eventos)
+npm run seed:datos
+```
+
+Tras `npm run seed:datos`, la consola muestra las credenciales de los usuarios de ejemplo (admin, gestor y operador) para iniciar sesión.
+
+---
+
 ## Variables de entorno
 
 El archivo `backend/.env` debe contener las siguientes variables:
@@ -107,6 +189,26 @@ El archivo `backend/.env` debe contener las siguientes variables:
 | `MONGO_URI` | URI de conexión a MongoDB Atlas | `mongodb+srv://user:pass@cluster.mongodb.net/fluster` |
 | `PORT` | Puerto en el que escucha el servidor Express | `3000` |
 | `JWT_SECRET` | Clave secreta para firmar los tokens JWT | `una_clave_secreta_larga_y_aleatoria` |
+| `CORS_ORIGIN` | Orígenes permitidos por CORS, separados por comas. Si se omite, se permite cualquier origen (solo recomendable en local) | `https://fluster-frontend.onrender.com` |
+
+El archivo `frontend/.env` debe contener:
+
+| Variable | Descripción | Ejemplo |
+|----------|-------------|---------|
+| `VITE_API_URL` | URL base de la API que consume el frontend | `http://localhost:3000/api` |
+
+---
+
+## Pruebas
+
+| Ámbito | Comando | Herramienta |
+|--------|---------|-------------|
+| Backend (unitarios + integración) | `cd backend && npm test` | Jest + `mongodb-memory-server` + Supertest |
+| Backend (con cobertura) | `cd backend && npm run test:coverage` | Jest |
+| Frontend (unitarios) | `cd frontend && npm test` | Vitest + React Testing Library |
+| Frontend (end-to-end) | `cd frontend && npm run test:e2e` | Playwright |
+
+La integración continua (GitHub Actions) ejecuta los tests del backend y la build del frontend en cada push y Pull Request a `main` y `dev`.
 
 ---
 
@@ -131,11 +233,27 @@ Los documentos de recuperación del módulo **Diseño de Interfaces Web** (RA1 a
 
 ## Contribuir
 
-Las contribuciones son bienvenidas. El flujo de trabajo es:
+Las contribuciones son bienvenidas. Consulta la [guía de contribución completa](./CONTRIBUTING.md) para los detalles de entorno, convención de commits y proceso de Pull Request, y respeta el [Código de Conducta](./CODE_OF_CONDUCT.md). En resumen, el flujo de trabajo es:
 
 1. Crear una rama desde `dev` con un nombre descriptivo (`feat/nombre-feature` o `fix/descripcion-bug`).
 2. Desarrollar y añadir tests si corresponde.
 3. Abrir una Pull Request hacia `dev`. Los checks de CI (lint + tests) deben pasar antes de hacer merge.
 4. Las releases a producción se realizan mediante PR de `dev` a `main`.
 
-Por favor, respeta el estilo de código existente y añade tests para cualquier nueva funcionalidad: Jest en el backend (`backend/tests/`) y Vitest en el frontend (`frontend/src/tests/`).
+Por favor, respeta el estilo de código existente y añade tests para cualquier nueva funcionalidad: Jest en el backend (`backend/tests/`) y Vitest en el frontend (`frontend/tests/`).
+
+Los cambios entre versiones se documentan en el [CHANGELOG](./CHANGELOG.md).
+
+---
+
+## Seguridad
+
+El proyecto incorpora medidas de seguridad básicas: autenticación JWT con roles, contraseñas hasheadas con bcrypt, cabeceras HTTP con Helmet, CORS configurable, rate limiting, escaneo de dependencias con Dependabot y de vulnerabilidades con Trivy en CI.
+
+Si descubres una vulnerabilidad, **no abras un issue público**: sigue la [política de seguridad](./SECURITY.md).
+
+---
+
+## Licencia
+
+Distribuido bajo la licencia **MIT**. Consulta el archivo [LICENSE](./LICENSE) para más información.

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import InputContrasenia from '../../components/atomos/InputContrasenia'
+import InputContrasenia from '../../src/components/atomos/InputContrasenia'
 
 describe('InputContrasenia', () => {
   it('renderiza como tipo password por defecto', () => {

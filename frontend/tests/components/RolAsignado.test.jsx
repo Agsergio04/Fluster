@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import RolAsignado from '../../components/atomos/RolAsignado'
+import RolAsignado from '../../src/components/atomos/RolAsignado'
 
 describe('RolAsignado', () => {
   it('muestra "Admin" para el rol admin', () => {

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import Spinner from '../../components/atomos/Spinner'
+import Spinner from '../../src/components/atomos/Spinner'
 
 describe('Spinner', () => {
   it('renderiza con tamaño md por defecto', () => {

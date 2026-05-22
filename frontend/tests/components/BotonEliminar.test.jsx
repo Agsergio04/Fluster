@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import BotonEliminar from '../../components/atomos/BotonEliminar'
+import BotonEliminar from '../../src/components/atomos/BotonEliminar'
 
 describe('BotonEliminar', () => {
   it('renderiza el texto "Eliminar"', () => {

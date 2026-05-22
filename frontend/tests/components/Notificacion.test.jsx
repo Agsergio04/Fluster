@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import Notificacion from '../../components/atomos/Notificacion'
+import Notificacion from '../../src/components/atomos/Notificacion'
 
 describe('Notificacion', () => {
   beforeEach(() => {

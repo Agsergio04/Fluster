@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import CardContenedor from '../../components/moleculas/CardContenedor'
+import CardContenedor from '../../src/components/moleculas/CardContenedor'
 
 describe('CardContenedor', () => {
   const props = {

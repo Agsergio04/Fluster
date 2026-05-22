@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import useTema from '../../hooks/useTema'
+import useTema from '../../src/hooks/useTema'
 
 function mockMatchMedia(prefersDark) {
   Object.defineProperty(window, 'matchMedia', {

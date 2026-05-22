@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import EstadoContenedorSemaforo from '../../components/atomos/EstadoContenedorSemaforo'
+import EstadoContenedorSemaforo from '../../src/components/atomos/EstadoContenedorSemaforo'
 
 describe('EstadoContenedorSemaforo', () => {
   it('muestra "Inactivo" por defecto', () => {
