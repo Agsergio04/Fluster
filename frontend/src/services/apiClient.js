@@ -10,10 +10,10 @@ const apiClient = axios.create({
 })
 
 // Adjunta el token JWT de la sesión en cada petición saliente.
-// El token se lee directamente de sessionStorage en lugar del servicio
+// El token se lee directamente de localStorage en lugar del servicio
 // para evitar dependencia circular (session.js importa apiClient).
 apiClient.interceptors.request.use(config => {
-  const token = sessionStorage.getItem('token')
+  const token = localStorage.getItem('token')
   if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 })
@@ -24,7 +24,7 @@ apiClient.interceptors.request.use(config => {
 apiClient.interceptors.response.use(
   res => res,
   err => {
-    if (err.response?.status === 401 && sessionStorage.getItem('token')) {
+    if (err.response?.status === 401 && localStorage.getItem('token')) {
       limpiarSesion()
       window.location.href = '/'
     }

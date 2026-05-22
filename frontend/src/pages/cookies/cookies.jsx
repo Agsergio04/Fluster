@@ -31,10 +31,9 @@ function Cookies() {
         <section className="pagina-estatica__seccion">
           <h2 className="pagina-estatica__seccion-titulo">¿Qué es el almacenamiento local?</h2>
           <p className="pagina-estatica__seccion-texto">
-            Fluster utiliza <strong>localStorage</strong> y <strong>sessionStorage</strong> del
-            navegador en lugar de cookies tradicionales. Estas tecnologías permiten
-            guardar datos directamente en tu dispositivo sin enviarlos al servidor
-            en cada petición.
+            Fluster utiliza el <strong>localStorage</strong> del navegador en lugar de
+            cookies tradicionales. Esta tecnología permite guardar datos directamente
+            en tu dispositivo sin enviarlos al servidor en cada petición.
           </p>
         </section>
 
@@ -46,11 +45,11 @@ function Cookies() {
               Persiste entre sesiones del navegador.
             </li>
             <li>
-              <strong>sessionStorage — token</strong>: token JWT de autenticación.
-              Se elimina automáticamente al cerrar la pestaña o el navegador.
+              <strong>localStorage — token</strong>: token JWT de autenticación.
+              Se elimina al cerrar sesión.
             </li>
             <li>
-              <strong>sessionStorage — usuario</strong>: datos básicos del usuario
+              <strong>localStorage — usuario</strong>: datos básicos del usuario
               autenticado (nombre, correo, rol). Se elimina junto con el token.
             </li>
           </ul>
@@ -69,8 +68,8 @@ function Cookies() {
           <p className="pagina-estatica__seccion-texto">
             Puedes eliminar estos datos en cualquier momento desde la configuración
             de tu navegador (Ajustes → Privacidad → Borrar datos del sitio).
-            Al cerrar sesión en Fluster, los datos de sessionStorage se eliminan
-            automáticamente.
+            Al cerrar sesión en Fluster, los datos de sesión en localStorage se
+            eliminan automáticamente.
           </p>
         </section>
       </main>
