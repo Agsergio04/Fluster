@@ -26,10 +26,10 @@ const limiterGeneral = rateLimit({
   message: { mensaje: 'Demasiadas peticiones, inténtalo más tarde' },
 })
 
-// 10 intentos por IP cada 15 minutos para login/registro
+// 100 intentos por IP cada 30 minutos para login/registro
 const limiterAuth = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
+  windowMs: 30 * 60 * 1000,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { mensaje: 'Demasiados intentos de autenticación, inténtalo más tarde' },
