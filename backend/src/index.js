@@ -1,10 +1,29 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const rateLimit = require('express-rate-limit')
 const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('./swagger.json')
 const conectarDB = require('./config/db')
 const errorMiddleware = require('./middlewares/errorMiddleware')
+
+// 100 peticiones por IP cada 15 minutos para la API general
+const limiterGeneral = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { mensaje: 'Demasiadas peticiones, inténtalo más tarde' },
+})
+
+// 10 intentos por IP cada 15 minutos para login/registro
+const limiterAuth = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { mensaje: 'Demasiados intentos de autenticación, inténtalo más tarde' },
+})
 
 const authRoutes        = require('./routes/auth')
 const ocrRoutes         = require('./routes/ocr')
@@ -24,6 +43,8 @@ conectarDB()
 
 app.use(cors())
 app.use(express.json({ limit: '20mb' }))
+app.use('/api', limiterGeneral)
+app.use('/api/auth', limiterAuth)
 
 app.get('/', (_req, res) => res.redirect('/api-docs'))
 app.get('/health', (_req, res) => res.json({ ok: true }))
