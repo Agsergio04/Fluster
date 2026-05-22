@@ -419,7 +419,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A([Usuario accede a la app]) --> B{¿Tiene token\nválido en localStorage?}
+    A([Usuario accede a la app]) --> B{¿Tiene token\nválido en sessionStorage?}
     B -->|Sí| C[Se carga la página\ncorrespondiente a su rol]
     B -->|No / Expirado| D[Redirigido a /login]
     D --> E[Introduce correo y contraseña]
@@ -428,7 +428,7 @@ flowchart TD
     G -->|No| H[Mensaje de error\nen el formulario]
     H --> E
     G -->|Sí| I[Backend devuelve JWT\ncon payload: id, correo, rol]
-    I --> J[Frontend guarda token\nen localStorage]
+    I --> J[Frontend guarda token\nen sessionStorage]
     J --> K{¿Cuál es el rol?}
     K -->|gestor| L[Redirige a /semaforo]
     K -->|operador| M[Redirige a /contenedores]
@@ -468,7 +468,7 @@ La aplicación sigue una arquitectura de **tres capas** desacopladas: un fronten
 │        FRONTEND (SPA)        │
 │  React 19 · Vite · SCSS      │
 │  React Router 7 · Axios      │
-│  JWT en localStorage         │
+│  JWT en sessionStorage       │
 └──────────────┬───────────────┘
                │ HTTP/REST (JSON)
                │ Authorization: Bearer <JWT>

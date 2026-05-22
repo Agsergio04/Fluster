@@ -6,7 +6,7 @@ Fluster es una aplicación web de página única (SPA) orientada a pequeñas y m
 
 En la logística de importación y exportación, los armadores (navieras) conceden un número determinado de días libres para que el importador retire el contenedor del puerto y lo devuelva vacío. Cuando se superan esos días, comienzan a acumularse penalizaciones económicas escalonadas. Fluster registra cada contenedor, configura las tarifas por naviera, sigue en tiempo real el estado de cada unidad y calcula automáticamente el coste acumulado según los tramos tarifarios configurados.
 
-La aplicación está construida sobre una arquitectura cliente-servidor. El **frontend** es una SPA desarrollada con React y Vite, que se comunica con el **backend** mediante una API REST desarrollada con Node.js y Express, respaldada por una base de datos MongoDB. La autenticación se gestiona mediante JWT almacenado en localStorage.
+La aplicación está construida sobre una arquitectura cliente-servidor. El **frontend** es una SPA desarrollada con React y Vite, que se comunica con el **backend** mediante una API REST desarrollada con Node.js y Express, respaldada por una base de datos MongoDB. La autenticación se gestiona mediante JWT almacenado en sessionStorage.
 
 Los usuarios de Fluster se organizan en tres roles con permisos diferenciados:
 
@@ -22,7 +22,7 @@ Los usuarios de Fluster se organizan en tres roles con permisos diferenciados:
 
 ### 2.1 Autenticación y gestión de sesión
 
-El acceso a Fluster está protegido por autenticación JWT. Al iniciar sesión en `/login`, el servidor valida las credenciales y devuelve un token que el cliente almacena en localStorage. Cada petición posterior incluye ese token en la cabecera `Authorization`.
+El acceso a Fluster está protegido por autenticación JWT. Al iniciar sesión en `/login`, el servidor valida las credenciales y devuelve un token que el cliente almacena en sessionStorage. Cada petición posterior incluye ese token en la cabecera `Authorization`.
 
 El registro de nuevos usuarios se realiza en `/registro`. Durante el registro, el usuario elige su rol pulsando uno de los dos botones disponibles («Soy un Operador» o «Soy Gestor de Operaciones»); el formulario no permite crear la cuenta sin seleccionar uno. El enrutamiento de la aplicación distingue entre rutas públicas (`RutaPublica`) y rutas protegidas (`RutaProtegida`), redirigiendo automáticamente según el estado de la sesión y el rol del usuario.
 
@@ -126,7 +126,7 @@ Todos los usuarios autenticados pueden acceder a `/perfil` para:
 - Cambiar su nombre de visualización.
 - Actualizar su contraseña (requiere introducir la contraseña actual).
 - Subir o cambiar su foto de perfil (almacenada en base64).
-- Cerrar sesión, limpiando el token de localStorage.
+- Cerrar sesión, limpiando el token de sessionStorage.
 
 ### 2.11 Tema visual
 
