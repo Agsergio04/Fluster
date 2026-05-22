@@ -193,11 +193,12 @@ async function actualizar(id, cambios) {
 /**
  * Registra la entrada del contenedor al puerto (INACTIVO → PUERTO).
  * Abre un nuevo ciclo con el cliente asignado y el tramo de demurrage en curso.
- * La fecha de inicio del demurrage es fechaInicioLibre, no la de llegada física,
- * porque es la fecha desde la que la naviera empieza a contar los días libres.
+ * El demurrage empieza a contar desde la fecha de entrada a puerto, de modo que
+ * el contenedor arranca dentro del período libre (sin coste) y solo pasa a los
+ * tramos a medida que transcurren los días libres.
  *
  * @param {string} id        - ID del contenedor
- * @param {Date}   fecha     - Fecha real de entrada al puerto
+ * @param {Date}   fecha     - Fecha real de entrada al puerto (inicio del demurrage)
  * @param {string} clienteId - Cliente al que pertenece este ciclo
  * @returns {Promise<object>} Contenedor actualizado
  */
@@ -221,13 +222,13 @@ async function registrarEntradaPuerto(id, fecha, clienteId) {
     clienteId,
     demurrage: {
       diasLibres: naviera.diasLibresDemurrage,
-      fechaInicio: contenedor.fechaInicioLibre,
+      fechaInicio: fecha,
     },
   })
 
   return Contenedor.findByIdAndUpdate(
     id,
-    { estado: 'PUERTO', fechaEntradaPuerto: fecha },
+    { estado: 'PUERTO', fechaEntradaPuerto: fecha, fechaInicioLibre: fecha },
     { new: true }
   ).lean()
 }

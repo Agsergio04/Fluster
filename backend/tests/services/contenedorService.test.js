@@ -91,7 +91,7 @@ describe('contenedorService', () => {
       expect(result.estado).toBe('PUERTO')
     })
 
-    it('el ciclo se crea con fechaInicio = fechaInicioLibre del contenedor (no la fecha fÃ­sica de entrada)', async () => {
+    it('el ciclo se crea con fechaInicio = fecha de entrada a puerto (el demurrage arranca al mover, en free time)', async () => {
       const contenedor = makeContenedor('INACTIVO', { fechaInicioLibre: new Date('2025-01-15') })
 
       Contenedor.findById.mockResolvedValue(contenedor)
@@ -104,7 +104,7 @@ describe('contenedorService', () => {
       await registrarEntradaPuerto('cont-id', new Date('2025-02-01'), 'cliente-id')
 
       expect(Ciclo.create).toHaveBeenCalledWith(expect.objectContaining({
-        demurrage: expect.objectContaining({ fechaInicio: new Date('2025-01-15') }),
+        demurrage: expect.objectContaining({ fechaInicio: new Date('2025-02-01') }),
       }))
     })
 
