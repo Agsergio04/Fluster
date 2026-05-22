@@ -51,7 +51,11 @@
   --color-error-subtle: var(--color-segundo_tramo-inner);
   // Fondo accesible para etiquetas de error con texto blanco (válido en ambos temas)
   --color-error-fondo:  #{vars.$color-error-fondo};
+  --color-text-on-error: #{vars.$color-text-on-error};
   --color-success:      var(--color-sin_costes);
+
+  // Separador sobre tarjetas de color (válido en ambos temas)
+  --color-card-divider: #{vars.$color-card-divider};
 
   // ── Tipografía — Familias ─────────────────────────────────────
   --font-heading: #{vars.$font-heading};
