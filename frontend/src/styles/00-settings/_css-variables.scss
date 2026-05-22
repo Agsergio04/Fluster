@@ -12,9 +12,10 @@
   --color-primary-off:   #{vars.$color-primary-off};
 
   // ── Colores Secundarios ────────────────────────────────────────
-  --color-secondary:       #{vars.$color-secondary};
-  --color-secondary-hover: #{vars.$color-secondary-hover};
-  --color-secondary-off:   #{vars.$color-secondary-off};
+  --color-secondary:        #{vars.$color-secondary};
+  --color-secondary-hover:  #{vars.$color-secondary-hover};
+  --color-secondary-off:    #{vars.$color-secondary-off};
+  --color-secondary-subtle: #{vars.$color-secondary-subtle};
 
   // ── Fondos de página ──────────────────────────────────────────
   --color-bg:      #{vars.$color-bg-light};
@@ -136,9 +137,10 @@
   --color-primary-hover: #{vars.$color-primary-hover};
   --color-primary-off:   #{vars.$color-primary-off};
 
-  --color-secondary:       #{vars.$color-secondary};
-  --color-secondary-hover: #{vars.$color-secondary-hover};
-  --color-secondary-off:   #{vars.$color-secondary-off};
+  --color-secondary:        #{vars.$color-secondary};
+  --color-secondary-hover:  #{vars.$color-secondary-hover};
+  --color-secondary-off:    #{vars.$color-secondary-off};
+  --color-secondary-subtle: #{vars.$color-secondary-subtle};
 
   --color-bg:      #{vars.$color-bg-light};
   --color-surface: #{vars.$color-surface-light};
@@ -175,9 +177,10 @@
   --color-primary-hover: #{vars.$color-primary-dark-hover};
   --color-primary-off:   #{vars.$color-primary-dark-off};
 
-  --color-secondary:       #{vars.$color-secondary-dark};
-  --color-secondary-hover: #{vars.$color-secondary-dark-hover};
-  --color-secondary-off:   #{vars.$color-secondary-dark-off};
+  --color-secondary:        #{vars.$color-secondary-dark};
+  --color-secondary-hover:  #{vars.$color-secondary-dark-hover};
+  --color-secondary-off:    #{vars.$color-secondary-dark-off};
+  --color-secondary-subtle: #{vars.$color-secondary-dark-subtle};
 
   --color-bg:      #{vars.$color-bg-dark};
   --color-surface: #{vars.$color-surface-dark};
@@ -215,9 +218,10 @@
     --color-primary-hover: #{vars.$color-primary-dark-hover};
     --color-primary-off:   #{vars.$color-primary-dark-off};
 
-    --color-secondary:       #{vars.$color-secondary-dark};
-    --color-secondary-hover: #{vars.$color-secondary-dark-hover};
-    --color-secondary-off:   #{vars.$color-secondary-dark-off};
+    --color-secondary:        #{vars.$color-secondary-dark};
+    --color-secondary-hover:  #{vars.$color-secondary-dark-hover};
+    --color-secondary-off:    #{vars.$color-secondary-dark-off};
+    --color-secondary-subtle: #{vars.$color-secondary-dark-subtle};
 
     --color-bg:      #{vars.$color-bg-dark};
     --color-surface: #{vars.$color-surface-dark};

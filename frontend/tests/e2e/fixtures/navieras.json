@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "664nav001",
+    "nombre": "MSC",
+    "codigo": "MSC",
+    "diasLibresDemurrage": 10,
+    "diasLibresDetention": 14,
+    "diasDemurrage": [
+      { "desdeDia": 1, "hastaDia": 5,    "precioPorDia": 50 },
+      { "desdeDia": 6, "hastaDia": null, "precioPorDia": 100 }
+    ],
+    "diasDetention": [
+      { "desdeDia": 1, "hastaDia": 7,    "precioPorDia": 40 },
+      { "desdeDia": 8, "hastaDia": null, "precioPorDia": 80 }
+    ],
+    "creadoEn": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "664nav002",
+    "nombre": "Maersk",
+    "codigo": "MAE",
+    "diasLibresDemurrage": 7,
+    "diasLibresDetention": 10,
+    "diasDemurrage": [
+      { "desdeDia": 1, "hastaDia": 7,    "precioPorDia": 70 },
+      { "desdeDia": 8, "hastaDia": null, "precioPorDia": 120 }
+    ],
+    "diasDetention": [
+      { "desdeDia": 1, "hastaDia": 5,    "precioPorDia": 50 },
+      { "desdeDia": 6, "hastaDia": null, "precioPorDia": 90 }
+    ],
+    "creadoEn": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "664nav003",
+    "nombre": "Hapag-Lloyd",
+    "codigo": "HLC",
+    "diasLibresDemurrage": 5,
+    "diasLibresDetention": 7,
+    "diasDemurrage": [
+      { "desdeDia": 1, "hastaDia": 5,    "precioPorDia": 80 },
+      { "desdeDia": 6, "hastaDia": null, "precioPorDia": 150 }
+    ],
+    "diasDetention": [
+      { "desdeDia": 1, "hastaDia": 5,    "precioPorDia": 60 },
+      { "desdeDia": 6, "hastaDia": null, "precioPorDia": 110 }
+    ],
+    "creadoEn": "2025-01-01T00:00:00.000Z"
+  }
+]

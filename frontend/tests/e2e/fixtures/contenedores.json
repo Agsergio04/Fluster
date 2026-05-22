@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "664c000100000000000001",
+    "codigoBIC": "MSCU1234567",
+    "estado": "PUERTO",
+    "tipo": "20DC",
+    "navieraId": { "_id": "664nav001", "nombre": "MSC", "codigo": "MSC" },
+    "fechaInicioLibre": "2025-05-01T00:00:00.000Z",
+    "fechaEntradaPuerto": "2025-05-01T00:00:00.000Z",
+    "fechaSalidaPuerto": null,
+    "fechaDevolucion": null,
+    "creadoEn": "2025-05-01T00:00:00.000Z"
+  },
+  {
+    "_id": "664c000200000000000002",
+    "codigoBIC": "MAEU9876543",
+    "estado": "CLIENTE",
+    "tipo": "40HC",
+    "navieraId": { "_id": "664nav002", "nombre": "Maersk", "codigo": "MAE" },
+    "fechaInicioLibre": "2025-04-10T00:00:00.000Z",
+    "fechaEntradaPuerto": "2025-04-10T00:00:00.000Z",
+    "fechaSalidaPuerto": "2025-04-20T00:00:00.000Z",
+    "fechaDevolucion": null,
+    "creadoEn": "2025-04-10T00:00:00.000Z"
+  },
+  {
+    "_id": "664c000300000000000003",
+    "codigoBIC": "HLCU5551234",
+    "estado": "CLIENTE",
+    "tipo": "20DC",
+    "navieraId": { "_id": "664nav003", "nombre": "Hapag-Lloyd", "codigo": "HLC" },
+    "fechaInicioLibre": "2025-04-01T00:00:00.000Z",
+    "fechaEntradaPuerto": "2025-04-01T00:00:00.000Z",
+    "fechaSalidaPuerto": "2025-04-05T00:00:00.000Z",
+    "fechaDevolucion": null,
+    "creadoEn": "2025-04-01T00:00:00.000Z"
+  },
+  {
+    "_id": "664c000400000000000004",
+    "codigoBIC": "TGHU0123456",
+    "estado": "INACTIVO",
+    "tipo": "40HC",
+    "navieraId": { "_id": "664nav001", "nombre": "MSC", "codigo": "MSC" },
+    "fechaInicioLibre": "2025-03-01T00:00:00.000Z",
+    "fechaEntradaPuerto": "2025-03-01T00:00:00.000Z",
+    "fechaSalidaPuerto": "2025-03-10T00:00:00.000Z",
+    "fechaDevolucion": "2025-03-20T00:00:00.000Z",
+    "creadoEn": "2025-03-01T00:00:00.000Z"
+  }
+]
