@@ -2,9 +2,19 @@
 
 Aplicación web para que empresas PYME de logística controlen y gestionen los costes de Demurrage & Detention (D&D) de contenedores marítimos.
 
-[![CI](https://github.com/Agsergio04/Fluster/actions/workflows/ci.yml/badge.svg)](https://github.com/Agsergio04/Fluster/actions)
-[![Docker](https://img.shields.io/badge/docker-compose-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
+<!-- Estado del proyecto (dinámicos: reflejan el estado real en GitHub Actions) -->
+[![CI](https://github.com/Agsergio04/Fluster/actions/workflows/ci.yml/badge.svg)](https://github.com/Agsergio04/Fluster/actions/workflows/ci.yml)
+[![Security](https://github.com/Agsergio04/Fluster/actions/workflows/security.yml/badge.svg)](https://github.com/Agsergio04/Fluster/actions/workflows/security.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+
+<!-- Stack tecnológico -->
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
+[![API Docs](https://img.shields.io/badge/API-Swagger-85EA2D?logo=swagger&logoColor=black)](https://fluster-vd09.onrender.com/api-docs)
 
 ---
 
