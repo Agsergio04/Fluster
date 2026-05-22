@@ -92,6 +92,11 @@ function Tarifas() {
    * @param {Array}  valoresNuevos - Array plano de 8 valores editados
    */
   const handleActualizar = async (id, valoresNuevos) => {
+    // Ningún valor de la tarifa (días libres, límites de tramo o precios) puede ser negativo
+    if (valoresNuevos.some(v => Number(v) < 0)) {
+      setAviso('Los valores de la tarifa no pueden ser negativos')
+      return
+    }
     try {
       const cambios = valoresANaviera(valoresNuevos)
       const actualizada = await actualizarNaviera(id, cambios)

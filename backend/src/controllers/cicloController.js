@@ -33,6 +33,12 @@ async function editarDemurrage(req, res, next) {
     // Recalcular costes solo si hay fecha de fin
     const finEfectivo = fechaFin ? new Date(fechaFin) : ciclo.demurrage.fechaFin
     const iniEfectivo = fechaInicio ? new Date(fechaInicio) : ciclo.demurrage.fechaInicio
+
+    // La fecha de fin no puede ser anterior a la de inicio (duración negativa)
+    if (iniEfectivo && finEfectivo && new Date(finEfectivo) < new Date(iniEfectivo)) {
+      const e = new Error('La fecha de fin del demurrage no puede ser anterior a la de inicio'); e.status = 422; throw e
+    }
+
     if (finEfectivo) {
       const contenedor = await Contenedor.findById(ciclo.contenedorId)
       const naviera    = await Naviera.findById(contenedor.navieraId)
@@ -71,6 +77,16 @@ async function editarDetention(req, res, next) {
 
     const finEfectivo = fechaFin ? new Date(fechaFin) : ciclo.detention.fechaFin
     const iniEfectivo = fechaInicio ? new Date(fechaInicio) : ciclo.detention.fechaInicio
+
+    // La fecha de fin no puede ser anterior a la de inicio (duración negativa)
+    if (iniEfectivo && finEfectivo && new Date(finEfectivo) < new Date(iniEfectivo)) {
+      const e = new Error('La fecha de fin del detention no puede ser anterior a la de inicio'); e.status = 422; throw e
+    }
+    // El detention no puede empezar antes de que termine el demurrage (fecha última asignada)
+    if (iniEfectivo && ciclo.demurrage?.fechaFin && new Date(iniEfectivo) < new Date(ciclo.demurrage.fechaFin)) {
+      const e = new Error('El detention no puede empezar antes de la fecha de fin del demurrage'); e.status = 422; throw e
+    }
+
     if (finEfectivo) {
       const contenedor = await Contenedor.findById(ciclo.contenedorId)
       const naviera    = await Naviera.findById(contenedor.navieraId)

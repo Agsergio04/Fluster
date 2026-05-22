@@ -7,12 +7,40 @@ const Naviera = require('../models/Naviera')
 const Contenedor = require('../models/Contenedor')
 
 /**
+ * Valida que los valores de tarifa (días libres, días de tramo y precios)
+ * no sean negativos. Lanza un error 422 con el primer valor inválido.
+ *
+ * @param {object} datos
+ */
+function validarTarifaNoNegativa(datos) {
+  const noNegativo = (valor, nombre) => {
+    if (valor !== undefined && valor !== null && Number(valor) < 0) {
+      const err = new Error(`El valor de "${nombre}" no puede ser negativo`)
+      err.status = 422
+      throw err
+    }
+  }
+
+  noNegativo(datos.diasLibresDemurrage, 'días libres de demurrage')
+  noNegativo(datos.diasLibresDetention, 'días libres de detention')
+
+  for (const [campo, etiqueta] of [['diasDemurrage', 'demurrage'], ['diasDetention', 'detention']]) {
+    for (const tramo of datos[campo] ?? []) {
+      noNegativo(tramo.desdeDia,     `día desde (${etiqueta})`)
+      noNegativo(tramo.hastaDia,     `día hasta (${etiqueta})`)
+      noNegativo(tramo.precioPorDia, `precio por día (${etiqueta})`)
+    }
+  }
+}
+
+/**
  * Crea una nueva naviera con sus tramos de demurrage y detention.
  *
  * @param {object} datos
  * @returns {Promise<object>}
  */
 async function crear(datos) {
+  validarTarifaNoNegativa(datos)
   return Naviera.create(datos)
 }
 
@@ -51,6 +79,8 @@ async function obtenerPorId(id) {
  * @returns {Promise<object>}
  */
 async function actualizar(id, cambios) {
+  validarTarifaNoNegativa(cambios)
+
   if (cambios.codigo) {
     const duplicado = await Naviera.findOne({
       codigo: cambios.codigo.toUpperCase(),

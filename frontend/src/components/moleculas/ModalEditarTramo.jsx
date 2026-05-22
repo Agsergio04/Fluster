@@ -28,6 +28,11 @@ function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar 
 
   const handleGuardar = async () => {
     setError('')
+    // La fecha de fin no puede ser anterior a la de inicio
+    if (inicio && fin && new Date(fin) < new Date(inicio)) {
+      setError('La fecha de fin no puede ser anterior a la de inicio')
+      return
+    }
     setCargando(true)
     try {
       await onGuardar({
@@ -77,6 +82,7 @@ function ModalEditarTramo({ tramo, fechaInicio, fechaFin, onGuardar, onCancelar 
             type="date"
             className="modal-editar-contenedor__fecha-input"
             value={fin}
+            min={inicio || undefined}
             onChange={e => setFin(e.target.value)}
           />
         </div>
