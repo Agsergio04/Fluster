@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('./swagger.json')
@@ -36,7 +37,18 @@ const limiterAuth = rateLimit({
 
 const app = express()
 
-app.use(cors())
+// Cabeceras HTTP de seguridad. La CSP se desactiva porque este servidor
+// sirve Swagger UI (/api-docs), que carga scripts y estilos inline que la
+// CSP por defecto bloquearía. El resto de protecciones de Helmet siguen activas.
+app.use(helmet({ contentSecurityPolicy: false }))
+
+// CORS restringido al origen del frontend si CORS_ORIGIN está definido
+// (producción); sin definir, permite cualquier origen (desarrollo/local).
+const corsOptions = process.env.CORS_ORIGIN
+  ? { origin: process.env.CORS_ORIGIN.split(',').map(o => o.trim()) }
+  : {}
+app.use(cors(corsOptions))
+
 app.use(express.json({ limit: '20mb' }))
 
 // El rate limiting se desactiva en test para no interferir con las peticiones
