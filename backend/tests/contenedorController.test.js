@@ -47,14 +47,27 @@ describe('contenedorController', () => {
   })
 
   describe('listar', () => {
-    it('devuelve la lista de contenedores pasando los query params', async () => {
+    it('un operador solo recibe sus propios contenedores (añade creadoPorId)', async () => {
       const contenedores = [{ _id: 'c1' }, { _id: 'c2' }]
       contenedorService.listar.mockResolvedValue(contenedores)
       req.query = { estado: 'INACTIVO' }
+      req.usuario = { id: 'user-id', rol: 'operador' }
 
       await listar(req, res, next)
 
-      expect(contenedorService.listar).toHaveBeenCalledWith(req.query)
+      expect(contenedorService.listar).toHaveBeenCalledWith({ estado: 'INACTIVO', creadoPorId: 'user-id' })
+      expect(res.json).toHaveBeenCalledWith(contenedores)
+    })
+
+    it('un gestor recibe todos los contenedores (sin filtro creadoPorId)', async () => {
+      const contenedores = [{ _id: 'c1' }, { _id: 'c2' }]
+      contenedorService.listar.mockResolvedValue(contenedores)
+      req.query = { estado: 'INACTIVO' }
+      req.usuario = { id: 'gestor-id', rol: 'gestor' }
+
+      await listar(req, res, next)
+
+      expect(contenedorService.listar).toHaveBeenCalledWith({ estado: 'INACTIVO' })
       expect(res.json).toHaveBeenCalledWith(contenedores)
     })
   })
