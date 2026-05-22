@@ -342,7 +342,9 @@ Estimación de horas dedicadas a cada tarea del proyecto.
 | Documentación del proyecto (01–10) | 16 |
 | Documentación de recuperación (RA diseño + despliegue) | 10 |
 | README y ficheros de comunidad | 4 |
-| **Total** | **245** |
+| **Total** | **267** |
+
+> El total (**267 h**) corresponde al desglose detallado del tablero en GitHub Projects (42 tareas). Las filas de esta tabla agrupan ese desglose en tareas de alto nivel.
 
 ### 7.5. Categorización de tareas por tipo
 
@@ -375,7 +377,7 @@ Estimación de horas dedicadas a cada tarea del proyecto.
 | Documentación de recuperación (RA diseño + despliegue) | Documentación |
 | README y ficheros de comunidad | Documentación |
 
-**Resumen por tipo:** Diseño 30 h · BD 8 h · Backend 69 h · Frontend 92 h · Despliegue 16 h · Documentación 30 h → **245 h**.
+**Resumen por tipo** (horas del tablero en GitHub Projects): Diseño 43 h · BD 15 h · Backend 74 h · Frontend 106 h · Despliegue 11 h · Documentación 18 h → **267 h**.
 
 
 
