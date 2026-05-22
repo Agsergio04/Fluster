@@ -74,6 +74,7 @@ async function login(correo, contrasena) {
       nombre: usuario.nombre,
       correo: usuario.correo,
       rol: usuario.rol,
+      foto: usuario.foto ?? null,
     },
   }
 }
