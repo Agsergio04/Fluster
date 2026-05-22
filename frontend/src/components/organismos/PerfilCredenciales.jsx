@@ -20,6 +20,7 @@ function PerfilCredenciales({
   rol,
   correo,
   onActualizarFoto,
+  errorFoto,
   nuevoNombre,
   onNuevoNombreCambio,
   errorNombre,
@@ -72,6 +73,9 @@ function PerfilCredenciales({
             onChange={handleSeleccionarFoto}
           />
           <BotonAccionTarifa accion="actualizar" onClick={() => inputFotoRef.current?.click()} />
+          {errorFoto && (
+            <p className="perfil-credenciales__error-foto" role="alert">{errorFoto}</p>
+          )}
           <div className="perfil-credenciales__campo">
             <h3 className="perfil-credenciales__etiqueta">Nombre</h3>
             <p className="perfil-credenciales__valor">{nombre}</p>

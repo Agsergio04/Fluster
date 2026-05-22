@@ -28,6 +28,14 @@
     flex-shrink:   0;
   }
 
+  &__error-foto {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-error);
+    text-align:  center;
+    margin:      0;
+  }
+
   &__campo {
     display:        flex;
     flex-direction: column;

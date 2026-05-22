@@ -30,6 +30,7 @@ function Perfil() {
   const [errorContraseniaActual, setErrorContraseniaActual] = useState('')
   const [errorContrasenia,     setErrorContrasenia]     = useState('')
   const [errorConfirmacion,    setErrorConfirmacion]    = useState('')
+  const [errorFoto,            setErrorFoto]            = useState('')
   const [cargando, setCargando] = useState(false)
 
   const handleConfirmarNombre = useCallback(async () => {
@@ -68,12 +69,13 @@ function Perfil() {
   }, [contraseniaActual, contrasenia, confirmacion, usuario])
 
   const handleActualizarFoto = useCallback(async fotoBase64 => {
+    setErrorFoto('')
     try {
       await actualizarFoto(usuario.id, fotoBase64)
       setFoto(fotoBase64)
       actualizarUsuario({ foto: fotoBase64 })
     } catch (err) {
-      console.error('Error al actualizar foto:', err.response?.data ?? err.message)
+      setErrorFoto(err.response?.data?.mensaje ?? 'No se pudo actualizar la foto')
     }
   }, [usuario])
 
@@ -107,6 +109,7 @@ function Perfil() {
             rol={usuario?.rol ?? ''}
             correo={usuario?.correo ?? ''}
             onActualizarFoto={handleActualizarFoto}
+            errorFoto={errorFoto}
             nuevoNombre={nuevoNombre}
             onNuevoNombreCambio={e => setNuevoNombre(e.target.value)}
             errorNombre={errorNombre}

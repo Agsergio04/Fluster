@@ -95,7 +95,7 @@ function MeterContenedor() {
       await crearContenedor({ codigoBIC: codigoBic.trim().toUpperCase(), foto })
       navigate('/contenedores')
     } catch (err) {
-      console.error('Error al crear contenedor:', err.response?.data ?? err.message)
+      setErrorOcr(err.response?.data?.mensaje ?? 'No se pudo registrar el contenedor')
     } finally {
       setCargando(false)
     }
