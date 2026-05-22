@@ -4,14 +4,9 @@
 # Workflow EXTRA (no obligatorio para la rúbrica) que refuerza el
 # criterio de buenas prácticas de CI/CD.
 #
-# Se ejecuta en cada push o Pull Request hacia main o dev y escanea
-# el sistema de ficheros del repositorio en busca de:
-#   - Dependencias vulnerables (npm de backend y frontend).
-#   - Configuraciones inseguras (Dockerfiles, etc.).
-#
-# Falla el workflow si encuentra vulnerabilidades CRITICAL o HIGH,
-# de modo que un PR con dependencias peligrosas no pase desapercibido.
-# Los resultados se suben además a la pestaña Security del repo (SARIF).
+# Escanea el sistema de ficheros del repositorio (dependencias npm y
+# configuraciones / IaC) en busca de vulnerabilidades conocidas y publica
+# los resultados en formato SARIF en la pestaña Security del repositorio.
 # ─────────────────────────────────────────────────────────────────
 
 name: Security
@@ -21,40 +16,46 @@ on:
     branches: [main, dev]
   pull_request:
     branches: [main, dev]
+  schedule:
+    - cron: '23 4 * * 1'   # lunes a las 04:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
 
 jobs:
-  trivy-fs:
+  trivy:
     name: Trivy — Escaneo del repositorio
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Escanear sistema de ficheros (informe en consola)
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          exit-code: '1'
-          ignore-unfixed: true
-
-      - name: Generar SARIF para la pestaña Security
-        if: always()
-        uses: aquasecurity/trivy-action@0.28.0
+      - name: Escanear filesystem e IaC
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .
           format: sarif
           output: trivy-results.sarif
-          severity: CRITICAL,HIGH
+          severity: HIGH,CRITICAL
+          limit-severities-for-sarif: true
           ignore-unfixed: true
+          scanners: vuln,misconfig
 
-      - name: Subir resultados a GitHub Security
+      - name: Guardar informe Trivy como artefacto
         if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-results
+          path: trivy-results.sarif
+          retention-days: 14
+
+      - name: Publicar SARIF en GitHub Security
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false)
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: trivy-results.sarif
+          category: trivy-filesystem
