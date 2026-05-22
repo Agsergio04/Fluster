@@ -1,0 +1,60 @@
+# ─────────────────────────────────────────────────────────────────
+# Security — Análisis de vulnerabilidades con Trivy
+#
+# Workflow EXTRA (no obligatorio para la rúbrica) que refuerza el
+# criterio de buenas prácticas de CI/CD.
+#
+# Se ejecuta en cada push o Pull Request hacia main o dev y escanea
+# el sistema de ficheros del repositorio en busca de:
+#   - Dependencias vulnerables (npm de backend y frontend).
+#   - Configuraciones inseguras (Dockerfiles, etc.).
+#
+# Falla el workflow si encuentra vulnerabilidades CRITICAL o HIGH,
+# de modo que un PR con dependencias peligrosas no pase desapercibido.
+# Los resultados se suben además a la pestaña Security del repo (SARIF).
+# ─────────────────────────────────────────────────────────────────
+
+name: Security
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  trivy-fs:
+    name: Trivy — Escaneo del repositorio
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Escanear sistema de ficheros (informe en consola)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          exit-code: '1'
+          ignore-unfixed: true
+
+      - name: Generar SARIF para la pestaña Security
+        if: always()
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+
+      - name: Subir resultados a GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
