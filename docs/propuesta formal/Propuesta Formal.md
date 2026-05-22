@@ -255,7 +255,7 @@ Para reducir barreras de entrada, el stack tecnológico se apoya en herramientas
 
 ### 7.1. Metodología de gestión
 
-Se siguió una metodología **Scrum**: sprints cortos (1–2 semanas) y uso de GitHub Projects para visualizar tareas pendientes, en curso y finalizadas. El desarrollo se ejecutó en **siete sprints** (aproximadamente **doce semanas**), finalizando con la defensa del proyecto.
+Se siguió una metodología **Scrum**: sprints cortos (1–2 semanas) y uso de GitHub Projects para visualizar tareas pendientes, en curso y finalizadas. El desarrollo se ejecutó en **seis sprints** (aproximadamente **doce semanas**), finalizando con la defensa del proyecto.
 
 ### 7.2. Cronograma real (sprints)
 
@@ -291,18 +291,12 @@ Se siguió una metodología **Scrum**: sprints cortos (1–2 semanas) y uso de G
     - Custom hooks de fetch y tema claro/oscuro con persistencia en localStorage.  
   - **Resultado**: interfaz completa conectada al backend.
 
-- **Sprint 6 – Testing, corrección de errores y documentación**  
-    - Suite de tests con Jest (controladores, servicios y middlewares).  
-    - Corrección de errores y revisión de UX/accesibilidad básica.  
-    - Documentación técnica del proyecto en `docs/`.  
-  - **Resultado**: proyecto estable, probado y documentado.
-
-- **Sprint 7 – Endurecimiento, seguridad, despliegue y recuperación**  
-    - Seguridad: Helmet, CORS por entorno y rate limiting; contenedores Docker ejecutados como usuario no-root.  
-    - CI/CD reforzado: Dependabot (actualización de dependencias) y Trivy (escaneo de vulnerabilidades).  
-    - Tests de integración con MongoDB en memoria y ampliación de tests de frontend (Vitest) y E2E (Playwright).  
-    - Accesibilidad (WAVE, contraste, foco visible) y responsive; documentación de recuperación (RA de diseño y despliegue) y ficheros de comunidad (LICENSE, SECURITY, CONTRIBUTING, CHANGELOG).  
-  - **Resultado**: proyecto endurecido, con buenas prácticas de seguridad y DevOps, y documentación de recuperación completa.
+- **Sprint 6 – Pruebas, refinamiento, seguridad y documentación**  
+    - Suite de tests con Jest (controladores, servicios y middlewares) e integración con MongoDB en memoria; tests de frontend (Vitest) y E2E (Playwright).  
+    - Diseño responsive completo, accesibilidad (WAVE, contraste, foco visible), optimización de rendimiento y SEO.  
+    - Endurecimiento de seguridad: Helmet, CORS por entorno y rate limiting; contenedores Docker como usuario no-root; CI/CD reforzado con Dependabot y Trivy.  
+    - Documentación técnica del proyecto (`docs/`), documentación de recuperación (RA de diseño y despliegue) y ficheros de comunidad (LICENSE, SECURITY, CONTRIBUTING, CHANGELOG).  
+  - **Resultado**: proyecto estable, probado, accesible, endurecido y documentado, listo para la defensa.
 
 ### 7.3. Herramientas de seguimiento
 
