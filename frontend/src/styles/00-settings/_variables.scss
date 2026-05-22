@@ -61,6 +61,11 @@ $color-segundo-tramo-inner:      #EA7D7D;
 $color-segundo-tramo-dark:       #7A0000;
 $color-segundo-tramo-dark-inner: #AB0404;
 
+// Rojo accesible para el fondo de etiquetas de error con texto blanco
+// (contraste ≈ 5.6:1, cumple WCAG AA). El rojo del semáforo es demasiado
+// claro para texto blanco (≈ 2.9:1).
+$color-error-fondo: #C62828;
+
 // ── Semáforo — Inactivo ────────────────────────────────────────────
 $color-inactivo:            #B0AEAE;
 $color-inactivo-inner:      #A5A0A0;

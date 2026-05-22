@@ -49,6 +49,8 @@
   // ── Semánticos — alias ────────────────────────────────────────
   --color-error:        var(--color-segundo_tramo);
   --color-error-subtle: var(--color-segundo_tramo-inner);
+  // Fondo accesible para etiquetas de error con texto blanco (válido en ambos temas)
+  --color-error-fondo:  #{vars.$color-error-fondo};
   --color-success:      var(--color-sin_costes);
 
   // ── Tipografía — Familias ─────────────────────────────────────

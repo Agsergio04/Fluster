@@ -135,10 +135,12 @@
     align-self:       flex-start;
     padding:          4px 12px;
     border-radius:    var(--radius);
-    background-color: var(--color-error);
+    // Rojo más oscuro que el del semáforo para que el texto blanco cumpla
+    // el contraste WCAG AA (el rojo del semáforo daba ~2.9:1)
+    background-color: var(--color-error-fondo);
     font-size:        var(--text-8);
     font-weight:      var(--font-weight-semibold);
-    color:            var(--color-surface);
+    color:            #FFFFFF;
     line-height:      var(--leading-snug);
   }
 
