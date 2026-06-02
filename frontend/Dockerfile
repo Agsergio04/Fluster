@@ -6,6 +6,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
+# La URL de la API se inyecta en build. Por defecto "/api" (relativo) para que
+# las llamadas pasen por el proxy de nginx → backend, sin exponer el puerto 3000.
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
+
 COPY . .
 RUN npm run build
 

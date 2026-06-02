@@ -146,6 +146,24 @@ Se escribió la suite completa de tests con Jest: 11 archivos de tests de contro
 
 **Solución:** se inicializó directamente el estado de carga como `true` en el `useState`: `const [cargando, setCargando] = useState(true)`. De esta forma, el componente renderiza desde el principio con el estado de carga activo, sin necesidad de actualizar el estado en el primer render, eliminando la advertencia y el render doble.
 
+### 3.7 Modelo de idioma de Tesseract dentro de la imagen Docker
+
+**Problema:** el servicio de OCR (`backend/src/services/ocrService.js`) inicializa el worker de Tesseract.js con `langPath` apuntando a la raíz del backend. Tesseract.js, con su configuración por defecto (`gzip: true`), busca el modelo de idioma con el nombre `eng.traineddata.gz`. En el repositorio el modelo está versionado sin comprimir como `eng.traineddata`, por lo que el OCR funcionaba en local pero, al construir la imagen Docker del backend copiando el fichero tal cual, el worker no encontraba el modelo con el nombre esperado y el reconocimiento fallaba dentro del contenedor.
+
+**Solución:** en el `Dockerfile` del backend el modelo se copia renombrándolo al nombre que Tesseract.js espera: `COPY eng.traineddata ./eng.traineddata.gz`. No es necesario comprimirlo realmente: Tesseract.js inspecciona los *magic bytes* del fichero para decidir si está comprimido o no, así que acepta el `.traineddata` original aunque la extensión sea `.gz`. De esta forma el modelo viaja dentro de la imagen (sin descargas externas en arranque) y el OCR funciona igual en local y en contenedor.
+
+### 3.8 nginx sin privilegios y el puerto 80
+
+**Problema:** la segunda fase del `Dockerfile` del frontend sirve el build estático con nginx. Por seguridad se eligió la imagen `nginxinc/nginx-unprivileged`, que ejecuta el proceso como el usuario `nginx` (UID 101) en lugar de root. Un proceso sin privilegios no puede enlazar puertos por debajo del 1024, por lo que nginx no podía escuchar en el puerto 80 habitual y el contenedor fallaba al arrancar.
+
+**Solución:** se configuró nginx para escuchar en el puerto 8080 (permitido para un usuario no-root) y se delegó la exposición del puerto estándar al mapeo de `docker-compose` (`ports: - "80:8080"`). Así el contenedor sigue corriendo sin privilegios —reduciendo la superficie de ataque— mientras que de cara al host el servicio se publica en el puerto 80 esperado.
+
+### 3.9 Inyección de la URL de la API en tiempo de build (Vite)
+
+**Problema:** Vite incrusta las variables de entorno `VITE_*` en el bundle **durante la compilación**, no en tiempo de ejecución. Como el build del frontend se realiza dentro del `Dockerfile` (fase de `builder`), la URL de la API no podía definirse al lanzar el contenedor; si se dejaba sin definir, las llamadas apuntaban a un host incorrecto y el frontend no podía comunicarse con el backend.
+
+**Solución:** se declaró `VITE_API_URL` como argumento de build (`ARG`/`ENV`) en el `Dockerfile` del frontend, con valor por defecto `/api` (ruta relativa). `docker-compose` lo pasa explícitamente vía `build.args`. Al ser una ruta relativa, las peticiones a `/api` las intercepta el proxy de nginx y las reenvía al backend dentro de la red interna, sin exponer el puerto 3000 del backend al exterior. El valor puede sobreescribirse en build para apuntar a otra URL (por ejemplo, el backend desplegado en Render).
+
 ---
 
 ## 4. Herramientas de control de versiones

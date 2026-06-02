@@ -5,7 +5,7 @@ const LANG_PATH = path.join(__dirname, '../..')
 
 // 4 letras (propietario + categoría) seguidas de 6 dígitos (serie)
 // No validamos qué letra es la categoría — Tesseract puede leerla mal
-const BIC_REGEX = /[A-Z]{4}\s*[0-9O]{6}/g
+const BIC_REGEX = /[A-Z]{4}\s*[0-9O]{7}/g
 
 // Corrige misreads de Tesseract en las posiciones numéricas (serie, índices 4-9)
 function normalizarBic(raw) {
