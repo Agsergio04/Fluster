@@ -11,6 +11,9 @@ import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
 import BotonesRegistro from '../../components/moleculas/BotonesRegistro'
 import imagenRegistro from '../../assets/images/imagen_registro-login.jpg'
 
+// Validación pragmática de formato de email: algo@algo.algo, sin espacios.
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 /**
  * Página de creación de cuenta nueva.
  * El rol se elige en el mismo formulario mediante botones de selección;
@@ -44,10 +47,11 @@ function Registro() {
     setErrorContrasenia('')
     setErrorRol('')
 
-    if (!nombre.trim())      { setErrorNombre('Introduce tu nombre');          return }
-    if (!correo.trim())      { setErrorCorreo('Introduce tu correo');          return }
-    if (!contrasenia.trim()) { setErrorContrasenia('Introduce tu contraseña'); return }
-    if (!rol)                { setErrorRol('Selecciona un rol');               return }
+    if (!nombre.trim())                   { setErrorNombre('Introduce tu nombre');          return }
+    if (!correo.trim())                   { setErrorCorreo('Introduce tu correo');          return }
+    if (!EMAIL_REGEX.test(correo.trim())) { setErrorCorreo('Introduce un correo válido');   return }
+    if (!contrasenia.trim())              { setErrorContrasenia('Introduce tu contraseña'); return }
+    if (!rol)                             { setErrorRol('Selecciona un rol');               return }
 
     try {
       setCargando(true)
@@ -124,7 +128,6 @@ function Registro() {
           </div>
 
           <BotonesRegistro
-            onCrearCuenta={handleCrearCuenta}
             onIrLogin={() => navigate('/login')}
             disabled={cargando}
           />

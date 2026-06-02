@@ -11,6 +11,10 @@ const Usuario = require('../models/Usuario')
 
 const SALT_ROUNDS = 10
 
+// Validación de formato de email: algo@algo.algo, sin espacios.
+// Misma expresión que usa el formulario de registro del frontend.
+const CORREO_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 /**
  * Registra un nuevo usuario en el sistema.
  * La contraseña se almacena siempre hasheada, nunca en texto plano.
@@ -19,6 +23,13 @@ const SALT_ROUNDS = 10
  * @returns {Promise<object>} Usuario creado sin el campo contrasena
  */
 async function registrar({ nombre, correo, contrasena, rol }) {
+  if (!CORREO_REGEX.test((correo ?? '').trim())) {
+    const err = new Error('El correo no tiene un formato válido')
+    err.status = 400
+    err.campo = 'correo'
+    throw err
+  }
+
   const yaExiste = await Usuario.findOne({ correo })
   if (yaExiste) {
     const err = new Error('Ya existe un usuario con ese correo')
