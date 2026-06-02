@@ -21,7 +21,10 @@ function authMiddleware(req, res, next) {
   const token = header.split(' ')[1]
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET)
+    // algorithms fijado a HS256: solo se aceptan tokens firmados con HMAC.
+    // Evita ataques de confusión de algoritmo y rechaza tokens "alg: none".
+    // La firma garantiza que el payload (incluido el rol) no ha sido manipulado.
+    const payload = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] })
     req.usuario = payload
     next()
   } catch {

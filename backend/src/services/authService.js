@@ -76,7 +76,8 @@ async function login(correo, contrasena) {
   }
 
   const payload = { id: usuario._id, correo: usuario.correo, rol: usuario.rol }
-  const token = jwt.sign(payload, process.env.JWT_SECRET)
+  // Algoritmo fijado a HS256 (coherente con la verificación del authMiddleware).
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256' })
 
   return {
     token,
