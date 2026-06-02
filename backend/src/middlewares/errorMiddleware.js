@@ -10,6 +10,15 @@
  * de los errores 500 para no exponer detalles del servidor.
  */
 function errorMiddleware(err, req, res, next) {
+  // Errores de validación de Mongoose (enum, required, formato...) son siempre
+  // datos incorrectos del cliente, no fallos del servidor → 400 en vez de 500.
+  if (err.name === 'ValidationError') {
+    const campo = Object.keys(err.errors ?? {})[0]
+    const body = { mensaje: `Valor no válido para el campo '${campo}'` }
+    if (campo) body.campo = campo
+    return res.status(400).json(body)
+  }
+
   const status = err.status || 500
 
   if (status === 500 && process.env.NODE_ENV === 'production') {
