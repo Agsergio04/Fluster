@@ -45,7 +45,7 @@ function CardSemaforo({
 
       <div className="card-semaforo__cuerpo">
         <div className="card-semaforo__bic">
-          <span className="card-semaforo__etiqueta">Código Bic :</span>
+          <span className="card-semaforo__etiqueta">Código BIC :</span>
           <span className="card-semaforo__valor">{codigoBic}</span>
         </div>
 
@@ -54,7 +54,7 @@ function CardSemaforo({
             <div className="card-semaforo__fecha-izq">
               <div className="card-semaforo__icono-label">
                 <CalendarioIcon className="card-semaforo__icono" aria-hidden="true" />
-                <p className="card-semaforo__etiqueta-sm">Ultima operacion :</p>
+                <p className="card-semaforo__etiqueta-sm">Última operación :</p>
               </div>
               <p className="card-semaforo__valor-sm">{ultimaOperacion}</p>
             </div>
@@ -66,7 +66,7 @@ function CardSemaforo({
               <PerfilIcon className="card-semaforo__icono" aria-hidden="true" />
               <p className="card-semaforo__etiqueta-sm">Cliente :</p>
             </div>
-            <p className="card-semaforo__valor-sm">{cliente ?? 'Sin Asignar'}</p>
+            <p className="card-semaforo__valor-sm">{cliente ?? 'Sin asignar'}</p>
           </div>
         </div>
       </div>

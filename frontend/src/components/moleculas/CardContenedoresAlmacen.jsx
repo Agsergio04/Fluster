@@ -28,7 +28,7 @@ function CardContenedoresAlmacen({
   return (
     <div className="card-almacen">
       <div className="card-almacen__bic">
-        <span className="card-almacen__etiqueta">Código Bic :</span>
+        <span className="card-almacen__etiqueta">Código BIC :</span>
         <span className="card-almacen__valor">{codigoBic}</span>
       </div>
 
@@ -36,7 +36,7 @@ function CardContenedoresAlmacen({
         <div className="card-almacen__fecha-izq">
           <div className="card-almacen__icono-label">
             <CalendarioIcon className="card-almacen__icono" aria-hidden="true" />
-            <p className="card-almacen__etiqueta-sm">Ultima operacion :</p>
+            <p className="card-almacen__etiqueta-sm">Última operación :</p>
           </div>
           <p className="card-almacen__valor-sm">{ultimaOperacion}</p>
         </div>
@@ -46,7 +46,7 @@ function CardContenedoresAlmacen({
         <div className="card-almacen__fecha-izq">
           <div className="card-almacen__icono-label">
             <CalendarioIcon className="card-almacen__icono" aria-hidden="true" />
-            <p className="card-almacen__etiqueta-sm">Fecha de Inclusión :</p>
+            <p className="card-almacen__etiqueta-sm">Fecha de inclusión :</p>
           </div>
           <p className="card-almacen__valor-sm">{fechaInclusion}</p>
         </div>

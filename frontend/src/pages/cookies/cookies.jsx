@@ -21,7 +21,7 @@ function Cookies() {
 
       <main className="pagina-estatica">
         <section className="pagina-estatica__intro">
-          <h1 className="pagina-estatica__titulo">Política de Cookies</h1>
+          <h1 className="pagina-estatica__titulo">Política de cookies</h1>
           <p className="pagina-estatica__subtitulo">
             Información sobre el uso de cookies y almacenamiento local en Fluster.
             Última actualización: enero de 2025.

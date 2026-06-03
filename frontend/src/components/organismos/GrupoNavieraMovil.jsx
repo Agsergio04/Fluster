@@ -7,14 +7,14 @@ const SECCIONES = [
     grupo: 'Tiempo (días)',
     subs: [
       { sub: 'Duración Free Time',  det: 0, dem: 1 },
-      { sub: 'Límite Primer Tramo', det: 2, dem: 3 },
+      { sub: 'Límite primer tramo', det: 2, dem: 3 },
     ],
   },
   {
     grupo: 'Tarifas (€ por cada día)',
     subs: [
-      { sub: 'Primer Tramo',  det: 4, dem: 5 },
-      { sub: 'Segundo Tramo', det: 6, dem: 7 },
+      { sub: 'Primer tramo',  det: 4, dem: 5 },
+      { sub: 'Segundo tramo', det: 6, dem: 7 },
     ],
   },
 ]

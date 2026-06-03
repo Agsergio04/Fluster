@@ -129,7 +129,7 @@ function SubirFotoOcr({
 
         <div className="subir-foto-ocr__info">
           <div className="subir-foto-ocr__texto">
-            <h2 className="subir-foto-ocr__titulo">Introduce la Imagen</h2>
+            <h2 className="subir-foto-ocr__titulo">Introduce la imagen</h2>
             <p className="subir-foto-ocr__descripcion">
               Aquí puedes arrastrar la imagen o meterla directamente para la inclusión del contenedor
             </p>

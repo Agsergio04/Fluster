@@ -17,9 +17,9 @@ function CabeceraTablasTarifas() {
 
       {/* Fila 2 — subgrupos */}
       <CeldaTabla label="Duración del free time" tamanio="md" />
-      <CeldaTabla label="Limite Primer Tramo"    tamanio="md" />
-      <CeldaTabla label="Primer Tramo"           tamanio="md" />
-      <CeldaTabla label="Segundo Tramo"          tamanio="md" />
+      <CeldaTabla label="Límite primer tramo"    tamanio="md" />
+      <CeldaTabla label="Primer tramo"           tamanio="md" />
+      <CeldaTabla label="Segundo tramo"          tamanio="md" />
 
       {/* Fila 3 — Det/Sob por tramo */}
       <CeldaDetSob />

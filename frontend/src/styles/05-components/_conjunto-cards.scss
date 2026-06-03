@@ -28,4 +28,11 @@
   &--usuarios &__grid {
     align-items: flex-end;
   }
+
+  // La variante de navieras (tarifas en móvil) apila las tarjetas a lo ancho completo
+  &--navieras &__grid {
+    flex-direction: column;
+    flex-wrap:      nowrap;
+    gap:            var(--space-48);
+  }
 }

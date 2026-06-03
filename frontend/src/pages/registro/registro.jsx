@@ -120,7 +120,7 @@ function Registro() {
             role="group"
             aria-labelledby="registro-rol-titulo"
           >
-            <p className="registro__rol-titulo" id="registro-rol-titulo">Rol Asignado</p>
+            <p className="registro__rol-titulo" id="registro-rol-titulo">Rol asignado</p>
             {errorRol && <p className="registro__rol-error" role="alert">{errorRol}</p>}
             <BotonesSeleccionRol
               rolSeleccionado={rol}

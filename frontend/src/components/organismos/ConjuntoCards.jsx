@@ -6,18 +6,19 @@ import CardSemaforo from './CardSemaforo'
 import CardUsuario from '../moleculas/CardUsuario'
 import CardContenedoresAlmacen from '../moleculas/CardContenedoresAlmacen'
 import CardContenedor from '../moleculas/CardContenedor'
+import GrupoNavieraMovil from './GrupoNavieraMovil'
 
 // En móvil se muestran menos tarjetas para que quepan en pantalla sin scroll excesivo
 const MOVIL_QUERY = '(max-width: 1023px)'
 const ITEMS_MOVIL  = 3
 
 /**
- * Contenedor paginado de tarjetas reutilizable para cuatro variantes:
- * 'semaforo', 'usuarios', 'almacen' y 'contenedores'.
+ * Contenedor paginado de tarjetas reutilizable para cinco variantes:
+ * 'semaforo', 'usuarios', 'almacen', 'contenedores' y 'navieras'.
  * La paginación se adapta automáticamente al ancho de pantalla
  * escuchando el MediaQueryList para no depender de resize events.
  *
- * @param {'semaforo'|'usuarios'|'almacen'|'contenedores'} variante
+ * @param {'semaforo'|'usuarios'|'almacen'|'contenedores'|'navieras'} variante
  * @param {object[]} items           - Elementos ya filtrados por la página padre
  * @param {number}   itemsPorPagina  - Columnas visibles en escritorio
  */
@@ -69,6 +70,18 @@ function ConjuntoCards({
         return <CardContenedoresAlmacen key={key} {...item} onVerRegistro={() => onVerRegistro?.(item)} onBorrar={() => onBorrar?.(item)} />
       case 'contenedores':
         return <CardContenedor key={key} {...item} onEditar={() => onEditar?.(item)} onEliminar={() => onEliminar?.(item)} />
+      case 'navieras':
+        // La clave combina naviera y valores para forzar el re-mount tras guardar,
+        // igual que hacía ConjuntoNavieras, y que el estado interno del formulario se reinicie.
+        return (
+          <GrupoNavieraMovil
+            key={(item._id ?? item.naviera) + '_' + (item.valores ?? []).join(',')}
+            naviera={item.naviera}
+            valores={item.valores}
+            onActualizar={item.onActualizar}
+            onEliminar={item.onEliminar}
+          />
+        )
       default:
         return null
     }

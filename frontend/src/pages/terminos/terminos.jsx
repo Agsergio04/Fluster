@@ -21,7 +21,7 @@ function Terminos() {
 
       <main className="pagina-estatica">
         <section className="pagina-estatica__intro">
-          <h1 className="pagina-estatica__titulo">Términos de Servicio</h1>
+          <h1 className="pagina-estatica__titulo">Términos de servicio</h1>
           <p className="pagina-estatica__subtitulo">
             Al utilizar Fluster aceptas los siguientes términos y condiciones.
             Última actualización: enero de 2025.

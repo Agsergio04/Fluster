@@ -1,7 +1,7 @@
 const LABELS = {
   'cambiar-nombre':      'Cambiar el nombre',
   'cambiar-contrasenia': 'Cambiar la contraseña',
-  'cerrar-sesion':       'Cerrar Sesión',
+  'cerrar-sesion':       'Cerrar sesión',
 }
 
 /**

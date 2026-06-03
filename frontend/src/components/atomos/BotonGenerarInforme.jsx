@@ -7,7 +7,7 @@ function BotonGenerarInforme({ disabled = false, onClick }) {
       disabled={disabled}
       onClick={onClick}
     >
-      Generar Informe
+      Generar informe
     </button>
   )
 }

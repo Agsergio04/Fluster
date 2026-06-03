@@ -20,7 +20,6 @@ const PanelDeControl      = lazy(() => import('../pages/panel_de_control/panel_d
 const Perfil              = lazy(() => import('../pages/perfil/perfil'))
 const Semaforo            = lazy(() => import('../pages/semaforo/semaforo'))
 const Tarifas             = lazy(() => import('../pages/tarifas/tarifas'))
-const GuiaEstilos         = lazy(() => import('../pages/guia_estilos/guia_estilos'))
 const Terminos            = lazy(() => import('../pages/terminos/terminos'))
 const Privacidad          = lazy(() => import('../pages/privacidad/privacidad'))
 const Cookies             = lazy(() => import('../pages/cookies/cookies'))
@@ -73,7 +72,6 @@ function AppRouter() {
             <RutaProtegida roles={AUTENTICADO}><Perfil /></RutaProtegida>
           } />
 
-          <Route path="/guia-estilos"           element={<GuiaEstilos />} />
           <Route path="/terminos-de-servicio"   element={<Terminos />} />
           <Route path="/politica-de-privacidad" element={<Privacidad />} />
           <Route path="/cookies"                element={<Cookies />} />

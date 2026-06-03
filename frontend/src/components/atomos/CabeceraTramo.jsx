@@ -1,7 +1,7 @@
 const LABELS = {
   'sin-coste':     'Tramo sin coste aplicado',
-  'primer-tramo':  'Primer Tramo',
-  'segundo-tramo': 'Segundo Tramo',
+  'primer-tramo':  'Primer tramo',
+  'segundo-tramo': 'Segundo tramo',
   'inactivo':      'Inactivos',
 }
 

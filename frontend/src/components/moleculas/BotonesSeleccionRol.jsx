@@ -16,7 +16,7 @@ function BotonesSeleccionRol({ rolSeleccionado, onSeleccionarRol }) {
     <div className="botones-seleccion-rol">
       <BotonRol
         icon={<OperadorIcon aria-hidden="true" />}
-        titulo="Soy un Operador"
+        titulo="Soy un operador"
         descripcion="Introduzco contenedores mediante un sistema OCR"
         active={rolSeleccionado === 'operador'}
         off={rolSeleccionado === 'gestor'}
@@ -24,7 +24,7 @@ function BotonesSeleccionRol({ rolSeleccionado, onSeleccionarRol }) {
       />
       <BotonRol
         icon={<GestorIcon aria-hidden="true" />}
-        titulo="Soy Gestor de Operaciones"
+        titulo="Soy gestor de operaciones"
         descripcion="Controlo tarifas de navieras, gestiono los contenedores y genero los informes"
         active={rolSeleccionado === 'gestor'}
         off={rolSeleccionado === 'operador'}

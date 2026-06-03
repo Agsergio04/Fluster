@@ -93,7 +93,7 @@ function Login() {
           className="login__panel"
           onSubmit={e => { e.preventDefault(); handleIniciarSesion() }}
         >
-          <h1 className="login__titulo">Iniciar Sesión</h1>
+          <h1 className="login__titulo">Iniciar sesión</h1>
           <EntradaDatosLogin
             correo={correo}
             onCorreoCambio={e => setCorreo(e.target.value)}

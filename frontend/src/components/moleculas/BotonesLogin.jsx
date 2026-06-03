@@ -11,7 +11,7 @@ function BotonesLogin({ onIniciarSesion, onIrRegistro, cargando = false }) {
   return (
     <div className="botones-login">
       <BotonRegistroLogin type="submit" onClick={onIniciarSesion} disabled={cargando}>
-        {cargando ? <Spinner tamanio="sm" /> : 'Iniciar Sesión'}
+        {cargando ? <Spinner tamanio="sm" /> : 'Iniciar sesión'}
       </BotonRegistroLogin>
       <TextoCambiadorLoginRegistro
         texto="¿No tienes cuenta?"

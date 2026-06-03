@@ -7,7 +7,7 @@ function BotonIniciarSesion({ disabled = false, onClick }) {
       disabled={disabled}
       onClick={onClick}
     >
-      Iniciar Sesión
+      Iniciar sesión
     </button>
   )
 }

@@ -10,7 +10,7 @@ import TextoCambiadorRegistroLogin  from './TextoCambiadorRegistroLogin'
 function BotonesRegistro({ onIrLogin, disabled = false }) {
   return (
     <div className="botones-registro">
-      <BotonRegistroLogin type="submit" disabled={disabled}>Crear Cuenta</BotonRegistroLogin>
+      <BotonRegistroLogin type="submit" disabled={disabled}>Crear cuenta</BotonRegistroLogin>
       <TextoCambiadorRegistroLogin
         texto="Tienes una cuenta"
         labelBoton="Iniciar sesión"

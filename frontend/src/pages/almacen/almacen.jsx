@@ -125,7 +125,7 @@ function Almacen() {
 
       <main>
         <section className="almacen__intro">
-          <h1 className="almacen__titulo">Contenedores Registrados</h1>
+          <h1 className="almacen__titulo">Contenedores registrados</h1>
           <p className="almacen__subtitulo">
             Aquí se encuentra el listado de los contenedores registrados para la gestión
             y la creación de informes asociados a la detención y sobreestadía entre
