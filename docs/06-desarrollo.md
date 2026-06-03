@@ -106,6 +106,27 @@ Se escribió la suite completa de tests con Jest: 11 archivos de tests de contro
 
 **Razonamiento:** sin custom hooks, los componentes de página mezclan lógica de negocio (qué datos cargar, cómo transformarlos) con lógica de presentación (qué renderizar). Esta mezcla hace los componentes más difíciles de probar y de reutilizar. Los custom hooks encapsulan el estado de carga (`cargando`), el estado de error (`aviso`) y los datos (`contenedores`) en una unidad cohesionada, fácilmente importable por cualquier página que los necesite. Para el alcance del proyecto, este patrón es suficiente sin necesitar el overhead de una librería de estado global.
 
+### 2.8 Arquitectura del backend por capas (MVC + capa de servicios)
+
+**Decisión:** el backend sigue el patrón **MVC** adaptado a una API REST, ampliado con una **capa de servicios** explícita. Cada recurso se organiza en una cadena uniforme de responsabilidades:
+
+```
+routes/        → enrutado: mapea cada URL a su controlador y middlewares
+controllers/   → adaptan la petición HTTP (req/res); no contienen lógica de negocio
+services/      → lógica de negocio y acceso a datos (capa de servicios)
+models/        → esquemas de Mongoose (capa de modelo)
+middlewares/   → preocupaciones transversales (auth, roles, errores)
+config/        → conexión a BD y validación de entorno
+```
+
+- **Modelo** → `models/` (siete esquemas Mongoose).
+- **Vista** → al ser una API REST no hay vistas HTML: la representación es la respuesta JSON, documentada con Swagger UI (`/api-docs`).
+- **Controlador** → `controllers/`, finos: extraen los datos de `req`, llaman al servicio correspondiente y formatean `res`.
+
+**Alternativa considerada:** controladores "gruesos" que accedan directamente a los modelos y contengan la lógica de negocio (MVC sin capa de servicios).
+
+**Razonamiento:** separar la lógica de negocio en `services/` mantiene los controladores finos y centrados en el protocolo HTTP, hace la lógica reutilizable entre controladores y, sobre todo, **testeable de forma aislada** sin levantar Express ni la base de datos (la mayoría de los tests unitarios atacan la capa de servicios mockeando los modelos). Las rutas no contienen lógica y los controladores —salvo el de ciclos, pendiente de refactor para extraer su cálculo a `cicloService`— no importan modelos directamente. Esta uniformidad (un recurso = una ruta = un controlador = un servicio = un modelo) hace el código predecible y fácil de extender.
+
 ---
 
 ## 3. Dificultades encontradas y soluciones
@@ -163,6 +184,18 @@ Se escribió la suite completa de tests con Jest: 11 archivos de tests de contro
 **Problema:** Vite incrusta las variables de entorno `VITE_*` en el bundle **durante la compilación**, no en tiempo de ejecución. Como el build del frontend se realiza dentro del `Dockerfile` (fase de `builder`), la URL de la API no podía definirse al lanzar el contenedor; si se dejaba sin definir, las llamadas apuntaban a un host incorrecto y el frontend no podía comunicarse con el backend.
 
 **Solución:** se declaró `VITE_API_URL` como argumento de build (`ARG`/`ENV`) en el `Dockerfile` del frontend, con valor por defecto `/api` (ruta relativa). `docker-compose` lo pasa explícitamente vía `build.args`. Al ser una ruta relativa, las peticiones a `/api` las intercepta el proxy de nginx y las reenvía al backend dentro de la red interna, sin exponer el puerto 3000 del backend al exterior. El valor puede sobreescribirse en build para apuntar a otra URL (por ejemplo, el backend desplegado en Render).
+
+### 3.10 Integridad referencial: borrados en cascada y restrict
+
+**Problema:** las colecciones se referencian entre sí (un `Evento` y un `Informe` apuntan a un `Contenedor`; un `Contenedor`, un `Evento` y un `Informe` apuntan al `Usuario` que los creó). MongoDB no impone integridad referencial como una base de datos relacional, así que al borrar un documento referenciado quedaban referencias colgantes: borrar un contenedor solo eliminaba sus ciclos, dejando eventos e informes huérfanos; borrar un usuario dejaba referencias rotas en los documentos que había creado.
+
+**Solución:** se definió una política de borrado explícita por recurso. Para el **contenedor** se aplica **cascada**: al eliminarlo se borran también sus ciclos, eventos e informes asociados (`deleteMany` por `contenedorId`). Para el **usuario** se aplica **restrict**: se impide el borrado (HTTP 409) si tiene contenedores, eventos o informes asociados, evitando perder trazabilidad. El **cliente** ya usaba restrict y la **naviera** recompone las referencias al leer. Cada caso se cubrió con tests unitarios sobre la capa de servicios.
+
+### 3.11 Endurecimiento del JWT: algoritmo fijo y validación del secreto
+
+**Problema:** el rol del usuario viaja firmado dentro del JWT y todo el control de acceso depende de su verificación. Dos riesgos: (1) verificar el token sin fijar el algoritmo deja la puerta abierta a ataques de confusión de algoritmo y a tokens `alg: none`; (2) arrancar con un `JWT_SECRET` de ejemplo conocido permitiría a cualquiera firmar un token con rol admin que el backend aceptaría como legítimo.
+
+**Solución:** la verificación y la firma fijan explícitamente `HS256` (`algorithms: ['HS256']`), de modo que solo se aceptan tokens HMAC y se rechazan los `alg: none`. Además, un validador de entorno (`config/validarEntorno.js`) aborta el arranque del servidor si `JWT_SECRET` falta o coincide con uno de los valores de ejemplo del repositorio (fatal en producción, aviso en desarrollo). Así se garantiza que un token con el rol manipulado se rechaza por firma inválida y que el secreto que protege esa firma nunca es uno público.
 
 ---
 
