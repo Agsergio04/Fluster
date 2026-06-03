@@ -12,6 +12,11 @@ node_modules/
 dist/
 build/
 
+# Cobertura y artefactos de tests (no se versionan)
+coverage/
+playwright-report/
+test-results/
+
 # Logs
 *.log
 npm-debug.log*

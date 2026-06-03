@@ -7,6 +7,27 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 
 ## [Sin publicar]
 
+### Seguridad
+- El registro público ya no permite asignarse el rol `admin` (responde 403); el rol admin solo se crea con el script de administración.
+- El rol del cliente se deriva del JWT firmado, no del objeto `usuario` de `localStorage`, de modo que editar `localStorage` ya no concede permisos.
+- Algoritmo del JWT fijado a HS256 en firma y verificación (rechaza `alg: none` y la confusión de algoritmo).
+- Validación del entorno al arrancar: el servidor no arranca con un `JWT_SECRET` ausente o de ejemplo (fatal en producción).
+
+### Cambiado
+- Refactor MVC: la edición de tramos de ciclo pasa de `cicloController` a `cicloService` (controladores finos, sin acceso directo a modelos), reutilizando el motor de cálculo D&D extraído a `calculoDD.js`.
+- Las hojas de estilo usan los mixins `mobile`/`tablet` y `flex-col`/`flex-row` en lugar de media queries y flex repetidos a mano.
+- Las tarifas en móvil se muestran con el mismo conjunto de tarjetas (`ConjuntoCards`) que el resto de la aplicación.
+
+### Corregido
+- `errorMiddleware` devuelve 400 ante un `CastError` (identificador inválido) y 409 ante clave duplicada (E11000) en lugar de 500.
+- Borrado en cascada del contenedor (ciclos, eventos e informes) y *restrict* al eliminar usuarios con datos asociados.
+- Formulario de registro: se elimina el doble envío y se valida el formato del correo (cliente y servidor).
+- Capitalización de los textos de interfaz según la norma RAE (mayúscula inicial, no Title Case).
+- Documentación sincronizada con el código: diagrama entidad-relación, Swagger (estado `PUERTO`), guía de despliegue y valores de tokens de estilo.
+
+### Eliminado
+- `frontend/node_modules` y los archivos de log dejan de versionarse (se añaden al `.gitignore`); la cobertura de tests (`coverage/`) tampoco se versiona.
+
 ## [1.0.0] - 2026-05-22
 
 Primera versión estable de Fluster, desplegada y funcional. Gestión completa
