@@ -78,7 +78,7 @@ frontend/src/styles/00-settings/
 // _css-variables.scss — tema claro (por defecto)
 :root {
   --color-primary:       #4FB2F8;   // azul principal
-  --color-primary-hover: #3A9DE0;   // hover del azul
+  --color-primary-hover: #69C1FF;   // hover del azul
   --color-primary-off:   #DBEEFF;   // fondo suave del azul
   --color-bg:            #F9FAFB;   // fondo de página
   --color-surface:       #FFFFFF;   // fondo de tarjetas/modales
@@ -144,7 +144,7 @@ La escala de espaciado es multiplicativa (base 4px), lo que garantiza ritmo visu
 ### Forma y animación
 
 ```scss
-$radius:           0.5rem;      // radio de esquinas
+$radius:           12px;        // radio de esquinas
 $transition-fast:  150ms ease;  // transición rápida (hover)
 ```
 
@@ -158,7 +158,7 @@ En Fluster, la guía de estilo funciona como un **contrato entre diseño y códi
 Ningún componente puede usar un valor de color, tipografía o espaciado que no esté definido en `_variables.scss` o `_css-variables.scss`. Los valores hardcoded están prohibidos.
 
 **Regla 2 — Un cambio en el token lo cambia todo**  
-Si se decide que el radio de esquinas debe ser `0.75rem` en lugar de `0.5rem`, basta con cambiar `$radius` en `_variables.scss`. Los 76 componentes que usan `var(--radius)` se actualizan automáticamente.
+Si se decide que el radio de esquinas debe ser `16px` en lugar de `12px`, basta con cambiar `$radius` en `_variables.scss`. Los 67 componentes que usan `var(--radius)` se actualizan automáticamente.
 
 **Regla 3 — La página `/guia-estilos` es la prueba de coherencia**  
 Cualquier componente nuevo debe aparecer en la página de Style Guide. Si se ve diferente al resto, es porque no está siguiendo los tokens correctamente.

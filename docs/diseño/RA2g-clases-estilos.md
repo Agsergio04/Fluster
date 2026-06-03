@@ -16,7 +16,7 @@
 
 ## 1. Catálogo de componentes BEM
 
-Fluster tiene **76 archivos SCSS** de componentes en `05-components`, todos siguiendo la metodología BEM. A continuación se listan los más representativos agrupados por categoría.
+Fluster tiene **67 archivos SCSS** de componentes en `05-components`, todos siguiendo la metodología BEM. A continuación se listan los más representativos agrupados por categoría.
 
 ### Botones (26 componentes)
 

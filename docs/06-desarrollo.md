@@ -125,7 +125,7 @@ config/        → conexión a BD y validación de entorno
 
 **Alternativa considerada:** controladores "gruesos" que accedan directamente a los modelos y contengan la lógica de negocio (MVC sin capa de servicios).
 
-**Razonamiento:** separar la lógica de negocio en `services/` mantiene los controladores finos y centrados en el protocolo HTTP, hace la lógica reutilizable entre controladores y, sobre todo, **testeable de forma aislada** sin levantar Express ni la base de datos (la mayoría de los tests unitarios atacan la capa de servicios mockeando los modelos). Las rutas no contienen lógica y los controladores —salvo el de ciclos, pendiente de refactor para extraer su cálculo a `cicloService`— no importan modelos directamente. Esta uniformidad (un recurso = una ruta = un controlador = un servicio = un modelo) hace el código predecible y fácil de extender.
+**Razonamiento:** separar la lógica de negocio en `services/` mantiene los controladores finos y centrados en el protocolo HTTP, hace la lógica reutilizable entre controladores y, sobre todo, **testeable de forma aislada** sin levantar Express ni la base de datos (la mayoría de los tests unitarios atacan la capa de servicios mockeando los modelos). Las rutas no contienen lógica y los controladores no importan modelos directamente: cada uno delega en su servicio (incluido el de ciclos, cuyo cálculo D&D se trasladó a `cicloService`). Esta uniformidad (un recurso = una ruta = un controlador = un servicio = un modelo) hace el código predecible y fácil de extender.
 
 ---
 
