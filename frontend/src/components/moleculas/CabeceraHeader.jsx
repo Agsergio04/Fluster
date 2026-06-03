@@ -6,7 +6,7 @@ import BotonCambiarTema from '../atomos/BotonCambiarTema'
  * Barra superior fija del header: logo, botón hamburguesa y selector de tema.
  * El botón hamburguesa solo se monta si el usuario tiene sesión (loggeado=true).
  */
-function CabeceraHeader({ loggeado = false, tema = 'light', onToggleTema, onMenuHamburguesa, onLogoClick }) {
+function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light', onToggleTema, onMenuHamburguesa, onLogoClick }) {
   return (
     <div className="cabecera-header">
       <button
@@ -26,7 +26,11 @@ function CabeceraHeader({ loggeado = false, tema = 'light', onToggleTema, onMenu
       </button>
       <div className="cabecera-header__controles">
         {loggeado && (
-          <BotonMenuHamburguesa onClick={onMenuHamburguesa} />
+          <BotonMenuHamburguesa
+            onClick={onMenuHamburguesa}
+            expanded={menuAbierto}
+            controls="menu-navegacion"
+          />
         )}
         <BotonCambiarTema tema={tema} onClick={onToggleTema} />
       </div>

@@ -38,7 +38,7 @@ function Input({
       )}
 
       {error && (
-        <span className="input__error">{error}</span>
+        <span className="input__error" id={`${id}-error`}>{error}</span>
       )}
 
       <input
@@ -52,10 +52,13 @@ function Input({
         required={required}
         name={name}
         autoComplete={autoComplete}
+        // Vincula el mensaje de error con el campo para los lectores de pantalla
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : (hint ? `${id}-hint` : undefined)}
       />
 
       {hint && !error && (
-        <span className="input__hint">{hint}</span>
+        <span className="input__hint" id={`${id}-hint`}>{hint}</span>
       )}
 
     </label>

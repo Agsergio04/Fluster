@@ -20,6 +20,7 @@ function Header({ rol = null, seccionActiva, tema = 'light', onToggleTema, onNav
     <header className={`header${menuAbierto ? ' header--abierto' : ''}`}>
       <CabeceraHeader
         loggeado={!!rol}
+        menuAbierto={menuAbierto}
         tema={tema}
         onToggleTema={onToggleTema}
         // El botón hamburguesa solo existe si el usuario tiene sesión iniciada
@@ -28,6 +29,7 @@ function Header({ rol = null, seccionActiva, tema = 'light', onToggleTema, onNav
       />
       {rol && menuAbierto && (
         <BotonesMenuHamburguesa
+          id="menu-navegacion"
           rol={rol}
           seccionActiva={seccionActiva}
           onNavegar={onNavegar}

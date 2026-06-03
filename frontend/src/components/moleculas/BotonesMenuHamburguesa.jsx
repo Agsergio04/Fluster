@@ -34,10 +34,10 @@ const ITEMS = {
  * @param {string} seccionActiva - Id del ítem que debe aparecer como activo
  * @param {function} onNavegar
  */
-function BotonesMenuHamburguesa({ rol = 'gestor', seccionActiva, onNavegar }) {
+function BotonesMenuHamburguesa({ id, rol = 'gestor', seccionActiva, onNavegar }) {
   const items = ITEMS[rol] ?? []
   return (
-    <nav className="botones-menu-hamburguesa" aria-label="Navegación principal">
+    <nav id={id} className="botones-menu-hamburguesa" aria-label="Navegación principal">
       {items.map(({ id, label, icon, ruta }) => (
         <BotonDesplegableHamburguesa
           key={id}
