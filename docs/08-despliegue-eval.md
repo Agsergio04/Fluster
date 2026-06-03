@@ -32,13 +32,14 @@ Para cada criterio se explica qué se ha implementado, dónde está en el reposi
 
 ### Qué se ha implementado y por qué
 
-La aplicación está dividida en **tres servicios completamente independientes**, cada uno con una responsabilidad única y bien delimitada. Esta separación sigue el principio de responsabilidad única y permite escalar, actualizar o reemplazar cualquier capa sin tocar las demás.
+La aplicación se compone de **tres servicios de larga ejecución** (frontend, backend y base de datos), cada uno con una responsabilidad única y bien delimitada, más un **servicio auxiliar `seed` de un solo uso** que siembra la base de datos local al arrancar y termina. Esta separación sigue el principio de responsabilidad única y permite escalar, actualizar o reemplazar cualquier capa sin tocar las demás.
 
 | Servicio | Tecnología | Responsabilidad | Puerto expuesto al host |
 |---|---|---|---|
 | `frontend` | React 19 + Vite + nginx-unprivileged:alpine | Sirve la SPA y actúa como reverse proxy | **80** (host) → 8080 (contenedor, no-root) |
 | `backend` | Node.js 22 + Express 5 | API REST, lógica de negocio, autenticación JWT | Ninguno — solo red interna |
 | `mongo` | MongoDB 7 | Persistencia de datos | Ninguno — solo red interna |
+| `seed` *(one-shot)* | Node.js 22 (imagen del backend) | Siembra admin + datos de demo cuando Mongo está lista; finaliza al terminar | Ninguno — solo red interna |
 
 **Decisiones de diseño justificadas:**
 
@@ -89,7 +90,7 @@ Navegador (cliente)
 ```yaml
 services:
 
-  # ─── Base de datos ────────────────────────────────────────────
+  # ─── Base de datos (Mongo local, NO el cluster Atlas) ─────────
   mongo:
     image: mongo:7
     restart: unless-stopped
@@ -99,6 +100,27 @@ services:
       - mongo_data:/data/db
     networks:
       - fluster-net
+    healthcheck:                       # los dependientes esperan a que Mongo acepte conexiones
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ─── Seed (one-shot) — siembra la BD local y termina ──────────
+  seed:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["sh", "-c", "npm run seed && npm run seed:datos"]
+    environment:
+      MONGO_URI: mongodb://mongo:27017/fluster
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - fluster-net
+    restart: "no"
 
   # ─── Backend ──────────────────────────────────────────────────
   backend:
@@ -107,11 +129,14 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
-      MONGO_URI:  mongodb://mongo:27017/fluster
+      MONGO_URI:  mongodb://mongo:27017/fluster   # Mongo local del stack, no Atlas
       PORT:       3000
       JWT_SECRET: ${JWT_SECRET:-cambia_esto_por_un_secreto_seguro}
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      seed:
+        condition: service_completed_successfully  # arranca tras sembrar
     networks:
       - fluster-net
 
@@ -120,6 +145,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
     restart: unless-stopped
     ports:
       - "80:8080"
@@ -139,8 +166,9 @@ networks:
 **Qué demuestra este fichero:**
 - Solo `frontend` tiene `ports` — el único puerto expuesto al host es el 80.
 - `backend` y `mongo` no tienen `ports` — solo accesibles dentro de `fluster-net`.
-- `depends_on` garantiza el orden de arranque: mongo → backend → frontend.
-- `restart: unless-stopped` recupera los servicios tras un reinicio del servidor.
+- `depends_on` con condiciones garantiza el orden de arranque: **mongo (sana) → seed (siembra y termina) → backend → frontend**. El `healthcheck` de Mongo evita que la siembra y el backend arranquen contra una BD que aún no acepta conexiones.
+- El backend usa la Mongo **local** del stack (`mongodb://mongo:27017/fluster`), no el cluster Atlas (Atlas se usa en el despliegue de Render vía `render.yaml`).
+- `restart: unless-stopped` recupera los servicios de larga ejecución tras un reinicio; `seed` usa `restart: "no"` porque solo debe correr una vez.
 
 ### Verificación
 
@@ -150,13 +178,14 @@ docker compose ps
 ```
 
 ```
-NAME                   IMAGE              STATUS    PORTS
-fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->8080/tcp
+NAME                   IMAGE              STATUS              PORTS
+fluster-frontend-1     fluster-frontend   running             0.0.0.0:80->8080/tcp
 fluster-backend-1      fluster-backend    running
-fluster-mongo-1        mongo:7            running
+fluster-mongo-1        mongo:7            running (healthy)
+fluster-seed-1         fluster-seed       exited (0)
 ```
 
-Solo `frontend` tiene puerto mapeado. `backend` y `mongo` sin puertos expuestos. La aplicación es accesible en `http://localhost`.
+Solo `frontend` tiene puerto mapeado. `backend` y `mongo` sin puertos expuestos. El servicio `seed` aparece como `exited (0)`: es lo esperado, siembra la BD una vez y termina. La aplicación es accesible en `http://localhost`.
 
 ---
 
@@ -295,10 +324,11 @@ docker compose ps
 ```
 
 ```
-NAME                   IMAGE              STATUS    PORTS
-fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->8080/tcp
+NAME                   IMAGE              STATUS              PORTS
+fluster-frontend-1     fluster-frontend   running             0.0.0.0:80->8080/tcp
 fluster-backend-1      fluster-backend    running
-fluster-mongo-1        mongo:7            running
+fluster-mongo-1        mongo:7            running (healthy)
+fluster-seed-1         fluster-seed       exited (0)
 ```
 
 ![docker compose ps — solo el puerto 80 expuesto al host](./assets/img/despliegue/c2-a.png)
@@ -339,7 +369,7 @@ curl -I http://localhost
 
 | Fichero | Ruta en el repo | Propósito | ¿En el repo? |
 |---|---|---|---|
-| `docker-compose.yml` | [`/docker-compose.yml`](../docker-compose.yml) | Define los 3 servicios, redes y volúmenes |  Sí |
+| `docker-compose.yml` | [`/docker-compose.yml`](../docker-compose.yml) | Define los servicios (frontend, backend, mongo y el `seed` one-shot), redes y volúmenes |  Sí |
 | `Dockerfile` (backend) | [`/backend/Dockerfile`](../backend/Dockerfile) | Imagen del servidor Node.js |  Sí |
 | `Dockerfile` (frontend) | [`/frontend/Dockerfile`](../frontend/Dockerfile) | Imagen multi-stage Vite + nginx |  Sí |
 | `nginx.conf` | [`/frontend/nginx/nginx.conf`](../frontend/nginx/nginx.conf) | Configuración del servidor web y proxy |  Sí |
@@ -462,10 +492,11 @@ docker compose ps
 ```
 
 ```
-NAME                   IMAGE              STATUS    PORTS
-fluster-frontend-1     fluster-frontend   running   0.0.0.0:80->8080/tcp
+NAME                   IMAGE              STATUS              PORTS
+fluster-frontend-1     fluster-frontend   running             0.0.0.0:80->8080/tcp
 fluster-backend-1      fluster-backend    running
-fluster-mongo-1        mongo:7            running
+fluster-mongo-1        mongo:7            running (healthy)
+fluster-seed-1         fluster-seed       exited (0)
 ```
 
 Solo `frontend` tiene un puerto mapeado al host (`0.0.0.0:80->8080/tcp`). `backend` y `mongo` no tienen puertos publicados.
