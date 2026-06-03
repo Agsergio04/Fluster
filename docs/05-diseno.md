@@ -55,28 +55,23 @@ erDiagram
     navieras {
         ObjectId _id PK
         String   nombre
-        String   codigo    "Unique"
+        String   codigo               "Unique"
+        Number   diasLibresDemurrage
+        Number   diasLibresDetention
+        Array    diasDemurrage        "tramos embebidos"
+        Array    diasDetention        "tramos embebidos"
     }
     clientes {
         ObjectId _id PK
         String   nombre
     }
-    tarifas {
-        ObjectId _id       PK
-        ObjectId navieraId FK
-        Array    diasDemurrage
-        Array    diasDetention
-        Date     creadoEn
-    }
     contenedores {
         ObjectId _id              PK
         String   codigoBIC
+        String   foto
         String   tipo
-        String   estado           "INACTIVO | PUERTO | CLIENTE | VUELTA_PUERTO"
+        String   estado           "INACTIVO | PUERTO | CLIENTE"
         ObjectId navieraId        FK
-        ObjectId clienteId        FK
-        ObjectId tarifaId         FK
-        Number   diasLibres
         Date     fechaInicioLibre
         Date     fechaEntradaPuerto
         Date     fechaSalidaPuerto
@@ -84,37 +79,45 @@ erDiagram
         ObjectId creadoPor        FK
         Date     creadoEn
     }
+    ciclos {
+        ObjectId _id           PK
+        ObjectId contenedorId  FK
+        ObjectId clienteId     FK
+        Object   demurrage     "tramo embebido"
+        Object   detention     "tramo embebido"
+        Number   costeTotal
+        Date     fechaCierre
+        Date     creadoEn
+    }
     eventos {
         ObjectId _id           PK
         ObjectId contenedorId  FK
-        String   tipo          "entrada_puerto | salida_puerto | llegada_almacen | devolucion"
+        String   tipo
         Date     timestamp
         String   fotoUrl
-        String   codigoBICOcr
+        String   codigoBIC     "leído por OCR"
         Boolean  ocrValidado
         ObjectId registradoPor FK
     }
     informes {
         ObjectId _id          PK
         ObjectId contenedorId FK
+        ObjectId cicloId      FK
         String   codigoBIC    "snapshot"
         String   cliente      "snapshot"
-        Array    tramos
-        Number   total
-        String   urlPdf
         ObjectId generadoPor  FK
         Date     generadoEn
     }
 
-    usuarios    ||--o{ contenedores : "crea (creadoPor)"
-    usuarios    ||--o{ eventos      : "registra (registradoPor)"
-    usuarios    ||--o{ informes     : "genera (generadoPor)"
-    navieras    ||--o{ contenedores : "propietaria (navieraId)"
-    navieras    ||--o{ tarifas      : "tiene (navieraId)"
-    clientes    ||--o{ contenedores : "asociado (clienteId)"
-    tarifas     ||--o{ contenedores : "aplica (tarifaId)"
-    contenedores ||--o{ eventos     : "ciclo de vida (contenedorId)"
-    contenedores ||--o{ informes    : "genera (contenedorId)"
+    usuarios     ||--o{ contenedores : "crea (creadoPor)"
+    usuarios     ||--o{ eventos      : "registra (registradoPor)"
+    usuarios     ||--o{ informes     : "genera (generadoPor)"
+    navieras     ||--o{ contenedores : "propietaria (navieraId)"
+    contenedores ||--o{ ciclos       : "acumula (contenedorId)"
+    clientes     ||--o{ ciclos       : "asociado (clienteId)"
+    contenedores ||--o{ eventos      : "ciclo de vida (contenedorId)"
+    contenedores ||--o{ informes     : "exporta (contenedorId)"
+    ciclos       ||--o{ informes     : "documenta (cicloId)"
 ```
 
 ### Diccionario de datos
@@ -136,13 +139,26 @@ Almacena los usuarios del sistema. El rol controla el acceso a cada funcionalida
 
 #### `navieras`
 
-Catálogo de navieras disponibles en el sistema. Cada contenedor pertenece a una naviera y hereda su tarifa D&D.
+Catálogo de navieras. **La tarifa D&D va embebida en el propio documento de la naviera** (no es una colección aparte): los días libres y los tramos de precio de demurrage y detention son subdocumentos de la naviera. Cada contenedor pertenece a una naviera y hereda su tarifa.
 
 | Campo | Tipo | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
 | _id | ObjectId | PK | Identificador de la naviera. |
 | nombre | String | Not Null | Nombre comercial (ej: MSC, Maersk). |
-| codigo | String | Unique, Not Null | Código identificador de la naviera. |
+| codigo | String | Unique, Not Null | Código identificador de la naviera (prefijo BIC). |
+| diasLibresDemurrage | Number | Not Null | Días de free time en puerto antes de generar demurrage. |
+| diasLibresDetention | Number | Not Null | Días de free time con el cliente antes de generar detention. |
+| diasDemurrage | Array | Not Null | Tramos de demurrage embebidos: `[{ desdeDia, hastaDia, precioPorDia }]` |
+| diasDetention | Array | Not Null | Tramos de detention embebidos: `[{ desdeDia, hastaDia, precioPorDia }]` |
+
+**Ejemplo de `diasDemurrage` (tramos):**
+```json
+[
+  { "desdeDia": 1,  "hastaDia": 5,    "precioPorDia": 50  },
+  { "desdeDia": 6,  "hastaDia": 10,   "precioPorDia": 75  },
+  { "desdeDia": 11, "hastaDia": null, "precioPorDia": 120 }
+]
+```
 
 ---
 
@@ -157,58 +173,49 @@ Empresas o personas asociadas a los contenedores. Se utilizan como referencia en
 
 ---
 
-#### `tarifas`
+#### `ciclos`
 
-Tabla de tarifas D&D configurada por naviera. Define los tramos de precio por día para demurrage (sobreestadía) y detention (detención).
+Registra cada ciclo completo de un contenedor (INACTIVO → PUERTO → CLIENTE → INACTIVO). Es la entidad **central del cálculo D&D**: guarda el cliente del ciclo y los dos tramos (demurrage y detention) como subdocumentos embebidos, cada uno con sus días y coste. Un contenedor puede acumular varios ciclos a lo largo de su vida útil.
 
 | Campo | Tipo | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
-| _id | ObjectId | PK | Identificador de la tarifa. |
-| navieraId | ObjectId | FK `navieras._id` | Naviera a la que aplica esta tarifa. |
-| diasDemurrage | Array | Not Null | Tramos de demurrage: `[{ desdeDia, hastaDia, precioPorDia }]` |
-| diasDetention | Array | Not Null | Tramos de detention: `[{ desdeDia, hastaDia, precioPorDia }]` |
-| creadoEn | Date | Not Null | Fecha de creación. |
-
-**Ejemplo de `diasDemurrage`:**
-```json
-[
-  { "desdeDia": 1,  "hastaDia": 5,    "precioPorDia": 50  },
-  { "desdeDia": 6,  "hastaDia": 10,   "precioPorDia": 75  },
-  { "desdeDia": 11, "hastaDia": null,  "precioPorDia": 120 }
-]
-```
+| _id | ObjectId | PK | Identificador del ciclo. |
+| contenedorId | ObjectId | FK `contenedores._id` | Contenedor del ciclo. |
+| clienteId | ObjectId | FK `clientes._id` | Cliente asignado a este ciclo. |
+| demurrage | Object | Subdocumento | Tramo en puerto: `diasLibres`, `fechaInicio`, `fechaFin`, `diasTranscurridos`, `diasFacturables`, `costeTotal`. |
+| detention | Object | Subdocumento | Tramo con el cliente: misma estructura que demurrage. |
+| costeTotal | Number | Nullable | Suma de ambos tramos; se rellena al cerrar el ciclo. |
+| fechaCierre | Date | Nullable | Fecha de cierre del ciclo (transición CLIENTE → INACTIVO). |
+| creadoEn | Date | Not Null | Fecha de apertura del ciclo. |
 
 ---
 
 #### `contenedores`
 
-Entidad central del sistema. Registra el ciclo de vida de cada contenedor desde su entrada hasta su devolución. Los costes y el semáforo de riesgo se calculan en el backend a partir de las fechas y la tarifa asignada.
+Entidad central del sistema. Registra los datos de alta y las fechas clave de cada tramo. El cliente, los días libres y los costes **no se guardan aquí**: el cliente y los costes viven en el `ciclo`, y los días libres y las tarifas en la `naviera`. Los costes y el semáforo de riesgo se calculan en el backend a partir de esas fechas y de la tarifa de la naviera.
 
 | Campo | Tipo | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
 | _id | ObjectId | PK | Identificador del contenedor. |
-| codigoBIC | String | Not Null | Código BIC del contenedor (ej: MSCU1234567). |
-| tipo | String | Not Null | Tipo de contenedor (20ft, 40ft, Reefer…). |
-| estado | Enum | Not Null | `INACTIVO` → `PUERTO` → `CLIENTE` → `VUELTA_PUERTO` |
-| navieraId | ObjectId | FK `navieras._id` | Naviera propietaria del contenedor. |
-| clienteId | ObjectId | FK `clientes._id` | Cliente asociado al movimiento. |
-| tarifaId | ObjectId | FK `tarifas._id` | Tarifa D&D aplicada. |
-| diasLibres | Number | Not Null | Días de free time concedidos por la naviera. |
-| fechaInicioLibre | Date | Not Null | Inicio del período de free time. |
+| codigoBIC | String | Not Null, uppercase | Código BIC del contenedor (ej: MSCU1234567). |
+| foto | String | Nullable | Foto del contenedor (data URL). |
+| tipo | String | Nullable | Tipo de contenedor (20ft, 40ft, Reefer…). |
+| estado | Enum | Default `INACTIVO` | `INACTIVO` → `PUERTO` → `CLIENTE` → `INACTIVO` |
+| navieraId | ObjectId | FK `navieras._id` | Naviera propietaria (también aporta la tarifa). |
+| fechaInicioLibre | Date | Default ahora | Inicio del período de free time. |
 | fechaEntradaPuerto | Date | Nullable | Inicio del tramo En Puerto (activa demurrage). |
 | fechaSalidaPuerto | Date | Nullable | Inicio del tramo Con Cliente (activa detention). |
-| fechaDevolucion | Date | Nullable | Devolución del contenedor (cierre). |
+| fechaDevolucion | Date | Nullable | Devolución del contenedor (cierre del ciclo). |
 | creadoPor | ObjectId | FK `usuarios._id` | Operador que registró el contenedor. |
 | creadoEn | Date | Not Null | Fecha de alta. |
 
-**Estados del contenedor:**
+**Estados del contenedor** (ciclo circular):
 
 | Estado | Tramo activo | Coste generado |
 | :--- | :--- | :--- |
-| `INACTIVO` | Free time | Sin coste |
+| `INACTIVO` | Free time / ciclo cerrado | Sin coste |
 | `PUERTO` | En Puerto | Demurrage (sobreestadía) |
 | `CLIENTE` | Con Cliente | Detention (detención) |
-| `VUELTA_PUERTO` | Cerrado | Sin coste adicional |
 
 ---
 
@@ -223,7 +230,7 @@ Registro fotográfico del ciclo de vida de cada contenedor. El operador sube una
 | tipo | Enum | Not Null | `entrada_puerto`, `salida_puerto`, `llegada_almacen`, `devolucion` |
 | timestamp | Date | Not Null | Fecha y hora del evento. |
 | fotoUrl | String | Nullable | URL de la imagen subida. |
-| codigoBICOcr | String | Nullable | Código BIC leído por Tesseract OCR. |
+| codigoBIC | String | Nullable | Código BIC leído por Tesseract OCR. |
 | ocrValidado | Boolean | Default false | Indica si el OCR coincidió con el BIC del contenedor. |
 | registradoPor | ObjectId | FK `usuarios._id` | Operador que registró el evento. |
 
@@ -237,11 +244,9 @@ Documento generado por el gestor al finalizar un movimiento. Almacena un snapsho
 | :--- | :--- | :--- | :--- |
 | _id | ObjectId | PK | Identificador del informe. |
 | contenedorId | ObjectId | FK `contenedores._id` | Contenedor del informe. |
+| cicloId | ObjectId | FK `ciclos._id` | Ciclo (cerrado) que documenta el informe. |
 | codigoBIC | String | Snapshot | Código BIC en el momento de generación. |
 | cliente | String | Snapshot | Nombre del cliente en el momento de generación. |
-| tramos | Array | Not Null | `[{ tipo, fechaInicio, fechaFin, dias, precioPorDia, subtotal }]` |
-| total | Number | Not Null | Suma total de todos los tramos. |
-| urlPdf | String | Not Null | URL del PDF generado. |
 | generadoPor | ObjectId | FK `usuarios._id` | Gestor que generó el informe. |
 | generadoEn | Date | Not Null | Fecha de generación. |
 
@@ -254,11 +259,11 @@ usuarios     ──< contenedores   (creadoPor)
 usuarios     ──< eventos        (registradoPor)
 usuarios     ──< informes       (generadoPor)
 navieras     ──< contenedores   (navieraId)
-navieras     ──< tarifas        (navieraId)
-clientes     ──< contenedores   (clienteId)
-tarifas      ──< contenedores   (tarifaId)
+contenedores ──< ciclos         (contenedorId)
+clientes     ──< ciclos         (clienteId)
 contenedores ──< eventos        (contenedorId)
 contenedores ──< informes       (contenedorId)
+ciclos       ──< informes       (cicloId)
 ```
 
 ---

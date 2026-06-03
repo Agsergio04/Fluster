@@ -125,11 +125,11 @@ Sigue estos pasos para configurar el entorno de producción desde cero.
 
 1. En el dashboard de Render, haz clic en **New > Web Service**.
 2. Conecta el repositorio de GitHub `Agsergio04/Fluster`.
-3. Configura el servicio:
-   - **Runtime:** Node
-   - **Build command:** `cd backend && npm ci`
-   - **Start command:** `node src/index.js`
-   - **Node version:** 22
+3. Configura el servicio (coincide con `render.yaml`, que despliega el backend como contenedor **Docker**):
+   - **Runtime:** Docker
+   - **Dockerfile Path:** `./backend/Dockerfile`
+   - **Docker Context:** `./backend`
+   - **Health Check Path:** `/health`
 4. Añade las siguientes variables de entorno:
 
 | Variable | Valor |
@@ -423,7 +423,7 @@ Con `ab` (Apache Benchmark) o `curl` en bucle se puede verificar que el backend 
 ab -n 200 -c 50 http://localhost:3000/health
 ```
 
-Resultado esperado en local (Render free tier puede ser más lento):
+Valores **orientativos** de una ejecución en local (ejemplo ilustrativo, no una medición publicada; en Render free tier serán bastante menores por el *cold start* y el plan compartido):
 
 ```
 Requests per second:  ~850 [#/sec]

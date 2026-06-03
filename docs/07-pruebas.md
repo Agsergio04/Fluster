@@ -98,8 +98,8 @@ Los tests de frontend se ejecutan con **Vitest** y **jsdom** como entorno de nav
 
 | Escenario | Resultado esperado |
 |---|---|
-| `guardarSesion(token, usuario)` | Persiste token y usuario serializado en `sessionStorage` |
-| `limpiarSesion()` | Elimina token y usuario de `sessionStorage` |
+| `guardarSesion(token, usuario)` | Persiste token y usuario serializado en `localStorage` |
+| `limpiarSesion()` | Elimina token y usuario de `localStorage` |
 | `getToken()` con sesión activa | Devuelve el token guardado |
 | `getToken()` sin sesión | Devuelve `null` |
 | `getUsuario()` con sesión activa | Devuelve el objeto usuario deserializado |
@@ -107,7 +107,7 @@ Los tests de frontend se ejecutan con **Vitest** y **jsdom** como entorno de nav
 | `isAuthenticated()` con token | Devuelve `true` |
 | `isAuthenticated()` sin token | Devuelve `false` |
 | `actualizarUsuario(cambios)` | Aplica merge parcial conservando propiedades no modificadas |
-| `actualizarUsuario()` sin sesión | No modifica `sessionStorage` |
+| `actualizarUsuario()` sin sesión | No modifica `localStorage` |
 
 **`useTema.test.jsx`** — cubre el hook `hooks/useTema.js`:
 

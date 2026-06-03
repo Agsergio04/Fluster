@@ -13,7 +13,7 @@
     { "name": "Usuarios",     "description": "Gestión de usuarios (solo admin)" },
     { "name": "Clientes",     "description": "CRUD de clientes (gestor)" },
     { "name": "Navieras",     "description": "CRUD de navieras con tarifas D&D (gestor)" },
-    { "name": "Contenedores", "description": "Ciclo de vida de contenedores y cálculo de costes.\n\n**Diseño de rutas:** el CRUD básico sigue REST puro (`GET/POST/PUT/DELETE /contenedores`). Las transiciones de estado (`entrada-puerto`, `salida-puerto`, `devolucion`, `cancelar-ciclo`, `revertir-salida`) se modelan como **comandos sobre una máquina de estados** (INACTIVO → CARGADO → CLIENTE → INACTIVO), no como mutaciones CRUD. Cada una aplica reglas de negocio y validaciones de transición que un `PUT` genérico no puede expresar, por lo que se exponen como sub-recursos de acción con verbo explícito —patrón habitual y aceptado para recursos con ciclo de vida (estilo CQRS)." },
+    { "name": "Contenedores", "description": "Ciclo de vida de contenedores y cálculo de costes.\n\n**Diseño de rutas:** el CRUD básico sigue REST puro (`GET/POST/PUT/DELETE /contenedores`). Las transiciones de estado (`entrada-puerto`, `salida-puerto`, `devolucion`, `cancelar-ciclo`, `revertir-salida`) se modelan como **comandos sobre una máquina de estados** (INACTIVO → PUERTO → CLIENTE → INACTIVO), no como mutaciones CRUD. Cada una aplica reglas de negocio y validaciones de transición que un `PUT` genérico no puede expresar, por lo que se exponen como sub-recursos de acción con verbo explícito —patrón habitual y aceptado para recursos con ciclo de vida (estilo CQRS)." },
     { "name": "Eventos",      "description": "Registro fotográfico de hitos del contenedor" },
     { "name": "Informes",     "description": "Auditoría de exportaciones PDF de ciclos cerrados (gestor)" },
     { "name": "Semáforo",     "description": "Dashboard de riesgo D&D en tiempo real (gestor)" }
@@ -79,7 +79,7 @@
           "_id":                 { "type": "string" },
           "codigoBIC":           { "type": "string", "example": "MSCU1234567" },
           "tipo":                { "type": "string", "example": "20DC" },
-          "estado":              { "type": "string", "enum": ["INACTIVO", "CARGADO", "CLIENTE"] },
+          "estado":              { "type": "string", "enum": ["INACTIVO", "PUERTO", "CLIENTE"] },
           "navieraId":           { "type": "string", "description": "ID o objeto Naviera populado" },
           "fechaInicioLibre":    { "type": "string", "format": "date-time" },
           "fechaEntradaPuerto":  { "type": "string", "format": "date-time", "nullable": true },
@@ -533,7 +533,7 @@
         "summary": "Listar contenedores",
         "description": "Roles permitidos: `operador`, `gestor`.",
         "parameters": [
-          { "name": "estado",    "in": "query", "schema": { "type": "string", "enum": ["INACTIVO", "CARGADO", "CLIENTE"] }, "description": "Filtra por estado" },
+          { "name": "estado",    "in": "query", "schema": { "type": "string", "enum": ["INACTIVO", "PUERTO", "CLIENTE"] }, "description": "Filtra por estado" },
           { "name": "navieraId", "in": "query", "schema": { "type": "string" }, "description": "Filtra por naviera" },
           { "name": "clienteId", "in": "query", "schema": { "type": "string" }, "description": "Filtra por cliente (busca en ciclos)" }
         ],
@@ -639,7 +639,7 @@
     "/api/contenedores/{id}/entrada-puerto": {
       "patch": {
         "tags": ["Contenedores"],
-        "summary": "Entrada al puerto — INACTIVO → CARGADO",
+        "summary": "Entrada al puerto — INACTIVO → PUERTO",
         "description": "Registra la entrada física del contenedor al puerto. Abre un nuevo ciclo D&D con el cliente indicado. Solo `gestor`.",
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
@@ -658,7 +658,7 @@
           }
         },
         "responses": {
-          "200": { "description": "Contenedor en estado CARGADO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "200": { "description": "Contenedor en estado PUERTO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
           "401": { "$ref": "#/components/responses/Unauthorized" },
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" },
@@ -669,7 +669,7 @@
     "/api/contenedores/{id}/salida-puerto": {
       "patch": {
         "tags": ["Contenedores"],
-        "summary": "Salida del puerto — CARGADO → CLIENTE",
+        "summary": "Salida del puerto — PUERTO → CLIENTE",
         "description": "Cierra el tramo de demurrage calculando días y coste, y abre el tramo de detention. Solo `gestor`.",
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "requestBody": {
@@ -691,7 +691,7 @@
           "401": { "$ref": "#/components/responses/Unauthorized" },
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" },
-          "422": { "description": "El contenedor no está en estado CARGADO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+          "422": { "description": "El contenedor no está en estado PUERTO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
@@ -727,15 +727,15 @@
     "/api/contenedores/{id}/cancelar-ciclo": {
       "patch": {
         "tags": ["Contenedores"],
-        "summary": "Cancelar ciclo — CARGADO → INACTIVO",
-        "description": "Cancela el ciclo activo sin registrar costes. Solo aplicable desde estado `CARGADO`. El ciclo se elimina completamente. Solo `gestor`.",
+        "summary": "Cancelar ciclo — PUERTO → INACTIVO",
+        "description": "Cancela el ciclo activo sin registrar costes. Solo aplicable desde estado `PUERTO`. El ciclo se elimina completamente. Solo `gestor`.",
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
         "responses": {
           "200": { "description": "Ciclo cancelado, contenedor en INACTIVO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
           "401": { "$ref": "#/components/responses/Unauthorized" },
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" },
-          "422": { "description": "El contenedor no está en estado CARGADO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+          "422": { "description": "El contenedor no está en estado PUERTO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
