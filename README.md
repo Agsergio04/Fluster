@@ -19,9 +19,10 @@ Aplicación web para que empresas PYME de logística controlen y gestionen los c
 6. [Inicio rápido](#inicio-rápido)
 7. [Desarrollo local (sin Docker)](#desarrollo-local-sin-docker)
 8. [Datos de prueba (seed)](#datos-de-prueba-seed)
-9. [Variables de entorno](#variables-de-entorno)
-10. [Pruebas](#pruebas)
-11. [Documentación](#documentación)
+9. [Uso / Primeros pasos](#uso--primeros-pasos)
+10. [Variables de entorno](#variables-de-entorno)
+11. [Pruebas](#pruebas)
+12. [Documentación](#documentación)
 
 
 ---
@@ -51,7 +52,7 @@ Fluster centraliza todo el ciclo de vida del contenedor, calcula automáticament
 
 ## Características principales
 
-- **Ciclo de vida completo del contenedor** — registro de eventos con foto, timestamp y código BIC a lo largo de los estados INACTIVO, PUERTO, CLIENTE y VUELTA_PUERTO.
+- **Ciclo de vida completo del contenedor** — registro de eventos con foto, timestamp y código BIC a lo largo de los estados INACTIVO, PUERTO y CLIENTE.
 - **Cálculo automático de D&D** — costes calculados en tiempo real mediante tablas de tarifas por tramos configurables por naviera.
 - **Semáforo de riesgo visual** — indicador verde/naranja/rojo basado en los días libres restantes para anticipar costes.
 - **OCR con Tesseract.js** — lectura y validación automática del código BIC del contenedor a partir de una foto.
@@ -169,6 +170,20 @@ npm run seed:datos
 ```
 
 Tras `npm run seed:datos`, la consola muestra las credenciales de los usuarios de ejemplo (admin, gestor y operador) para iniciar sesión.
+
+---
+
+## Uso / Primeros pasos
+
+Tras arrancar la aplicación y poblar la base de datos con `npm run seed:datos`, abre el frontend e inicia sesión con uno de los usuarios de ejemplo que muestra la consola del seed (admin, gestor u operador).
+
+Flujo básico según el rol:
+
+- **Operador** — *Meter contenedor*: sube una foto y el OCR lee el código BIC (o introdúcelo a mano) y consulta sus contenedores.
+- **Gestor** — configura las *Tarifas* por naviera, vigila el *Semáforo* de riesgo D&D, gestiona el *Almacén* (entrada a puerto, salida a cliente y devolución) y genera *Informes* en PDF.
+- **Admin** — administra los usuarios y sus roles desde el *Panel de control*.
+
+La guía completa paso a paso, con capturas y detallada por rol, está en el **[Manual de usuario](./docs/09-manual-usuario.md)**.
 
 ---
 
