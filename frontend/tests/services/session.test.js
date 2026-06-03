@@ -8,6 +8,13 @@ import {
   actualizarUsuario,
 } from '../../src/services/session'
 
+// Construye un JWT de prueba (header.payload.firma) con el payload indicado.
+// El cliente solo lo decodifica (la firma la valida el servidor), así que no
+// necesita ser real; sirve para comprobar que el rol se lee del token.
+const b64url = obj =>
+  btoa(JSON.stringify(obj)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+const fakeJwt = payload => `${b64url({ alg: 'HS256', typ: 'JWT' })}.${b64url(payload)}.firma`
+
 describe('session', () => {
   beforeEach(() => {
     localStorage.clear()
@@ -47,14 +54,21 @@ describe('session', () => {
   })
 
   describe('getUsuario', () => {
-    it('devuelve el objeto usuario cuando hay sesión', () => {
-      const usuario = { nombre: 'Ana', rol: 'gestor' }
-      guardarSesion('token', usuario)
+    it('devuelve el objeto usuario con el rol tomado del JWT', () => {
+      const usuario = { nombre: 'Ana', rol: 'gestor', correo: 'ana@a.com' }
+      guardarSesion(fakeJwt({ id: '1', correo: 'ana@a.com', rol: 'gestor' }), usuario)
       expect(getUsuario()).toEqual(usuario)
     })
 
     it('devuelve null cuando no hay sesión', () => {
       expect(getUsuario()).toBeNull()
+    })
+
+    it('usa el rol del JWT e ignora el del objeto editable (no se puede escalar editando localStorage)', () => {
+      guardarSesion(fakeJwt({ rol: 'operador' }), { nombre: 'Ana', rol: 'operador' })
+      // Un atacante edita el objeto usuario para auto-asignarse admin
+      localStorage.setItem('usuario', JSON.stringify({ nombre: 'Ana', rol: 'admin' }))
+      expect(getUsuario().rol).toBe('operador') // sigue el token firmado, no el objeto manipulado
     })
   })
 
@@ -71,7 +85,7 @@ describe('session', () => {
 
   describe('actualizarUsuario', () => {
     it('aplica cambios parciales sobre el usuario existente', () => {
-      guardarSesion('token', { nombre: 'Ana', rol: 'operador' })
+      guardarSesion(fakeJwt({ rol: 'operador' }), { nombre: 'Ana', rol: 'operador' })
       actualizarUsuario({ nombre: 'Ana García' })
       expect(getUsuario()).toEqual({ nombre: 'Ana García', rol: 'operador' })
     })
@@ -82,9 +96,9 @@ describe('session', () => {
     })
 
     it('conserva las propiedades no modificadas', () => {
-      guardarSesion('token', { nombre: 'Ana', rol: 'operador', correo: 'ana@empresa.com' })
-      actualizarUsuario({ rol: 'gestor' })
-      expect(getUsuario()).toEqual({ nombre: 'Ana', rol: 'gestor', correo: 'ana@empresa.com' })
+      guardarSesion(fakeJwt({ rol: 'operador' }), { nombre: 'Ana', rol: 'operador', correo: 'ana@empresa.com' })
+      actualizarUsuario({ nombre: 'Ana García' })
+      expect(getUsuario()).toEqual({ nombre: 'Ana García', rol: 'operador', correo: 'ana@empresa.com' })
     })
   })
 })
