@@ -131,7 +131,7 @@ function MeterContenedor() {
         <section className="meter-contenedor__intro">
           <h1 className="meter-contenedor__titulo">Meter contenedor</h1>
           <p className="meter-contenedor__subtitulo">
-            Puedes introducir el contenedor mediante una foto o metiendo directamente el codigo BIC
+            Puedes introducir el contenedor mediante una foto o metiendo directamente el código BIC
           </p>
         </section>
 

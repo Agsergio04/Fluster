@@ -12,8 +12,8 @@ function CabeceraTablasTarifas() {
   return (
     <div className="cabecera-tablas-tarifas">
       {/* Fila 1 — grupos principales */}
-      <CeldaTabla label="Tiempo (dias)"               tamanio="lg" />
-      <CeldaTabla label="Tarifas (euros por cada dia)" tamanio="lg" />
+      <CeldaTabla label="Tiempo (días)"               tamanio="lg" />
+      <CeldaTabla label="Tarifas (euros por cada día)" tamanio="lg" />
 
       {/* Fila 2 — subgrupos */}
       <CeldaTabla label="Duración del free time" tamanio="md" />

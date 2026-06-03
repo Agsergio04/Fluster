@@ -108,7 +108,7 @@ function PanelGenerarInforme({
             </div>
             <div className="panel-generar-informe__campo-unico">
               <label htmlFor="filtro-bic" className="panel-generar-informe__campo-label">
-                Filtrado por el codigo Bic
+                Filtrado por el código BIC
               </label>
               <input
                 id="filtro-bic"
@@ -116,7 +116,7 @@ function PanelGenerarInforme({
                 type="text"
                 value={codigoBic}
                 onChange={onCodigoBic}
-                placeholder="Introduce el codigo Bic"
+                placeholder="Introduce el código BIC"
               />
             </div>
           </div>

@@ -7,17 +7,17 @@ const VARIANTES = {
   'tarifas': {
     icon:        <TarifasIcon />,
     titulo:      'Gestor de tarifas',
-    descripcion: 'Gestiona los costes de las tarifas por dias para la automatizacion de los costes',
+    descripcion: 'Gestiona los costes de las tarifas por días para la automatización de los costes',
   },
   'ocr': {
     icon:        <ContenedoresFotoIcon />,
     titulo:      'Contenedores mediante OCR',
-    descripcion: 'Incluye contenedores de manera dinamica mediante fotos realizadas ya sea por el movil o que tengas con anterioridad',
+    descripcion: 'Incluye contenedores de manera dinámica mediante fotos realizadas ya sea por el móvil o que tengas con anterioridad',
   },
   'semaforo': {
     icon:        <SemaforoIcon />,
-    titulo:      'Semaforo de gastos',
-    descripcion: 'Gestion de los contenedores asociados a cada transacion del contenedor con su respectivo coste total',
+    titulo:      'Semáforo de gastos',
+    descripcion: 'Gestión de los contenedores asociados a cada transacción del contenedor con su respectivo coste total',
   },
 }
 

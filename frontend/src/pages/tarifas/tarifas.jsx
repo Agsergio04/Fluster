@@ -144,8 +144,8 @@ function Tarifas() {
         <section className="tarifas__intro">
           <h1 className="tarifas__titulo">Tarifas</h1>
           <p className="tarifas__subtitulo">
-            Listado tanto de los dias en los cuales cambia los tramos del impuesto
-            de las tarifas como el costo que se aplicaria por dia sobrepasado
+            Listado tanto de los días en los cuales cambian los tramos del impuesto
+            de las tarifas como el coste que se aplicaría por día sobrepasado
           </p>
         </section>
 

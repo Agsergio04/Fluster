@@ -104,7 +104,7 @@ function Perfil() {
         <section className="perfil__intro">
           <h1 className="perfil__titulo">Perfil</h1>
           <p className="perfil__subtitulo">
-            Aqui se encuentra tanto la informacion personal como el cambio de credenciales
+            Aquí se encuentra tanto la información personal como el cambio de credenciales
           </p>
         </section>
 

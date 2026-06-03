@@ -8,8 +8,8 @@ function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
       <div className="introduccion-pagina__contenido">
         <h1 className="introduccion-pagina__titulo">Fluster</h1>
         <p className="introduccion-pagina__descripcion">
-          Tu mejor pagina para organizar y gestionar los costes de sobrestadía y
-          detencion de manera mas comoda
+          Tu mejor página para organizar y gestionar los costes de sobrestadía y
+          detención de manera más cómoda
         </p>
         <div className="introduccion-pagina__botones">
           <BotonIniciarSesion onClick={onIniciarSesion} />

@@ -11,9 +11,10 @@ const Usuario = require('../models/Usuario')
 
 const SALT_ROUNDS = 10
 
-// Validación de formato de email: algo@algo.algo, sin espacios.
+// Validación de formato de email: algo@algo.algo, sin espacios y sin puntos
+// consecutivos (el lookahead (?!.*\.\.) rechaza ".." en cualquier parte).
 // Misma expresión que usa el formulario de registro del frontend.
-const CORREO_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const CORREO_REGEX = /^(?!.*\.\.)[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 /**
  * Registra un nuevo usuario en el sistema.

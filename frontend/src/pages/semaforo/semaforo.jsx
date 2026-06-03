@@ -250,8 +250,8 @@ function Semaforo() {
         <section className="semaforo__intro">
           <h1 className="semaforo__titulo">Estado de los contenedores</h1>
           <p className="semaforo__subtitulo">
-            Visualizacion en tiempo real del estado de los contenedores y los costes
-            asociados a la detencion y sobreestadía de dichos contenedores
+            Visualización en tiempo real del estado de los contenedores y los costes
+            asociados a la detención y sobreestadía de dichos contenedores
           </p>
         </section>
 

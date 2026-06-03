@@ -89,7 +89,7 @@ function Contenedores() {
         <section className="contenedores__intro">
           <h1 className="contenedores__titulo">Contenedores</h1>
           <p className="contenedores__subtitulo">
-            Aqui se encuentra todos los contenedores que has introducido
+            Aquí se encuentran todos los contenedores que has introducido
           </p>
         </section>
 

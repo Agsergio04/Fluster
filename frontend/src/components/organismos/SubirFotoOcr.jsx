@@ -41,7 +41,7 @@ function SubirFotoOcr({
         <div className="subir-foto-ocr__formulario">
           <div className="subir-foto-ocr__campo-bic">
             <label htmlFor="bic-ocr" className="subir-foto-ocr__bic-label">
-              Codigo BIC
+              Código BIC
             </label>
             <input
               id="bic-ocr"
@@ -87,7 +87,7 @@ function SubirFotoOcr({
         <div className="subir-foto-ocr__formulario subir-foto-ocr__formulario--solo">
           <div className="subir-foto-ocr__campo-bic">
             <label htmlFor="bic-manual" className="subir-foto-ocr__bic-label">
-              Codigo BIC
+              Código BIC
             </label>
             <input
               id="bic-manual"
@@ -131,7 +131,7 @@ function SubirFotoOcr({
           <div className="subir-foto-ocr__texto">
             <h2 className="subir-foto-ocr__titulo">Introduce la Imagen</h2>
             <p className="subir-foto-ocr__descripcion">
-              Aqui puedes arrastrar la imagen o meterla directamente para la inclusion del contenedor
+              Aquí puedes arrastrar la imagen o meterla directamente para la inclusión del contenedor
             </p>
           </div>
           <div className="subir-foto-ocr__botones-inicio">

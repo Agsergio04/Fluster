@@ -197,6 +197,12 @@ config/        → conexión a BD y validación de entorno
 
 **Solución:** la verificación y la firma fijan explícitamente `HS256` (`algorithms: ['HS256']`), de modo que solo se aceptan tokens HMAC y se rechazan los `alg: none`. Además, un validador de entorno (`config/validarEntorno.js`) aborta el arranque del servidor si `JWT_SECRET` falta o coincide con uno de los valores de ejemplo del repositorio (fatal en producción, aviso en desarrollo). Así se garantiza que un token con el rol manipulado se rechaza por firma inválida y que el secreto que protege esa firma nunca es uno público.
 
+### 3.12 Validación del formulario de registro (doble envío y formato del correo)
+
+**Problema:** el botón "Crear Cuenta" combinaba `type="submit"` con un manejador `onClick`, lo que ejecutaba la lógica de registro **dos veces** por cada pulsación (el segundo envío chocaba con la restricción de correo único y mostraba un error pese a que el alta había funcionado). Además, el correo solo se comprobaba como "no vacío", de modo que se podían registrar direcciones con formato inválido.
+
+**Solución:** el envío pasa a gestionarse únicamente desde el `onSubmit` del formulario, de modo que el manejador se dispara una sola vez y se respeta la validación nativa del navegador. El formato del correo se valida con una expresión regular —`/^(?!.*\.\.)[^\s@]+@[^\s@]+\.[^\s@]+$/`— **tanto en el frontend como en el backend** (`authService.registrar`, que responde 400). La expresión exige el patrón `algo@algo.algo`, sin espacios y **sin puntos consecutivos** (el *lookahead* `(?!.*\.\.)` rechaza un `..` en cualquier posición). La validación se duplica a propósito en cliente y servidor para que el backend nunca dependa de la comprobación del navegador.
+
 ---
 
 ## 4. Herramientas de control de versiones

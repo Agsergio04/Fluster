@@ -11,8 +11,9 @@ import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
 import BotonesRegistro from '../../components/moleculas/BotonesRegistro'
 import imagenRegistro from '../../assets/images/imagen_registro-login.jpg'
 
-// Validación pragmática de formato de email: algo@algo.algo, sin espacios.
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// Validación pragmática de formato de email: algo@algo.algo, sin espacios y
+// sin puntos consecutivos (el lookahead (?!.*\.\.) rechaza ".." en cualquier parte).
+const EMAIL_REGEX = /^(?!.*\.\.)[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 /**
  * Página de creación de cuenta nueva.
