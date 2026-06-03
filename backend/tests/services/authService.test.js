@@ -106,7 +106,7 @@ describe('authService', () => {
       expect(jwt.sign).toHaveBeenCalledWith(
         { id: 'user-id', correo: 'test@test.com', rol: 'admin' },
         'test-secret',
-        { algorithm: 'HS256', expiresIn: '7d' }
+        { algorithm: 'HS256' }
       )
     })
 

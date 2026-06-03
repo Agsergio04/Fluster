@@ -11,9 +11,6 @@ const Usuario = require('../models/Usuario')
 
 const SALT_ROUNDS = 10
 
-// Caducidad del token de sesión: limita la ventana de uso de un token filtrado.
-const JWT_EXPIRES_IN = '7d'
-
 // Validación de formato de email: algo@algo.algo, sin espacios y sin puntos
 // consecutivos (el lookahead (?!.*\.\.) rechaza ".." en cualquier parte).
 // Misma expresión que usa el formulario de registro del frontend.
@@ -67,8 +64,8 @@ async function registrar({ nombre, correo, contrasena, rol }) {
  * El token lleva id, correo y rol para que los middlewares de autorización
  * no tengan que consultar la base de datos en cada petición.
  *
- * El token caduca a los 7 días (JWT_EXPIRES_IN); el frontend lo almacena en
- * localStorage y la sesión termina al hacer logout o cuando el token expira.
+ * El token no caduca por tiempo; el frontend lo guarda en localStorage y la
+ * sesión se cierra cuando el usuario hace logout.
  *
  * @param {string} correo
  * @param {string} contrasena
@@ -93,12 +90,9 @@ async function login(correo, contrasena) {
   }
 
   const payload = { id: usuario._id, correo: usuario.correo, rol: usuario.rol }
-  // Algoritmo fijado a HS256 (coherente con la verificación del authMiddleware)
-  // y con caducidad de 7 días.
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    algorithm: 'HS256',
-    expiresIn: JWT_EXPIRES_IN,
-  })
+  // Algoritmo fijado a HS256 (coherente con la verificación del authMiddleware):
+  // solo se aceptan tokens HMAC, lo que evita ataques de confusión de algoritmo.
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256' })
 
   return {
     token,
