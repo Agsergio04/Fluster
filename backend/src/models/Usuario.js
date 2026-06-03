@@ -43,7 +43,7 @@ const usuarioSchema = new Schema(
   { timestamps: { createdAt: 'creadoEn', updatedAt: false } }
 )
 
-// Índice para búsquedas por correo en login
-usuarioSchema.index({ correo: 1 })
+// El índice de búsqueda por correo lo crea ya la opción `unique: true` del campo,
+// por lo que no se declara aquí de nuevo (evita el índice duplicado).
 
 module.exports = model('Usuario', usuarioSchema)

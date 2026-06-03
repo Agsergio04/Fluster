@@ -11,10 +11,18 @@ const Usuario = require('../models/Usuario')
 
 const SALT_ROUNDS = 10
 
+// Caducidad del token de sesión: limita la ventana de uso de un token filtrado.
+const JWT_EXPIRES_IN = '7d'
+
 // Validación de formato de email: algo@algo.algo, sin espacios y sin puntos
 // consecutivos (el lookahead (?!.*\.\.) rechaza ".." en cualquier parte).
 // Misma expresión que usa el formulario de registro del frontend.
 const CORREO_REGEX = /^(?!.*\.\.)[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+// Roles permitidos en el registro público. 'admin' queda excluido a propósito:
+// solo se crea con el script de administración (crearAdmin.js). Así se impide
+// que un usuario no autenticado se auto-asigne privilegios de administrador.
+const ROLES_REGISTRO_PUBLICO = ['gestor', 'operador']
 
 /**
  * Registra un nuevo usuario en el sistema.
@@ -28,6 +36,14 @@ async function registrar({ nombre, correo, contrasena, rol }) {
     const err = new Error('El correo no tiene un formato válido')
     err.status = 400
     err.campo = 'correo'
+    throw err
+  }
+
+  // El registro público no puede crear administradores (evita escalada de privilegios).
+  if (!ROLES_REGISTRO_PUBLICO.includes(rol)) {
+    const err = new Error('Rol no permitido en el registro')
+    err.status = 403
+    err.campo = 'rol'
     throw err
   }
 
@@ -51,8 +67,8 @@ async function registrar({ nombre, correo, contrasena, rol }) {
  * El token lleva id, correo y rol para que los middlewares de autorización
  * no tengan que consultar la base de datos en cada petición.
  *
- * El token no tiene expiración por tiempo; el frontend lo almacena en
- * sessionStorage para que desaparezca al cerrar el navegador.
+ * El token caduca a los 7 días (JWT_EXPIRES_IN); el frontend lo almacena en
+ * localStorage y la sesión termina al hacer logout o cuando el token expira.
  *
  * @param {string} correo
  * @param {string} contrasena
@@ -77,8 +93,12 @@ async function login(correo, contrasena) {
   }
 
   const payload = { id: usuario._id, correo: usuario.correo, rol: usuario.rol }
-  // Algoritmo fijado a HS256 (coherente con la verificación del authMiddleware).
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256' })
+  // Algoritmo fijado a HS256 (coherente con la verificación del authMiddleware)
+  // y con caducidad de 7 días.
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    algorithm: 'HS256',
+    expiresIn: JWT_EXPIRES_IN,
+  })
 
   return {
     token,

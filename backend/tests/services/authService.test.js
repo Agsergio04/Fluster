@@ -58,9 +58,18 @@ describe('authService', () => {
       Usuario.findOne.mockResolvedValue({ correo: 'test@test.com' })
 
       await expect(
-        registrar({ nombre: 'Test', correo: 'test@test.com', contrasena: '1234', rol: 'admin' })
+        registrar({ nombre: 'Test', correo: 'test@test.com', contrasena: '1234', rol: 'operador' })
       ).rejects.toMatchObject({ status: 409 })
 
+      expect(Usuario.create).not.toHaveBeenCalled()
+    })
+
+    it('rechaza con 403 el intento de registrarse como admin (escalada de privilegios)', async () => {
+      await expect(
+        registrar({ nombre: 'Hacker', correo: 'h@h.com', contrasena: '1234', rol: 'admin' })
+      ).rejects.toMatchObject({ status: 403, campo: 'rol' })
+
+      expect(Usuario.findOne).not.toHaveBeenCalled()
       expect(Usuario.create).not.toHaveBeenCalled()
     })
   })
@@ -97,7 +106,7 @@ describe('authService', () => {
       expect(jwt.sign).toHaveBeenCalledWith(
         { id: 'user-id', correo: 'test@test.com', rol: 'admin' },
         'test-secret',
-        { algorithm: 'HS256' }
+        { algorithm: 'HS256', expiresIn: '7d' }
       )
     })
 

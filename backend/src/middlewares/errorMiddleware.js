@@ -19,6 +19,17 @@ function errorMiddleware(err, req, res, next) {
     return res.status(400).json(body)
   }
 
+  // Identificador con formato inválido (p. ej. un ObjectId mal formado en la URL):
+  // es un error del cliente → 400, nunca un 500.
+  if (err.name === 'CastError') {
+    return res.status(400).json({ mensaje: 'Identificador no válido' })
+  }
+
+  // Violación de índice único de Mongo (clave duplicada) → 409 conflicto.
+  if (err.code === 11000) {
+    return res.status(409).json({ mensaje: 'Ya existe un registro con ese valor único' })
+  }
+
   const status = err.status || 500
 
   if (status === 500 && process.env.NODE_ENV === 'production') {
