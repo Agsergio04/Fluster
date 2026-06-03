@@ -29,10 +29,7 @@
     align-items: flex-end;
   }
 
-  // La variante de navieras (tarifas en móvil) apila las tarjetas a lo ancho completo
-  &--navieras &__grid {
-    flex-direction: column;
-    flex-wrap:      nowrap;
-    gap:            var(--space-48);
-  }
+  // La variante de navieras (tarifas en móvil) usa la misma cuadrícula que el
+  // resto: las tarjetas se reparten y envuelven igual que el conjunto de
+  // contenedores (sin override propio).
 }
