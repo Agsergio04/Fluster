@@ -26,3 +26,11 @@
     cursor:           not-allowed;
   }
 }
+
+// En los formularios del perfil estos botones no se muestran en mayúsculas
+// (norma RAE): conservan su capitalización normal "Cambiar el nombre" /
+// "Cambiar la contraseña" en lugar de versalitas.
+.cambiar-nombre .btn-registro-login,
+.cambiar-contrasenia .btn-registro-login {
+  text-transform: none;
+}
