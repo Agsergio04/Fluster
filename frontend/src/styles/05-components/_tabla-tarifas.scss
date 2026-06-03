@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .tabla-tarifas {
   display:          flex;
   flex-direction:   column;
@@ -18,7 +20,7 @@
 .tabla-tarifas-wrapper--desktop { display: flex; }
 .tabla-tarifas-wrapper--movil   { display: none;  }
 
-@media (max-width: 1023px) {
+@include mix.tablet {
   .tabla-tarifas-wrapper--desktop { display: none;  }
   .tabla-tarifas-wrapper--movil   { display: block; width: 100%; }
 }

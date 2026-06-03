@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .card-contenedor {
   display:          flex;
   flex-direction:   column;
@@ -92,7 +94,7 @@
     }
   }
 
-  @media (max-width: 767px) {
+  @include mix.mobile {
     width: 100%;
 
     &__foto-wrapper {

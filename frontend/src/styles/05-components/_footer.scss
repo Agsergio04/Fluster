@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .footer {
   width:            100%;
   background-color: var(--color-primary);
@@ -70,7 +72,7 @@
 
   // ── Tablet (768–1023 px) ─────────────────────────────────────────────────
   // Logo + secciones en fila pero más compactos; fuente reducida a 16px
-  @media (max-width: 1023px) {
+  @include mix.tablet {
     padding: 0 var(--space-24);
 
     &__logo {
@@ -92,7 +94,7 @@
 
   // ── Móvil (< 768 px) ─────────────────────────────────────────────────────
   // Logo centrado arriba; secciones en fila debajo, centradas
-  @media (max-width: 767px) {
+  @include mix.mobile {
     flex-direction: column;
     align-items:    center;
     padding:        var(--space-24) var(--space-16);

@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .subir-foto-ocr {
   display:         flex;
   align-items:     center;
@@ -184,7 +186,7 @@
     gap:            var(--space-40);
   }
 
-  @media (max-width: 767px) {
+  @include mix.mobile {
     flex-direction: column;
 
     &__cuerpo {

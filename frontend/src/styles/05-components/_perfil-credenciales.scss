@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .perfil-credenciales {
   display:     flex;
   align-items: flex-start;
@@ -105,7 +107,7 @@
   }
 
   // Pantallas medianas: dos columnas al 50%, gap reducido
-  @media (max-width: 1024px) {
+  @include mix.tablet {
     gap: var(--space-32);
 
     &__info {

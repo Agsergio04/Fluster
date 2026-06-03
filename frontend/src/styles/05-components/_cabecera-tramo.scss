@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .cabecera-tramo {
   display:     flex;
   align-items: center;
@@ -57,12 +59,12 @@
     .cabecera-tramo__badge { background-color: var(--color-inactivo-inner); }
   }
 
-  @media (max-width: 1023px) {
+  @include mix.tablet {
     &__label    { font-size: var(--text-32); }
     &__cantidad { font-size: var(--text-24); }
   }
 
-  @media (max-width: 767px) {
+  @include mix.mobile {
     &__label    { font-size: var(--text-24); }
     &__cantidad { font-size: var(--text-16); }
   }

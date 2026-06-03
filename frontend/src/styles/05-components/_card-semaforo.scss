@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .card-semaforo {
   display:          flex;
   flex-direction:   column;
@@ -141,7 +143,7 @@
     text-align:  center;
   }
 
-  @media (max-width: 1023px) {
+  @include mix.tablet {
     width: 100%;
 
     &__datos {
@@ -163,7 +165,7 @@
     }
   }
 
-  @media (max-width: 767px) {
+  @include mix.mobile {
     &__etiqueta {
       font-size: var(--text-16);
     }

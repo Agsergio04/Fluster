@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .card-almacen {
   display:          flex;
   flex-direction:   column;
@@ -105,7 +107,7 @@
     width:           100%;
   }
 
-  @media (max-width: 1023px) {
+  @include mix.tablet {
     width: 100%;
 
     &__bic          { flex-wrap: wrap; }
