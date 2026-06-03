@@ -6,6 +6,9 @@
 
 const bcrypt = require('bcrypt')
 const Usuario = require('../models/Usuario')
+const Contenedor = require('../models/Contenedor')
+const Evento = require('../models/Evento')
+const Informe = require('../models/Informe')
 
 const SALT_ROUNDS = 10
 
@@ -135,6 +138,9 @@ async function cambiarContrasena(id, contrasenaActual, contrasenaNueva) {
  * Elimina un usuario del sistema.
  * Impide borrar al último administrador porque el sistema quedaría sin nadie
  * con permisos para gestionar roles.
+ * Aplica restrict: no se borra un usuario con datos asociados (contenedores
+ * creados, eventos registrados o informes generados), para no dejar
+ * referencias colgando en esas colecciones.
  *
  * @param {string} id
  * @returns {Promise<void>}
@@ -154,6 +160,18 @@ async function eliminar(id) {
       err.status = 409
       throw err
     }
+  }
+
+  // Restrict: bloquea el borrado si el usuario tiene datos asociados, evitando
+  // referencias huérfanas en creadoPor / registradoPor / generadoPor.
+  const enUso =
+    (await Contenedor.exists({ creadoPor: id })) ||
+    (await Evento.exists({ registradoPor: id })) ||
+    (await Informe.exists({ generadoPor: id }))
+  if (enUso) {
+    const err = new Error('No se puede eliminar un usuario con contenedores, eventos o informes asociados')
+    err.status = 409
+    throw err
   }
 
   await usuario.deleteOne()

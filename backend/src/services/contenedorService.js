@@ -8,6 +8,8 @@
 const Contenedor = require('../models/Contenedor')
 const Naviera = require('../models/Naviera')
 const Ciclo = require('../models/Ciclo')
+const Evento = require('../models/Evento')
+const Informe = require('../models/Informe')
 
 // ---------------------------------------------------------------------------
 // Helpers privados de cálculo
@@ -403,7 +405,8 @@ async function revertirSalidaPuerto(id) {
 }
 
 /**
- * Elimina un contenedor y todos sus ciclos asociados.
+ * Elimina un contenedor y todos sus datos asociados en cascada:
+ * ciclos, eventos e informes que lo referencian (por contenedorId).
  * Solo se puede eliminar si está en estado INACTIVO; un contenedor activo
  * tiene costes en curso que no deben perderse.
  *
@@ -423,7 +426,11 @@ async function eliminar(id) {
     throw err
   }
 
+  // Cascada: sin esto quedarían eventos e informes huérfanos apuntando
+  // a un contenedorId inexistente.
   await Ciclo.deleteMany({ contenedorId: id })
+  await Evento.deleteMany({ contenedorId: id })
+  await Informe.deleteMany({ contenedorId: id })
   await contenedor.deleteOne()
 }
 

@@ -1,8 +1,14 @@
 jest.mock('../../src/models/Usuario')
+jest.mock('../../src/models/Contenedor')
+jest.mock('../../src/models/Evento')
+jest.mock('../../src/models/Informe')
 jest.mock('bcrypt')
 
 const bcrypt = require('bcrypt')
 const Usuario = require('../../src/models/Usuario')
+const Contenedor = require('../../src/models/Contenedor')
+const Evento = require('../../src/models/Evento')
+const Informe = require('../../src/models/Informe')
 const { listar, obtenerPorId, actualizar, cambiarContrasena, eliminar } = require('../../src/services/usuarioService')
 
 describe('usuarioService', () => {
@@ -199,6 +205,15 @@ describe('usuarioService', () => {
       Usuario.findById.mockResolvedValue(null)
 
       await expect(eliminar('non-existent')).rejects.toMatchObject({ status: 404 })
+    })
+
+    it('lanza error 409 (restrict) si el usuario tiene datos asociados', async () => {
+      const mockUser = { _id: 'user-id', rol: 'gestor', deleteOne: jest.fn() }
+      Usuario.findById.mockResolvedValue(mockUser)
+      Contenedor.exists.mockResolvedValueOnce({ _id: 'cont-1' })
+
+      await expect(eliminar('user-id')).rejects.toMatchObject({ status: 409 })
+      expect(mockUser.deleteOne).not.toHaveBeenCalled()
     })
   })
 })

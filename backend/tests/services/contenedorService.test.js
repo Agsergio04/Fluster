@@ -1,10 +1,14 @@
 ﻿jest.mock('../../src/models/Contenedor')
 jest.mock('../../src/models/Naviera')
 jest.mock('../../src/models/Ciclo')
+jest.mock('../../src/models/Evento')
+jest.mock('../../src/models/Informe')
 
 const Contenedor = require('../../src/models/Contenedor')
 const Naviera = require('../../src/models/Naviera')
 const Ciclo = require('../../src/models/Ciclo')
+const Evento = require('../../src/models/Evento')
+const Informe = require('../../src/models/Informe')
 const {
   crear,
   listar,
@@ -14,6 +18,7 @@ const {
   registrarSalidaPuerto,
   registrarDevolucion,
   cancelarCiclo,
+  eliminar,
 } = require('../../src/services/contenedorService')
 
 // ---------------------------------------------------------------------------
@@ -65,6 +70,37 @@ function makeCiclo(overrides = {}) {
 
 describe('contenedorService', () => {
   beforeEach(() => jest.clearAllMocks())
+
+  // ---------------------------------------------------------------------------
+  // eliminar (cascada: ciclos, eventos e informes)
+  // ---------------------------------------------------------------------------
+  describe('eliminar', () => {
+    it('borra el contenedor y en cascada sus ciclos, eventos e informes', async () => {
+      const contenedor = makeContenedor('INACTIVO', { deleteOne: jest.fn().mockResolvedValue({}) })
+      Contenedor.findById.mockResolvedValue(contenedor)
+      Ciclo.deleteMany.mockResolvedValue({})
+      Evento.deleteMany.mockResolvedValue({})
+      Informe.deleteMany.mockResolvedValue({})
+
+      await eliminar('cont-id')
+
+      expect(Ciclo.deleteMany).toHaveBeenCalledWith({ contenedorId: 'cont-id' })
+      expect(Evento.deleteMany).toHaveBeenCalledWith({ contenedorId: 'cont-id' })
+      expect(Informe.deleteMany).toHaveBeenCalledWith({ contenedorId: 'cont-id' })
+      expect(contenedor.deleteOne).toHaveBeenCalled()
+    })
+
+    it('no borra un contenedor activo (422) ni toca los datos asociados', async () => {
+      const contenedor = makeContenedor('PUERTO', { deleteOne: jest.fn() })
+      Contenedor.findById.mockResolvedValue(contenedor)
+
+      await expect(eliminar('cont-id')).rejects.toMatchObject({ status: 422 })
+      expect(Ciclo.deleteMany).not.toHaveBeenCalled()
+      expect(Evento.deleteMany).not.toHaveBeenCalled()
+      expect(Informe.deleteMany).not.toHaveBeenCalled()
+      expect(contenedor.deleteOne).not.toHaveBeenCalled()
+    })
+  })
 
   // ---------------------------------------------------------------------------
   // registrarEntradaPuerto (INACTIVO â†’ PUERTO)
