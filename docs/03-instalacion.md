@@ -62,7 +62,7 @@ VITE_API_URL=http://localhost:3000/api
 docker compose up -d
 ```
 
-Docker descargará las imágenes necesarias (la primera vez puede tardar varios minutos), construirá las imágenes de la aplicación y levantará los tres servicios en segundo plano.
+Docker descargará las imágenes necesarias (la primera vez puede tardar varios minutos), construirá las imágenes de la aplicación y levantará los servicios en segundo plano. La base de datos local se **siembra automáticamente** al arrancar: un servicio `seed` de un solo uso crea el usuario administrador y los datos de demostración (no se conecta al cluster Atlas; ese se usa solo en el despliegue de Render) y, solo cuando termina, se pone en marcha el backend. Credenciales sembradas: `admin@fluster.com` / `Admin1234` (admin) y `gestor1@fluster.com` · `operador1@fluster.com` con `Test1234`.
 
 ### Paso 3 — Verificar que los contenedores están en ejecución
 
@@ -70,7 +70,7 @@ Docker descargará las imágenes necesarias (la primera vez puede tardar varios 
 docker compose ps
 ```
 
-Deberías ver tres servicios con estado `Up` o `running`: `mongo`, `backend` y `frontend`.
+Deberías ver `mongo`, `backend` y `frontend` con estado `Up`/`running`. El servicio `seed` aparece como `Exited (0)`: es normal, solo se ejecuta una vez para sembrar la base de datos y termina.
 
 ### Paso 4 — Acceder a la aplicación
 

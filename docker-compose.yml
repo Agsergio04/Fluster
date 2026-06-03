@@ -1,6 +1,6 @@
 services:
 
-  # ─── Base de datos ────────────────────────────────────────────
+  # ─── Base de datos (Mongo local, NO el cluster Atlas) ─────────
   mongo:
     image: mongo:7
     restart: unless-stopped
@@ -10,6 +10,31 @@ services:
       - mongo_data:/data/db
     networks:
       - fluster-net
+    # Permite que los servicios dependientes esperen a que Mongo acepte conexiones
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ─── Seed (one-shot) ──────────────────────────────────────────
+  # Siembra la base de datos local con el admin y los datos de demostración.
+  # Se ejecuta una vez (no se reinicia) cuando Mongo está listo; el backend
+  # espera a que termine con éxito antes de arrancar.
+  seed:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["sh", "-c", "npm run seed && npm run seed:datos"]
+    environment:
+      MONGO_URI: mongodb://mongo:27017/fluster
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - fluster-net
+    restart: "no"
 
   # ─── Backend ──────────────────────────────────────────────────
   backend:
@@ -18,11 +43,17 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
-      MONGO_URI:  ${MONGO_URI:-mongodb://mongo:27017/fluster}
+      # Apunta SIEMPRE a la Mongo local sembrada por el servicio 'seed',
+      # no al cluster Atlas (el despliegue en la nube usa render.yaml).
+      MONGO_URI:  mongodb://mongo:27017/fluster
       PORT:       3000
       JWT_SECRET: ${JWT_SECRET:-cambia_esto_por_un_secreto_seguro}
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
+      # Arranca solo cuando la siembra ha terminado correctamente
+      seed:
+        condition: service_completed_successfully
     networks:
       - fluster-net
 

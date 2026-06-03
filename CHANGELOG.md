@@ -17,6 +17,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Refactor MVC: la edición de tramos de ciclo pasa de `cicloController` a `cicloService` (controladores finos, sin acceso directo a modelos), reutilizando el motor de cálculo D&D extraído a `calculoDD.js`.
 - Las hojas de estilo usan los mixins `mobile`/`tablet` y `flex-col`/`flex-row` en lugar de media queries y flex repetidos a mano.
 - Las tarifas en móvil se muestran con el mismo conjunto de tarjetas (`ConjuntoCards`) que el resto de la aplicación.
+- Docker Compose siembra automáticamente la base de datos local al arrancar (servicio `seed` de un solo uso) y el backend usa esa Mongo local en lugar del cluster Atlas; Mongo tiene `healthcheck` y el backend espera a que la siembra termine.
 
 ### Corregido
 - `errorMiddleware` devuelve 400 ante un `CastError` (identificador inválido) y 409 ante clave duplicada (E11000) en lugar de 500.

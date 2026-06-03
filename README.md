@@ -124,6 +124,8 @@ cp backend/.env.example backend/.env
 docker compose up --build
 ```
 
+Al arrancar, Docker **siembra automáticamente** la base de datos local (servicio `seed` de un solo uso): crea el administrador y los datos de demostración antes de poner en marcha el backend, usando la Mongo del propio stack (no el cluster Atlas). Inicia sesión con `admin@fluster.com` / `Admin1234`.
+
 Una vez iniciado, la aplicación estará disponible en `http://localhost` (puerto 80, servido por nginx). La API es accesible a través del proxy en `http://localhost/api`.
 
 ---
@@ -155,6 +157,8 @@ El frontend de desarrollo (Vite) queda en `http://localhost:5173` y llama al bac
 ---
 
 ## Datos de prueba (seed)
+
+> Con **Docker** estos scripts se ejecutan **automáticamente** al arrancar (servicio `seed`), así que no necesitas lanzarlos a mano. Los comandos siguientes son para el flujo de desarrollo local **sin Docker**.
 
 El backend incluye scripts para poblar la base de datos sin tener que crear los datos a mano:
 
