@@ -217,6 +217,6 @@ Cualquier nuevo componente que se añada al proyecto debe:
 1. Seguir los tokens definidos en `00-settings` (no valores hardcoded).
 2. Aplicar nomenclatura BEM consistente.
 3. Ser registrado en `main.scss`.
-4. Aparecer documentado en la página `/guia_estilos`.
+4. Aparecer documentado en la página `/guia-estilos`.
 
 Este proceso garantiza que el sistema de diseño sea escalable sin pérdida de coherencia.
