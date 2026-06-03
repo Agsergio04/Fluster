@@ -1,8 +1,7 @@
 @use '../01-tools/mixins' as mix;
 
 .perfil-credenciales {
-  display:     flex;
-  align-items: flex-start;
+  @include mix.flex-row(null, flex-start);
   gap:         9.375rem; // 150px
 
   &__info {

@@ -1,8 +1,7 @@
 @use '../01-tools/mixins' as mix;
 
 .subir-foto-ocr {
-  display:         flex;
-  align-items:     center;
+  @include mix.flex-row;
   justify-content: center;
   padding:         var(--space-8);
   border:          1px solid var(--color-box-border);

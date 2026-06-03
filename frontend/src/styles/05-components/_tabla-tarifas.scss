@@ -1,9 +1,7 @@
 @use '../01-tools/mixins' as mix;
 
 .tabla-tarifas {
-  display:          flex;
-  flex-direction:   column;
-  align-items:      stretch;
+  @include mix.flex-col(null, stretch);
   width:            fit-content;
   padding:          var(--space-8) 0.25rem;
   background-color: var(--color-card-almacen);

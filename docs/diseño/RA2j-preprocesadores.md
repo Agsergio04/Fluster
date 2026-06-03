@@ -73,6 +73,8 @@ Cada capa tiene especificidad creciente. Las reglas de `05-components` siempre s
 
 Los mixins de Fluster están en `frontend/src/styles/01-tools/_mixins.scss`. Son 8 mixins que abstraen patrones repetitivos.
 
+**Adopción en el código:** los breakpoints se aplican con `mobile`/`tablet` en todos los componentes responsivos (cabecera, tarjetas, footer, tablas de tarifas, páginas estáticas, panel de informes…) y los contenedores de layout usan `flex-col`/`flex-row`. Los mixins `texto`, `btn-base`, `foco-visible` y `truncar` se ofrecen como utilidades reutilizables; los componentes cuyo CSS difiere del patrón base (anillos de foco con color de error, botones con padding o transición propios) conservan su definición específica en lugar de forzar el mixin y alterar el resultado. Los ejemplos de cada apartado ilustran cómo invocarlos.
+
 ### Mixin `mobile` y `tablet` — breakpoints
 
 ```scss
@@ -170,7 +172,7 @@ Los mixins de Fluster están en `frontend/src/styles/01-tools/_mixins.scss`. Son
 **Uso:**
 ```scss
 .btn-iniciar-sesion {
-  @include mix.foco-visible;  // anillo de foco accesible en todos los botones
+  @include mix.foco-visible;  // ejemplo: aplica el anillo de foco accesible al elemento
 }
 ```
 

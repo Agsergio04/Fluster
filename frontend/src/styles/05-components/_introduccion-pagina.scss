@@ -1,8 +1,7 @@
 @use '../01-tools/mixins' as mix;
 
 .introduccion-pagina {
-  display:     flex;
-  align-items: center;
+  @include mix.flex-row;
   width:       100%;
   height:      35.5rem; // 568px, Figma-exact
 

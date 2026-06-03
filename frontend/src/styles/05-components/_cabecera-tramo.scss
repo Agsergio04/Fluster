@@ -1,8 +1,7 @@
 @use '../01-tools/mixins' as mix;
 
 .cabecera-tramo {
-  display:     flex;
-  align-items: center;
+  @include mix.flex-row;
   gap:         0.625rem;
   width:       100%;
   padding:     0.625rem;
