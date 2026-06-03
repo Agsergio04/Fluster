@@ -197,7 +197,7 @@ La vista de semáforo usa CSS Grid para distribuir las cuatro columnas de riesgo
 
 ## 6. Style Guide — catálogo visual
 
-Fluster incluye una página de Style Guide accesible en la ruta `/guia_estilos` (`frontend/src/pages/guia_estilos/`). Esta página actúa como catálogo vivo de todos los componentes del sistema de diseño.
+Fluster incluye una página de Style Guide accesible en la ruta `/guia-estilos` (`frontend/src/pages/guia_estilos/`), abriéndola directamente en el navegador (no se enlaza desde la navegación). Esta página actúa como catálogo vivo de todos los componentes del sistema de diseño.
 
 ### Contenido del Style Guide
 

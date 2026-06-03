@@ -187,6 +187,10 @@ El sistema de temas demuestra el valor real de la guía de estilo: cuando el usu
 
 La página de Style Guide (`frontend/src/pages/guia_estilos/`) es la documentación viva del sistema de diseño. No es un PDF estático: es la aplicación real ejecutando todos sus componentes con los tokens reales.
 
+### Cómo acceder
+
+La Style Guide se sirve en la ruta **`/guia-estilos`** y se abre escribiéndola directamente en el navegador —por ejemplo `http://localhost:5173/guia-estilos` en desarrollo o `https://<dominio>/guia-estilos` en producción—. De forma intencionada **no se enlaza desde la navegación principal ni desde el footer**: es una herramienta interna de diseño y verificación para el equipo de desarrollo, no una pantalla del flujo del usuario final. La ruta está registrada en `frontend/src/router/AppRouter.jsx` (`<Route path="/guia-estilos" ... />`).
+
 ### Contenido organizado por categorías
 
 | Sección | Qué muestra |

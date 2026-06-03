@@ -127,9 +127,9 @@ Los 76 archivos de `05-components` siguen esta nomenclatura sin excepción. El l
 
 ## 4. Style Guide — página de catálogo
 
-La ruta `/guia_estilos` muestra todos los componentes del sistema con sus variantes y estados. Es la evidencia visual de que la guía de estilo se aplica de forma coherente.
+La ruta `/guia-estilos` (se abre directamente en el navegador; no está enlazada en la navegación) muestra todos los componentes del sistema con sus variantes y estados. Es la evidencia visual de que la guía de estilo se aplica de forma coherente.
 
-### Contenido de la página `/guia_estilos`
+### Contenido de la página `/guia-estilos`
 
 La página está organizada en secciones:
 
