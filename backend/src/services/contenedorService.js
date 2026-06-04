@@ -233,11 +233,11 @@ async function editarFechaInicioLibre(id, nuevaFechaStr) {
  * tramos a medida que transcurren los días libres.
  *
  * @param {string} id        - ID del contenedor
- * @param {Date}   fecha     - Fecha real de entrada al puerto (inicio del demurrage)
  * @param {string} clienteId - Cliente al que pertenece este ciclo
  * @returns {Promise<object>} Contenedor actualizado
  */
-async function registrarEntradaPuerto(id, fecha, clienteId) {
+async function registrarEntradaPuerto(id, clienteId) {
+  const fecha = new Date()
   const contenedor = await Contenedor.findById(id)
   if (!contenedor) {
     const err = new Error('Contenedor no encontrado')
@@ -272,11 +272,11 @@ async function registrarEntradaPuerto(id, fecha, clienteId) {
  * Registra la salida del contenedor del puerto hacia el cliente (PUERTO → CLIENTE).
  * Cierra el tramo de demurrage calculando días y coste, y abre el tramo de detention.
  *
- * @param {string} id    - ID del contenedor
- * @param {Date}   fecha - Fecha real de salida del puerto
+ * @param {string} id - ID del contenedor
  * @returns {Promise<object>} Contenedor actualizado
  */
-async function registrarSalidaPuerto(id, fecha) {
+async function registrarSalidaPuerto(id) {
+  const fecha = new Date()
   const contenedor = await Contenedor.findById(id)
   if (!contenedor) {
     const err = new Error('Contenedor no encontrado')
@@ -324,11 +324,11 @@ async function registrarSalidaPuerto(id, fecha) {
  * A partir de aquí los costes son definitivos y el contenedor queda libre para
  * iniciar un nuevo ciclo.
  *
- * @param {string} id    - ID del contenedor
- * @param {Date}   fecha - Fecha real de devolución
+ * @param {string} id - ID del contenedor
  * @returns {Promise<object>} Contenedor actualizado
  */
-async function registrarDevolucion(id, fecha) {
+async function registrarDevolucion(id) {
+  const fecha = new Date()
   const contenedor = await Contenedor.findById(id)
   if (!contenedor) {
     const err = new Error('Contenedor no encontrado')

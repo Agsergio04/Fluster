@@ -41,8 +41,7 @@ async function actualizar(req, res, next) {
 
 async function entradaPuerto(req, res, next) {
   try {
-    const { fecha, clienteId } = req.body
-    const contenedor = await contenedorService.registrarEntradaPuerto(req.params.id, fecha, clienteId)
+    const contenedor = await contenedorService.registrarEntradaPuerto(req.params.id, req.body.clienteId)
     res.json(contenedor)
   } catch (err) {
     next(err)
@@ -51,7 +50,7 @@ async function entradaPuerto(req, res, next) {
 
 async function salidaPuerto(req, res, next) {
   try {
-    const contenedor = await contenedorService.registrarSalidaPuerto(req.params.id, req.body.fecha)
+    const contenedor = await contenedorService.registrarSalidaPuerto(req.params.id)
     res.json(contenedor)
   } catch (err) {
     next(err)
@@ -60,7 +59,7 @@ async function salidaPuerto(req, res, next) {
 
 async function devolucion(req, res, next) {
   try {
-    const contenedor = await contenedorService.registrarDevolucion(req.params.id, req.body.fecha)
+    const contenedor = await contenedorService.registrarDevolucion(req.params.id)
     res.json(contenedor)
   } catch (err) {
     next(err)

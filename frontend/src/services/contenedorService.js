@@ -40,10 +40,7 @@ export async function eliminarContenedor(id) {
  * @param {string} clienteId - ID del cliente asociado al ciclo
  */
 export async function entradaPuerto(id, clienteId) {
-  const { data } = await apiClient.patch(`/contenedores/${id}/entrada-puerto`, {
-    fecha: new Date().toISOString(),
-    clienteId,
-  })
+  const { data } = await apiClient.patch(`/contenedores/${id}/entrada-puerto`, { clienteId })
   return data
 }
 
@@ -52,9 +49,7 @@ export async function entradaPuerto(id, clienteId) {
  * a partir de esta fecha y los días libres de la naviera.
  */
 export async function salidaPuerto(id) {
-  const { data } = await apiClient.patch(`/contenedores/${id}/salida-puerto`, {
-    fecha: new Date().toISOString(),
-  })
+  const { data } = await apiClient.patch(`/contenedores/${id}/salida-puerto`)
   return data
 }
 
@@ -72,9 +67,7 @@ export async function revertirSalidaPuerto(id) {
  * El servidor cierra los contadores de Detention y calcula el coste final.
  */
 export async function devolucion(id) {
-  const { data } = await apiClient.patch(`/contenedores/${id}/devolucion`, {
-    fecha: new Date().toISOString(),
-  })
+  const { data } = await apiClient.patch(`/contenedores/${id}/devolucion`)
   return data
 }
 

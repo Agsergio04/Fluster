@@ -35,14 +35,12 @@
 
   &--sin-coste {
     background-color: var(--color-sin_costes);
-    border:           1px solid var(--color-box-text);
 
     .cabecera-tramo__badge { background-color: var(--color-sin_costes-inner); }
   }
 
   &--primer-tramo {
     background-color: var(--color-primer_tramo);
-    border:           1px solid var(--color-box-text);
 
     .cabecera-tramo__badge { background-color: var(--color-primer_tramo-inner); }
   }
@@ -55,7 +53,6 @@
 
   &--inactivo {
     background-color: var(--color-inactivo);
-    border:           1px solid var(--color-box-text);
 
     .cabecera-tramo__badge { background-color: var(--color-inactivo-inner); }
   }
