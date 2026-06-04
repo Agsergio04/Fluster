@@ -33,10 +33,7 @@ const TRAMO_SUFIJO = {
  * @returns {string} Fecha formateada o '-' si no hay ninguna
  */
 const ultimaFecha = c => {
-  // actualizadoEn refleja el momento exacto de la última transición de estado,
-  // por lo que tiene prioridad sobre las fechas de negocio individuales.
-  const fecha = c.actualizadoEn
-    ?? c.fechaDevolucion
+  const fecha = c.fechaDevolucion
     ?? c.fechaSalidaPuerto
     ?? c.fechaEntradaPuerto
     ?? c.fechaInicioLibre
