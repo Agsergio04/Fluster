@@ -1,7 +1,10 @@
 .btn-card-almacen {
-  flex:             1 0 0;
-  display:       inline-flex;
-  align-self:    flex-start;
+  // Ancho fijo para no estirarse cuando la card crece en responsive (width: 100%).
+  // flex: 1 0 0 hacía que los botones ocupasen todo el espacio disponible.
+  width:            10rem;
+  flex-shrink:      0;
+  display:          inline-flex;
+  align-self:       center;
   align-items:      center;
   justify-content:  center;
   padding:          0.625rem; // 10px, Figma-exact
