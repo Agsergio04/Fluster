@@ -149,6 +149,78 @@ async function actualizar(id, cambios) {
   return actualizado
 }
 
+/**
+ * Corrige la fecha de inicio del tramo activo del contenedor.
+ * - INACTIVO : solo actualiza fechaInicioLibre (sin ciclo activo).
+ * - PUERTO   : actualiza fechaInicioLibre, fechaEntradaPuerto y
+ *              ciclo.demurrage.fechaInicio. La nueva fecha no puede ser
+ *              futura ni posterior a la propia entrada a puerto.
+ * - CLIENTE  : actualiza la fecha de inicio del demurrage, recalcula
+ *              sus costes (ya cerrados) y valida que no supere
+ *              fechaSalidaPuerto.
+ *
+ * @param {string} id
+ * @param {string|Date} nuevaFechaStr
+ */
+async function editarFechaInicioLibre(id, nuevaFechaStr) {
+  const contenedor = await Contenedor.findById(id).populate('navieraId').lean()
+  if (!contenedor) {
+    const err = new Error('Contenedor no encontrado'); err.status = 404; throw err
+  }
+
+  const nuevaFecha = new Date(nuevaFechaStr)
+  const hoy        = new Date(); hoy.setHours(23, 59, 59, 999)
+
+  if (isNaN(nuevaFecha)) {
+    const err = new Error('Fecha inválida'); err.status = 422; throw err
+  }
+  if (nuevaFecha > hoy) {
+    const err = new Error('La fecha no puede ser futura'); err.status = 422; throw err
+  }
+  if (contenedor.fechaSalidaPuerto && nuevaFecha > new Date(contenedor.fechaSalidaPuerto)) {
+    const err = new Error('La fecha de inicio no puede ser posterior a la salida a cliente')
+    err.status = 422; throw err
+  }
+
+  if (contenedor.estado !== 'INACTIVO') {
+    const ciclo = await Ciclo.findOne({ contenedorId: id, fechaCierre: null })
+    if (ciclo) {
+      // La fecha de inicio del demurrage no puede superar el fin del propio demurrage
+      // (aplica cuando el tramo ya ha sido editado manualmente y difiere de fechaSalidaPuerto)
+      if (ciclo.demurrage?.fechaFin && nuevaFecha > new Date(ciclo.demurrage.fechaFin)) {
+        const err = new Error('La fecha de inicio no puede ser posterior al fin del tramo de sobrestadía')
+        err.status = 422; throw err
+      }
+      // Tampoco puede superar el inicio del tramo de detención
+      if (ciclo.detention?.fechaInicio && nuevaFecha > new Date(ciclo.detention.fechaInicio)) {
+        const err = new Error('La fecha de inicio no puede ser posterior al inicio del tramo de detención')
+        err.status = 422; throw err
+      }
+
+      const updateCiclo = { 'demurrage.fechaInicio': nuevaFecha }
+
+      // Para CLIENTE el tramo de demurrage ya está cerrado: recalculamos sus costes
+      if (contenedor.estado === 'CLIENTE' && ciclo.demurrage?.fechaFin) {
+        const naviera   = contenedor.navieraId
+        const demDias   = calcularDiasEntreFechas(nuevaFecha, new Date(ciclo.demurrage.fechaFin))
+        const demFact   = Math.max(0, demDias - ciclo.demurrage.diasLibres)
+        const demCoste  = calcularCosteTramos(demFact, naviera.diasDemurrage)
+        updateCiclo['demurrage.diasTranscurridos'] = demDias
+        updateCiclo['demurrage.diasFacturables']   = demFact
+        updateCiclo['demurrage.costeTotal']        = demCoste
+      }
+
+      await Ciclo.findByIdAndUpdate(ciclo._id, { $set: updateCiclo })
+    }
+  }
+
+  return Contenedor.findByIdAndUpdate(
+    id,
+    { fechaInicioLibre: nuevaFecha, fechaEntradaPuerto: nuevaFecha },
+    { new: true }
+  ).lean()
+}
+
 // ---------------------------------------------------------------------------
 // Transiciones de estado
 // ---------------------------------------------------------------------------
@@ -400,6 +472,7 @@ module.exports = {
   listar,
   obtenerPorId,
   actualizar,
+  editarFechaInicioLibre,
   eliminar,
   registrarEntradaPuerto,
   registrarSalidaPuerto,

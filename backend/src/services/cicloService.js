@@ -93,6 +93,13 @@ async function editarTramo(id, tramo, { fechaInicio, fechaFin } = {}) {
     err.status = 422
     throw err
   }
+  // El demurrage no puede terminar después de que empiece el detention.
+  if (tramo === 'demurrage' && finEfectivo && ciclo.detention?.fechaInicio &&
+      new Date(finEfectivo) > new Date(ciclo.detention.fechaInicio)) {
+    const err = new Error('El demurrage no puede terminar después del inicio del detention')
+    err.status = 422
+    throw err
+  }
 
   // Solo se recalculan días y coste cuando hay fecha de fin asignada.
   if (finEfectivo) {

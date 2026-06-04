@@ -79,10 +79,14 @@ async function cancelarCiclo(req, res, next) {
 async function editarContenedor(req, res, next) {
   try {
     const { codigoBIC, foto, fechaInicioLibre } = req.body
+    // fechaInicioLibre tiene su propia función con validación y actualización del ciclo
+    if (fechaInicioLibre !== undefined) {
+      const actualizado = await contenedorService.editarFechaInicioLibre(req.params.id, fechaInicioLibre)
+      return res.json(actualizado)
+    }
     const cambios = {}
-    if (codigoBIC !== undefined)        cambios.codigoBIC       = codigoBIC
-    if (foto !== undefined)             cambios.foto            = foto
-    if (fechaInicioLibre !== undefined) cambios.fechaInicioLibre = fechaInicioLibre
+    if (codigoBIC !== undefined) cambios.codigoBIC = codigoBIC
+    if (foto !== undefined)      cambios.foto      = foto
     const actualizado = await contenedorService.actualizar(req.params.id, cambios)
     res.json(actualizado)
   } catch (err) {
