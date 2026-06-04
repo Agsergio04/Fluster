@@ -82,7 +82,7 @@ La página `/semaforo` es la vista operativa principal del gestor. Muestra todos
 | **Segundo tramo** | En el segundo tramo tarifario (coste más elevado) | Rojo |
 | **Inactivos** | Contenedores sin ciclo activo | Gris |
 
-Cada tarjeta muestra el código BIC, el coste acumulado, el cliente asociado y la última operación registrada. Desde cada tarjeta se pueden ejecutar directamente las transiciones de estado correspondientes y editar la fecha de inicio del período libre.
+Cada tarjeta muestra el código BIC, el coste acumulado, el cliente asociado y la última operación registrada. Desde cada tarjeta se pueden ejecutar directamente las transiciones de estado correspondientes.
 
 **Endpoint relacionado:** `GET /api/semaforo`.
 

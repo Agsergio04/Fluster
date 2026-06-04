@@ -104,12 +104,6 @@ Si la salida se registró por error:
 2. Haz clic en el botón «Anterior» de su tarjeta.
 3. Se cancela el ciclo y el contenedor regresa a `INACTIVO`.
 
-#### Editar la fecha de inicio del período libre
-
-1. En la tarjeta del contenedor en el semáforo, haz clic en el botón de editar fecha.
-2. Introduce la nueva fecha en el modal que aparece.
-3. Confirma. El cómputo de días se recalcula automáticamente a partir de la nueva fecha.
-
 ### 2.3 Gestionar el almacén
 
 ![Pantalla de almacén](./assets/img/prototipado/almacen.png)
