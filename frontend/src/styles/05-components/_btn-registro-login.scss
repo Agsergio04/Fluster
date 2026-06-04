@@ -12,7 +12,6 @@
   font-size:        var(--text-16);
   font-weight:      var(--font-weight-regular);
   color:            var(--color-box-text);
-  text-transform:   uppercase;
   white-space:      nowrap;
   line-height:      var(--leading-tight);
   transition:       background-color var(--transition-fast);
@@ -25,12 +24,4 @@
     background-color: var(--color-secondary-off);
     cursor:           not-allowed;
   }
-}
-
-// En los formularios del perfil estos botones no se muestran en mayúsculas
-// (norma RAE): conservan su capitalización normal "Cambiar el nombre" /
-// "Cambiar la contraseña" en lugar de versalitas.
-.cambiar-nombre .btn-registro-login,
-.cambiar-contrasenia .btn-registro-login {
-  text-transform: none;
 }
