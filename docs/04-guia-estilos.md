@@ -416,14 +416,14 @@ El sistema semáforo indica el estado de los contenedores respecto a los días d
 
 | Variable CSS | Descripción | Estado del contenedor |
 |---|---|---|
-| `--color-sin_costes` | Verde — fondo del indicador | Dentro del período gratuito |
-| `--color-sin_costes-inner` | Verde oscuro — detalle interior | Dentro del período gratuito |
-| `--color-primer_tramo` | Amarillo — fondo del indicador | Próximo al límite de días libres |
-| `--color-primer_tramo-inner` | Amarillo oscuro — detalle interior | Próximo al límite de días libres |
-| `--color-segundo_tramo` | Rojo — fondo del indicador | En sobretiempo, generando costes |
-| `--color-segundo_tramo-inner` | Rojo suave — detalle interior | En sobretiempo, generando costes |
-| `--color-inactivo` | Gris — fondo del indicador | Contenedor sin actividad / inactivo |
-| `--color-inactivo-inner` | Gris oscuro — detalle interior | Contenedor sin actividad / inactivo |
+| `--color-sin_costes` | Verde — fondo del badge en `CabeceraTramo` | Dentro del período gratuito |
+| `--color-sin_costes-inner` | Verde oscuro — definido, sin uso activo en componentes | Dentro del período gratuito |
+| `--color-primer_tramo` | Amarillo — fondo del badge en `CabeceraTramo` | Próximo al límite de días libres |
+| `--color-primer_tramo-inner` | Amarillo oscuro — definido, sin uso activo en componentes | Próximo al límite de días libres |
+| `--color-segundo_tramo` | Rojo — fondo del badge en `CabeceraTramo` | En sobretiempo, generando costes |
+| `--color-segundo_tramo-inner` | Rojo suave — definido, sin uso activo en componentes | En sobretiempo, generando costes |
+| `--color-inactivo` | Gris — fondo del badge en `CabeceraTramo` | Contenedor sin actividad / inactivo |
+| `--color-inactivo-inner` | Gris oscuro — definido, sin uso activo en componentes | Contenedor sin actividad / inactivo |
 
 ### Semánticos — alias
 
