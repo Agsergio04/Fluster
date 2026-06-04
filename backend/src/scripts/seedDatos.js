@@ -44,9 +44,9 @@ function calcularCoste(diasTotales, diasLibres, tramos) {
 
 const USUARIOS = [
   { nombre: 'Administrador',  correo: 'admin@fluster.com',      contrasena: 'Admin1234', rol: 'admin'    },
-  { nombre: 'Gestor Uno',     correo: 'gestor1@fluster.com',    contrasena: 'Test1234',  rol: 'gestor'   },
+  { nombre: 'Luis García',    correo: 'luis@gmail.com',         contrasena: 'Test1234',  rol: 'gestor'   },
   { nombre: 'Gestor Dos',     correo: 'gestor2@fluster.com',    contrasena: 'Test1234',  rol: 'gestor'   },
-  { nombre: 'Operador Uno',   correo: 'operador1@fluster.com',  contrasena: 'Test1234',  rol: 'operador' },
+  { nombre: 'María López',    correo: 'marilopez@gmail.com',    contrasena: 'Test1234',  rol: 'operador' },
   { nombre: 'Operador Dos',   correo: 'operador2@fluster.com',  contrasena: 'Test1234',  rol: 'operador' },
   { nombre: 'Operador Tres',  correo: 'operador3@fluster.com',  contrasena: 'Test1234',  rol: 'operador' },
 ]
@@ -229,7 +229,7 @@ async function run() {
   for (const c of CLIENTES_SEED) C[c.nombre] = await upsertCliente(c)
 
   // Alias cortos
-  const op1 = U['operador1@fluster.com']
+  const op1 = U['marilopez@gmail.com']
   const op2 = U['operador2@fluster.com']
   const op3 = U['operador3@fluster.com']
   const maeu = N['MAEU'], mscu = N['MSCU'], cmau = N['CMAU']
@@ -242,7 +242,7 @@ async function run() {
   const c1 = await upsertContenedor({
     codigoBIC: 'MAEU1234567', tipo: '20DC', estado: 'INACTIVO',
     navieraId: maeu._id, fechaInicioLibre: diasAtras(2), creadoPor: op1._id,
-  }, 'operador1@fluster.com')
+  }, 'marilopez@gmail.com')
 
   const c2 = await upsertContenedor({
     codigoBIC: 'MSCU7654321', tipo: '40HC', estado: 'INACTIVO',
@@ -255,7 +255,7 @@ async function run() {
     codigoBIC: 'MAEU2345678', tipo: '40DC', estado: 'PUERTO',
     navieraId: maeu._id, fechaInicioLibre: diasAtras(4),
     fechaEntradaPuerto: diasAtras(3), creadoPor: op1._id,
-  }, 'operador1@fluster.com')
+  }, 'marilopez@gmail.com')
 
   // MSC: 5 días libres detention. Salida 3 días → 0 facturables
   const c4 = await resetContenedor({
@@ -285,7 +285,7 @@ async function run() {
     codigoBIC: 'MSCU5678901', tipo: '40DC', estado: 'PUERTO',
     navieraId: mscu._id, fechaInicioLibre: diasAtras(25),
     fechaEntradaPuerto: diasAtras(22), creadoPor: op1._id,
-  }, 'operador1@fluster.com')
+  }, 'marilopez@gmail.com')
 
   // CMA CGM: 6 días libres detention. Salida 20 días → 14 facturables (supera tramo 1–6)
   const c8 = await resetContenedor({
@@ -387,9 +387,9 @@ async function run() {
   console.log('══════════════════════════════════════════')
   console.log('\nCredenciales:')
   console.log('  admin@fluster.com      Admin1234   [admin]')
-  console.log('  gestor1@fluster.com    Test1234    [gestor]')
+  console.log('  luis@gmail.com         Test1234    [gestor]')
   console.log('  gestor2@fluster.com    Test1234    [gestor]')
-  console.log('  operador1@fluster.com  Test1234    [operador]')
+  console.log('  marilopez@gmail.com    Test1234    [operador]')
   console.log('  operador2@fluster.com  Test1234    [operador]')
   console.log('  operador3@fluster.com  Test1234    [operador]')
   console.log('\nSemáforo:')
