@@ -153,14 +153,14 @@ describe('contenedorController', () => {
   })
 
   describe('entradaPuerto', () => {
-    it('registra la entrada a puerto y devuelve el contenedor actualizado', async () => {
+    it('registra la entrada a puerto con clienteId del body', async () => {
       const contenedor = { _id: 'c1', estado: 'PUERTO' }
       contenedorService.registrarEntradaPuerto.mockResolvedValue(contenedor)
-      req.body = { fecha: '2025-06-01', clienteId: 'cli1' }
+      req.body = { clienteId: 'cli1' }
 
       await entradaPuerto(req, res, next)
 
-      expect(contenedorService.registrarEntradaPuerto).toHaveBeenCalledWith('c1', '2025-06-01', 'cli1')
+      expect(contenedorService.registrarEntradaPuerto).toHaveBeenCalledWith('c1', 'cli1')
       expect(res.json).toHaveBeenCalledWith(contenedor)
     })
 
@@ -174,28 +174,42 @@ describe('contenedorController', () => {
   })
 
   describe('salidaPuerto', () => {
-    it('registra la salida de puerto y devuelve el contenedor actualizado', async () => {
+    it('registra la salida de puerto sin parámetro fecha (usa la actual internamente)', async () => {
       const contenedor = { _id: 'c1', estado: 'CLIENTE' }
       contenedorService.registrarSalidaPuerto.mockResolvedValue(contenedor)
-      req.body = { fecha: '2025-06-10' }
+      req.body = {}
 
       await salidaPuerto(req, res, next)
 
-      expect(contenedorService.registrarSalidaPuerto).toHaveBeenCalledWith('c1', '2025-06-10')
+      expect(contenedorService.registrarSalidaPuerto).toHaveBeenCalledWith('c1')
       expect(res.json).toHaveBeenCalledWith(contenedor)
+    })
+
+    it('llama a next cuando hay error', async () => {
+      const err = new Error('Error en la salida')
+      contenedorService.registrarSalidaPuerto.mockRejectedValue(err)
+      await salidaPuerto(req, res, next)
+      expect(next).toHaveBeenCalledWith(err)
     })
   })
 
   describe('devolucion', () => {
-    it('registra la devolución y devuelve el contenedor actualizado', async () => {
+    it('registra la devolución sin parámetro fecha (usa la actual internamente)', async () => {
       const contenedor = { _id: 'c1', estado: 'INACTIVO' }
       contenedorService.registrarDevolucion.mockResolvedValue(contenedor)
-      req.body = { fecha: '2025-06-20' }
+      req.body = {}
 
       await devolucion(req, res, next)
 
-      expect(contenedorService.registrarDevolucion).toHaveBeenCalledWith('c1', '2025-06-20')
+      expect(contenedorService.registrarDevolucion).toHaveBeenCalledWith('c1')
       expect(res.json).toHaveBeenCalledWith(contenedor)
+    })
+
+    it('llama a next cuando hay error', async () => {
+      const err = new Error('Error en la devolución')
+      contenedorService.registrarDevolucion.mockRejectedValue(err)
+      await devolucion(req, res, next)
+      expect(next).toHaveBeenCalledWith(err)
     })
   })
 
