@@ -701,7 +701,6 @@ function GuiaEstilos() {
                 tarifaAcumulada={0}
                 onAnterior={NOOP}
                 onSiguiente={NOOP}
-                onEditarFecha={NOOP}
               />
               <CardSemaforo
                 estado="puerto-free"
@@ -711,7 +710,6 @@ function GuiaEstilos() {
                 tarifaAcumulada={0}
                 onAnterior={NOOP}
                 onSiguiente={NOOP}
-                onEditarFecha={NOOP}
               />
               <CardSemaforo
                 estado="cliente-primer"
@@ -722,7 +720,6 @@ function GuiaEstilos() {
                 mostrarAnterior
                 onAnterior={NOOP}
                 onSiguiente={NOOP}
-                onEditarFecha={NOOP}
               />
               <CardSemaforo
                 estado="puerto-segundo"
@@ -733,7 +730,6 @@ function GuiaEstilos() {
                 mostrarAnterior
                 onAnterior={NOOP}
                 onSiguiente={NOOP}
-                onEditarFecha={NOOP}
               />
             </div>
           </div>

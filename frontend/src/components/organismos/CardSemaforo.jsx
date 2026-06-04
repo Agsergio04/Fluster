@@ -1,5 +1,4 @@
 import CabeceraSemaforoCard from '../moleculas/CabeceraSemaforoCard'
-import BotonEditadoFechaContenedor from '../atomos/BotonEditadoFechaContenedor'
 import CalendarioIcon from '../../assets/icons/Icono calendario.svg?react'
 import PerfilIcon from '../../assets/icons/Icono Perfil.svg?react'
 import TarifasIcon from '../../assets/icons/Icono Tarifas.svg?react'
@@ -19,7 +18,6 @@ import TarifasIcon from '../../assets/icons/Icono Tarifas.svg?react'
  * @param {boolean}  mostrarSiguiente
  * @param {function} onAnterior
  * @param {function} onSiguiente
- * @param {function} onEditarFecha   - Abre el modal de corrección de fecha
  */
 function CardSemaforo({
   estado = 'inactivo',
@@ -31,7 +29,6 @@ function CardSemaforo({
   mostrarSiguiente = true,
   onAnterior,
   onSiguiente,
-  onEditarFecha,
 }) {
   return (
     <div className="card-semaforo">
@@ -51,14 +48,11 @@ function CardSemaforo({
 
         <div className="card-semaforo__datos">
           <div className="card-semaforo__fila-fecha">
-            <div className="card-semaforo__fecha-izq">
-              <div className="card-semaforo__icono-label">
-                <CalendarioIcon className="card-semaforo__icono" aria-hidden="true" />
-                <p className="card-semaforo__etiqueta-sm">Última operación :</p>
-              </div>
-              <p className="card-semaforo__valor-sm">{ultimaOperacion}</p>
+            <div className="card-semaforo__icono-label">
+              <CalendarioIcon className="card-semaforo__icono" aria-hidden="true" />
+              <p className="card-semaforo__etiqueta-sm">Última operación :</p>
             </div>
-            <BotonEditadoFechaContenedor onClick={onEditarFecha} />
+            <p className="card-semaforo__valor-sm">{ultimaOperacion}</p>
           </div>
 
           <div className="card-semaforo__fila-cliente">

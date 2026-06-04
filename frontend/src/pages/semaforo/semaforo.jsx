@@ -6,11 +6,10 @@ import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
 import { obtenerAgrupados } from '../../services/semaforoService'
 import { crearCliente } from '../../services/clienteService'
-import { entradaPuerto, salidaPuerto, cancelarCiclo, revertirSalidaPuerto, devolucion, actualizarContenedor } from '../../services/contenedorService'
+import { entradaPuerto, salidaPuerto, cancelarCiclo, revertirSalidaPuerto, devolucion } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
-import ModalEditarFecha from '../../components/organismos/ModalEditarFecha'
 import Notificacion from '../../components/atomos/Notificacion'
 
 // Orden de las columnas del semáforo tal como las muestra la interfaz
@@ -36,7 +35,6 @@ const ultimaFecha = c => {
   const fecha = c.fechaDevolucion
     ?? c.fechaSalidaPuerto
     ?? c.fechaEntradaPuerto
-    ?? c.fechaInicioLibre
   return fecha ? new Date(fecha).toLocaleDateString('es-ES') : '-'
 }
 
@@ -60,7 +58,6 @@ const mapearContenedor = (c, tramo) => {
     estadoBackend,
     codigoBic:        c.codigoBIC,
     ultimaOperacion:  ultimaFecha(c),
-    fechaInicioLibre: c.fechaInicioLibre ?? null,
     cliente:          c._semaforo?.cliente ?? null,
     tarifaAcumulada:  c._semaforo?.costeAcumulado ?? 0,
   }
@@ -88,8 +85,6 @@ function Semaforo() {
   })
   // Datos del contenedor sobre el que se quiere abrir el modal de entrada a puerto
   const [modalPuerto,  setModalPuerto]  = useState(null)
-  // Datos del contenedor cuya fecha de inicio libre se quiere editar
-  const [modalFecha,   setModalFecha]   = useState(null)
   const [aviso,        setAviso]        = useState('')
   const [cargando,     setCargando]     = useState(true)
   // IDs de contenedores con una transición en curso; evita dobles clics que
@@ -162,25 +157,6 @@ function Semaforo() {
   }
 
   /**
-   * Actualiza la fecha de inicio del período libre del contenedor.
-   * Esto recalcula automáticamente todos los costes D&D acumulados
-   * a partir de la nueva fecha en el backend.
-   *
-   * @param {string} nuevaFecha - Fecha en formato YYYY-MM-DD del input
-   */
-  const handleEditarFecha = async (nuevaFecha) => {
-    try {
-      await actualizarContenedor(modalFecha.id, {
-        fechaInicioLibre: new Date(nuevaFecha).toISOString(),
-      })
-      setModalFecha(null)
-      cargarGrupos()
-    } catch (err) {
-      setAviso(err.response?.data?.mensaje ?? 'No se pudo actualizar la fecha')
-    }
-  }
-
-  /**
    * Revierte la salida a cliente: el contenedor vuelve de CLIENTE a PUERTO.
    * Útil para corregir un registro de salida introducido por error.
    */
@@ -231,9 +207,8 @@ function Semaforo() {
         item.codigoBic.toLowerCase().includes(busquedas[tramo].trim().toLowerCase())
       )
       .map(item => {
-        const editarFecha = () => setModalFecha({ id: item.id, fechaInicioLibre: item.fechaInicioLibre })
         if (tramo === 'inactivo') {
-          return { ...item, mostrarAnterior: false, mostrarSiguiente: true, onSiguiente: () => setModalPuerto({ id: item.id }), onEditarFecha: editarFecha }
+          return { ...item, mostrarAnterior: false, mostrarSiguiente: true, onSiguiente: () => setModalPuerto({ id: item.id }) }
         }
         if (item.estadoBackend === 'PUERTO') {
           return {
@@ -242,7 +217,6 @@ function Semaforo() {
             mostrarSiguiente: true,
             onAnterior: () => handleCancelarCiclo(item.id),
             onSiguiente: () => handleSalidaPuerto(item.id),
-            onEditarFecha: editarFecha,
           }
         }
         if (item.estadoBackend === 'CLIENTE') {
@@ -252,10 +226,9 @@ function Semaforo() {
             mostrarSiguiente: true,
             onAnterior: () => handleRevertirSalida(item.id),
             onSiguiente: () => handleDevolucion(item.id),
-            onEditarFecha: editarFecha,
           }
         }
-        return { ...item, mostrarAnterior: false, mostrarSiguiente: false, onEditarFecha: editarFecha }
+        return { ...item, mostrarAnterior: false, mostrarSiguiente: false }
       })
 
   return (
@@ -303,14 +276,6 @@ function Semaforo() {
           onCancelar={() => setModalPuerto(null)}
         />
       )}
-      {modalFecha && (
-        <ModalEditarFecha
-          fechaActual={modalFecha.fechaInicioLibre}
-          onConfirmar={handleEditarFecha}
-          onCancelar={() => setModalFecha(null)}
-        />
-      )}
-
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>
   )
