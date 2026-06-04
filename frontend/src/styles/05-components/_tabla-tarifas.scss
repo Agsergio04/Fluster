@@ -24,12 +24,14 @@
 }
 
 // ── Variantes de celda para cabeceras de mini-tablas móvil ──────────
+// Sin ancho fijo: dentro de grupo-naviera-movil se sobreescribe con flex:1 1 0
+// para que ocupen el 100% de la fila disponible sea cual sea el ancho de la card.
 .celda-tabla--grupo-titulo {
-  width: 18rem; // naviera(6) + sm(6) + sm(6)
+  width: 100%;
 }
 
 .celda-tabla--subgrupo-titulo {
-  width: 18rem;
+  width: 100%;
 }
 
 // ── Grupos por naviera en móvil ──────────────────────────────────────

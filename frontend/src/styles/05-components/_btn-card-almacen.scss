@@ -1,8 +1,11 @@
 .btn-card-almacen {
-  // Ancho fijo para no estirarse cuando la card crece en responsive (width: 100%).
-  // flex: 1 0 0 hacía que los botones ocupasen todo el espacio disponible.
-  width:            10rem;
+  // Ancho mínimo calculado para que "Borrar contenedor" quepa en una línea.
+  // white-space: nowrap impide el salto de línea que alteraba la altura y
+  // desajustaba el layout al volver a expandir la card.
+  // flex: 1 0 0 anterior hacía que los botones ocupasen todo el ancho disponible.
+  min-width:        11rem;
   flex-shrink:      0;
+  white-space:      nowrap;
   display:          inline-flex;
   align-self:       center;
   align-items:      center;
