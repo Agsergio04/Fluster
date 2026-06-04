@@ -81,7 +81,7 @@ const contenedorSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: { createdAt: 'creadoEn', updatedAt: false } }
+  { timestamps: { createdAt: 'creadoEn', updatedAt: 'actualizadoEn' } }
 )
 
 // Índices para las consultas más habituales del panel

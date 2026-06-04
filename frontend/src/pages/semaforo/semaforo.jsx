@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './semaforo.scss'
 import useTema from '../../hooks/useTema'
@@ -33,7 +33,13 @@ const TRAMO_SUFIJO = {
  * @returns {string} Fecha formateada o '-' si no hay ninguna
  */
 const ultimaFecha = c => {
-  const fecha = c.fechaDevolucion ?? c.fechaSalidaPuerto ?? c.fechaEntradaPuerto ?? c.fechaInicioLibre
+  // actualizadoEn refleja el momento exacto de la última transición de estado,
+  // por lo que tiene prioridad sobre las fechas de negocio individuales.
+  const fecha = c.actualizadoEn
+    ?? c.fechaDevolucion
+    ?? c.fechaSalidaPuerto
+    ?? c.fechaEntradaPuerto
+    ?? c.fechaInicioLibre
   return fecha ? new Date(fecha).toLocaleDateString('es-ES') : '-'
 }
 
@@ -89,6 +95,9 @@ function Semaforo() {
   const [modalFecha,   setModalFecha]   = useState(null)
   const [aviso,        setAviso]        = useState('')
   const [cargando,     setCargando]     = useState(true)
+  // IDs de contenedores con una transición en curso; evita dobles clics que
+  // encadenarían dos transiciones (p.ej. CLIENTE→PUERTO y PUERTO→INACTIVO)
+  const transicionando = useRef(new Set())
 
   /**
    * Pide al servidor los contenedores ya clasificados por tramo y actualiza
@@ -129,21 +138,29 @@ function Semaforo() {
 
   /** Cancela el ciclo activo y devuelve el contenedor a INACTIVO. */
   const handleCancelarCiclo = async (id) => {
+    if (transicionando.current.has(id)) return
+    transicionando.current.add(id)
     try {
       await cancelarCiclo(id)
       cargarGrupos()
     } catch (err) {
       setAviso(err.response?.data?.mensaje ?? 'No se pudo cancelar el ciclo')
+    } finally {
+      transicionando.current.delete(id)
     }
   }
 
   /** Registra la salida de puerto: el contenedor pasa de PUERTO a CLIENTE. */
   const handleSalidaPuerto = async (id) => {
+    if (transicionando.current.has(id)) return
+    transicionando.current.add(id)
     try {
       await salidaPuerto(id)
       cargarGrupos()
     } catch (err) {
       setAviso(err.response?.data?.mensaje ?? 'No se pudo registrar la salida a puerto')
+    } finally {
+      transicionando.current.delete(id)
     }
   }
 
@@ -171,21 +188,29 @@ function Semaforo() {
    * Útil para corregir un registro de salida introducido por error.
    */
   const handleRevertirSalida = async (id) => {
+    if (transicionando.current.has(id)) return
+    transicionando.current.add(id)
     try {
       await revertirSalidaPuerto(id)
       cargarGrupos()
     } catch (err) {
       setAviso(err.response?.data?.mensaje ?? 'No se pudo revertir la salida')
+    } finally {
+      transicionando.current.delete(id)
     }
   }
 
-  /** Registra la devolución del contenedor: pasa de CLIENTE a VUELTA_PUERTO. */
+  /** Registra la devolución del contenedor: pasa de CLIENTE a INACTIVO. */
   const handleDevolucion = async (id) => {
+    if (transicionando.current.has(id)) return
+    transicionando.current.add(id)
     try {
       await devolucion(id)
       cargarGrupos()
     } catch (err) {
       setAviso(err.response?.data?.mensaje ?? 'No se pudo registrar la devolucion')
+    } finally {
+      transicionando.current.delete(id)
     }
   }
 

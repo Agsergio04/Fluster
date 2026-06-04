@@ -44,9 +44,9 @@ function calcularCoste(diasTotales, diasLibres, tramos) {
 
 const USUARIOS = [
   { nombre: 'Administrador',  correo: 'admin@fluster.com',      contrasena: 'Admin1234', rol: 'admin'    },
-  { nombre: 'Luis García',    correo: 'luis@gmail.com',         contrasena: 'Test1234',  rol: 'gestor'   },
+  { nombre: 'Luis García',    correo: 'luis@gmail.com',         contrasena: 'luis',  rol: 'gestor'   },
   { nombre: 'Gestor Dos',     correo: 'gestor2@fluster.com',    contrasena: 'Test1234',  rol: 'gestor'   },
-  { nombre: 'María López',    correo: 'marilopez@gmail.com',    contrasena: 'Test1234',  rol: 'operador' },
+  { nombre: 'María López',    correo: 'marilopez@gmail.com',    contrasena: 'maria',  rol: 'operador' },
   { nombre: 'Operador Dos',   correo: 'operador2@fluster.com',  contrasena: 'Test1234',  rol: 'operador' },
   { nombre: 'Operador Tres',  correo: 'operador3@fluster.com',  contrasena: 'Test1234',  rol: 'operador' },
 ]
@@ -232,7 +232,7 @@ async function run() {
   const op1 = U['marilopez@gmail.com']
   const op2 = U['operador2@fluster.com']
   const op3 = U['operador3@fluster.com']
-  const maeu = N['MAEU'], mscu = N['MSCU'], cmau = N['CMAU']
+  const maeu = N['MAEU'], mscu = N['MSCU'], cmau = N['CMAU'], bafu = N['BAFU']
   const cl1 = C['Acme Logistics'], cl2 = C['Tech Global Freight'], cl3 = C['Iberia Cargo']
 
   // ── Contenedores ───────────────────────────
@@ -292,6 +292,49 @@ async function run() {
     codigoBIC: 'CMAU9876543', tipo: '40HC', estado: 'CLIENTE',
     navieraId: cmau._id, fechaInicioLibre: diasAtras(40),
     fechaEntradaPuerto: diasAtras(35), fechaSalidaPuerto: diasAtras(20), creadoPor: op2._id,
+  }, 'operador2@fluster.com')
+
+  // ── Contenedores extra BAF (cubren todos los estados/tramos) ─────
+  // BAF: diasLibresDemurrage=3, diasLibresDetention=5
+
+  // INACTIVO — BAF (historial limpio para probar entrada a puerto desde cero)
+  const c9 = await upsertContenedor({
+    codigoBIC: 'BAFU1234567', tipo: '20DC', estado: 'INACTIVO',
+    navieraId: bafu._id, fechaInicioLibre: diasAtras(3), creadoPor: op1._id,
+  }, 'marilopez@gmail.com')
+
+  // INACTIVO — Maersk extra (segundo para más variedad en la columna inactivos)
+  const c10 = await upsertContenedor({
+    codigoBIC: 'MAEU9999999', tipo: '40HC', estado: 'INACTIVO',
+    navieraId: maeu._id, fechaInicioLibre: diasAtras(5), creadoPor: op2._id,
+  }, 'operador2@fluster.com')
+
+  // PUERTO sin-coste — BAF: 2 días, diasLibres=3 → 0 facturables
+  const c11 = await resetContenedor({
+    codigoBIC: 'BAFU2345678', tipo: '40DC', estado: 'PUERTO',
+    navieraId: bafu._id, fechaInicioLibre: diasAtras(2),
+    fechaEntradaPuerto: diasAtras(2), creadoPor: op2._id,
+  }, 'operador2@fluster.com')
+
+  // PUERTO primer-tramo — BAF: 7 días, 7-3=4 facturables (tramo 1–5 @60€/día)
+  const c12 = await resetContenedor({
+    codigoBIC: 'BAFU3456789', tipo: '20DC', estado: 'PUERTO',
+    navieraId: bafu._id, fechaInicioLibre: diasAtras(7),
+    fechaEntradaPuerto: diasAtras(6), creadoPor: op3._id,
+  }, 'operador3@fluster.com')
+
+  // CLIENTE sin-coste — BAF: salida hace 4 días, diasLibresDetention=5 → 0 facturables
+  const c13 = await resetContenedor({
+    codigoBIC: 'BAFU4567890', tipo: '40HC', estado: 'CLIENTE',
+    navieraId: bafu._id, fechaInicioLibre: diasAtras(12),
+    fechaEntradaPuerto: diasAtras(10), fechaSalidaPuerto: diasAtras(4), creadoPor: op1._id,
+  }, 'marilopez@gmail.com')
+
+  // CLIENTE segundo-tramo — BAF: salida hace 15 días, 15-5=10 facturables (tramo 6→∞ @80€/día)
+  const c14 = await resetContenedor({
+    codigoBIC: 'BAFU5678901', tipo: '20DC', estado: 'CLIENTE',
+    navieraId: bafu._id, fechaInicioLibre: diasAtras(30),
+    fechaEntradaPuerto: diasAtras(25), fechaSalidaPuerto: diasAtras(15), creadoPor: op2._id,
   }, 'operador2@fluster.com')
 
   // ── Ciclos ─────────────────────────────────
@@ -368,18 +411,66 @@ async function run() {
     })
   }
 
+  // ── BAFU2345678 (PUERTO, sin-coste) — ciclo activo, 0 facturables
+  await Ciclo.create({
+    contenedorId: c11._id, clienteId: cl1._id,
+    demurrage: { diasLibres: bafu.diasLibresDemurrage, fechaInicio: diasAtras(2) },
+  })
+
+  // ── BAFU3456789 (PUERTO, primer-tramo) — 4 facturables en tramo [1–5]
+  await Ciclo.create({
+    contenedorId: c12._id, clienteId: cl2._id,
+    demurrage: { diasLibres: bafu.diasLibresDemurrage, fechaInicio: diasAtras(7) },
+  })
+
+  // ── BAFU4567890 (CLIENTE, sin-coste) — detention 4 días, diasLibres=5 → 0 facturables
+  {
+    const demDias = 6, demLibres = bafu.diasLibresDemurrage  // 6-3=3 facturables demurrage
+    await Ciclo.create({
+      contenedorId: c13._id, clienteId: cl3._id,
+      demurrage: {
+        diasLibres: demLibres, fechaInicio: diasAtras(10), fechaFin: diasAtras(4),
+        diasTranscurridos: demDias,
+        diasFacturables: Math.max(0, demDias - demLibres),
+        costeTotal: calcularCoste(demDias, demLibres, bafu.diasDemurrage),
+      },
+      detention: { diasLibres: bafu.diasLibresDetention, fechaInicio: diasAtras(4) },
+    })
+  }
+
+  // ── BAFU5678901 (CLIENTE, segundo-tramo) — detention 10 facturables en tramo [6→∞]
+  {
+    const demDias = 10, demLibres = bafu.diasLibresDemurrage  // 10-3=7 facturables demurrage
+    await Ciclo.create({
+      contenedorId: c14._id, clienteId: cl1._id,
+      demurrage: {
+        diasLibres: demLibres, fechaInicio: diasAtras(25), fechaFin: diasAtras(15),
+        diasTranscurridos: demDias,
+        diasFacturables: Math.max(0, demDias - demLibres),
+        costeTotal: calcularCoste(demDias, demLibres, bafu.diasDemurrage),
+      },
+      detention: { diasLibres: bafu.diasLibresDetention, fechaInicio: diasAtras(15) },
+    })
+  }
+
   // ── Eventos ────────────────────────────────
   console.log('\n=== Eventos ===')
 
-  await upsertEvento(c3._id, 'entrada_puerto', diasAtras(3),  op1._id)
-  await upsertEvento(c4._id, 'entrada_puerto', diasAtras(15), op3._id)
-  await upsertEvento(c4._id, 'salida_puerto',  diasAtras(3),  op3._id)
-  await upsertEvento(c5._id, 'entrada_puerto', diasAtras(6),  op2._id)
-  await upsertEvento(c6._id, 'entrada_puerto', diasAtras(20), op3._id)
-  await upsertEvento(c6._id, 'salida_puerto',  diasAtras(12), op3._id)
-  await upsertEvento(c7._id, 'entrada_puerto', diasAtras(22), op1._id)
-  await upsertEvento(c8._id, 'entrada_puerto', diasAtras(35), op2._id)
-  await upsertEvento(c8._id, 'salida_puerto',  diasAtras(20), op2._id)
+  await upsertEvento(c3._id,  'entrada_puerto', diasAtras(3),  op1._id)
+  await upsertEvento(c4._id,  'entrada_puerto', diasAtras(15), op3._id)
+  await upsertEvento(c4._id,  'salida_puerto',  diasAtras(3),  op3._id)
+  await upsertEvento(c5._id,  'entrada_puerto', diasAtras(6),  op2._id)
+  await upsertEvento(c6._id,  'entrada_puerto', diasAtras(20), op3._id)
+  await upsertEvento(c6._id,  'salida_puerto',  diasAtras(12), op3._id)
+  await upsertEvento(c7._id,  'entrada_puerto', diasAtras(22), op1._id)
+  await upsertEvento(c8._id,  'entrada_puerto', diasAtras(35), op2._id)
+  await upsertEvento(c8._id,  'salida_puerto',  diasAtras(20), op2._id)
+  await upsertEvento(c11._id, 'entrada_puerto', diasAtras(2),  op2._id)
+  await upsertEvento(c12._id, 'entrada_puerto', diasAtras(6),  op3._id)
+  await upsertEvento(c13._id, 'entrada_puerto', diasAtras(10), op1._id)
+  await upsertEvento(c13._id, 'salida_puerto',  diasAtras(4),  op1._id)
+  await upsertEvento(c14._id, 'entrada_puerto', diasAtras(25), op2._id)
+  await upsertEvento(c14._id, 'salida_puerto',  diasAtras(15), op2._id)
 
   // ─────────────────────────────────────────────
   console.log('\n══════════════════════════════════════════')
@@ -393,10 +484,13 @@ async function run() {
   console.log('  operador2@fluster.com  Test1234    [operador]')
   console.log('  operador3@fluster.com  Test1234    [operador]')
   console.log('\nSemáforo:')
-  console.log('  INACTIVO     MAEU1234567  MSCU7654321')
-  console.log('  sin-coste    MAEU2345678 (PUERTO) · MSCU3456789 (CLIENTE)')
-  console.log('  primer-tramo CMAU1234567 (PUERTO) · MAEU4567890 (CLIENTE)')
+  console.log('  INACTIVO      MAEU1234567 · MSCU7654321 · BAFU1234567 · MAEU9999999')
+  console.log('  sin-coste     MAEU2345678 (PUERTO) · MSCU3456789 (CLIENTE)')
+  console.log('                BAFU2345678 (PUERTO) · BAFU4567890 (CLIENTE)')
+  console.log('  primer-tramo  CMAU1234567 (PUERTO) · MAEU4567890 (CLIENTE)')
+  console.log('                BAFU3456789 (PUERTO)')
   console.log('  segundo-tramo MSCU5678901 (PUERTO) · CMAU9876543 (CLIENTE)')
+  console.log('                BAFU5678901 (CLIENTE)')
 
   await mongoose.disconnect()
 }
