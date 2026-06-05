@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './home.scss'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
+import useDestinoRol from '../../hooks/useDestinoRol'
 import { getUsuario } from '../../services/session'
-import { listarContenedores } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
 import IntroduccionPagina from '../../components/organismos/IntroduccionPagina'
 import InformacionHome from '../../components/moleculas/InformacionHome'
+
+// Texto del botón de acción de la landing según el rol. El destino lo resuelve
+// useDestinoRol (el mismo al que redirigen /login y /registro con sesión activa).
+const ETIQUETAS_CTA = {
+  admin:    'Gestiona usuarios',
+  gestor:   'Organiza contenedores',
+  operador: 'Introduce contenedores',
+}
 
 function Home() {
   const navigate = useNavigate()
@@ -16,30 +23,13 @@ function Home() {
   const rol = usuario?.rol ?? null
   useDocumentTitle('Fluster | Gestión de contenedores marítimos')
 
-  // Destino del botón del operador: si aún no ha registrado contenedores lo
-  // lleva a introducir uno; si ya tiene, a su listado. Por defecto apunta a
-  // "introducir" (coincide con el texto del botón) y se ajusta tras la consulta.
-  const [destinoOperador, setDestinoOperador] = useState('/meter-contenedor')
+  const { destino } = useDestinoRol()
 
-  useEffect(() => {
-    if (rol !== 'operador') return
-    let activo = true
-    listarContenedores()
-      .then(lista => { if (activo && lista.length > 0) setDestinoOperador('/contenedores') })
-      .catch(() => {})
-    return () => { activo = false }
-  }, [rol])
-
-  // CTA según el rol para un usuario autenticado; null para invitados, que
-  // siguen viendo los botones de iniciar sesión y registro.
-  let cta = null
-  if (rol === 'admin') {
-    cta = { label: 'Gestiona usuarios', onClick: () => navigate('/panel-de-control') }
-  } else if (rol === 'gestor') {
-    cta = { label: 'Organiza contenedores', onClick: () => navigate('/semaforo') }
-  } else if (rol === 'operador') {
-    cta = { label: 'Introduce contenedores', onClick: () => navigate(destinoOperador) }
-  }
+  // CTA por rol para un usuario autenticado; null para invitados, que siguen
+  // viendo los botones de iniciar sesión y registro.
+  const cta = rol && ETIQUETAS_CTA[rol]
+    ? { label: ETIQUETAS_CTA[rol], onClick: () => navigate(destino) }
+    : null
 
   return (
     <>

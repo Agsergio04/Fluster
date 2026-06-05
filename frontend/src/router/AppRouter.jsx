@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import RutaProtegida from './RutaProtegida'
+import RutaInvitado from './RutaInvitado'
 import Footer from '../components/organismos/Footer'
 import Spinner from '../components/atomos/Spinner'
 
@@ -41,8 +42,8 @@ function AppRouter() {
     <BrowserRouter>
       <Suspense fallback={fallback}>
         <Routes>
-          <Route path="/login"    element={<Login />} />
-          <Route path="/registro" element={<Registro />} />
+          <Route path="/login"    element={<RutaInvitado><Login /></RutaInvitado>} />
+          <Route path="/registro" element={<RutaInvitado><Registro /></RutaInvitado>} />
           <Route path="/"         element={<Home />} />
           <Route path="/error"    element={<Error />} />
 
