@@ -5,6 +5,7 @@ import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { registro } from '../../services/authService'
 import { getUsuario } from '../../services/session'
+import { contraseniaValida } from '../../services/contrasenia'
 import Header from '../../components/organismos/Header'
 import EntradaDatosRegistro from '../../components/moleculas/EntradaDatosRegistro'
 import BotonesSeleccionRol from '../../components/moleculas/BotonesSeleccionRol'
@@ -29,11 +30,13 @@ function Registro() {
   const [nombre, setNombre] = useState('')
   const [correo, setCorreo] = useState('')
   const [contrasenia, setContrasenia] = useState('')
+  const [confirmacion, setConfirmacion] = useState('')
   // null mientras no se selecciona ningún botón de rol
   const [rol, setRol] = useState(null)
   const [errorNombre, setErrorNombre] = useState('')
   const [errorCorreo, setErrorCorreo] = useState('')
   const [errorContrasenia, setErrorContrasenia] = useState('')
+  const [errorConfirmacion, setErrorConfirmacion] = useState('')
   const [errorRol, setErrorRol] = useState('')
   const [cargando, setCargando] = useState(false)
 
@@ -46,12 +49,15 @@ function Registro() {
     setErrorNombre('')
     setErrorCorreo('')
     setErrorContrasenia('')
+    setErrorConfirmacion('')
     setErrorRol('')
 
     if (!nombre.trim())                   { setErrorNombre('Introduce tu nombre');          return }
     if (!correo.trim())                   { setErrorCorreo('Introduce tu correo');          return }
     if (!EMAIL_REGEX.test(correo.trim())) { setErrorCorreo('Introduce un correo válido');   return }
     if (!contrasenia.trim())              { setErrorContrasenia('Introduce tu contraseña'); return }
+    if (!contraseniaValida(contrasenia))  { setErrorContrasenia('La contraseña no cumple los requisitos indicados'); return }
+    if (contrasenia !== confirmacion)     { setErrorConfirmacion('Las contraseñas no coinciden'); return }
     if (!rol)                             { setErrorRol('Selecciona un rol');               return }
 
     try {
@@ -112,6 +118,9 @@ function Registro() {
             contrasenia={contrasenia}
             onContraseniaCambio={e => setContrasenia(e.target.value)}
             errorContrasenia={errorContrasenia}
+            confirmacion={confirmacion}
+            onConfirmacionCambio={e => setConfirmacion(e.target.value)}
+            errorConfirmacion={errorConfirmacion}
           />
 
           {/* Grupo de selección de rol con etiqueta accesible via aria-labelledby */}

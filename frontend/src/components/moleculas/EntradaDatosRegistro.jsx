@@ -1,12 +1,14 @@
 import Input          from '../atomos/Input'
 import InputContrasenia from '../atomos/InputContrasenia'
+import RequisitosContrasenia from './RequisitosContrasenia'
 
-/** Campos de nombre, correo y contraseña del formulario de registro de cuenta nueva. */
+/** Campos de nombre, correo y contraseña (con confirmación) del registro de cuenta nueva. */
 function EntradaDatosRegistro({
-  nombre = '',      onNombreCambio,
-  correo = '',      onCorreoCambio,
-  contrasenia = '', onContraseniaCambio,
-  errorNombre, errorCorreo, errorContrasenia,
+  nombre = '',       onNombreCambio,
+  correo = '',       onCorreoCambio,
+  contrasenia = '',  onContraseniaCambio,
+  confirmacion = '', onConfirmacionCambio,
+  errorNombre, errorCorreo, errorContrasenia, errorConfirmacion,
 }) {
   return (
     <div className="entrada-datos-registro">
@@ -36,6 +38,15 @@ function EntradaDatosRegistro({
         value={contrasenia}
         onChange={onContraseniaCambio}
         error={errorContrasenia}
+      />
+      <RequisitosContrasenia valor={contrasenia} />
+      <InputContrasenia
+        id="registro-confirmacion"
+        label="Repite la contraseña:"
+        placeholder="Introduce tu contraseña nuevamente"
+        value={confirmacion}
+        onChange={onConfirmacionCambio}
+        error={errorConfirmacion}
       />
     </div>
   )
