@@ -1,8 +1,14 @@
 import BotonIniciarSesion from '../atomos/BotonIniciarSesion'
 import BotonEmpezarAhora from '../atomos/BotonEmpezarAhora'
+import BotonAccionRol from '../atomos/BotonAccionRol'
 import imagenHome from '../../assets/images/imagen_home.jpg'
 
-function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
+/**
+ * Hero de la página de inicio.
+ * - Invitado (sin `cta`): muestra los botones de iniciar sesión y registro.
+ * - Autenticado (`cta` definido): muestra un único botón de acción según el rol.
+ */
+function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora, cta = null }) {
   return (
     <div className="introduccion-pagina">
       <div className="introduccion-pagina__contenido">
@@ -12,8 +18,14 @@ function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora }) {
           detención de manera más cómoda
         </p>
         <div className="introduccion-pagina__botones">
-          <BotonIniciarSesion onClick={onIniciarSesion} />
-          <BotonEmpezarAhora  onClick={onEmpezarAhora} />
+          {cta ? (
+            <BotonAccionRol label={cta.label} onClick={cta.onClick} disabled={cta.disabled} />
+          ) : (
+            <>
+              <BotonIniciarSesion onClick={onIniciarSesion} />
+              <BotonEmpezarAhora  onClick={onEmpezarAhora} />
+            </>
+          )}
         </div>
       </div>
 

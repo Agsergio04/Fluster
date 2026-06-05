@@ -1,0 +1,30 @@
+// Botón CTA de la página de inicio para un usuario ya autenticado.
+// Comparte el aspecto del CTA primario (btn-empezar-ahora), pero permite que el
+// texto se ajuste en varias líneas porque las etiquetas por rol son más largas
+// ("Introduce contenedores", "Organiza contenedores").
+.btn-accion-rol {
+  display:          inline-flex;
+  align-self:       flex-start;
+  align-items:      center;
+  justify-content:  center;
+  width:            100%;
+  max-width:        23.75rem;
+  padding:          var(--space-8);
+  background-color: var(--color-secondary);
+  border-radius:    var(--radius);
+  font-family:      var(--font-body);
+  font-size:        var(--texto-tamanio-hero);
+  font-weight:      var(--font-weight-regular);
+  color:            var(--color-box-text);
+  text-align:       center;
+  transition:       background-color var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-secondary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--color-secondary-off);
+    cursor:           not-allowed;
+  }
+}
