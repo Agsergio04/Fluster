@@ -51,6 +51,10 @@
     .btn-empezar-ahora {
       align-self: center;
     }
+
+    .btn-accion-rol {
+      align-self: center;
+    }
   }
 
   &__imagen {
@@ -99,6 +103,10 @@
       }
 
       .btn-empezar-ahora {
+        font-size: var(--text-24);
+      }
+
+      .btn-accion-rol {
         font-size: var(--text-24);
       }
     }
