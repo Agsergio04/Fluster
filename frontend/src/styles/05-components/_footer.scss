@@ -45,10 +45,10 @@
   }
 
   &__seccion {
-    display:        flex;
-    flex-direction: column;
-    align-items:    flex-start;
-    gap:            2px;
+    display:     flex;
+    flex-direction: row;
+    align-items: center;
+    gap:         var(--space-16);
   }
 
   &__titulo-seccion {
@@ -56,15 +56,17 @@
     font-size:   var(--text-16);
     font-weight: var(--font-weight-bold);
     color:       var(--color-box-text);
+    white-space: nowrap;
   }
 
   &__lista {
-    display:        flex;
-    flex-direction: column;
-    gap:            2px;
-    list-style:     none;
-    align-items:    flex-start;
-    padding:        0;
+    display:     flex;
+    flex-direction: row;
+    flex-wrap:   wrap;
+    gap:         var(--space-16);
+    list-style:  none;
+    align-items: center;
+    padding:     0;
   }
 
   &__enlace {
