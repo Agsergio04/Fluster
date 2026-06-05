@@ -52,8 +52,13 @@ function ConjuntoCards({
     return () => mq.removeEventListener('change', handler)
   }, [itemsPorPagina])
 
-  // Volver a la primera página cada vez que cambia la búsqueda
-  useEffect(() => { setPagina(1) }, [busqueda])
+  // Volver a la primera página cada vez que cambia la búsqueda, sin useEffect
+  // (patrón recomendado de ajustar el estado durante el render).
+  const [busquedaPrev, setBusquedaPrev] = useState(busqueda)
+  if (busqueda !== busquedaPrev) {
+    setBusquedaPrev(busqueda)
+    setPagina(1)
+  }
 
   const totalPaginas = Math.max(1, Math.ceil(items.length / itemsActivos))
   const inicio       = (pagina - 1) * itemsActivos

@@ -1,7 +1,7 @@
 import BotonMenuHamburguesa from '../atomos/BotonMenuHamburguesa'
 import BotonCambiarTema from '../atomos/BotonCambiarTema'
 import BotonDesplegableHamburguesa from '../atomos/BotonDesplegableHamburguesa'
-import { ITEMS } from './BotonesMenuHamburguesa'
+import { ITEMS } from './itemsNavegacion'
 
 function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light', onToggleTema, onMenuHamburguesa, onLogoClick, rol, seccionActiva, onNavegar }) {
   const items = rol ? (ITEMS[rol] ?? []) : []

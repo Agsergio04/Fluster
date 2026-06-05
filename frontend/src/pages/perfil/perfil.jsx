@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './perfil.scss'
 import useTema from '../../hooks/useTema'
@@ -33,11 +33,14 @@ function Perfil() {
   const [errorFoto,            setErrorFoto]            = useState('')
   const [cargando, setCargando] = useState(false)
 
-  // Resincroniza la foto si cambia el usuario de la sesión sin que el
-  // componente se vuelva a montar (p. ej. al cambiar de cuenta).
-  useEffect(() => {
+  // Resincroniza la foto si cambia el usuario de la sesión (id o foto) sin que
+  // el componente se vuelva a montar, sin useEffect (patrón de ajuste de estado
+  // durante el render recomendado por React).
+  const [refUsuario, setRefUsuario] = useState({ id: usuario?.id, foto: usuario?.foto ?? null })
+  if (refUsuario.id !== usuario?.id || refUsuario.foto !== (usuario?.foto ?? null)) {
+    setRefUsuario({ id: usuario?.id, foto: usuario?.foto ?? null })
     setFoto(usuario?.foto ?? null)
-  }, [usuario?.id, usuario?.foto])
+  }
 
   const handleConfirmarNombre = useCallback(async () => {
     setErrorNombre('')

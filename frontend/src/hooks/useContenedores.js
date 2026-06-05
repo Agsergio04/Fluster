@@ -10,13 +10,14 @@ function useContenedores() {
   const usuarioId = getUsuario()?.id
 
   useEffect(() => {
-    setCargando(true)
-    setContenedores([])
-    setAviso('')
+    // El flag evita actualizar el estado si el efecto se limpia (cambio de
+    // usuario o desmontaje) antes de que la petición resuelva.
+    let activo = true
     listarContenedores()
-      .then(data => setContenedores(data))
-      .catch(() => setAviso('No se pudieron cargar los contenedores'))
-      .finally(() => setCargando(false))
+      .then(data => { if (activo) { setContenedores(data); setAviso('') } })
+      .catch(() => { if (activo) setAviso('No se pudieron cargar los contenedores') })
+      .finally(() => { if (activo) setCargando(false) })
+    return () => { activo = false }
   }, [usuarioId])
 
   return { contenedores, setContenedores, cargando, aviso, setAviso }

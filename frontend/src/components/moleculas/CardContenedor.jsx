@@ -1,12 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import placeholder from '../../assets/images/PlaceHolder-contenedor.jpg'
 import BotonEditar from '../atomos/BotonEditar'
 import BotonEliminar from '../atomos/BotonEliminar'
 
 function CardContenedor({ foto, codigoBic, fechaInclusion, onEditar, onEliminar }) {
   const [imgError, setImgError] = useState(false)
+  const [fotoActual, setFotoActual] = useState(foto)
 
-  useEffect(() => { setImgError(false) }, [foto])
+  // Reinicia el error de imagen cuando cambia la foto, sin useEffect
+  // (patrón recomendado de ajustar el estado durante el render).
+  if (foto !== fotoActual) {
+    setFotoActual(foto)
+    setImgError(false)
+  }
 
   const usarPlaceholder = !foto || imgError
   const imgSrc = usarPlaceholder ? placeholder : foto
