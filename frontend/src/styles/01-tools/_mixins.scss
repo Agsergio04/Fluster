@@ -10,6 +10,12 @@
   }
 }
 
+@mixin no-mobile {
+  @media (min-width: #{vars.$breakpoint-mobile + 1px}) {
+    @content;
+  }
+}
+
 @mixin tablet {
   @media (max-width: #{vars.$breakpoint-tablet}) {
     @content;

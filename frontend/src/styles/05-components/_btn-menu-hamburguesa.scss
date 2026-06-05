@@ -1,3 +1,5 @@
+@use '../01-tools/mixins' as mix;
+
 .btn-menu-hamburguesa {
   display:          inline-flex;
   align-items:      center;
@@ -7,6 +9,10 @@
   border-radius:    var(--radius);
   color:            var(--color-box-text);
   transition:       background-color var(--transition-fast);
+
+  @include mix.no-mobile {
+    display: none;
+  }
 
   svg {
     width:       1.5rem;

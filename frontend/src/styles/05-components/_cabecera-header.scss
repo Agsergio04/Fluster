@@ -32,6 +32,28 @@
     }
   }
 
+  &__nav-desktop {
+    display: none;
+
+    @include mix.no-mobile {
+      display:         flex;
+      flex-direction:  row;
+      align-items:     center;
+      gap:             var(--space-8);
+      flex:            1;
+      justify-content: center;
+      padding:         0 var(--space-16);
+    }
+
+    .btn-desplegable-hamburguesa {
+      height:     2.75rem;
+      font-size:  var(--text-14);
+      max-width:  none;
+      width:      auto;
+      flex-shrink: 0;
+    }
+  }
+
   &__controles {
     display:     flex;
     flex-wrap:   wrap;

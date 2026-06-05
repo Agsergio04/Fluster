@@ -8,7 +8,7 @@ import PanelControlIcon    from '../../assets/icons/Icono panel de control.svg?r
 
 // Elementos de navegación por rol. El id coincide con la clave seccionActiva
 // que recibe el Header para marcar el botón activo de la página actual.
-const ITEMS = {
+export const ITEMS = {
   gestor: [
     { id: 'seguimiento', label: 'Seguimiento',      icon: <GestorIcon />,           ruta: '/semaforo' },
     { id: 'tarifas',     label: 'Tarifas',           icon: <TarifasIcon />,          ruta: '/tarifas' },

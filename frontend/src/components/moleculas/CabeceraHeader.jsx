@@ -1,11 +1,11 @@
 import BotonMenuHamburguesa from '../atomos/BotonMenuHamburguesa'
 import BotonCambiarTema from '../atomos/BotonCambiarTema'
+import BotonDesplegableHamburguesa from '../atomos/BotonDesplegableHamburguesa'
+import { ITEMS } from './BotonesMenuHamburguesa'
 
-/**
- * Barra superior fija del header: logo, botón hamburguesa y selector de tema.
- * El botón hamburguesa solo se monta si el usuario tiene sesión (loggeado=true).
- */
-function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light', onToggleTema, onMenuHamburguesa, onLogoClick }) {
+function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light', onToggleTema, onMenuHamburguesa, onLogoClick, rol, seccionActiva, onNavegar }) {
+  const items = rol ? (ITEMS[rol] ?? []) : []
+
   return (
     <div className="cabecera-header">
       <button
@@ -23,6 +23,21 @@ function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light',
           decoding="async"
         />
       </button>
+
+      {loggeado && items.length > 0 && (
+        <nav className="cabecera-header__nav-desktop" aria-label="Navegación principal">
+          {items.map(({ id, label, icon, ruta }) => (
+            <BotonDesplegableHamburguesa
+              key={id}
+              icon={icon}
+              label={label}
+              active={id === seccionActiva}
+              onClick={() => onNavegar?.(ruta)}
+            />
+          ))}
+        </nav>
+      )}
+
       <div className="cabecera-header__controles">
         {loggeado && (
           <BotonMenuHamburguesa
