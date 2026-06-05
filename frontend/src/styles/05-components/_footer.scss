@@ -39,16 +39,16 @@
     display:         flex;
     flex-direction:  column;
     justify-content: center;
-    align-items:     flex-start;
+    align-items:     center;
     gap:             var(--space-8);
     padding-left:    var(--space-32);
   }
 
   &__seccion {
-    display:     flex;
-    flex-direction: row;
-    align-items: center;
-    gap:         var(--space-16);
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-8);
   }
 
   &__titulo-seccion {
