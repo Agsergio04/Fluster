@@ -19,6 +19,17 @@
     height:  6.8125rem;
     width:   auto;
     display: block;
+    transition: filter var(--transition-fast);
+
+    :root[data-theme='dark'] & {
+      filter: brightness(0) invert(1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) & {
+        filter: brightness(0) invert(1);
+      }
+    }
   }
 
   &__controles {

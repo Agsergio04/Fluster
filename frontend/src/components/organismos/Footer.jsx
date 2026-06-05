@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import LogoConLetras from '../../assets/images/Fluster logo con letras.png'
 
 function Footer() {
   return (
@@ -7,7 +6,7 @@ function Footer() {
       <div className="footer__marca">
         <Link to="/">
           <img
-            src={LogoConLetras}
+            src="/og-image.svg"
             alt="Fluster"
             className="footer__logo"
             width="343"

@@ -1,4 +1,3 @@
-import LogoFluster from '../../assets/images/Fluster logo con letras.png'
 import BotonMenuHamburguesa from '../atomos/BotonMenuHamburguesa'
 import BotonCambiarTema from '../atomos/BotonCambiarTema'
 
@@ -16,7 +15,7 @@ function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light',
         aria-label="Ir a inicio"
       >
         <img
-          src={LogoFluster}
+          src="/og-image.svg"
           alt="Fluster"
           className="cabecera-header__logo"
           width="343"

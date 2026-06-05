@@ -20,6 +20,17 @@
     width:           auto;
     object-fit:      contain;
     object-position: left center;
+    transition:      filter var(--transition-fast);
+
+    :root[data-theme='dark'] & {
+      filter: brightness(0) invert(1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) & {
+        filter: brightness(0) invert(1);
+      }
+    }
   }
 
   // Ocupa el espacio restante y centra las secciones dentro de él,
