@@ -51,6 +51,10 @@
       max-width:  none;
       width:      auto;
       flex-shrink: 0;
+
+      &__separador {
+        display: none;
+      }
     }
   }
 
