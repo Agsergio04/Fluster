@@ -3,16 +3,16 @@
 .footer {
   width:            100%;
   background-color: var(--color-primary);
-  padding:          var(--space-24) var(--space-32);
+  padding:          0 var(--space-32);
   display:          flex;
-  flex-direction:   column;
+  flex-direction:   row;
   align-items:      center;
-  gap:              var(--space-16);
   margin-top:       auto;
 
   &__marca {
     display:     flex;
     align-items: center;
+    padding:     var(--space-8) 0;
     flex-shrink: 0;
   }
 
@@ -20,7 +20,7 @@
     height:          10rem;
     width:           auto;
     object-fit:      contain;
-    object-position: center;
+    object-position: left center;
     transition:      filter var(--transition-fast);
 
     :root[data-theme='dark'] & {
@@ -35,10 +35,10 @@
   }
 
   &__secciones {
+    flex:            1;
     display:         flex;
-    flex-direction:  column;
-    align-items:     center;
-    gap:             var(--space-16);
+    justify-content: center;
+    gap:             var(--space-64);
   }
 
   &__seccion {
@@ -46,6 +46,7 @@
     flex-direction: column;
     align-items:    center;
     gap:            2px;
+    padding:        var(--space-16) 0;
   }
 
   &__titulo-seccion {
@@ -79,15 +80,45 @@
     }
   }
 
+  // ── Tablet y móvil: columna centrada ─────────────────────────────────────
   @include mix.tablet {
-    &__logo           { height: 8rem; }
+    flex-direction: column;
+    align-items:    center;
+    padding:        var(--space-24) var(--space-24);
+    gap:            var(--space-16);
+
+    &__marca {
+      padding: 0;
+    }
+
+    &__logo {
+      height:           8rem;
+      object-position:  center;
+    }
+
+    &__secciones {
+      flex:            unset;
+      justify-content: center;
+      gap:             var(--space-32);
+    }
+
     &__titulo-seccion { font-size: var(--text-16); }
     &__enlace         { font-size: var(--text-16); }
   }
 
   @include mix.mobile {
-    padding:  var(--space-24) var(--space-16);
+    padding: var(--space-24) var(--space-16);
 
     &__logo { height: 6rem; }
+
+    &__secciones {
+      flex-direction:  row;
+      justify-content: center;
+      align-items:     flex-start;
+      gap:             var(--space-32);
+      width:           100%;
+    }
+
+    &__seccion { padding: 0; }
   }
 }
