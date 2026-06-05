@@ -17,7 +17,7 @@
   }
 
   &__logo {
-    height:          10rem;
+    height:          4rem;
     width:           auto;
     object-fit:      contain;
     object-position: left center;
@@ -39,24 +39,23 @@
     display:         flex;
     flex-direction:  column;
     justify-content: center;
-    align-items:     center;
-    gap:             var(--space-16);
+    align-items:     flex-start;
+    gap:             var(--space-8);
+    padding-left:    var(--space-32);
   }
 
   &__seccion {
     display:        flex;
     flex-direction: column;
-    align-items:    center;
+    align-items:    flex-start;
     gap:            2px;
-    padding:        var(--space-16) 0;
   }
 
   &__titulo-seccion {
     font-family: var(--font-heading);
-    font-size:   var(--text-24);
+    font-size:   var(--text-16);
     font-weight: var(--font-weight-bold);
     color:       var(--color-box-text);
-    text-align:  center;
   }
 
   &__lista {
@@ -64,17 +63,17 @@
     flex-direction: column;
     gap:            2px;
     list-style:     none;
-    align-items:    center;
+    align-items:    flex-start;
     padding:        0;
   }
 
   &__enlace {
     font-family:     var(--font-heading);
-    font-size:       var(--text-24);
+    font-size:       var(--text-14);
     font-weight:     var(--font-weight-regular);
     color:           var(--color-box-text);
     text-decoration: none;
-    text-align:      center;
+    white-space:     nowrap;
     transition:      opacity var(--transition-fast);
 
     &:hover {
@@ -86,32 +85,30 @@
   @include mix.tablet {
     flex-direction: column;
     align-items:    center;
-    padding:        var(--space-24) var(--space-24);
-    gap:            var(--space-16);
+    padding:        var(--space-16) var(--space-24);
+    gap:            var(--space-8);
 
-    &__marca {
-      padding: 0;
-    }
+    &__marca { padding: 0; }
 
     &__logo {
-      height:           8rem;
-      object-position:  center;
+      height:          3rem;
+      object-position: center;
     }
 
     &__secciones {
       flex:            unset;
-      justify-content: center;
-      gap:             var(--space-32);
+      align-items:     center;
+      padding-left:    0;
     }
 
-    &__titulo-seccion { font-size: var(--text-16); }
-    &__enlace         { font-size: var(--text-16); }
+    &__seccion  { align-items: center; }
+    &__lista    { align-items: center; }
   }
 
   @include mix.mobile {
-    padding: var(--space-24) var(--space-16);
+    padding: var(--space-16) var(--space-16);
 
-    &__logo { height: 6rem; }
+    &__logo { height: 2.5rem; }
 
     &__secciones {
       flex-direction:  row;
@@ -121,6 +118,7 @@
       width:           100%;
     }
 
-    &__seccion { padding: 0; }
+    &__seccion { align-items: center; }
+    &__lista   { align-items: center; }
   }
 }
