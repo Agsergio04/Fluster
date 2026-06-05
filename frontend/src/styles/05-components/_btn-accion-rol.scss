@@ -1,7 +1,6 @@
 // Botón CTA de la página de inicio para un usuario ya autenticado.
-// Comparte el aspecto del CTA primario (btn-empezar-ahora), pero permite que el
-// texto se ajuste en varias líneas porque las etiquetas por rol son más largas
-// ("Introduce contenedores", "Organiza contenedores").
+// Comparte el aspecto del CTA primario (btn-empezar-ahora). El texto se mantiene
+// en una sola línea, igual que los botones de iniciar sesión y registro.
 .btn-accion-rol {
   display:          inline-flex;
   align-self:       flex-start;
@@ -16,7 +15,7 @@
   font-size:        var(--texto-tamanio-hero);
   font-weight:      var(--font-weight-regular);
   color:            var(--color-box-text);
-  text-align:       center;
+  white-space:      nowrap;
   transition:       background-color var(--transition-fast);
 
   &:hover:not(:disabled) {
