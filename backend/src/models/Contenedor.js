@@ -60,7 +60,7 @@ const contenedorSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-    // Inicio del tramo CARGADO → activa demurrage
+    // Inicio del tramo PUERTO → activa demurrage
     fechaEntradaPuerto: {
       type: Date,
       default: null,

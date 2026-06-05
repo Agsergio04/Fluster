@@ -26,7 +26,7 @@ Se implementó el sistema de autenticación completo: registro con bcrypt, login
 
 **Objetivo:** implementar el núcleo de negocio de la aplicación.
 
-Se diseñó el esquema de datos para navieras con tramos tarifarios (`diasDemurrage` y `diasDetention`, cada uno como array de objetos `{ desdeDia, hastaDia, precioPorDia }`). Se construyó el motor de cálculo de costes D&D en el backend: un algoritmo que itera sobre los tramos configurados, calcula cuántos días del contenedor caen en cada tramo y multiplica por el precio correspondiente. El cálculo se realiza bajo demanda, no se almacena en la base de datos, para garantizar que siempre refleja la tarifa vigente. También se implementó el CRUD de clientes y el modelo de contenedor con sus cuatro estados de ciclo de vida.
+Se diseñó el esquema de datos para navieras con tramos tarifarios (`diasDemurrage` y `diasDetention`, cada uno como array de objetos `{ desdeDia, hastaDia, precioPorDia }`). Se construyó el motor de cálculo de costes D&D en el backend: un algoritmo que itera sobre los tramos configurados, calcula cuántos días del contenedor caen en cada tramo y multiplica por el precio correspondiente. El cálculo se realiza bajo demanda, no se almacena en la base de datos, para garantizar que siempre refleja la tarifa vigente. También se implementó el CRUD de clientes y el modelo de contenedor con sus tres estados de ciclo de vida.
 
 ### Sprint 4 — Registro de eventos, ciclos y OCR
 

@@ -6,7 +6,7 @@ function Footer() {
       <div className="footer__marca">
         <Link to="/">
           <img
-            src="/og-image.svg"
+            src="/logo-fluster.svg"
             alt="Fluster"
             className="footer__logo"
             width="343"

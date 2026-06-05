@@ -63,7 +63,7 @@ export async function revertirSalidaPuerto(id) {
 }
 
 /**
- * Transición CLIENTE → VUELTA_PUERTO y cierre del ciclo.
+ * Transición CLIENTE → INACTIVO y cierre del ciclo.
  * El servidor cierra los contadores de Detention y calcula el coste final.
  */
 export async function devolucion(id) {
@@ -73,8 +73,8 @@ export async function devolucion(id) {
 
 /**
  * Cancela el ciclo activo y devuelve el contenedor a INACTIVO.
- * El backend registra el ciclo como cancelado en lugar de borrarlo,
- * para mantener el historial.
+ * Solo es posible desde PUERTO; como aún no se ha generado coste
+ * facturable, el backend elimina el ciclo activo.
  */
 export async function cancelarCiclo(id) {
   const { data } = await apiClient.patch(`/contenedores/${id}/cancelar-ciclo`)

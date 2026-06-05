@@ -15,7 +15,7 @@ function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light',
         aria-label="Ir a inicio"
       >
         <img
-          src="/og-image.svg"
+          src="/logo-fluster.svg"
           alt="Fluster"
           className="cabecera-header__logo"
           width="343"

@@ -50,6 +50,7 @@ erDiagram
         String   correo    "Unique"
         String   contrasena
         String   rol       "admin | gestor | operador"
+        String   foto
         Date     creadoEn
     }
     navieras {
@@ -133,6 +134,7 @@ Almacena los usuarios del sistema. El rol controla el acceso a cada funcionalida
 | correo | String | Unique, Not Null | Correo electrónico de acceso. |
 | contrasena | String | Not Null | Hash bcrypt de la contraseña. |
 | rol | Enum | `admin`, `gestor`, `operador` | Admin gestiona roles; gestor maneja tramos y PDFs; operador registra contenedores. |
+| foto | String | Nullable | Foto de perfil (data URL). |
 | creadoEn | Date | Not Null | Fecha de alta. |
 
 ---
@@ -208,6 +210,7 @@ Entidad central del sistema. Registra los datos de alta y las fechas clave de ca
 | fechaDevolucion | Date | Nullable | Devolución del contenedor (cierre del ciclo). |
 | creadoPor | ObjectId | FK `usuarios._id` | Operador que registró el contenedor. |
 | creadoEn | Date | Not Null | Fecha de alta. |
+| actualizadoEn | Date | Not Null | Fecha de última modificación. |
 
 **Estados del contenedor** (ciclo circular):
 
@@ -344,8 +347,8 @@ flowchart TD
 
     A["Operador registra el contenedor
     ─────────────────────────────
-    codigoBIC · naviera · cliente
-    tarifa · diasLibres · fechaInicioLibre
+    codigoBIC · foto (OCR del BIC)
+    naviera deducida del prefijo BIC
     POST /api/contenedores"]
 
     A --> B(["Estado: INACTIVO
@@ -377,16 +380,15 @@ flowchart TD
     I -->|"PATCH revertir-salida"| E
     I -->|"PATCH devolucion"| J["Gestor registra devolución
     fechaDevolucion = hoy"]
-    I -->|"PATCH cancelar-ciclo"| B
 
-    J --> K(["Estado: VUELTA_PUERTO
-    Ciclo cerrado
-    Coste total fijado"])
+    J --> K(["Estado: INACTIVO
+    Ciclo cerrado · fechaDevolucion fijada
+    Coste total del ciclo fijado"])
 
     K --> L{"¿Generar informe?"}
-    L -->|"POST /api/informes"| M["Backend calcula coste final
+    L -->|"POST /api/informes"| M["Backend registra el informe
     Snapshot inmutable del ciclo
-    Genera PDF con jsPDF"]
+    El frontend genera el PDF con jsPDF"]
     M --> N(["Informe PDF disponible
     para cotejar con factura
     de la naviera"])
@@ -406,7 +408,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A([Operador accede a\n/meter-contenedor]) --> B[Rellena el formulario\nnaviera, cliente, tarifa,\ndías libres, fecha inicio]
+    A([Operador accede a\n/meter-contenedor]) --> B[Inicia el alta\ndel contenedor]
     B --> C[Sube foto del contenedor]
     C --> D[Frontend envía imagen\nPOST /api/ocr/extraer-bic]
     D --> E{Tesseract.js\nlee el BIC}
@@ -455,11 +457,11 @@ flowchart TD
     F --> G
     G --> H[Suma coste total acumulado]
     H --> I{Clasifica semáforo}
-    I -->|Sin costes aún\nfree time activo| J[SIN_COSTES]
-    I -->|Primer tramo\nde tarifa activo| K[PRIMER_TRAMO]
-    I -->|Segundo tramo\no superior activo| L[SEGUNDO_TRAMO]
-    I -->|Estado INACTIVO| M[INACTIVO]
-    J & K & L & M --> N([Respuesta agrupada\npor estado de riesgo])
+    I -->|Sin costes aún\nfree time activo| J[freeTime]
+    I -->|Primer tramo\nde tarifa activo| K[primerTramo]
+    I -->|Segundo tramo\no superior activo| L[segundoTramo]
+    I -->|Estado INACTIVO| M[inactivos]
+    J & K & L & M --> N([Respuesta agrupada\npor nivel de riesgo])
 ```
 
 ---
@@ -567,10 +569,14 @@ El payload del JWT contiene `{ id, correo, rol }`.
   "rol": "operador"
 }
 
-// Response 201
+// Response 201 — devuelve el usuario creado (sin la contraseña)
 {
-  "mensaje": "Usuario registrado correctamente",
-  "data": { "_id": "664a...", "nombre": "Ana García", "rol": "operador" }
+  "_id": "664a...",
+  "nombre": "Ana García",
+  "correo": "ana@empresa.com",
+  "rol": "operador",
+  "foto": null,
+  "creadoEn": "2026-06-05T10:00:00.000Z"
 }
 ```
 
@@ -586,7 +592,7 @@ El payload del JWT contiene `{ id, correo, rol }`.
 // Response 200
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "usuario": { "_id": "664a...", "nombre": "Ana García", "rol": "operador" }
+  "usuario": { "id": "664a...", "nombre": "Ana García", "correo": "ana@empresa.com", "rol": "operador", "foto": null }
 }
 ```
 
@@ -642,12 +648,12 @@ Acceso restringido a rol `gestor`.
 | GET | /api/contenedores/:id | operador, gestor | Obtener contenedor |
 | POST | /api/contenedores | operador | Crear contenedor |
 | PUT | /api/contenedores/:id | gestor | Actualizar datos del contenedor |
-| DELETE | /api/contenedores/:id | operador | Eliminar (solo si estado es INACTIVO) |
+| DELETE | /api/contenedores/:id | operador, gestor | Eliminar (solo si estado es INACTIVO) |
 | PATCH | /api/contenedores/:id/editar | operador, gestor | Editar foto y fecha de inclusión |
 | PATCH | /api/contenedores/:id/entrada-puerto | gestor | Registrar entrada a puerto (INACTIVO → PUERTO) |
 | PATCH | /api/contenedores/:id/salida-puerto | gestor | Registrar salida de puerto (PUERTO → CLIENTE) |
 | PATCH | /api/contenedores/:id/revertir-salida | gestor | Revertir salida de puerto (CLIENTE → PUERTO) |
-| PATCH | /api/contenedores/:id/devolucion | gestor | Registrar devolución (CLIENTE → VUELTA_PUERTO) |
+| PATCH | /api/contenedores/:id/devolucion | gestor | Registrar devolución (CLIENTE → INACTIVO, cierra el ciclo) |
 | PATCH | /api/contenedores/:id/cancelar-ciclo | gestor | Cancelar ciclo activo |
 
 ---
@@ -684,8 +690,8 @@ Acceso restringido a rol `gestor`.
 | GET | /api/informes | gestor, admin | Listar todos los informes |
 | GET | /api/informes/:id | gestor, admin | Obtener informe por id |
 | GET | /api/informes/contenedor/:contenedorId | gestor, admin | Informes de un contenedor |
-| POST | /api/informes | gestor, admin | Generar nuevo informe PDF |
-| GET | /api/informes/generar-datos | gestor, admin | Generar datos de ejemplo |
+| POST | /api/informes | gestor, admin | Registrar informe de un ciclo cerrado (el PDF se genera en el cliente) |
+| GET | /api/informes/generar-datos | gestor, admin | Ciclos cerrados con los datos para generar el PDF |
 
 ---
 
@@ -702,11 +708,11 @@ Acceso restringido a rol `gestor`.
 
 ```bash
 # Login
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"correo":"ana@empresa.com","contrasena":"Segura123!"}'
 
 # Listar contenedores (endpoint protegido)
-curl http://localhost:5000/api/contenedores \
+curl http://localhost:3000/api/contenedores \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```

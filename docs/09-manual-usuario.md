@@ -92,11 +92,11 @@ Si la salida se registró por error:
 2. Haz clic en el botón «Anterior» de su tarjeta.
 3. El contenedor vuelve a estado `PUERTO`.
 
-#### Registrar la devolución (CLIENTE → VUELTA_PUERTO)
+#### Registrar la devolución (CLIENTE → INACTIVO)
 
 1. Localiza el contenedor en estado `CLIENTE`.
 2. Haz clic en el botón «Siguiente» de su tarjeta.
-3. El contenedor pasa a `VUELTA_PUERTO`, cerrando el ciclo activo.
+3. El contenedor pasa a `INACTIVO`, cerrando el ciclo activo.
 
 #### Cancelar un ciclo activo (PUERTO → INACTIVO)
 

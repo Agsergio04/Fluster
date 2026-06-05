@@ -55,18 +55,18 @@ Una vez confirmado, el contenedor se crea en estado `INACTIVO` asociado al opera
 
 ### 2.5 Transiciones de estado
 
-El ciclo de vida de un contenedor sigue cuatro estados gestionados por el gestor desde el semáforo o el almacén:
+El ciclo de vida de un contenedor sigue tres estados gestionados por el gestor desde el semáforo o el almacén:
 
 ```
 INACTIVO → PUERTO (entrada a puerto, demurrage)
          → CLIENTE (salida a cliente, detention)
-         → VUELTA_PUERTO (devolución al puerto)
+         → INACTIVO (devolución, cierra el ciclo)
 ```
 
 Cada transición registra la fecha correspondiente:
 - **Entrada a puerto** (`INACTIVO → PUERTO`): se asocia un cliente y se inicia el cómputo de demurrage.
 - **Salida a cliente** (`PUERTO → CLIENTE`): el contenedor sale del terminal hacia el cliente, iniciando el cómputo de detention. Esta transición puede revertirse (`CLIENTE → PUERTO`) si se registró por error.
-- **Devolución** (`CLIENTE → VUELTA_PUERTO`): el contenedor es devuelto vacío, cerrando el ciclo.
+- **Devolución** (`CLIENTE → INACTIVO`): el contenedor es devuelto vacío, cerrando el ciclo.
 - **Cancelar ciclo**: anula el ciclo activo devolviendo el contenedor a `INACTIVO`.
 
 **Endpoints relacionados:** `PATCH /api/contenedores/:id/entrada-puerto`, `/salida-puerto`, `/devolucion`, `/revertir-salida-puerto`, `/cancelar-ciclo`.

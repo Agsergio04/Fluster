@@ -276,7 +276,7 @@ Se siguió una metodología **Scrum**: sprints cortos (1–2 semanas) y uso de G
 - **Sprint 3 – Modelo de tarifas D&D y motor de cálculo**  
     - Esquema de navieras con tramos tarifarios (`diasDemurrage`/`diasDetention`, arrays de `{ desdeDia, hastaDia, precioPorDia }`).  
     - Motor de cálculo de costes D&D por tramos, calculado **bajo demanda** (no se persiste) para reflejar siempre la tarifa vigente.  
-    - CRUD de clientes y modelo de contenedor con sus cuatro estados de ciclo de vida.  
+    - CRUD de clientes y modelo de contenedor con sus tres estados de ciclo de vida.  
   - **Resultado**: cálculo automático de días y costes D&D disponible vía API.
 
 - **Sprint 4 – Eventos, ciclos y OCR**  

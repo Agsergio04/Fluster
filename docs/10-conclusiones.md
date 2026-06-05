@@ -20,7 +20,7 @@ El proyecto se planteó con siete objetivos obligatorios y dos opcionales. A con
 
 ### Objetivo 3 — Semáforo de riesgo visual
 
-**Cumplido.** La página `/semaforo` clasifica todos los contenedores activos en cuatro estados: `sin_costes` (verde), `primer_tramo` (amarillo), `segundo_tramo` (rojo) e `inactivo` (gris). La clasificación se calcula en tiempo real en el backend y se actualiza en cada consulta. Desde cada tarjeta del semáforo se pueden ejecutar directamente las transiciones de estado correspondientes, lo que hace de esta página el centro de operaciones diario del gestor.
+**Cumplido.** La página `/semaforo` clasifica todos los contenedores activos en cuatro grupos de riesgo: `freeTime` (verde), `primerTramo` (amarillo), `segundoTramo` (rojo) e `inactivos` (gris). La clasificación se calcula en tiempo real en el backend y se actualiza en cada consulta. Desde cada tarjeta del semáforo se pueden ejecutar directamente las transiciones de estado correspondientes, lo que hace de esta página el centro de operaciones diario del gestor.
 
 ### Objetivo 4 — Generación de informes PDF
 

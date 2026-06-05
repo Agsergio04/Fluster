@@ -63,7 +63,7 @@ El MVP (Producto Mínimo Viable) de Fluster cubre el conjunto de funcionalidades
 
 - Autenticación con JWT y gestión de tres roles: admin, gestor y operador.
 - CRUD completo de navieras, clientes y tarifas D&D (con tramos de precio configurables).
-- Registro del ciclo de vida del contenedor con los cuatro estados: INACTIVO, CARGADO, CLIENTE y VUELTA_PUERTO.
+- Registro del ciclo de vida del contenedor con sus tres estados: INACTIVO, PUERTO y CLIENTE.
 - Subida de foto en cada transición de estado con extracción OCR del código BIC.
 - Cálculo automático de costes D&D en tiempo real en el backend.
 - Vista de semáforo de riesgo con filtros por estado y naviera.

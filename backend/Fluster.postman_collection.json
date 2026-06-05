@@ -411,12 +411,12 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "contenedores"],
               "query": [
-                { "key": "estado",      "value": "CARGADO",       "disabled": true, "description": "INACTIVO | CARGADO | CLIENTE" },
+                { "key": "estado",      "value": "PUERTO",       "disabled": true, "description": "INACTIVO | PUERTO | CLIENTE" },
                 { "key": "navieraId",   "value": "{{navieraId}}", "disabled": true },
                 { "key": "clienteId",   "value": "{{clienteId}}", "disabled": true }
               ]
             },
-            "description": "Lista todos los contenedores. Acepta filtros opcionales por query param.\n\n**Filtros (todos opcionales):**\n- `estado` — `INACTIVO` | `CARGADO` | `CLIENTE`\n- `navieraId` — ID de naviera\n- `clienteId` — ID de cliente (busca en ciclos asociados)"
+            "description": "Lista todos los contenedores. Acepta filtros opcionales por query param.\n\n**Filtros (todos opcionales):**\n- `estado` — `INACTIVO` | `PUERTO` | `CLIENTE`\n- `navieraId` — ID de naviera\n- `clienteId` — ID de cliente (busca en ciclos asociados)"
           },
           "response": []
         },
@@ -493,14 +493,14 @@
           "response": []
         },
         {
-          "name": "Entrada al puerto — INACTIVO → CARGADO",
+          "name": "Entrada al puerto — INACTIVO → PUERTO",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "if (pm.response.code === 200) {",
-                  "    console.log('Contenedor ahora en estado CARGADO');",
+                  "    console.log('Contenedor ahora en estado PUERTO');",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -523,12 +523,12 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "contenedores", "{{contenedorId}}", "entrada-puerto"]
             },
-            "description": "Registra la entrada física del contenedor al puerto. Transiciona `INACTIVO → CARGADO` y abre un nuevo ciclo D&D con el cliente indicado. Solo `gestor`.\n\n**Campos:**\n- `fecha` — fecha real de entrada al puerto\n- `clienteId` — cliente al que pertenece este ciclo\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `INACTIVO`"
+            "description": "Registra la entrada física del contenedor al puerto. Transiciona `INACTIVO → PUERTO` y abre un nuevo ciclo D&D con el cliente indicado. Solo `gestor`.\n\n**Campos:**\n- `fecha` — fecha real de entrada al puerto\n- `clienteId` — cliente al que pertenece este ciclo\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `INACTIVO`"
           },
           "response": []
         },
         {
-          "name": "Salida del puerto — CARGADO → CLIENTE",
+          "name": "Salida del puerto — PUERTO → CLIENTE",
           "request": {
             "method": "PATCH",
             "header": [
@@ -545,7 +545,7 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "contenedores", "{{contenedorId}}", "salida-puerto"]
             },
-            "description": "Registra la salida del contenedor del puerto hacia el cliente. Transiciona `CARGADO → CLIENTE`, cierra el tramo de demurrage calculando días y coste, y abre el tramo de detention. Solo `gestor`.\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `CARGADO`"
+            "description": "Registra la salida del contenedor del puerto hacia el cliente. Transiciona `PUERTO → CLIENTE`, cierra el tramo de demurrage calculando días y coste, y abre el tramo de detention. Solo `gestor`.\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `PUERTO`"
           },
           "response": []
         },
@@ -585,7 +585,7 @@
           "response": []
         },
         {
-          "name": "Cancelar ciclo — CARGADO → INACTIVO",
+          "name": "Cancelar ciclo — PUERTO → INACTIVO",
           "request": {
             "method": "PATCH",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
@@ -594,7 +594,7 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "contenedores", "{{contenedorId}}", "cancelar-ciclo"]
             },
-            "description": "Cancela el ciclo activo y devuelve el contenedor a `INACTIVO` sin registrar ningún coste. Solo aplicable desde estado `CARGADO` (antes de que llegue al cliente). El ciclo se elimina completamente. Solo `gestor`.\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `CARGADO`"
+            "description": "Cancela el ciclo activo y devuelve el contenedor a `INACTIVO` sin registrar ningún coste. Solo aplicable desde estado `PUERTO` (antes de que llegue al cliente). El ciclo se elimina completamente. Solo `gestor`.\n\n**Errores:**\n- `404` — contenedor no encontrado\n- `422` — el contenedor no está en estado `PUERTO`"
           },
           "response": []
         }
