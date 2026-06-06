@@ -1,4 +1,5 @@
 import InputContrasenia from '../atomos/InputContrasenia'
+import RequisitosContrasenia from './RequisitosContrasenia'
 import BotonRegistroLogin from '../atomos/BotonRegistroLogin'
 
 /**
@@ -32,6 +33,7 @@ function CambiarContrasenia({
         onChange={onContraseniaCambio}
         error={errorContrasenia}
       />
+      <RequisitosContrasenia valor={contrasenia} />
       <InputContrasenia
         id="cambiar-contrasenia-confirmar"
         label="Repite la contraseña:"

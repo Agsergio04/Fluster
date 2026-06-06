@@ -6,21 +6,21 @@
   width:            100%;
   max-width:        23.5rem;
   padding:          var(--space-8);
-  background-color: var(--color-secondary);
+  background-color: var(--color-cta);
   border-radius:    var(--radius);
   font-family:      var(--font-body);
   font-size:        var(--texto-tamanio-hero);
   font-weight:      var(--font-weight-regular);
-  color:            var(--color-box-text);
+  color:            var(--color-on-cta);
   white-space:      nowrap;
   transition:       background-color var(--transition-fast);
 
   &:hover:not(:disabled) {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--color-cta-hover);
   }
 
   &:disabled {
-    background-color: var(--color-secondary-off);
+    background-color: var(--color-cta-off);
     cursor:           not-allowed;
   }
 }

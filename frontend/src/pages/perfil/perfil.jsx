@@ -5,6 +5,7 @@ import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario, limpiarSesion, actualizarUsuario } from '../../services/session'
 import { actualizarFoto, actualizarNombre, cambiarContrasena } from '../../services/usuarioService'
+import { contraseniaValida } from '../../services/contrasenia'
 import Header from '../../components/organismos/Header'
 import PerfilCredenciales from '../../components/organismos/PerfilCredenciales'
 
@@ -63,6 +64,7 @@ function Perfil() {
     setErrorConfirmacion('')
     if (!contraseniaActual.trim()) { setErrorContraseniaActual('Introduce tu contraseña actual'); return }
     if (!contrasenia.trim())       { setErrorContrasenia('Introduce tu nueva contraseña'); return }
+    if (!contraseniaValida(contrasenia)) { setErrorContrasenia('La contraseña no cumple los requisitos indicados'); return }
     if (contrasenia !== confirmacion) { setErrorConfirmacion('Las contraseñas no coinciden'); return }
     try {
       setCargando(true)

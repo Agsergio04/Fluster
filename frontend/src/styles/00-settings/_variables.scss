@@ -9,16 +9,21 @@ $color-primary-dark:       #245070;
 $color-primary-dark-hover: #1D435E;
 $color-primary-dark-off:   #122736;
 
-// ── Colores Secundarios ────────────────────────────────────────────
-$color-secondary:       #F28C28;
-$color-secondary-hover:  #F6A656;
-$color-secondary-off:    #FBDBBC;
-$color-secondary-subtle: #FEF5EC;
+// ── Colores Secundarios (rampa monocromática del primario #4FB2F8) ──
+// Mismo tono azul que el primario pero más vívido/saturado: el primario es el
+// azul suave de superficies (header) y el secundario el azul intenso de botones,
+// claramente diferenciados sin salir de la paleta monocolor. Los estados main y
+// hover cumplen AA (~5-7:1) con el texto vigente; los estados claros (off/subtle)
+// cumplen AAA.
+$color-secondary:        #1C8FE0; // AA 5.9:1 con texto negro — más vívido que el primario
+$color-secondary-hover:  #1680CC; // AA 4.9:1 — hover más profundo
+$color-secondary-off:    #AED6F7; // deshabilitado (AAA)
+$color-secondary-subtle: #E6F4FE; // tinte muy suave (AAA)
 
-$color-secondary-dark:        #844B16;
-$color-secondary-dark-hover:  #784514;
-$color-secondary-dark-off:    #55310E;
-$color-secondary-dark-subtle: #1F0F04;
+$color-secondary-dark:        #1C6FB5; // AA 5.3:1 con texto blanco — más vívido que el primario
+$color-secondary-dark-hover:  #155A93; // AAA 7.2:1 — hover más profundo
+$color-secondary-dark-off:    #103A5C; // deshabilitado (AAA)
+$color-secondary-dark-subtle: #0A2740; // tinte muy suave (AAA)
 
 // ── Fondos de página ───────────────────────────────────────────────
 $color-bg-light:      #F9FAFB;
