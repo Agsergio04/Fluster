@@ -5,6 +5,30 @@
   flex-direction: column;
   width:          100%;
 
+  // Enlace de retorno: estas páginas se alcanzan desde el footer global (sin un
+  // "padre" único), por lo que "volver" usa el punto anterior del historial.
+  &__volver {
+    align-self:  flex-start;
+    display:     inline-flex;
+    align-items: center;
+    gap:         var(--space-8);
+    margin:      var(--space-24) var(--space-24) 0;
+    background:  none;
+    border:      none;
+    cursor:      pointer;
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-medium);
+    color:       var(--color-box-text);
+    transition:  color var(--transition-fast);
+
+    @include mix.foco-visible;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   &__intro {
     display:        flex;
     flex-direction: column;

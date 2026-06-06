@@ -20,6 +20,9 @@ function Terminos() {
       />
 
       <main className="pagina-estatica">
+        <button type="button" className="pagina-estatica__volver" onClick={() => navigate(-1)}>
+          ← Volver
+        </button>
         <section className="pagina-estatica__intro">
           <h1 className="pagina-estatica__titulo">Términos de servicio</h1>
           <p className="pagina-estatica__subtitulo">
