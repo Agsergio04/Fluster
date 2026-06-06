@@ -79,7 +79,7 @@ function GuiaEstilos() {
           <h2 className="pagina-estatica__seccion-titulo">Colores</h2>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Brand</p>
+            <h3 className="sg-grupo-titulo">Brand</h3>
             <div className="pagina-estatica__paleta">
               {[
                 ['Primary',          '--color-primary'],
@@ -96,7 +96,7 @@ function GuiaEstilos() {
           </div>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Neutros</p>
+            <h3 className="sg-grupo-titulo">Neutros</h3>
             <div className="pagina-estatica__paleta">
               {[
                 ['Background',   '--color-bg'],
@@ -114,7 +114,7 @@ function GuiaEstilos() {
           </div>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Semáforo</p>
+            <h3 className="sg-grupo-titulo">Semáforo</h3>
             <div className="pagina-estatica__paleta">
               {[
                 ['Sin coste',      '--color-sin_costes'],
@@ -138,7 +138,7 @@ function GuiaEstilos() {
           <h2 className="pagina-estatica__seccion-titulo">Tipografía</h2>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Crimson Text — Headings</p>
+            <h3 className="sg-grupo-titulo">Crimson Text — Headings</h3>
             <div className="pagina-estatica__tipografias">
               {[
                 ['64 px', 'var(--texto-tamanio-64)'],
@@ -156,7 +156,7 @@ function GuiaEstilos() {
           </div>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Poppins — Body</p>
+            <h3 className="sg-grupo-titulo">Arimo — Body</h3>
             <div className="pagina-estatica__tipografias">
               {[
                 ['24 px  Regular',  'var(--text-24)', 400],
@@ -209,7 +209,7 @@ function GuiaEstilos() {
 
           {/* Primarios */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Acciones primarias</p>
+            <h3 className="sg-grupo-titulo">Acciones primarias</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonIniciarSesion />
@@ -248,7 +248,7 @@ function GuiaEstilos() {
 
           {/* Edición y eliminación */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Edición y eliminación</p>
+            <h3 className="sg-grupo-titulo">Edición y eliminación</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonEditar />
@@ -271,7 +271,7 @@ function GuiaEstilos() {
 
           {/* Card almacén */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Card almacén</p>
+            <h3 className="sg-grupo-titulo">Card almacén</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonCardAlmacen variante="ver-registro" />
@@ -294,7 +294,7 @@ function GuiaEstilos() {
 
           {/* Operaciones de perfil */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Operaciones de perfil</p>
+            <h3 className="sg-grupo-titulo">Operaciones de perfil</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonOperacionesPerfil variante="cambiar-nombre" />
@@ -317,7 +317,7 @@ function GuiaEstilos() {
 
           {/* Selección de rol */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Selección de rol (registro)</p>
+            <h3 className="sg-grupo-titulo">Selección de rol (registro)</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonRol
@@ -350,7 +350,7 @@ function GuiaEstilos() {
 
           {/* Roles de tarjeta de usuario */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Roles de tarjeta de usuario</p>
+            <h3 className="sg-grupo-titulo">Roles de tarjeta de usuario</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonRolesCardUsuario rol="admin" />
@@ -381,7 +381,7 @@ function GuiaEstilos() {
 
           {/* Paginación */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Paginación</p>
+            <h3 className="sg-grupo-titulo">Paginación</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonCambioSeccion active>1</BotonCambioSeccion>
@@ -404,7 +404,7 @@ function GuiaEstilos() {
 
           {/* Decisión binaria */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Decisión binaria (toggle visual)</p>
+            <h3 className="sg-grupo-titulo">Decisión binaria (toggle visual)</h3>
             <div className="sg-fila">
               <div className="sg-item sg-item--centrado">
                 <BotonDecision label="Sin seleccionar" />
@@ -423,7 +423,7 @@ function GuiaEstilos() {
 
           {/* Cambiar tema */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Cambiar tema</p>
+            <h3 className="sg-grupo-titulo">Cambiar tema</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <BotonCambiarTema tema="light" onClick={NOOP} />
@@ -445,7 +445,7 @@ function GuiaEstilos() {
 
           {/* Input — estados */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Input — estados</p>
+            <h3 className="sg-grupo-titulo">Input — estados</h3>
             <div className="sg-fila">
               <div className="sg-item" style={{ width: '15rem' }}>
                 <Input
@@ -502,7 +502,7 @@ function GuiaEstilos() {
 
           {/* InputContrasenia — estados */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">InputContrasenia — estados</p>
+            <h3 className="sg-grupo-titulo">InputContrasenia — estados</h3>
             <div className="sg-fila">
               <div className="sg-item" style={{ width: '15rem' }}>
                 <InputContrasenia
@@ -553,7 +553,7 @@ function GuiaEstilos() {
           <h2 className="pagina-estatica__seccion-titulo">Feedback</h2>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Spinner — tamaños</p>
+            <h3 className="sg-grupo-titulo">Spinner — tamaños</h3>
             <div className="sg-fila">
               <div className="sg-item sg-item--centrado">
                 <Spinner tamanio="sm" />
@@ -579,7 +579,7 @@ function GuiaEstilos() {
 
           {/* Rol asignado */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Rol asignado</p>
+            <h3 className="sg-grupo-titulo">Rol asignado</h3>
             <div className="sg-fila">
               {['admin', 'gestor', 'operador'].map(rol => (
                 <div key={rol} className="sg-item">
@@ -592,7 +592,7 @@ function GuiaEstilos() {
 
           {/* Estado contenedor semáforo */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Estado de contenedor en semáforo — 7 estados</p>
+            <h3 className="sg-grupo-titulo">Estado de contenedor en semáforo — 7 estados</h3>
             <div className="sg-fila">
               {[
                 ['inactivo',        'Inactivo'],
@@ -613,7 +613,7 @@ function GuiaEstilos() {
 
           {/* Cabecera de tramo */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Cabecera de tramo — 4 variantes</p>
+            <h3 className="sg-grupo-titulo">Cabecera de tramo — 4 variantes</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <CabeceraTramo tramo="sin-coste"    cantidad={3}  />
@@ -636,7 +636,7 @@ function GuiaEstilos() {
 
           {/* Opción de filtro */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Opción de filtro</p>
+            <h3 className="sg-grupo-titulo">Opción de filtro</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <OpcionFiltro
@@ -666,7 +666,7 @@ function GuiaEstilos() {
 
           {/* Card almacén */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Card almacén — botón borrar habilitado / deshabilitado</p>
+            <h3 className="sg-grupo-titulo">Card almacén — botón borrar habilitado / deshabilitado</h3>
             <div className="sg-fila">
               <CardContenedoresAlmacen
                 codigoBic="TGHU0123456"
@@ -691,7 +691,7 @@ function GuiaEstilos() {
 
           {/* Card semáforo */}
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Card semáforo — los 4 tramos</p>
+            <h3 className="sg-grupo-titulo">Card semáforo — los 4 tramos</h3>
             <div className="sg-fila">
               <CardSemaforo
                 estado="inactivo"
@@ -742,7 +742,7 @@ function GuiaEstilos() {
           <h2 className="pagina-estatica__seccion-titulo">Búsqueda</h2>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Buscador de contenedores</p>
+            <h3 className="sg-grupo-titulo">Buscador de contenedores</h3>
             <BuscadorCard
               value={busqueda}
               onChange={e => setBusqueda(e.target.value)}
@@ -759,7 +759,7 @@ function GuiaEstilos() {
           <h2 className="pagina-estatica__seccion-titulo">Celdas de tabla</h2>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Tamaños — fuente heading</p>
+            <h3 className="sg-grupo-titulo">Tamaños — fuente heading</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <CeldaTabla label="Pequeña" tamanio="sm" />
@@ -777,21 +777,21 @@ function GuiaEstilos() {
           </div>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Fuentes — tamaño md</p>
+            <h3 className="sg-grupo-titulo">Fuentes — tamaño md</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <CeldaTabla label="Crimson Text" tamanio="md" fuente="heading" />
                 <span className="sg-etiqueta">heading</span>
               </div>
               <div className="sg-item">
-                <CeldaTabla label="Poppins" tamanio="md" fuente="body" />
+                <CeldaTabla label="Arimo" tamanio="md" fuente="body" />
                 <span className="sg-etiqueta">body</span>
               </div>
             </div>
           </div>
 
           <div className="sg-grupo">
-            <p className="sg-grupo-titulo">Estados</p>
+            <h3 className="sg-grupo-titulo">Estados</h3>
             <div className="sg-fila">
               <div className="sg-item">
                 <CeldaTabla label="Estático" tamanio="md" />
