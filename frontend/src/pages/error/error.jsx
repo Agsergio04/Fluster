@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
+import useDestinoRol from '../../hooks/useDestinoRol'
 import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
 import './error.scss'
@@ -9,7 +10,11 @@ function Error() {
   const navigate = useNavigate()
   const [tema, toggleTema] = useTema()
   const usuario = getUsuario()
+  const { destino } = useDestinoRol()
   useDocumentTitle('Página no encontrada | Fluster')
+
+  // Con sesión, devolvemos al usuario a su área de trabajo; sin ella, a la landing.
+  const rutaVolver = destino ?? '/'
 
   return (
     <>
@@ -27,8 +32,8 @@ function Error() {
           <p className="o-error__descripcion">
             La página que buscas no existe o ha sido movida.
           </p>
-          <button className="o-error__boton" onClick={() => navigate('/')}>
-            Volver al inicio
+          <button className="o-error__boton" onClick={() => navigate(rutaVolver)}>
+            {destino ? 'Volver a mi panel' : 'Volver al inicio'}
           </button>
         </div>
       </main>
