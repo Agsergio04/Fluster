@@ -11,7 +11,7 @@ import BotonesMovimientoCard from '../moleculas/BotonesMovimientoCard'
  *
  * @param {object[]} ciclos         - Ciclos del contenedor ordenados por fecha
  * @param {number}   ciclosPorPagina
- * @param {function} onCancelar      - Cierra el historial sin guardar cambios
+ * @param {function} onCancelar      - Vuelve al listado del almacén
  * @param {function} onEditarDemurrage - Recibe el ciclo seleccionado
  * @param {function} onEditarDetention
  */
@@ -54,7 +54,7 @@ function HistorialCiclosContenedor({
         className="historial-ciclos-contenedor__btn-cancelar"
         onClick={onCancelar}
       >
-        Cancelar
+        Volver al almacén
       </button>
     </div>
   )
