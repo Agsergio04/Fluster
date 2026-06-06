@@ -61,7 +61,7 @@ Estos valores se aplican siempre como base. Si ninguna condición superior los s
   --color-border:   #374151;
 
   --color-card-almacen:  #2F6891;
-  --color-card-semaforo: #955A31;
+  --color-card-semaforo: var(--color-secondary);  // azul secundario (semáforo/contenedor/usuario)
   /* ... resto de tokens oscuros ... */
 }
 ```

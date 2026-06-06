@@ -52,10 +52,10 @@ $color-primary:       #4FB2F8;
 $color-primary-hover: #69C1FF;
 $color-primary-off:   #C8E7FD;
 
-// ── Colores secundarios
-$color-secondary:       #F28C28;
-$color-secondary-hover: #F6A656;
-$color-secondary-off:   #FBDBBC;
+// ── Colores secundarios (azul, misma gama que el primario)
+$color-secondary:       #5BB6F8;
+$color-secondary-hover: #7CC5FA;
+$color-secondary-off:   #BFE1FB;
 
 // ── Fondos (modo claro / modo oscuro)
 $color-bg-light:      #F9FAFB;

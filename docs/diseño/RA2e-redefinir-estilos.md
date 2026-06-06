@@ -240,7 +240,8 @@ Las tarjetas del semáforo también tienen variantes de color para el modo oscur
 ```scss
 :root[data-theme='dark'] {
   --color-card-almacen:  #2F6891;  // redefine #4FB2F8
-  --color-card-semaforo: #955A31;  // redefine #F8944F
+  // las cards de semáforo/contenedor/usuario apuntan a var(--color-secondary),
+  // que ya cambia de azul claro a azul oscuro con el tema (no se redefinen aquí)
 }
 ```
 

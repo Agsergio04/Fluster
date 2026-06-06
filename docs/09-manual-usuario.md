@@ -18,11 +18,13 @@
 ### 1.2 Crear una cuenta
 
 1. En la pantalla de inicio de sesión, haz clic en el enlace **¿No tienes cuenta? Regístrate**.
-2. Rellena el formulario con tu nombre, correo y contraseña.
+2. Rellena el formulario con tu nombre, correo y contraseña. La contraseña debe tener **mínimo 12 caracteres, una letra mayúscula y un carácter especial**; bajo el campo verás la lista de requisitos marcarse a medida que los cumples, y tendrás que **repetir la contraseña** en un segundo campo para confirmarla.
 3. Selecciona tu rol haciendo clic en uno de los dos botones:
    - **Soy un Operador** — introduzco contenedores mediante un sistema OCR.
    - **Soy Gestor de Operaciones** — controlo tarifas de navieras, gestiono los contenedores y genero los informes.
 4. Pulsa **Crear cuenta**. Serás redirigido al login para iniciar sesión con tus nuevas credenciales.
+
+> **Con sesión ya iniciada:** si vuelves a la página de inicio (o entras a `/login` o `/registro`) sin cerrar sesión, no verás los botones de iniciar sesión y registro, sino un único botón que te lleva directamente a tu sección principal según tu rol.
 
 ### 1.3 Cerrar sesión
 
@@ -252,9 +254,9 @@ Cualquier usuario autenticado puede gestionar su perfil accediendo a `/perfil` d
 ### 5.2 Cambiar la contraseña
 
 1. En la sección **Cambiar contraseña**, introduce tu contraseña actual en el primer campo.
-2. Escribe la nueva contraseña en el segundo campo.
+2. Escribe la nueva contraseña en el segundo campo. Debe cumplir los mismos requisitos que en el registro (mínimo 12 caracteres, una mayúscula y un carácter especial); verás la lista de requisitos marcarse a medida que los cumples.
 3. Repite la nueva contraseña en el tercer campo para confirmarla.
-4. Pulsa **Confirmar**. Si la contraseña actual es correcta y las nuevas coinciden, el cambio se aplica de inmediato.
+4. Pulsa **Confirmar**. Si la contraseña actual es correcta, la nueva cumple los requisitos y ambas coinciden, el cambio se aplica de inmediato.
 
 > **Consejo:** si olvidas tu contraseña actual, contacta con tu administrador para que elimine y vuelva a crear tu cuenta.
 

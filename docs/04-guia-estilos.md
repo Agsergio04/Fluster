@@ -384,13 +384,16 @@ Todos los valores de color se consumen a través de las propiedades CSS. **Nunca
 | `--color-primary-hover` | `#69C1FF` | Variante hover del primario | Estado hover de elementos primarios |
 | `--color-primary-off` | `#C8E7FD` | Variante atenuada | Fondos deshabilitados, anillos de foco, estados muted |
 
-### Colores Secundarios (naranja)
+### Colores Secundarios (azul)
+
+Comparten la gama azul del primario pero con su propia luminosidad. En modo oscuro el secundario pasa a azul oscuro (`#155A93`, hover `#114A7C`, off `#3F5266`). Se usan como fondo de botones y tarjetas con texto `--color-box-text`, cumpliendo **AAA** en ambos temas: azul claro + texto oscuro en claro (≥9:1), azul oscuro + texto blanco en oscuro (≥7:1).
 
 | Variable CSS | Valor (claro) | Descripción | Uso principal |
 |---|---|---|---|
-| `--color-secondary` | `#F28C28` | Naranja de acento | Botones secundarios, etiquetas de énfasis, tarjetas de semáforo |
-| `--color-secondary-hover` | `#F6A656` | Variante hover del secundario | Estado hover de elementos secundarios |
-| `--color-secondary-off` | `#FBDBBC` | Variante atenuada | Fondos de alerta suave, estados muted secundarios |
+| `--color-secondary` | `#5BB6F8` | Azul secundario | Botones secundarios y tarjetas de semáforo/contenedor/usuario |
+| `--color-secondary-hover` | `#7CC5FA` | Variante hover del secundario | Estado hover de elementos secundarios |
+| `--color-secondary-off` | `#BFE1FB` | Variante atenuada | Estados deshabilitados secundarios |
+| `--color-secondary-subtle` | `#E6F4FE` | Tinte muy suave | Fondos sutiles |
 
 ### Fondos y superficies
 
@@ -437,8 +440,10 @@ El sistema semáforo indica el estado de los contenedores respecto a los días d
 
 | Variable CSS | Valor (claro) | Valor (oscuro) | Uso |
 |---|---|---|---|
-| `--color-card-almacen` | `#4FB2F8` | `#2F6891` | Fondo de tarjetas de almacén |
-| `--color-card-semaforo` | `#F8944F` | `#955A31` | Fondo de tarjetas de semáforo, contenedor y usuario |
+| `--color-card-almacen` | `#4FB2F8` | `#2F6891` | Fondo de tarjetas de almacén (= color primario) |
+| `--color-card-semaforo` | `var(--color-secondary)` | `var(--color-secondary)` | Fondo de tarjetas de semáforo |
+| `--color-card-contenedor` | `var(--color-secondary)` | `var(--color-secondary)` | Fondo de tarjetas de contenedor |
+| `--color-card-usuario` | `var(--color-secondary)` | `var(--color-secondary)` | Fondo de tarjetas de usuario |
 
 ---
 
