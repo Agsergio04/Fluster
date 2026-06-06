@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import './registro.scss'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
-import { registro } from '../../services/authService'
+import { registro, login } from '../../services/authService'
+import { resolverDestinoRol } from '../../hooks/useDestinoRol'
 import { getUsuario } from '../../services/session'
 import { contraseniaValida } from '../../services/contrasenia'
 import Header from '../../components/organismos/Header'
@@ -20,8 +21,9 @@ const EMAIL_REGEX = /^(?!.*\.\.)[^\s@]+@[^\s@]+\.[^\s@]+$/
  * Página de creación de cuenta nueva.
  * El rol se elige en el mismo formulario mediante botones de selección;
  * el formulario no permite enviar sin haber elegido uno.
- * Tras el registro exitoso redirige al login para que el usuario
- * inicie sesión con las credenciales recién creadas.
+ * Tras el registro exitoso inicia sesión automáticamente con las credenciales
+ * recién creadas y lleva al usuario al destino de su rol; si el auto-login
+ * fallara, cae al login manual.
  */
 function Registro() {
   const navigate = useNavigate()
@@ -63,7 +65,13 @@ function Registro() {
     try {
       setCargando(true)
       await registro(nombre.trim(), correo.trim(), contrasenia, rol)
-      navigate('/login')
+      // Auto-login para no obligar a re-introducir credenciales; si falla, login manual.
+      try {
+        const usuario = await login(correo.trim(), contrasenia)
+        navigate(await resolverDestinoRol(usuario.rol))
+      } catch {
+        navigate('/login')
+      }
     } catch (err) {
       // Los errores del servidor (p. ej. correo ya registrado) se muestran
       // bajo el campo de correo, que es el más probable origen del conflicto
