@@ -2,14 +2,39 @@ import { useState, useEffect } from 'react'
 import { getRol } from '../services/session'
 import { listarContenedores } from '../services/contenedorService'
 
-// Destino inicial síncrono según el rol. El operador arranca en /meter-contenedor
-// (coincide con el texto del botón) y cargando=true hasta confirmar si ya tiene
-// contenedores; el resto de roles tienen destino fijo y cargando=false.
+// Mapa de aterrizaje por rol — fuente única de verdad compartida por la landing,
+// los guards (/login, /registro con sesión) y la redirección tras iniciar sesión.
+export const RUTA_POR_ROL = {
+  admin:    '/panel-de-control',
+  gestor:   '/semaforo',
+  operador: '/meter-contenedor',
+}
+
+/**
+ * Destino definitivo de navegación según el rol. El operador va a /contenedores
+ * si ya tiene contenedores registrados, o a /meter-contenedor si no (o si la
+ * consulta falla). El resto de roles tienen destino fijo.
+ *
+ * @param {string|null} rol
+ * @returns {Promise<string>} ruta de aterrizaje
+ */
+export async function resolverDestinoRol(rol) {
+  if (rol === 'operador') {
+    try {
+      const lista = await listarContenedores()
+      return lista.length > 0 ? '/contenedores' : '/meter-contenedor'
+    } catch {
+      return '/meter-contenedor'
+    }
+  }
+  return RUTA_POR_ROL[rol] ?? '/'
+}
+
+// Destino inicial síncrono: el operador arranca en /meter-contenedor con
+// cargando=true hasta confirmar si ya tiene contenedores; el resto, destino fijo.
 function destinoInicial(rol) {
-  if (rol === 'admin')    return { destino: '/panel-de-control', cargando: false }
-  if (rol === 'gestor')   return { destino: '/semaforo',         cargando: false }
-  if (rol === 'operador') return { destino: '/meter-contenedor', cargando: true }
-  return { destino: null, cargando: false }
+  if (rol === 'operador') return { destino: RUTA_POR_ROL.operador, cargando: true }
+  return { destino: RUTA_POR_ROL[rol] ?? null, cargando: false }
 }
 
 /**
@@ -30,11 +55,8 @@ function useDestinoRol() {
   useEffect(() => {
     if (rol !== 'operador') return
     let activo = true
-    listarContenedores()
-      .then(lista => {
-        if (activo) setEstado({ destino: lista.length > 0 ? '/contenedores' : '/meter-contenedor', cargando: false })
-      })
-      .catch(() => { if (activo) setEstado({ destino: '/meter-contenedor', cargando: false }) })
+    resolverDestinoRol(rol)
+      .then(destino => { if (activo) setEstado({ destino, cargando: false }) })
     return () => { activo = false }
   }, [rol])
 

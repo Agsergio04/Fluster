@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './login.scss'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
+import { resolverDestinoRol } from '../../hooks/useDestinoRol'
 import { login } from '../../services/authService'
 import { getUsuario } from '../../services/session'
 import Header from '../../components/organismos/Header'
@@ -10,18 +11,11 @@ import EntradaDatosLogin from '../../components/moleculas/EntradaDatosLogin'
 import BotonesLogin from '../../components/moleculas/BotonesLogin'
 import imagenLogin from '../../assets/images/imagen_registro-login.jpg'
 
-// Tabla de rutas de aterrizaje según el rol del usuario autenticado.
-// Cada rol tiene una sección principal diferente como punto de entrada.
-const RUTA_POR_ROL = {
-  admin:    '/panel-de-control',
-  gestor:   '/semaforo',
-  operador: '/meter-contenedor',
-}
-
 /**
  * Página de inicio de sesión.
- * Tras una autenticación correcta redirige al usuario a la sección
- * correspondiente a su rol usando la tabla RUTA_POR_ROL.
+ * Tras una autenticación correcta redirige al usuario al destino de su rol
+ * (resolverDestinoRol), el mismo punto de aterrizaje que usan la landing y los
+ * guards, de modo que el operador llega siempre al mismo sitio por cualquier vía.
  * Los errores de campo se muestran bajo el input afectado para guiar
  * al usuario sin limpiar el formulario completo.
  */
@@ -36,9 +30,9 @@ function Login() {
   const [cargando, setCargando] = useState(false)
 
   /**
-   * Valida los campos, llama al servicio de autenticación y redirige
-   * al área correspondiente según el rol devuelto por el servidor.
-   * Si el rol no está en RUTA_POR_ROL redirige a la raíz como fallback.
+   * Valida los campos, llama al servicio de autenticación y redirige al destino
+   * del rol devuelto por el servidor (resolverDestinoRol). Para el operador eso
+   * implica un chequeo de contenedores; sin rol válido cae a la raíz.
    */
   const handleIniciarSesion = async () => {
     setErrorCorreo('')
@@ -50,7 +44,7 @@ function Login() {
     try {
       setCargando(true)
       const usuario = await login(correo.trim(), contrasenia)
-      navigate(RUTA_POR_ROL[usuario.rol] ?? '/')
+      navigate(await resolverDestinoRol(usuario.rol))
     } catch (err) {
       const mensaje = err.response?.data?.mensaje ?? 'Credenciales incorrectas'
       const campo   = err.response?.data?.campo
