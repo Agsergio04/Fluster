@@ -17,15 +17,6 @@
   --color-secondary-off:    #{vars.$color-secondary-off};
   --color-secondary-subtle: #{vars.$color-secondary-subtle};
 
-  // ── CTA — azul profundo con texto blanco (AAA en ambos temas) ──
-  // Para los botones de llamada a la acción (hero de la landing): el azul
-  // saturado del secundario no da contraste con texto blanco, así que estos
-  // usan un azul más profundo. Valor único: funciona en claro y oscuro.
-  --color-cta:       #155A93;
-  --color-cta-hover: #114A7C;
-  --color-cta-off:   #7E9AAE;
-  --color-on-cta:    #FFFFFF;
-
   // ── Fondos de página ──────────────────────────────────────────
   --color-bg:      #{vars.$color-bg-light};
   --color-surface: #{vars.$color-surface-light};
@@ -51,9 +42,9 @@
 
   // ── Cards ─────────────────────────────────────────────────────
   --color-card-almacen:    #{vars.$color-card-almacen-light};
-  --color-card-semaforo:   #{vars.$color-card-semaforo-light};
-  --color-card-contenedor: #{vars.$color-card-semaforo-light};
-  --color-card-usuario:    #{vars.$color-card-semaforo-light};
+  --color-card-semaforo:   var(--color-secondary);
+  --color-card-contenedor: var(--color-secondary);
+  --color-card-usuario:    var(--color-secondary);
 
   // ── Semánticos — alias ────────────────────────────────────────
   --color-error:        var(--color-segundo_tramo);
@@ -178,9 +169,9 @@
   --color-inactivo-inner:      #{vars.$color-inactivo-inner};
 
   --color-card-almacen:    #{vars.$color-card-almacen-light};
-  --color-card-semaforo:   #{vars.$color-card-semaforo-light};
-  --color-card-contenedor: #{vars.$color-card-semaforo-light};
-  --color-card-usuario:    #{vars.$color-card-semaforo-light};
+  --color-card-semaforo:   var(--color-secondary);
+  --color-card-contenedor: var(--color-secondary);
+  --color-card-usuario:    var(--color-secondary);
 }
 
 
@@ -218,9 +209,9 @@
   --color-inactivo-inner:      #{vars.$color-inactivo-dark-inner};
 
   --color-card-almacen:    #{vars.$color-card-almacen-dark};
-  --color-card-semaforo:   #{vars.$color-card-semaforo-dark};
-  --color-card-contenedor: #{vars.$color-card-semaforo-dark};
-  --color-card-usuario:    #{vars.$color-card-semaforo-dark};
+  --color-card-semaforo:   var(--color-secondary);
+  --color-card-contenedor: var(--color-secondary);
+  --color-card-usuario:    var(--color-secondary);
 }
 
 
@@ -259,8 +250,8 @@
     --color-inactivo-inner:      #{vars.$color-inactivo-dark-inner};
 
     --color-card-almacen:    #{vars.$color-card-almacen-dark};
-    --color-card-semaforo:   #{vars.$color-card-semaforo-dark};
-    --color-card-contenedor: #{vars.$color-card-semaforo-dark};
-    --color-card-usuario:    #{vars.$color-card-semaforo-dark};
+    --color-card-semaforo:   var(--color-secondary);
+    --color-card-contenedor: var(--color-secondary);
+    --color-card-usuario:    var(--color-secondary);
   }
 }
