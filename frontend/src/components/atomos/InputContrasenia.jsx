@@ -59,14 +59,6 @@ function InputContrasenia({
       {error && <span className="input__error">{error}</span>}
 
       <div className="input__password-wrapper">
-        <button
-          className="input__eye-btn"
-          type="button"
-          onClick={() => setVisible(v => !v)}
-          aria-label={visible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-        >
-          {visible ? <EyeOpenIcon /> : <EyeClosedIcon />}
-        </button>
         <input
           className="input__field"
           id={id}
@@ -79,6 +71,14 @@ function InputContrasenia({
           name={name}
           autoComplete="current-password"
         />
+        <button
+          className="input__eye-btn"
+          type="button"
+          onClick={() => setVisible(v => !v)}
+          aria-label={visible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+        >
+          {visible ? <EyeOpenIcon /> : <EyeClosedIcon />}
+        </button>
       </div>
 
       {hint && !error && <span className="input__hint">{hint}</span>}
