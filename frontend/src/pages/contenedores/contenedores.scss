@@ -1,3 +1,5 @@
+@use '../../styles/01-tools/mixins' as mix;
+
 .contenedores {
   &__intro {
     display:        flex;
@@ -9,11 +11,7 @@
   }
 
   &__titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-64);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    color:       var(--color-box-text);
+    @include mix.titulo-pagina;
   }
 
   &__subtitulo {
@@ -35,6 +33,10 @@
   @media (max-width: 767px) {
     &__intro {
       padding: var(--space-32) var(--space-16) var(--space-24);
+    }
+
+    &__titulo {
+      font-size: var(--text-40);
     }
 
     &__contenido {

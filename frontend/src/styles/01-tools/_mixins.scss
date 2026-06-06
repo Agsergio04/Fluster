@@ -62,6 +62,20 @@
 }
 
 
+// ── Título de página ──────────────────────────────────────────────────
+// <h1> de cabecera de página, unificado en toda la app para un mismo nivel
+// visual. El tamaño en móvil lo ajusta cada página en su media query.
+// Uso: @include titulo-pagina
+
+@mixin titulo-pagina {
+  font-family: var(--font-heading);
+  font-size:   var(--text-64);
+  font-weight: var(--font-weight-regular);
+  line-height: 1;
+  color:       var(--color-box-text);
+}
+
+
 // ── Accesibilidad ────────────────────────────────────────────────────
 // Aplica el anillo de foco estándar de la app al elemento padre.
 // Uso: @include foco-visible

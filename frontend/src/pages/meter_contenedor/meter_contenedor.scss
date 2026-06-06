@@ -1,3 +1,5 @@
+@use '../../styles/01-tools/mixins' as mix;
+
 .meter-contenedor {
   &__intro {
     display:        flex;
@@ -7,11 +9,7 @@
   }
 
   &__titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--text-64);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    color:       var(--color-box-text);
+    @include mix.titulo-pagina;
     text-align:  center;
   }
 
