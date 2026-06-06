@@ -153,7 +153,7 @@ function Almacen() {
         {!cargando && (
           <>
             <section className="almacen__informe-intro">
-              <h2 className="almacen__titulo">Generar informe general</h2>
+              <h2 className="almacen__seccion-titulo">Generar informe general</h2>
               <p className="almacen__subtitulo">
                 Mediantes estos parametros puedes generar un informe de cada contenedor
                 filtrando por estas caracteristicas

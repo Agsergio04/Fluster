@@ -1,3 +1,5 @@
+@use '../../styles/01-tools/mixins' as mix;
+
 .almacen {
   &__intro,
   &__informe-intro {
@@ -10,10 +12,15 @@
   }
 
   &__titulo {
+    @include mix.titulo-pagina;
+  }
+
+  // Título de subsección (h2): por debajo del h1 de página para no competir con él
+  &__seccion-titulo {
     font-family: var(--font-heading);
-    font-size:   var(--text-64);
+    font-size:   var(--text-40);
     font-weight: var(--font-weight-regular);
-    line-height: 1;
+    line-height: var(--leading-tight);
     color:       var(--color-box-text);
   }
 
@@ -47,6 +54,10 @@
 
     &__titulo {
       font-size: var(--text-40);
+    }
+
+    &__seccion-titulo {
+      font-size: var(--text-32);
     }
 
     &__subtitulo {
