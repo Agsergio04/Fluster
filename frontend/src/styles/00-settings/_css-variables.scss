@@ -83,7 +83,6 @@
   --texto-tamanio-subtitulo: clamp(1rem, 3.5vw, 2rem);
 
   // ── Tipografía — Pesos ────────────────────────────────────────
-  --font-weight-light:    #{vars.$font-weight-light};
   --font-weight-regular:  #{vars.$font-weight-regular};
   --font-weight-medium:   #{vars.$font-weight-medium};
   --font-weight-semibold: #{vars.$font-weight-semibold};
@@ -122,10 +121,8 @@
   // ── Transiciones ──────────────────────────────────────────────
   --transition-fast: #{vars.$transition-fast};
   --transition-base: #{vars.$transition-base};
-  --transition-slow: #{vars.$transition-slow};
 
   // ── Sombras ───────────────────────────────────────────────────
-  --shadow-sm: #{vars.$shadow-sm};
   --shadow-md: #{vars.$shadow-md};
   --shadow-lg: #{vars.$shadow-lg};
   --shadow-xl: #{vars.$shadow-xl};
