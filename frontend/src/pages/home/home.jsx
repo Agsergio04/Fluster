@@ -48,15 +48,18 @@ function Home() {
         />
 
         <section className="home__features" aria-label="Funcionalidades de Fluster">
-          <article className="home__feature">
-            <InformacionHome variante="tarifas" />
-          </article>
-          <article className="home__feature">
-            <InformacionHome variante="ocr" />
-          </article>
-          <article className="home__feature home__feature--wide">
-            <InformacionHome variante="semaforo" />
-          </article>
+          <h2 className="home__features-titulo">Lo que puedes hacer con Fluster</h2>
+          <div className="home__features-grid">
+            <article className="home__feature">
+              <InformacionHome variante="tarifas" />
+            </article>
+            <article className="home__feature">
+              <InformacionHome variante="ocr" />
+            </article>
+            <article className="home__feature">
+              <InformacionHome variante="semaforo" />
+            </article>
+          </div>
         </section>
       </main>
     </>

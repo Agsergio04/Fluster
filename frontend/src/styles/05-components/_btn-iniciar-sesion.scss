@@ -1,3 +1,5 @@
+// CTA secundario del hero: estilo "fantasma" (contorno) para ceder jerarquía
+// al botón primario "Empieza ahora".
 .btn-iniciar-sesion {
   display:          inline-flex;
   align-self:       flex-start;
@@ -6,21 +8,23 @@
   width:            100%;
   max-width:        23.5rem;
   padding:          var(--space-8);
-  background-color: var(--color-secondary);
+  background-color: transparent;
+  border:           2px solid var(--color-secondary);
   border-radius:    var(--radius);
   font-family:      var(--font-body);
   font-size:        var(--texto-tamanio-hero);
   font-weight:      var(--font-weight-regular);
-  color:            var(--color-box-text);
+  color:            var(--color-text);
   white-space:      nowrap;
-  transition:       background-color var(--transition-fast);
+  transition:       background-color var(--transition-fast), border-color var(--transition-fast);
 
   &:hover:not(:disabled) {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--color-secondary-subtle);
+    border-color:     var(--color-secondary-hover);
   }
 
   &:disabled {
-    background-color: var(--color-secondary-off);
-    cursor:           not-allowed;
+    opacity: 0.5;
+    cursor:  not-allowed;
   }
 }

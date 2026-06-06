@@ -1,217 +1,61 @@
+// El hero y la cabecera los renderizan los componentes IntroduccionPagina y
+// Header; aquí solo vive la sección de características (features) de la home.
 .home {
-  // ── Header ──────────────────────────────────────────────────────
-
-  &__header {
-    display:          flex;
-    align-items:      center;
-    justify-content:  space-between;
-    height:           108px;
-    padding:          var(--space-8) var(--space-24) var(--space-8) var(--space-8);
-    background-color: var(--color-primary);
-  }
-
-  &__logo {
-    width:      109px;
-    height:     109px;
-    object-fit: contain;
-  }
-
-  &__theme-btn {
-    display:          flex;
-    align-items:      flex-start;
-    background-color: var(--color-primary);
-    border-radius:    var(--radius);
-    padding:          10px;
-    width:            47px;
-    transition:       background-color var(--transition-fast);
-
-    img {
-      width:      27px;
-      height:     24px;
-      object-fit: contain;
-    }
-
-    &:hover {
-      background-color: var(--color-primary-hover);
-    }
-  }
-
-  // ── Hero ────────────────────────────────────────────────────────
-
-  &__hero {
-    display:     flex;
-    align-items: center;
-    gap:         var(--space-24);
-    padding:     var(--space-48) var(--space-24);
-  }
-
-  &__hero-content {
-    display:        flex;
-    flex-direction: column;
-    align-items:    center;
-    gap:            var(--space-72);
-    flex:           1;
-    padding-left:   var(--space-24);
-  }
-
-  &__title {
-    font-family: var(--font-heading);
-    font-size:   var(--text-48);
-    font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
-    text-align:  center;
-    line-height: var(--leading-tight);
-  }
-
-  &__subtitle {
-    font-family: var(--font-heading);
-    font-size:   var(--text-32);
-    font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
-    text-align:  center;
-    line-height: var(--leading-tight);
-    max-width:   56.25rem;
-  }
-
-  &__cta {
-    display:        flex;
-    flex-direction: column;
-    align-items:    center;
-    gap:            var(--space-16);
-    width:          100%;
-  }
-
-  &__cta-btn {
-    display:          flex;
-    align-items:      center;
-    justify-content:  center;
-    width:            23.5rem;
-    padding:          var(--space-8);
-    background-color: var(--color-secondary);
-    border-radius:    var(--radius);
-    font-family:      var(--font-body);
-    font-size:        var(--text-32);
-    font-weight:      var(--font-weight-regular);
-    color:            var(--color-box-text);
-    text-decoration:  none;
-    transition:       background-color var(--transition-fast);
-
-    &:hover {
-      background-color: var(--color-secondary-hover);
-    }
-  }
-
-  &__hero-image {
-    flex:    1;
-    min-width: 0;
-
-    img {
-      width:         100%;
-      height:        35.5rem;
-      object-fit:    cover;
-      border-radius: var(--radius);
-    }
-  }
-
-  // ── Features ────────────────────────────────────────────────────
-
   &__features {
-    display:               grid;
-    grid-template-columns: 1fr 1fr;
-    gap:                   var(--space-48);
-    padding:               var(--space-64) var(--space-24);
-  }
-
-  &__feature {
     display:         flex;
     flex-direction:  column;
     align-items:     center;
-    justify-content: center;
-    gap:             var(--space-32);
-
-    &--wide {
-      grid-column: 1 / -1;
-      max-width:   44rem;
-      margin:      0 auto;
-    }
+    gap:             var(--space-48);
+    padding:         var(--space-64) var(--space-24);
   }
 
-  &__feature-header {
-    display:     flex;
-    align-items: center;
-    gap:         var(--space-32);
-  }
-
-  &__feature-icon {
-    width:       48px;
-    height:      48px;
-    object-fit:  contain;
-    flex-shrink: 0;
-  }
-
-  &__feature-title {
-    font-family: var(--font-body);
-    font-size:   var(--text-32);
+  &__features-titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-48);
     font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
-    white-space: nowrap;
-  }
-
-  &__feature-desc {
-    font-family: var(--font-body);
-    font-size:   var(--text-24);
-    font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
-    line-height: var(--leading-normal);
+    color:       var(--color-text);
     text-align:  center;
-    max-width:   43rem;
+    line-height: var(--leading-tight);
+    max-width:   60rem;
+  }
+
+  &__features-grid {
+    display:               grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:                   var(--space-32);
+    width:                 100%;
+    max-width:             75rem;
+  }
+
+  // Tarjeta de característica: superficie elevada para dar estructura y jerarquía
+  &__feature {
+    display:          flex;
+    background-color: var(--color-surface);
+    border:           1px solid var(--color-border);
+    border-radius:    var(--radius);
+    box-shadow:       var(--shadow-md);
+    padding:          var(--space-32);
+    transition:       box-shadow var(--transition-fast), transform var(--transition-fast);
+
+    &:hover {
+      box-shadow: var(--shadow-lg);
+      transform:  translateY(-2px);
+    }
   }
 
   @media (max-width: 767px) {
-    &__hero {
-      flex-direction: column;
-      padding:        var(--space-32) var(--space-16);
-    }
-
-    &__hero-content {
-      padding-left: 0;
-      gap:          var(--space-32);
-    }
-
-    &__title {
-      font-size: var(--text-32);
-    }
-
-    &__subtitle {
-      font-size: var(--text-24);
-    }
-
-    &__cta-btn {
-      width:     100%;
-      font-size: var(--text-24);
-    }
-
-    &__hero-image img {
-      height: 14rem;
-    }
-
     &__features {
+      gap:     var(--space-32);
+      padding: var(--space-40) var(--space-16);
+    }
+
+    &__features-titulo {
+      font-size: var(--text-40);
+    }
+
+    &__features-grid {
       grid-template-columns: 1fr;
-      gap:                   var(--space-32);
-      padding:               var(--space-32) var(--space-16);
-    }
-
-    &__feature--wide {
-      grid-column: 1;
-    }
-
-    &__feature-title {
-      font-size:   var(--text-24);
-      white-space: normal;
-    }
-
-    &__feature-desc {
-      font-size: var(--text-16);
+      gap:                   var(--space-24);
     }
   }
 }

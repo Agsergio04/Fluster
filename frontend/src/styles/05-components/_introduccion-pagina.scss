@@ -8,7 +8,7 @@
   &__contenido {
     display:         flex;
     flex-direction:  column;
-    gap:             4.5rem; // 72px, Figma-exact
+    gap:             var(--space-40); // separa el bloque de texto de los botones
     align-items:     center;
     justify-content: center;
     padding:         0 var(--space-24);
@@ -16,9 +16,19 @@
     min-width:       0;
   }
 
+  // Agrupa título + eslogan como una sola unidad (proximidad), con un salto
+  // mayor hacia los botones para marcar la jerarquía.
+  &__texto {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-16);
+    width:          100%;
+  }
+
   &__titulo {
     font-family: var(--font-heading);
-    font-size:   var(--text-48);
+    font-size:   var(--text-64);
     font-weight: var(--font-weight-regular);
     color:       var(--color-box-text);
     text-align:  center;
@@ -26,14 +36,15 @@
     width:       100%;
   }
 
+  // Eslogan subordinado al título por tamaño y tipografía (sans).
   &__descripcion {
-    font-family: var(--font-heading);
-    font-size:   var(--text-32);
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
     font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
+    color:       var(--color-text);
     text-align:  center;
-    line-height: var(--leading-tight);
-    max-width:   56.25rem;
+    line-height: var(--leading-snug);
+    max-width:   36rem;
     width:       100%;
   }
 
@@ -85,16 +96,16 @@
     }
 
     &__contenido {
-      gap:     var(--space-24);
+      gap:     var(--space-32);
       padding: 0;
     }
 
     &__titulo {
-      font-size: var(--text-32);
+      font-size: var(--text-40);
     }
 
     &__descripcion {
-      font-size: var(--text-20);
+      font-size: var(--text-16);
     }
 
     &__botones {

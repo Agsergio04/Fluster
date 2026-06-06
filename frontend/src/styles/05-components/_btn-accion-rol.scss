@@ -1,6 +1,6 @@
 // Botón CTA de la página de inicio para un usuario ya autenticado.
-// Mismo aspecto que los botones de iniciar sesión / registro (fondo secundario,
-// texto --color-box-text). El texto se mantiene en una sola línea.
+// Mismo aspecto que el CTA primario "Empieza ahora" (sólido + sombra). El texto
+// se mantiene en una sola línea.
 .btn-accion-rol {
   display:          inline-flex;
   align-self:       flex-start;
@@ -10,20 +10,25 @@
   max-width:        23.75rem;
   padding:          var(--space-8);
   background-color: var(--color-secondary);
+  border:           2px solid var(--color-secondary);
   border-radius:    var(--radius);
+  box-shadow:       var(--shadow-md);
   font-family:      var(--font-body);
   font-size:        var(--texto-tamanio-hero);
-  font-weight:      var(--font-weight-regular);
+  font-weight:      var(--font-weight-medium);
   color:            var(--color-box-text);
   white-space:      nowrap;
-  transition:       background-color var(--transition-fast);
+  transition:       background-color var(--transition-fast), box-shadow var(--transition-fast);
 
   &:hover:not(:disabled) {
     background-color: var(--color-secondary-hover);
+    box-shadow:       var(--shadow-lg);
   }
 
   &:disabled {
     background-color: var(--color-secondary-off);
+    border-color:     var(--color-secondary-off);
+    box-shadow:       none;
     cursor:           not-allowed;
   }
 }

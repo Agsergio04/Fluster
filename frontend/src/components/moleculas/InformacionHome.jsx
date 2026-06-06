@@ -31,7 +31,7 @@ function InformacionHome({ variante = 'tarifas' }) {
     <div className="informacion-home">
       <div className="informacion-home__encabezado">
         <span className="informacion-home__icono" aria-hidden="true">{icon}</span>
-        <p className="informacion-home__titulo">{titulo}</p>
+        <h3 className="informacion-home__titulo">{titulo}</h3>
       </div>
       <p className="informacion-home__descripcion">{descripcion}</p>
     </div>

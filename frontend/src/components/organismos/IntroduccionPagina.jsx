@@ -12,11 +12,13 @@ function IntroduccionPagina({ onIniciarSesion, onEmpezarAhora, cta = null }) {
   return (
     <div className="introduccion-pagina">
       <div className="introduccion-pagina__contenido">
-        <h1 className="introduccion-pagina__titulo">Fluster</h1>
-        <p className="introduccion-pagina__descripcion">
-          Tu mejor página para organizar y gestionar los costes de sobrestadía y
-          detención de manera más cómoda
-        </p>
+        <div className="introduccion-pagina__texto">
+          <h1 className="introduccion-pagina__titulo">Fluster</h1>
+          <p className="introduccion-pagina__descripcion">
+            Tu mejor página para organizar y gestionar los costes de sobrestadía y
+            detención de manera más cómoda
+          </p>
+        </div>
         <div className="introduccion-pagina__botones">
           {cta ? (
             <BotonAccionRol label={cta.label} onClick={cta.onClick} disabled={cta.disabled} />
