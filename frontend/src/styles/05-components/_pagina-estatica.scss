@@ -233,7 +233,7 @@
     padding:          var(--space-8) var(--space-16);
     width:            100%;
     outline:          none;
-    transition:       border-color 0.2s;
+    transition:       border-color var(--transition-fast);
 
     &::placeholder {
       color:   var(--color-text-subtle);
@@ -255,7 +255,7 @@
     padding:          var(--space-8) var(--space-16);
     width:            100%;
     outline:          none;
-    transition:       border-color 0.2s;
+    transition:       border-color var(--transition-fast);
     resize:           vertical;
     min-height:       8rem;
 
