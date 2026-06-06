@@ -1,3 +1,5 @@
+@use '../../styles/01-tools/mixins' as mix;
+
 .historial-contenedor {
   &__intro {
     display:        flex;
@@ -9,19 +11,7 @@
   }
 
   &__titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--text-64);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    color:       var(--color-box-text);
-  }
-
-  &__codigo {
-    font-family: var(--font-body);
-    font-size:   var(--text-32);
-    font-weight: var(--font-weight-bold);
-    line-height: 1;
-    color:       var(--color-box-text);
+    @include mix.titulo-pagina;
   }
 
   &__subtitulo {
@@ -57,10 +47,6 @@
 
     &__titulo {
       font-size: var(--text-40);
-    }
-
-    &__codigo {
-      font-size: var(--text-24);
     }
 
     &__subtitulo {

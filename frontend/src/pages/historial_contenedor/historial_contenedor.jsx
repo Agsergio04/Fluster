@@ -121,8 +121,9 @@ function HistorialContenedor() {
 
       <main>
         <section className="historial-contenedor__intro">
-          <h1 className="historial-contenedor__titulo">Registro del contenedor</h1>
-          <p className="historial-contenedor__codigo">{contenedor?.codigoBIC ?? id}</p>
+          <h1 className="historial-contenedor__titulo">
+            Registro · {contenedor?.codigoBIC ?? id}
+          </h1>
           <p className="historial-contenedor__subtitulo">
             Historial completo de los ciclos del contenedor con los costes de demurrage
             y detention asociados a cada periodo de actividad
