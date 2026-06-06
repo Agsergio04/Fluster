@@ -15,11 +15,7 @@
   }
 
   &__subtitulo {
-    font-family: var(--font-body);
-    font-size:   var(--texto-tamanio-subtitulo);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--leading-normal);
-    color:       var(--color-box-text);
+    @include mix.subtitulo-pagina;
     max-width:   56rem;
   }
 

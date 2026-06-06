@@ -1,5 +1,5 @@
-/** Botón que dispara el input file oculto para seleccionar una foto de contenedor. */
-function BotonSeleccionarFoto({ disabled = false, onClick }) {
+/** Botón que dispara el input file oculto para seleccionar o cambiar la foto de contenedor. */
+function BotonSeleccionarFoto({ disabled = false, onClick, label = 'Selecciona la foto' }) {
   return (
     <button
       className="btn-seleccionar-foto"
@@ -7,7 +7,7 @@ function BotonSeleccionarFoto({ disabled = false, onClick }) {
       disabled={disabled}
       onClick={onClick}
     >
-      Selecciona la foto
+      {label}
     </button>
   )
 }

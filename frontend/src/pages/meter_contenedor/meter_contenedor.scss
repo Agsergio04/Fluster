@@ -4,30 +4,27 @@
   &__intro {
     display:        flex;
     flex-direction: column;
+    align-items:    center;
     gap:            var(--space-16);
     padding:        var(--space-48) var(--space-24) var(--space-32);
+    text-align:     center;
   }
 
   &__titulo {
     @include mix.titulo-pagina;
-    text-align:  center;
   }
 
   &__subtitulo {
-    font-family: var(--font-body);
-    font-size:   var(--text-32);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--leading-normal);
-    color:       var(--color-box-text);
+    @include mix.subtitulo-pagina;
   }
 
   &__contenido {
-    display:        flex;
-    flex-direction: column;
-    padding:        0 var(--space-24) var(--space-64);
+    display:         flex;
+    justify-content: center;
+    padding:         0 var(--space-24) var(--space-64);
 
     .subir-foto-ocr {
-      min-height: 37.5rem;
+      max-width: 56rem;
     }
   }
 
@@ -41,7 +38,7 @@
     }
 
     &__subtitulo {
-      font-size: var(--text-24);
+      font-size: var(--text-16);
     }
 
     &__contenido {

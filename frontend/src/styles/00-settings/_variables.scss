@@ -68,6 +68,7 @@ $color-segundo-tramo-dark-inner: #AB0404;
 // (contraste ≈ 5.6:1, cumple WCAG AA). El rojo del semáforo es demasiado
 // claro para texto blanco (≈ 2.9:1).
 $color-error-fondo: #C62828;
+$color-error-fondo-hover: #B71C1C; // hover más oscuro para el botón de borrar
 // Texto sobre fondo de error: blanco fijo en ambos temas (el fondo es rojo
 // oscuro en claro y oscuro, así que el texto siempre debe ser blanco).
 $color-text-on-error: #FFFFFF;
@@ -97,6 +98,7 @@ $font-body:    'Arimo', Arial, sans-serif;
 $text-8:  0.5rem;    //  8px
 $text-14: 0.875rem;  // 14px — texto secundario legible (hint, error, botones pequeños)
 $text-16: 1rem;      // 16px
+$text-20: 1.25rem;   // 20px
 $text-24: 1.5rem;    // 24px
 $text-32: 2rem;      // 32px
 $text-40: 2.5rem;    // 40px
@@ -155,3 +157,4 @@ $color-overlay: rgba(0, 0, 0, 0.45);
 // ── Breakpoints ────────────────────────────────────────────────────
 $breakpoint-mobile: 767px;
 $breakpoint-tablet: 1023px;
+$breakpoint-laptop: 1440px;

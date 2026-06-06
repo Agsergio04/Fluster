@@ -22,6 +22,14 @@
   }
 }
 
+// Portátiles y monitores pequeños (hasta 1440px). Por encima se considera
+// monitor de escritorio grande y se usan los tamaños base.
+@mixin laptop {
+  @media (max-width: #{vars.$breakpoint-laptop}) {
+    @content;
+  }
+}
+
 
 // ── Layout ───────────────────────────────────────────────────────────
 // Uso: @include flex-col(var(--space-16))
@@ -62,17 +70,33 @@
 }
 
 
-// ── Título de página ──────────────────────────────────────────────────
-// <h1> de cabecera de página, unificado en toda la app para un mismo nivel
-// visual. El tamaño en móvil lo ajusta cada página en su media query.
-// Uso: @include titulo-pagina
+// ── Título y subtítulo de página ──────────────────────────────────────
+// Cabecera de página unificada en toda la app, con escala responsive
+// centralizada: monitor de escritorio (base) → portátil → móvil.
+//   h1:       48 → 40 → 32 px
+//   subtítulo: 24 → 20 → 16 px
+// Uso: @include titulo-pagina  /  @include subtitulo-pagina
 
 @mixin titulo-pagina {
   font-family: var(--font-heading);
-  font-size:   var(--text-64);
+  font-size:   var(--text-48);
   font-weight: var(--font-weight-regular);
   line-height: 1;
   color:       var(--color-box-text);
+
+  @include laptop { font-size: var(--text-40); }
+  @include mobile { font-size: var(--text-32); }
+}
+
+@mixin subtitulo-pagina {
+  font-family: var(--font-body);
+  font-size:   var(--text-24);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color:       var(--color-box-text);
+
+  @include laptop { font-size: var(--text-20); }
+  @include mobile { font-size: var(--text-16); }
 }
 
 

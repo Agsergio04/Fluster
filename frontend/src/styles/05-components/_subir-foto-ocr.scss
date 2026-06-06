@@ -1,253 +1,244 @@
 @use '../01-tools/mixins' as mix;
 
+// Registro de contenedor en dos bloques: escaneo OCR (izquierda) y entrada
+// manual (derecha). En móvil se apilan en una sola columna.
 .subir-foto-ocr {
-  @include mix.flex-row;
-  justify-content: center;
-  padding:         var(--space-8);
-  border:          1px solid var(--color-box-text);
-  border-radius:   var(--radius);
-  width:           100%;
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  align-items:           start; // cada bloque a su altura natural (sin vacío forzado)
+  gap:                   var(--space-24);
+  width:                 100%;
 
-  &__cuerpo {
-    display:        flex;
-    flex-direction: column;
-    align-items:    center;
-    gap:            5.375rem; // 86px, Figma-exact
-    width:          100%;
-    max-width:      24.4375rem; // 391px, Figma-exact
+  // ── Bloque (columna) ──────────────────────────────────────────────
+  &__columna {
+    display:          flex;
+    flex-direction:   column;
+    gap:              var(--space-24);
+    padding:          var(--space-32);
+    background-color: var(--color-surface);
+    border:           1px solid var(--color-border);
+    border-radius:    var(--radius);
   }
 
-  &__icono {
-    width:  6.25rem; // 100px, Figma-exact
-    height: 6.0625rem; // 97px, Figma-exact
+  &__columna-titulo {
+    display:     flex;
+    align-items: center;
+    gap:         var(--space-8);
+    margin:      0;
+    font-family: var(--font-body);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-semibold);
+    color:       var(--color-text);
+  }
+
+  &__columna-icono {
+    width:       1.75rem;
+    height:      1.75rem;
+    flex-shrink: 0;
+    color:       var(--color-secondary);
+  }
+
+  // ── Zona de subida de foto ─────────────────────────────────────────
+  &__dropzone {
+    display:          flex;
+    flex-direction:   column;
+    align-items:      center;
+    justify-content:  center;
+    gap:              var(--space-16);
+    width:            100%;
+    min-height:       16rem;
+    padding:          var(--space-32);
+    background-color: transparent;
+    border:           2px dashed var(--color-secondary);
+    border-radius:    var(--radius);
+    cursor:           pointer;
+    text-align:       center;
+    transition:       background-color var(--transition-fast), border-color var(--transition-fast);
+
+    @include mix.foco-visible;
+
+    &:hover {
+      background-color: var(--color-secondary-subtle);
+      border-color:     var(--color-secondary-hover);
+    }
+  }
+
+  // Icono en círculo de marca (mismo patrón que las tarjetas del inicio)
+  &__dropzone-circulo {
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    width:            5rem;
+    height:           5rem;
+    border-radius:    50%;
+    background-color: var(--color-secondary);
+    flex-shrink:      0;
+  }
+
+  &__dropzone-icono {
+    width:  2.5rem;
+    height: 2.5rem;
     color:  var(--color-box-text);
   }
 
-  &__info {
-    display:        flex;
-    flex-direction: column;
-    align-items:    center;
-    gap:            2.875rem; // 46px, Figma-exact
-    width:          100%;
-  }
-
-  &__texto {
-    display:        flex;
-    flex-direction: column;
-    align-items:    center;
-    gap:            var(--space-32);
-    color:          var(--color-box-text);
-    width:          100%;
-  }
-
-  &__titulo {
-    font-family:  var(--font-heading);
-    font-size:    var(--texto-tamanio-40);
-    font-weight:  var(--font-weight-regular);
-    line-height:  var(--leading-tight);
-    text-align:   center;
-    white-space:  pre-wrap;
-    margin:       0;
-  }
-
-  &__descripcion {
+  &__dropzone-texto {
     font-family: var(--font-body);
-    font-size:   var(--texto-tamanio-24);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--leading-tight);
+    font-size:   var(--text-16);
+    color:       var(--color-text);
   }
 
-  // ── Estado: imagen cargada ──────────────────────────────────────
-  &--introducido {
-    justify-content: flex-start;
-    align-items:     flex-start;
+  &__dropzone-enlace {
+    color:           var(--color-secondary);
+    text-decoration: underline;
   }
 
-  &__previsualizacion {
+  &__dropzone-formatos {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-text-subtle);
+  }
+
+  // ── Previsualización de la foto subida ─────────────────────────────
+  &__preview {
     display:        flex;
     flex-direction: column;
-    gap:            0.375rem; // 6px, Figma-exact
     align-items:    center;
-    padding:        var(--space-24) var(--space-8);
-    width:          100%;
-    max-width:      29.0625rem; // 465px, Figma-exact
-  }
+    gap:            var(--space-16);
 
-  &__previsualizacion-titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-40);
-    font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
-    line-height: var(--leading-tight);
-    width:       100%;
-    margin:      0;
+    // El botón de cambiar foto se centra y se alinea con la imagen (mismo ancho)
+    .btn-seleccionar-foto {
+      width:      100%;
+      max-width:  24rem;
+      align-self: center;
+    }
   }
 
   &__foto {
-    width:         min(20.5rem, 100%); // 328px, Figma-exact
-    aspect-ratio:  328 / 435;
-    border-radius: var(--radius);
-    object-fit:    cover;
+    width:            100%;
+    max-width:        24rem;
+    aspect-ratio:     4 / 3;
+    object-fit:       contain; // encuadra la foto completa sin recortarla
+    background-color: var(--color-bg);
+    border-radius:    var(--radius);
   }
 
-  &__formulario {
-    display:        flex;
-    flex-direction: column;
-    align-items:    center;
-    gap:            4.5625rem; // 73px, Figma-exact
-    flex:           1 0 0;
-    min-width:      0;
+  // ── Caja informativa «¿Cómo funciona?» ─────────────────────────────
+  &__info {
+    display:          flex;
+    flex-direction:   column;
+    gap:              var(--space-8);
+    padding:          var(--space-16);
+    background-color: var(--color-secondary-subtle);
+    border-radius:    var(--radius);
   }
 
+  &__info-titulo {
+    margin:      0;
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-semibold);
+    color:       var(--color-text);
+  }
+
+  &__info-texto {
+    margin:      0;
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    line-height: var(--leading-normal);
+    color:       var(--color-text);
+  }
+
+  // ── Campo de código BIC (entrada manual) ───────────────────────────
   &__campo-bic {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-16);
+    gap:            var(--space-8);
     width:          100%;
-    color:          var(--color-box-text);
   }
 
   &__bic-label {
-    font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-56);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--leading-tight);
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-medium);
+    color:       var(--color-text);
   }
 
   &__bic-input {
     width:            100%;
-    padding:          var(--space-8);
+    padding:          var(--space-input-y) var(--space-input-x);
     background-color: var(--color-bg);
     border:           1px solid var(--color-border);
     border-radius:    var(--radius);
     font-family:      var(--font-body);
-    font-size:        var(--texto-tamanio-32);
-    font-weight:      var(--font-weight-regular);
+    font-size:        var(--text-16);
     color:            var(--color-text);
-    line-height:      var(--leading-tight);
 
     &::placeholder {
-      color:   var(--color-text);
-      opacity: 0.5;
+      color: var(--color-text-subtle);
     }
 
-    &:focus-visible {
-      outline:    none;
-      box-shadow: 0 0 0 3px var(--color-primary-off);
+    @include mix.foco-visible;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor:  not-allowed;
     }
   }
 
   &__error-ocr {
+    margin:      var(--space-8) 0 0;
     font-family: var(--font-body);
     font-size:   var(--text-16);
-    color:       var(--color-error);
     line-height: var(--leading-snug);
+    color:       var(--color-error);
   }
 
-  &__formulario--solo {
-    width: 100%;
-  }
-
-  &__botones-inicio {
+  // ── Botones de acción ──────────────────────────────────────────────
+  // Acciones apiladas en vertical (introducir y, en el bloque OCR, cancelar)
+  &__botones-accion {
     display:        flex;
     flex-direction: column;
-    align-items:    center;
     gap:            var(--space-16);
-    width:          100%;
-
-    .btn-seleccionar-foto {
-      width:     100%;
-      max-width: none;
-    }
-
-    .subir-foto-ocr__btn-manual {
-      width:     100%;
-      max-width: none;
-    }
-  }
-
-  &__btn-manual {
-    display:          inline-flex;
-    align-items:      center;
-    justify-content:  center;
-    padding:          var(--space-8);
-    background-color: var(--color-secondary);
-    border-radius:    var(--radius);
-    font-family:      var(--font-body);
-    font-size:        var(--texto-tamanio-24);
-    font-weight:      var(--font-weight-regular);
-    color:            var(--color-box-text);
-    transition:       background-color var(--transition-fast);
-
-    &:hover {
-      background-color: var(--color-secondary-hover);
-    }
-  }
-
-  &__botones-accion {
-    display:        inline-flex;
-    flex-direction: column;
-    gap:            var(--space-40);
-  }
-
-  @include mix.mobile {
-    flex-direction: column;
-
-    &__cuerpo {
-      gap: var(--space-24);
-    }
-
-    &__botones-accion {
-      flex-direction: row;
-      width:          100%;
-
-      .subir-foto-ocr__btn-introducir {
-        flex: 1;
-      }
-
-      .subir-foto-ocr__btn-cancelar {
-        flex: 1;
-      }
-    }
   }
 
   &__btn-introducir {
-    display:          inline-flex;
-    align-items:      center;
-    justify-content:  center;
+    @include mix.btn-base;
     width:            100%;
-    padding:          var(--space-8);
+    border:           none;
+    cursor:           pointer;
     background-color: var(--color-secondary);
-    border-radius:    var(--radius);
     font-family:      var(--font-body);
-    font-size:        var(--texto-tamanio-32);
-    font-weight:      var(--font-weight-regular);
+    font-size:        var(--text-16);
+    font-weight:      var(--font-weight-medium);
     color:            var(--color-box-text);
-    line-height:      var(--leading-tight);
-    transition:       background-color var(--transition-fast);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-secondary-hover);
+    }
+
+    &:disabled {
+      background-color: var(--color-secondary-off);
+      cursor:           not-allowed;
     }
   }
 
   &__btn-cancelar {
-    display:          inline-flex;
-    align-items:      center;
-    justify-content:  center;
+    @include mix.btn-base;
     width:            100%;
-    padding:          var(--space-8);
-    background-color: var(--color-secondary);
-    border-radius:    var(--radius);
+    cursor:           pointer;
+    background-color: transparent;
+    border:           1px solid var(--color-border);
     font-family:      var(--font-body);
-    font-size:        var(--texto-tamanio-32);
+    font-size:        var(--text-16);
     font-weight:      var(--font-weight-regular);
-    color:            var(--color-box-text);
-    line-height:      var(--leading-tight);
-    transition:       background-color var(--transition-fast);
+    color:            var(--color-text);
 
     &:hover {
-      background-color: var(--color-secondary-hover);
+      background-color: var(--color-secondary-subtle);
     }
+  }
+
+  @include mix.mobile {
+    grid-template-columns: 1fr; // columnas apiladas en móvil
   }
 }

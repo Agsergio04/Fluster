@@ -1,19 +1,20 @@
 @use '../01-tools/mixins' as mix;
 
+// Tarjeta de contenedor del operador: foto a sangre arriba (esquinas superiores
+// redondeadas), datos compactos y fila de acciones (editar a la izquierda,
+// borrar a la derecha) a tamaño de contenido.
 .card-contenedor {
-  @include mix.flex-col;
-  gap:              var(--space-16);
-  padding:          var(--space-8);
-  background-color: var(--color-card-contenedor);
+  display:          flex;
+  flex-direction:   column;
+  overflow:         hidden; // recorta la foto a las esquinas redondeadas de la card
+  width:            16rem;  // 256px
+  background-color: var(--color-primary);
   border-radius:    var(--radius);
-  width:            19.3125rem; // 309px
 
   &__foto-wrapper {
-    width:         16.5625rem; // 265px
-    height:        22.3125rem; // 357px
-    border-radius: var(--radius);
-    overflow:      hidden;
-    flex-shrink:   0;
+    width:        100%;
+    aspect-ratio: 4 / 5;
+    flex-shrink:  0;
   }
 
   &__foto {
@@ -22,82 +23,66 @@
     object-fit: cover;
   }
 
+  &__info {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-8);
+    padding:        var(--space-16) var(--space-8) var(--space-8);
+    color:          var(--color-box-text);
+    text-align:     center;
+  }
+
   &__bic {
-    display:         flex;
-    flex-direction:  column;
-    align-items:     center;
-    justify-content: center;
-    width:           7.4375rem; // 119px
-    color:           var(--color-box-text);
-    line-height:     var(--leading-tight);
-  }
-
-  &__bic-label {
-    display:      block;
-    font-family:  var(--font-heading);
-    font-size:    var(--text-24);
-    font-weight:  var(--font-weight-regular);
-  }
-
-  &__bic-valor {
-    display:      block;
-    font-family:  var(--font-body);
-    font-size:    var(--text-16);
-    font-weight:  var(--font-weight-regular);
-    text-align:   center;
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-semibold);
   }
 
   &__fecha {
-    display:         flex;
-    flex-direction:  column;
-    align-items:     center;
-    justify-content: center;
-    width:           12.9375rem; // 207px
-    color:           var(--color-box-text);
-    line-height:     var(--leading-tight);
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    line-height:    var(--leading-tight);
   }
 
-  &__fecha-label {
-    display:     block;
-    font-family: var(--font-heading);
-    font-size:   var(--text-24);
-    font-weight: var(--font-weight-regular);
-  }
-
+  &__fecha-label,
   &__fecha-valor {
-    display:     block;
-    font-family: var(--font-body);
+    font-family: var(--font-heading);
     font-size:   var(--text-16);
     font-weight: var(--font-weight-regular);
   }
 
   &__botones {
-    display:     flex;
-    flex-wrap:   nowrap;       // los dos botones siempre en la misma fila
-    gap:         0.6875rem;    // 11px
-    align-items: stretch;      // misma altura
-    width:       100%;
-    margin-top:  auto;         // anclados al fondo de la card
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    gap:             var(--space-8);
+    padding:         0 var(--space-8) var(--space-8);
 
-    .btn-editar {
-      flex:       1 1 0;       // mismo ancho, escalan juntos (responsive)
-      max-width:  none;        // ocupan su mitad sin tope fijo
-      align-self: stretch;     // mismo nivel y misma altura
+    // Botones a tamaño de contenido (no estirados) y repartidos a los lados
+    .btn-editar,
+    .btn-eliminar {
+      flex:      0 0 auto;
+      width:     auto;
+      max-width: none;
     }
 
-    .btn-eliminar {
-      flex:       1 1 0;
-      max-width:  none;
-      align-self: stretch;
+    // Relleno sólido secundario (destaca sobre el fondo primario de la card),
+    // sin borde y con icono/texto en el color de texto.
+    .btn-editar {
+      font-size:        var(--text-16); // antes 24, demasiado grande para la card
+      background-color: var(--color-secondary);
+      border:           none;
+      color:            var(--color-text);
+
+      &:hover:not(:disabled) {
+        background-color: var(--color-secondary-hover);
+      }
     }
   }
 
   @include mix.mobile {
     width: 100%;
-
-    &__foto-wrapper {
-      width:  100%;
-      height: 14rem;
-    }
   }
 }

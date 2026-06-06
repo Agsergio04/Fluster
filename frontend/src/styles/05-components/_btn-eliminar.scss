@@ -1,17 +1,15 @@
+// Botón de borrar de la card de contenedor: solo el icono de papelera, en el
+// rojo del semáforo con el icono en el color de texto.
 .btn-eliminar {
   display:          inline-flex;
-  align-self:       flex-start;
   align-items:      center;
-  gap:              var(--space-8);
+  justify-content:  center;
   padding:          var(--space-8);
-  background-color: var(--color-secondary);
+  background-color: var(--color-segundo_tramo);
+  border:           none;
   border-radius:    var(--radius);
-  font-family:      var(--font-body);
-  font-size:        var(--texto-tamanio-24);
-  font-weight:      var(--font-weight-regular);
-  color:            var(--color-box-text);
-  white-space:      nowrap;
-  line-height:      var(--leading-tight);
+  cursor:           pointer;
+  color:            var(--color-text);
   transition:       background-color var(--transition-fast);
 
   svg {
@@ -21,11 +19,11 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--color-error-fondo);
   }
 
   &:disabled {
-    background-color: var(--color-secondary-off);
-    cursor:           not-allowed;
+    opacity: 0.6;
+    cursor:  not-allowed;
   }
 }

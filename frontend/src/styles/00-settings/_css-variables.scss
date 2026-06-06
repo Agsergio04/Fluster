@@ -51,6 +51,7 @@
   --color-error-subtle: var(--color-segundo_tramo-inner);
   // Fondo accesible para etiquetas de error con texto blanco (válido en ambos temas)
   --color-error-fondo:  #{vars.$color-error-fondo};
+  --color-error-fondo-hover: #{vars.$color-error-fondo-hover};
   --color-text-on-error: #{vars.$color-text-on-error};
   --color-success:      var(--color-sin_costes);
 
@@ -65,6 +66,7 @@
   --text-8:  #{vars.$text-8};
   --text-14: #{vars.$text-14};
   --text-16: #{vars.$text-16};
+  --text-20: #{vars.$text-20};
   --text-24: #{vars.$text-24};
   --text-32: #{vars.$text-32};
   --text-40: #{vars.$text-40};

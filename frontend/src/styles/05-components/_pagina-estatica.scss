@@ -39,21 +39,13 @@
   }
 
   &__titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-64);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    color:       var(--color-box-text);
-    margin:      0;
+    @include mix.titulo-pagina;
+    margin: 0;
   }
 
   &__subtitulo {
-    font-family: var(--font-body);
-    font-size:   var(--texto-tamanio-32);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--leading-normal);
-    color:       var(--color-box-text);
-    max-width:   56rem;
+    @include mix.subtitulo-pagina;
+    max-width: 56rem;
   }
 
   &__seccion {

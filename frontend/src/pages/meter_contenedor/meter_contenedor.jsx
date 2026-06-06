@@ -10,16 +10,13 @@ import Header from '../../components/organismos/Header'
 import SubirFotoOcr from '../../components/organismos/SubirFotoOcr'
 
 /**
- * Página de registro de nuevos contenedores para el operador.
- * Ofrece dos vías de introducción del código BIC:
- *   1. Fotografía: se sube la imagen, el backend la procesa con Tesseract OCR
- *      y rellena el campo automáticamente con el código detectado.
- *   2. Manual: el operador escribe el código directamente sin subir foto.
- *
- * El estado `estado` controla qué vista muestra el componente SubirFotoOcr:
- *   - 'subiendo'    → pantalla inicial con los dos botones de elección
- *   - 'introducido' → imagen ya seleccionada, OCR en proceso o completado
- *   - 'manual'      → campo de texto libre sin foto
+ * Página de registro de nuevos contenedores para el operador, con dos flujos
+ * independientes:
+ *   1. Escaneo OCR: se sube/arrastra una foto, el backend la procesa con
+ *      Tesseract OCR y rellena el código BIC; desde ahí se introduce o se
+ *      cancela (descarta la foto y el código detectado).
+ *   2. Entrada manual: el operador escribe el código y lo introduce.
+ * Cada flujo tiene su propio campo de código y su propio botón de registro.
  */
 function MeterContenedor() {
   const navigate = useNavigate()
@@ -27,51 +24,39 @@ function MeterContenedor() {
   const [tema, toggleTema] = useTema()
   useDocumentTitle('Meter contenedor | Fluster')
 
-  // Referencia al input[type=file] oculto para abrirlo programáticamente
-  // sin mostrar el elemento nativo del navegador en el DOM visual
+  // Input[type=file] oculto, se abre vía ref desde la zona de subida
   const inputFotoRef = useRef(null)
 
-  const [estado,      setEstado]      = useState('subiendo')
-  const [foto,        setFoto]        = useState(null)
-  const [codigoBic,   setCodigoBic]   = useState('')
-  const [errorOcr,    setErrorOcr]    = useState('')
-  const [cargandoOcr, setCargandoOcr] = useState(false)
-  const [cargando,    setCargando]    = useState(false)
+  const [foto,            setFoto]            = useState(null)
+  const [codigoBicOcr,    setCodigoBicOcr]    = useState('')
+  const [codigoBicManual, setCodigoBicManual] = useState('')
+  const [errorOcr,        setErrorOcr]        = useState('')
+  const [errorManual,     setErrorManual]     = useState('')
+  const [cargandoOcr,     setCargandoOcr]     = useState(false)
+  const [cargando,        setCargando]        = useState(false)
 
   const handleSeleccionarFoto = () => inputFotoRef.current?.click()
 
   /**
-   * Se ejecuta cuando el usuario selecciona una imagen en el input de archivo.
-   * Convierte el fichero a base64 (necesario para enviarlo al backend mediante JSON)
-   * y lanza inmediatamente la petición de OCR para no hacer esperar al usuario.
-   * Si el OCR no detecta el código el campo queda editable para corrección manual.
+   * Procesa la foto elegida (por botón o arrastre): la convierte a base64 y
+   * lanza el OCR para rellenar el código BIC del bloque de escaneo. Si el OCR
+   * no detecta nada, el campo queda editable para corregirlo a mano.
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} e - Evento del input file
+   * @param {File} fichero
    */
-  const handleFotoElegida = async e => {
-    const fichero = e.target.files?.[0]
+  const procesarFoto = (fichero) => {
     if (!fichero) return
-    // Limpiamos el valor del input para que onChange vuelva a dispararse
-    // si el usuario selecciona el mismo archivo una segunda vez
-    e.target.value = ''
-
     const reader = new FileReader()
     reader.onload = async () => {
       const base64 = reader.result
       setFoto(base64)
-      setCodigoBic('')
+      setCodigoBicOcr('')
       setErrorOcr('')
-      setEstado('introducido')
-
       setCargandoOcr(true)
       try {
         const bic = await extraerCodigoBic(base64)
-        if (bic) {
-          setCodigoBic(bic)
-        } else {
-          // OCR completado pero sin resultado: dejamos el campo editable
-          setErrorOcr('No se detectó código BIC. Introdúcelo manualmente.')
-        }
+        if (bic) setCodigoBicOcr(bic)
+        else setErrorOcr('No se detectó código BIC. Introdúcelo manualmente.')
       } catch {
         setErrorOcr('No se pudo leer la imagen. Introdúcelo manualmente.')
       } finally {
@@ -81,39 +66,41 @@ function MeterContenedor() {
     reader.readAsDataURL(fichero)
   }
 
-  /**
-   * Envía el contenedor al servidor con el código BIC en mayúsculas.
-   * La foto es opcional: si el operador no subió imagen se envía null
-   * y el contenedor queda sin fotografía asociada.
-   * Tras el registro redirige al listado propio del operador.
-   */
-  const handleIntroducir = async () => {
-    if (!codigoBic.trim()) return
+  const handleFotoElegida = e => {
+    const fichero = e.target.files?.[0]
+    e.target.value = '' // permite reelegir el mismo archivo
+    procesarFoto(fichero)
+  }
 
+  const handleSoltarFoto = e => {
+    e.preventDefault()
+    procesarFoto(e.dataTransfer?.files?.[0])
+  }
+
+  /**
+   * Registra el contenedor con el código y la foto indicados (la foto es null
+   * en la entrada manual). Tras el registro redirige al listado del operador.
+   */
+  const registrar = async (codigoBIC, fotoAsociada, setError) => {
+    if (!codigoBIC.trim()) return
     try {
       setCargando(true)
-      await crearContenedor({ codigoBIC: codigoBic.trim().toUpperCase(), foto })
+      await crearContenedor({ codigoBIC: codigoBIC.trim().toUpperCase(), foto: fotoAsociada })
       navigate('/contenedores')
     } catch (err) {
-      setErrorOcr(err.response?.data?.mensaje ?? 'No se pudo registrar el contenedor')
+      setError(err.response?.data?.mensaje ?? 'No se pudo registrar el contenedor')
     } finally {
       setCargando(false)
     }
   }
 
-  /** Activa el modo de introducción manual y limpia cualquier dato previo. */
-  const handleIntroducirManual = () => {
-    setEstado('manual')
-    setFoto(null)
-    setCodigoBic('')
-    setErrorOcr('')
-  }
+  const handleIntroducirOcr    = () => registrar(codigoBicOcr, foto, setErrorOcr)
+  const handleIntroducirManual = () => registrar(codigoBicManual, null, setErrorManual)
 
-  /** Vuelve al estado inicial descartando la foto y el código BIC introducidos. */
-  const handleCancelar = () => {
-    setEstado('subiendo')
+  /** Descarta la foto y el código del OCR, volviendo a la zona de subida. */
+  const handleCancelarOcr = () => {
     setFoto(null)
-    setCodigoBic('')
+    setCodigoBicOcr('')
     setErrorOcr('')
   }
 
@@ -131,12 +118,12 @@ function MeterContenedor() {
         <section className="meter-contenedor__intro">
           <h1 className="meter-contenedor__titulo">Meter contenedor</h1>
           <p className="meter-contenedor__subtitulo">
-            Puedes introducir el contenedor mediante una foto o metiendo directamente el código BIC
+            Registra una nueva unidad escaneando una foto (OCR) o introduciendo el código BIC manualmente
           </p>
         </section>
 
         <div className="meter-contenedor__contenido">
-          {/* Input oculto: se activa vía ref al pulsar "Seleccionar foto" */}
+          {/* Input oculto: se activa vía ref al pulsar la zona de subida */}
           <input
             ref={inputFotoRef}
             type="file"
@@ -147,16 +134,20 @@ function MeterContenedor() {
             onChange={handleFotoElegida}
           />
           <SubirFotoOcr
-            estado={estado}
-            onSeleccionarFoto={handleSeleccionarFoto}
-            onIntroducirManual={handleIntroducirManual}
             foto={foto}
-            codigoBic={codigoBic}
+            onSeleccionarFoto={handleSeleccionarFoto}
+            onSoltarFoto={handleSoltarFoto}
+            codigoBicOcr={codigoBicOcr}
+            onCodigoBicOcrCambio={e => { setCodigoBicOcr(e.target.value); setErrorOcr('') }}
             errorOcr={errorOcr}
-            onCodigoBicCambio={e => { setCodigoBic(e.target.value); setErrorOcr('') }}
-            cargandoOcr={cargandoOcr || cargando}
-            onIntroducir={handleIntroducir}
-            onCancelar={handleCancelar}
+            cargandoOcr={cargandoOcr}
+            cargando={cargando}
+            onIntroducirOcr={handleIntroducirOcr}
+            onCancelarOcr={handleCancelarOcr}
+            codigoBicManual={codigoBicManual}
+            onCodigoBicManualCambio={e => { setCodigoBicManual(e.target.value); setErrorManual('') }}
+            errorManual={errorManual}
+            onIntroducirManual={handleIntroducirManual}
           />
         </div>
       </main>
