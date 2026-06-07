@@ -8,12 +8,18 @@ import { obtenerAgrupados } from '../../services/semaforoService'
 import { crearCliente } from '../../services/clienteService'
 import { entradaPuerto, salidaPuerto, cancelarCiclo, revertirSalidaPuerto, devolucion } from '../../services/contenedorService'
 import Header from '../../components/organismos/Header'
-import ConjuntoCards from '../../components/organismos/ConjuntoCards'
+import CabeceraTramo from '../../components/atomos/CabeceraTramo'
+import BuscadorCard from '../../components/moleculas/BuscadorCard'
+import CardSemaforo from '../../components/organismos/CardSemaforo'
+import BotonesMovimientoCard from '../../components/moleculas/BotonesMovimientoCard'
 import ModalEntradaPuerto from '../../components/organismos/ModalEntradaPuerto'
 import Notificacion from '../../components/atomos/Notificacion'
 
 // Orden de las columnas del semáforo tal como las muestra la interfaz
 const TRAMOS = ['sin-coste', 'primer-tramo', 'segundo-tramo', 'inactivo']
+
+// Máximo de tarjetas visibles por columna; a partir de aquí aparece el paginador
+const CARDS_POR_COLUMNA = 2
 
 // Sufijo que se añade al estado backend para generar la variante visual de la tarjeta
 // (p. ej. "puerto-free", "puerto-primer", "cliente-segundo")
@@ -35,7 +41,9 @@ const ultimaFecha = c => {
   const fecha = c.fechaDevolucion
     ?? c.fechaSalidaPuerto
     ?? c.fechaEntradaPuerto
-  return fecha ? new Date(fecha).toLocaleDateString('es-ES') : '-'
+  return fecha
+    ? new Date(fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    : '-'
 }
 
 /**
@@ -75,10 +83,10 @@ function Semaforo() {
   const [tema, toggleTema] = useTema()
   useDocumentTitle('Semáforo | Fluster')
 
-  // Un objeto por tramo para los campos de búsqueda de cada columna
-  const [busquedas,   setBusquedas]   = useState({
-    'sin-coste': '', 'primer-tramo': '', 'segundo-tramo': '', 'inactivo': '',
-  })
+  // Buscador único que filtra todas las columnas a la vez
+  const [busqueda, setBusqueda] = useState('')
+  // Página activa de cada columna ({ tramo: nº }); las no presentes están en la 1
+  const [paginas, setPaginas] = useState({})
   // Contenedores agrupados por tramo de coste
   const [grupos,      setGrupos]      = useState({
     'sin-coste': [], 'primer-tramo': [], 'segundo-tramo': [], 'inactivo': [],
@@ -187,9 +195,6 @@ function Semaforo() {
     }
   }
 
-  const handleBusquedaCambio = (tramo, valor) =>
-    setBusquedas(prev => ({ ...prev, [tramo]: valor }))
-
   /**
    * Filtra los contenedores de un tramo por el texto de búsqueda
    * y añade a cada ítem los manejadores de acción correspondientes
@@ -200,11 +205,15 @@ function Semaforo() {
    *
    * @param {string} tramo - Clave de la columna a procesar
    */
-  const itemsFiltrados = tramo =>
-    grupos[tramo]
+  const itemsFiltrados = tramo => {
+    const consulta = busqueda.trim().toLowerCase()
+    return grupos[tramo]
       .filter(item =>
-        !busquedas[tramo].trim() ||
-        item.codigoBic.toLowerCase().includes(busquedas[tramo].trim().toLowerCase())
+        !consulta ||
+        // Coincidencia por código BIC, nombre de cliente o fecha de última
+        // operación (tal como se muestra en la tarjeta, formato es-ES)
+        [item.codigoBic, item.cliente, item.ultimaOperacion]
+          .some(campo => campo?.toLowerCase().includes(consulta))
       )
       .map(item => {
         if (tramo === 'inactivo') {
@@ -230,6 +239,7 @@ function Semaforo() {
         }
         return { ...item, mostrarAnterior: false, mostrarSiguiente: false }
       })
+  }
 
   return (
     <>
@@ -253,19 +263,47 @@ function Semaforo() {
         {cargando ? (
           <p className="semaforo__cargando">Cargando contenedores...</p>
         ) : (
-          <div className="semaforo__contenido">
-            {TRAMOS.map(tramo => (
-              <ConjuntoCards
-                key={tramo}
-                variante="semaforo"
-                tramo={tramo}
-                itemsPorPagina={9}
-                busqueda={busquedas[tramo]}
-                onBusquedaCambio={e => handleBusquedaCambio(tramo, e.target.value)}
+          <div className="semaforo__panel">
+            {/* Buscador global por código BIC */}
+            <div className="semaforo__buscador">
+              <BuscadorCard
+                value={busqueda}
+                onChange={e => setBusqueda(e.target.value)}
                 onBuscar={() => {}}
-                items={itemsFiltrados(tramo)}
+                placeholder="Buscar por código BIC, cliente o fecha..."
               />
-            ))}
+            </div>
+
+            {/* Tablero: una columna por tramo */}
+            <div className="semaforo__tablero">
+              {TRAMOS.map(tramo => {
+                const items        = itemsFiltrados(tramo)
+                const totalPaginas = Math.max(1, Math.ceil(items.length / CARDS_POR_COLUMNA))
+                // Acotamos la página guardada por si la lista encogió (filtro, recarga)
+                const paginaActual = Math.min(paginas[tramo] ?? 1, totalPaginas)
+                const inicio       = (paginaActual - 1) * CARDS_POR_COLUMNA
+                const visibles     = items.slice(inicio, inicio + CARDS_POR_COLUMNA)
+                return (
+                  <section key={tramo} className="semaforo__columna">
+                    <CabeceraTramo tramo={tramo} cantidad={items.length} />
+                    <div className="semaforo__columna-cards">
+                      {items.length === 0 ? (
+                        <p className="semaforo__vacio" role="status">Sin contenedores</p>
+                      ) : (
+                        visibles.map(item => <CardSemaforo key={item.id} {...item} />)
+                      )}
+                    </div>
+                    {totalPaginas > 1 && (
+                      <BotonesMovimientoCard
+                        paginaActual={paginaActual}
+                        totalPaginas={totalPaginas}
+                        onCambiarPagina={p => setPaginas(prev => ({ ...prev, [tramo]: p }))}
+                      />
+                    )}
+                  </section>
+                )
+              })}
+            </div>
           </div>
         )}
       </main>

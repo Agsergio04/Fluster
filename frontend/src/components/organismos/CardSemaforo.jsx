@@ -40,37 +40,32 @@ function CardSemaforo({
         onSiguiente={onSiguiente}
       />
 
-      <div className="card-semaforo__cuerpo">
-        <div className="card-semaforo__bic">
-          <span className="card-semaforo__etiqueta">Código BIC :</span>
-          <span className="card-semaforo__valor">{codigoBic}</span>
+      <p className="card-semaforo__bic">{codigoBic}</p>
+
+      <div className="card-semaforo__datos">
+        <div className="card-semaforo__fila">
+          <span className="card-semaforo__icono-label">
+            <CalendarioIcon className="card-semaforo__icono" aria-hidden="true" />
+            Última operación
+          </span>
+          <span className="card-semaforo__valor">{ultimaOperacion}</span>
         </div>
 
-        <div className="card-semaforo__datos">
-          <div className="card-semaforo__fila-fecha">
-            <div className="card-semaforo__icono-label">
-              <CalendarioIcon className="card-semaforo__icono" aria-hidden="true" />
-              <p className="card-semaforo__etiqueta-sm">Última operación :</p>
-            </div>
-            <p className="card-semaforo__valor-sm">{ultimaOperacion}</p>
-          </div>
-
-          <div className="card-semaforo__fila-cliente">
-            <div className="card-semaforo__icono-label">
-              <PerfilIcon className="card-semaforo__icono" aria-hidden="true" />
-              <p className="card-semaforo__etiqueta-sm">Cliente :</p>
-            </div>
-            <p className="card-semaforo__valor-sm">{cliente ?? 'Sin asignar'}</p>
-          </div>
+        <div className="card-semaforo__fila">
+          <span className="card-semaforo__icono-label">
+            <PerfilIcon className="card-semaforo__icono" aria-hidden="true" />
+            Cliente
+          </span>
+          <span className="card-semaforo__valor">{cliente ?? 'Sin asignar'}</span>
         </div>
       </div>
 
       {estado !== 'inactivo' && (
         <div className="card-semaforo__tarifa">
-          <div className="card-semaforo__tarifa-titulo">
+          <span className="card-semaforo__icono-label">
             <TarifasIcon className="card-semaforo__icono" aria-hidden="true" />
-            <span className="card-semaforo__etiqueta-lg">Tarifa acumulada</span>
-          </div>
+            Tarifa
+          </span>
           <span className="card-semaforo__tarifa-precio">
             {tarifaAcumulada !== undefined ? `${tarifaAcumulada.toFixed(2)} €` : '0.00 €'}
           </span>

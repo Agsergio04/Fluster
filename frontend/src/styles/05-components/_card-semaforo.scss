@@ -1,177 +1,95 @@
 @use '../01-tools/mixins' as mix;
 
+// Tarjeta de seguimiento del semáforo: compacta para encajar en la columna del
+// tablero. Cabecera (badge + flechas), código BIC prominente, filas de datos
+// (etiqueta a la izquierda / valor a la derecha) y panel de tarifa.
 .card-semaforo {
   display:          flex;
   flex-direction:   column;
-  gap:              var(--space-8);
-  padding-bottom:   var(--space-8);
+  gap:              var(--space-16);
+  padding:          var(--space-16);
   background-color: var(--color-card-semaforo);
   border-radius:    var(--radius);
-  width:            24.25rem; // 388px
-
-  &__cuerpo {
-    display:        flex;
-    flex-direction: column;
-    gap:            1.5625rem; // 25px
-    padding-top:    var(--space-8);
-    width:          100%;
-  }
+  width:            100%;
 
   &__bic {
-    display:     flex;
-    align-items: center;
-    gap:         var(--space-32);
-    padding:     0 var(--space-8);
-    width:       100%;
-  }
-
-  &__etiqueta {
-    flex:        1 0 0;
-    font-family: var(--font-body);
+    font-family: var(--font-heading);
     font-size:   var(--text-24);
     font-weight: var(--font-weight-regular);
-    line-height: 1;
+    line-height: 1.1;
     color:       var(--color-box-text);
-    min-width:   0;
-  }
-
-  &__valor {
-    flex:        1 0 0;
-    font-family: var(--font-body);
-    font-size:   var(--text-24);
-    font-weight: var(--font-weight-bold);
-    line-height: 1;
-    color:       var(--color-box-text);
-    text-align:  center;
-    min-width:   0;
+    margin:      0;
+    word-break:  break-word;
   }
 
   &__datos {
     display:        flex;
     flex-direction: column;
     gap:            var(--space-8);
-    width:          100%;
   }
 
-  &__fila-fecha {
-    display:     flex;
-    align-items: center;
-    gap:         var(--space-32);
-    padding:     0 var(--space-8);
-    width:       100%;
-  }
-
-  &__fecha-izq {
-    display:      flex;
-    align-items:  center;
-    gap:          var(--space-24);
-    flex:         1 0 0;
-    padding-left: var(--space-8);
-    min-width:    0;
-  }
-
-  &__icono-label {
-    display:     flex;
-    align-items: center;
-    gap:         1.125rem; // 18px
-    flex-shrink: 0;
-  }
-
-  &__icono {
-    width:       1.5rem;
-    height:      1.5rem;
-    flex-shrink: 0;
-    color:       var(--color-box-text);
-  }
-
-  &__etiqueta-sm {
-    font-family: var(--font-body);
-    font-size:   var(--text-16);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    color:       var(--color-box-text);
-    white-space: nowrap;
-  }
-
-  &__valor-sm {
-    font-family: var(--font-body);
-    font-size:   var(--text-16);
-    font-weight: var(--font-weight-bold);
-    line-height: 1;
-    color:       var(--color-box-text);
-    white-space: nowrap;
-  }
-
-  &__fila-cliente {
-    display:      flex;
-    align-items:  center;
-    gap:          2.75rem; // 44px
-    padding-left: var(--space-16);
-    width:        100%;
-  }
-
-  &__tarifa {
-    display:         flex;
-    flex-direction:  column;
-    align-items:     center;
-    justify-content: center;
-    gap:             0.625rem; // 10px
-    padding:         0 var(--space-16);
-  }
-
-  &__tarifa-titulo {
+  &__fila {
     display:     flex;
     align-items: center;
     gap:         var(--space-8);
   }
 
-  &__etiqueta-lg {
+  &__icono-label {
+    display:     inline-flex;
+    align-items: center;
+    gap:         var(--space-8);
+    flex-shrink: 0;
     font-family: var(--font-body);
-    font-size:   var(--text-24);
+    font-size:   var(--text-14);
     font-weight: var(--font-weight-regular);
-    line-height: 1;
+    line-height: 1.2;
     color:       var(--color-box-text);
-    white-space: nowrap;
+  }
+
+  &__icono {
+    width:       1.125rem;
+    height:      1.125rem;
+    flex-shrink: 0;
+    color:       var(--color-box-text);
+  }
+
+  // El valor toma el espacio restante y recorta con elipsis si es muy largo
+  &__valor {
+    flex:          1 1 auto;
+    min-width:     0;
+    font-family:   var(--font-body);
+    font-size:     var(--text-14);
+    font-weight:   var(--font-weight-bold);
+    line-height:   1.2;
+    color:         var(--color-box-text);
+    text-align:    right;
+    white-space:   nowrap;
+    overflow:      hidden;
+    text-overflow: ellipsis;
+  }
+
+  // Panel de tarifa sobre fondo neutro (contrasta con la tarjeta de color)
+  &__tarifa {
+    display:          flex;
+    align-items:      center;
+    justify-content:  space-between;
+    gap:              var(--space-8);
+    padding:          var(--space-8) var(--space-16);
+    background-color: var(--color-bg);
+    border-radius:    var(--radius);
+
+    .card-semaforo__icono-label,
+    .card-semaforo__icono {
+      color: var(--color-text);
+    }
   }
 
   &__tarifa-precio {
     font-family: var(--font-body);
-    font-size:   var(--text-24);
-    font-weight: var(--font-weight-regular);
-    line-height: 1;
-    color:       var(--color-box-text);
-    text-align:  center;
-  }
-
-  @include mix.tablet {
-    width: 100%;
-
-    &__datos {
-      gap: var(--space-16);
-    }
-
-    &__fila-fecha {
-      gap: var(--space-8);
-    }
-
-    &__fecha-izq {
-      flex-direction: column;
-      align-items:    flex-start;
-      gap:            var(--space-8);
-    }
-
-    &__fila-cliente {
-      gap: var(--space-16);
-    }
-  }
-
-  @include mix.mobile {
-    &__etiqueta {
-      font-size: var(--text-16);
-    }
-
-    &__valor {
-      font-size: var(--text-16);
-    }
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+    color:       var(--color-text);
+    white-space: nowrap;
   }
 }

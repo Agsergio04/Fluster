@@ -29,6 +29,40 @@
     justify-content: center;
     gap:             var(--space-32);
     padding:         var(--space-48) var(--space-24);
+
+    // Las moléculas del formulario usan clases sueltas (sin BEM); se anclan a
+    // `__panel` —un elemento real— en lugar de a `.login`, que no existe en el DOM.
+    .entrada-datos-login {
+      width:          100%;
+      max-width:      27rem;
+      display:        flex;
+      flex-direction: column;
+      gap:            var(--space-16);
+    }
+
+    .botones-login {
+      width:          100%;
+      max-width:      27rem;
+      display:        flex;
+      flex-direction: column;
+      align-items:    center;
+      gap:            var(--space-16);
+
+      // El botón principal ocupa todo el ancho de la columna del formulario
+      .btn-registro-login {
+        max-width: none;
+      }
+    }
+  }
+
+  &__cabecera {
+    width:          100%;
+    max-width:      27rem;
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-8);
+    text-align:     center;
   }
 
   &__titulo {
@@ -37,7 +71,16 @@
     font-weight: var(--font-weight-regular);
     line-height: 1;
     color:       var(--color-box-text);
-    text-align:  center;
+    margin:      0;
+  }
+
+  &__subtitulo {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-snug);
+    color:       var(--color-text);
+    margin:      0;
   }
 
   @media (max-width: 767px) {

@@ -18,7 +18,7 @@ function CabeceraTramo({ tramo = 'inactivo', cantidad = 0 }) {
     <div className={`cabecera-tramo cabecera-tramo--${tramo}`}>
       <h2 className="cabecera-tramo__label">{LABELS[tramo] ?? LABELS.inactivo}</h2>
       <div className="cabecera-tramo__badge">
-        <span className="cabecera-tramo__cantidad">{cantidad} {cantidad === 1 ? 'contenedor' : 'contenedores'}</span>
+        <span className="cabecera-tramo__cantidad">{cantidad} cont.</span>
       </div>
     </div>
   )
