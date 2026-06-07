@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CabeceraTablasTarifasNavieras from '../moleculas/CabeceraTablasTarifasNavieras'
 import FilaNavieraTarifasConBotones from '../moleculas/FilaNavieraTarifasConBotones'
+import BuscadorCard from '../moleculas/BuscadorCard'
 import ConjuntoCards from './ConjuntoCards'
 
 /**
@@ -28,19 +29,29 @@ function TablaTarifas({ filas = [] }) {
   return (
     <>
       <div className="tabla-tarifas-wrapper tabla-tarifas-wrapper--desktop">
-        <div className="tabla-tarifas">
-          <CabeceraTablasTarifasNavieras />
-          {filas.map((fila) => (
-            <FilaNavieraTarifasConBotones
-              // La clave combina ID y valores para forzar re-mount si el servidor
-              // devuelve una estructura diferente tras guardar
-              key={(fila._id ?? fila.naviera) + '_' + (fila.valores ?? []).join(',')}
-              naviera={fila.naviera}
-              valores={fila.valores}
-              onActualizar={fila.onActualizar}
-              onEliminar={fila.onEliminar}
+        <div className="tabla-tarifas-desktop">
+          <div className="tabla-tarifas-desktop__buscador">
+            <BuscadorCard
+              value={busqueda}
+              onChange={e => setBusqueda(e.target.value)}
+              onBuscar={() => {}}
+              placeholder="Buscar naviera..."
             />
-          ))}
+          </div>
+          <div className="tabla-tarifas">
+            <CabeceraTablasTarifasNavieras />
+            {filasFiltradas.map((fila) => (
+              <FilaNavieraTarifasConBotones
+                // La clave combina ID y valores para forzar re-mount si el servidor
+                // devuelve una estructura diferente tras guardar
+                key={(fila._id ?? fila.naviera) + '_' + (fila.valores ?? []).join(',')}
+                naviera={fila.naviera}
+                valores={fila.valores}
+                onActualizar={fila.onActualizar}
+                onEliminar={fila.onEliminar}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

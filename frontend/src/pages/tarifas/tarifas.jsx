@@ -7,6 +7,7 @@ import { getUsuario } from '../../services/session'
 import { listarNavieras, actualizarNaviera, eliminarNaviera } from '../../services/navieraService'
 import Header from '../../components/organismos/Header'
 import TablaTarifas from '../../components/organismos/TablaTarifas'
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion'
 import Notificacion from '../../components/atomos/Notificacion'
 
 /**
@@ -75,6 +76,9 @@ function Tarifas() {
   const [navieras, setNavieras] = useState([])
   const [aviso,    setAviso]    = useState('')
   const [cargando, setCargando] = useState(true)
+  // Naviera pendiente de confirmación de borrado; null cuando no hay diálogo
+  const [aBorrar,  setABorrar]  = useState(null)
+  const [borrando, setBorrando] = useState(false)
 
   useEffect(() => {
     listarNavieras()
@@ -107,27 +111,31 @@ function Tarifas() {
   }
 
   /**
-   * Elimina la naviera del sistema y la quita de la lista local.
-   * El backend puede rechazar la operación si la naviera tiene
-   * contenedores activos asociados.
-   *
-   * @param {string} id - ID de la naviera a eliminar
+   * Confirma el borrado de la naviera pendiente (la que abrió el diálogo): la
+   * elimina del sistema y la quita de la lista local. El backend puede rechazar
+   * la operación si la naviera tiene contenedores asociados.
    */
-  const handleEliminar = async (id) => {
+  const handleConfirmarBorrado = async () => {
     try {
-      await eliminarNaviera(id)
-      setNavieras(prev => prev.filter(n => n._id !== id))
+      setBorrando(true)
+      await eliminarNaviera(aBorrar._id)
+      setNavieras(prev => prev.filter(n => n._id !== aBorrar._id))
+      setABorrar(null)
     } catch (err) {
+      setABorrar(null)
       setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar la naviera')
+    } finally {
+      setBorrando(false)
     }
   }
 
   // Se añaden los manejadores a cada fila para que TablaTarifas no necesite
-  // conocer el ID de la naviera ni la lógica de actualización
+  // conocer el ID de la naviera ni la lógica de actualización. El borrado pide
+  // confirmación (abre el modal) en lugar de eliminar directamente.
   const filas = navieras.map(n => ({
     ...navieraAFila(n),
     onActualizar: valoresNuevos => handleActualizar(n._id, valoresNuevos),
-    onEliminar:   ()            => handleEliminar(n._id),
+    onEliminar:   ()            => setABorrar(n),
   }))
 
   return (
@@ -157,6 +165,17 @@ function Tarifas() {
           )}
         </div>
       </main>
+
+      {aBorrar && (
+        <ModalConfirmacion
+          titulo="Borrar naviera"
+          mensaje={`¿Seguro que quieres borrar la naviera ${aBorrar.codigo ?? aBorrar.nombre ?? ''}? Esta acción no se puede deshacer.`}
+          textoConfirmar="Borrar"
+          cargando={borrando}
+          onConfirmar={handleConfirmarBorrado}
+          onCancelar={() => setABorrar(null)}
+        />
+      )}
 
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>

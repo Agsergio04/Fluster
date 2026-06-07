@@ -1,0 +1,158 @@
+@use '../01-tools/mixins' as mix;
+
+// Tarjeta de tarifa en formato compacto (móvil/tablet): cabecera con el código
+// de la naviera y el cuerpo en dos columnas —"Días" y "Costes"—. Cada bloque
+// desglosa detención y sobrestadía. Los costes se tiñen por tramo (azul el
+// primero, rojo el segundo). Reutiliza CeldaTabla para los valores editables,
+// neutralizando su borde y ancho de tabla.
+.tarjeta-tarifa {
+  display:          flex;
+  flex-direction:   column;
+  width:            24rem; // 384px — se reparten y envuelven en la cuadrícula
+  max-width:        100%;  // …pero encogen en pantallas estrechas
+  background-color: var(--color-surface);
+  border:           1px solid var(--color-border);
+  border-radius:    var(--radius);
+  box-shadow:       var(--shadow-md);
+  overflow:         hidden; // recorta la cabecera de color a las esquinas
+
+  // ── Cabecera ──────────────────────────────────────────────────────
+  &__cabecera {
+    display:          flex;
+    align-items:      center;
+    padding:          var(--space-8) var(--space-16);
+    background-color: var(--color-card-almacen);
+  }
+
+  &__naviera {
+    display:     inline-flex;
+    align-items: center;
+    gap:         var(--space-8);
+    font-family: var(--font-heading);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    color:       var(--color-box-text);
+  }
+
+  &__icono {
+    width:       1.25rem;
+    height:      1.25rem;
+    flex-shrink: 0;
+    color:       var(--color-box-text);
+  }
+
+  // ── Cuerpo: dos columnas (Días | Costes) ──────────────────────────
+  &__cuerpo {
+    display:               grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:                   var(--space-16);
+    padding:               var(--space-16);
+  }
+
+  &__columna {
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-8);
+    min-width:      0;
+  }
+
+  &__columna-titulo {
+    margin:         0;
+    padding-bottom: var(--space-8);
+    border-bottom:  1px solid var(--color-border);
+    font-family:    var(--font-body);
+    font-size:      var(--text-16);
+    font-weight:    var(--font-weight-semibold);
+    line-height:    1.2;
+    color:          var(--color-text);
+    text-align:     center;
+  }
+
+  // ── Bloque (Free Time, Límite, Primer/Segundo tramo) ──────────────
+  &__bloque {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-8);
+    padding:        var(--space-8);
+    border:         1px solid var(--color-border);
+    border-radius:  var(--space-8);
+
+    // Tarifas teñidas por tramo con tintes suaves del sistema (claro y oscuro)
+    &--primer  { background-color: var(--color-secondary-subtle); border-color: transparent; }
+    &--segundo { background-color: var(--color-error-subtle);     border-color: transparent; }
+
+    // Sobre los tintes de color las etiquetas atenuadas pierden contraste
+    // (text-subtle no llega a AA): usan el color de texto pleno.
+    &--primer  .tarjeta-tarifa__mini-label,
+    &--segundo .tarjeta-tarifa__mini-label { color: var(--color-text); }
+  }
+
+  &__bloque-titulo {
+    font-family: var(--font-body);
+    font-size:   var(--text-14);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    color:       var(--color-text);
+    text-align:  center;
+  }
+
+  // ── Par de celdas Det. / Sob. ─────────────────────────────────────
+  &__detsob {
+    display:         flex;
+    justify-content: center;
+    gap:             var(--space-16);
+    width:           100%;
+  }
+
+  &__mini {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            0.125rem;
+  }
+
+  &__mini-label {
+    font-family:    var(--font-body);
+    font-size:      0.625rem; // 10px
+    font-weight:    var(--font-weight-regular);
+    line-height:    1.5;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color:          var(--color-text-subtle);
+  }
+
+  // ── Acciones ──────────────────────────────────────────────────────
+  &__acciones {
+    display:         flex;
+    justify-content: space-between;
+    gap:             var(--space-16);
+    padding:         0 var(--space-16) var(--space-16);
+  }
+
+  // ── CeldaTabla reutilizada: quitar el cromo de tabla ──────────────
+  .celda-tabla {
+    width:   auto;
+    padding: 0;
+    border:  none;
+  }
+
+  .celda-tabla__input {
+    flex:      0 0 auto;
+    width:     2.75rem;
+    min-width: 0;
+    color:     var(--color-text);
+  }
+
+  // ── Móvil: las columnas Días | Costes se apilan ───────────────────
+  @include mix.mobile {
+    &__cuerpo {
+      grid-template-columns: 1fr;
+      gap:                   var(--space-8);
+    }
+
+    // Con todo el ancho disponible, los campos pueden respirar más
+    .celda-tabla__input { width: 3.5rem; }
+  }
+}
