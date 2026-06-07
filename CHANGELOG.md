@@ -7,6 +7,14 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 
 ## [Sin publicar]
 
+### Añadido
+- Paginación por columna en el semáforo: cada tramo muestra 2 tarjetas y aparece un paginador a partir de la tercera, independiente por columna.
+- El buscador del semáforo filtra ahora por código BIC, nombre de cliente y fecha de última operación (en formato español `dd/mm/aaaa`).
+- Minibuscador de navieras sobre la tabla de tarifas de escritorio (filtra por código), además del de la vista de tarjetas.
+- Mensaje de estado vacío «Aún no hay ciclos completados» en el historial de un contenedor sin ciclos cerrados.
+- Confirmación mediante modal al eliminar una naviera en Tarifas (mismo patrón que el resto de borrados).
+- Tokens de color accesibles para texto: `--color-error-text`, `--color-success-text` y `--color-enlace` (theme-aware, AA/AAA).
+
 ### Seguridad
 - El registro público ya no permite asignarse el rol `admin` (responde 403); el rol admin solo se crea con el script de administración.
 - El rol del cliente se deriva del JWT firmado, no del objeto `usuario` de `localStorage`, de modo que editar `localStorage` ya no concede permisos.
@@ -18,6 +26,12 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Las hojas de estilo usan los mixins `mobile`/`tablet` y `flex-col`/`flex-row` en lugar de media queries y flex repetidos a mano.
 - Las tarifas en móvil se muestran con el mismo conjunto de tarjetas (`ConjuntoCards`) que el resto de la aplicación.
 - Docker Compose siembra automáticamente la base de datos local al arrancar (servicio `seed` de un solo uso) y el backend usa esa Mongo local en lugar del cluster Atlas; Mongo tiene `healthcheck` y el backend espera a que la siembra termine.
+- Rediseño de la tarjeta de tarifa en formato compacto (móvil/tablet): cabecera con la naviera y cuerpo en dos columnas «Días» y «Costes», con los paneles de tramo teñidos (azul el primero, rojo el segundo) y manteniendo la edición en línea; responsive.
+- El historial de ciclos de un contenedor solo registra los ciclos **completados** (con `fechaCierre`); el ciclo en curso ya no aparece como registrado hasta cerrarse.
+- Jerarquía tipográfica coherente en el panel «Generar informe» (sección 24 px → grupo 20 px → etiquetas/inputs 16 px) y alineación uniforme; antes las etiquetas llegaban a 48 px.
+- Subtítulos y títulos de Login y Semáforo usan `--color-text`; la etiqueta de la tarjeta del semáforo pasa a «Última operación» y la fecha se muestra en formato español.
+- En la tarjeta de usuario, los roles no asignados se muestran en estado `--off` (disponibles para cambiar), como define el diseño.
+- `autocomplete` semánticamente correcto en los campos de contraseña (`new-password` al crear cuenta o cambiar contraseña; `current-password` solo en login).
 
 ### Corregido
 - `errorMiddleware` devuelve 400 ante un `CastError` (identificador inválido) y 409 ante clave duplicada (E11000) en lugar de 500.
@@ -25,9 +39,20 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Formulario de registro: se elimina el doble envío y se valida el formato del correo (cliente y servidor).
 - Capitalización de los textos de interfaz según la norma RAE (mayúscula inicial, no Title Case).
 - Documentación sincronizada con el código: diagrama entidad-relación, Swagger (estado `PUERTO`), guía de despliegue y valores de tokens de estilo.
+- Auditoría de contraste WCAG en toda la interfaz: las 8 combinaciones texto/fondo que no llegaban a AA (texto de error y de éxito, enlace azul de la zona de subida, input blanco-sobre-blanco en tema oscuro y una etiqueta diminuta) se corrigen a AA/AAA en claro y oscuro con colores del espectro de marca.
+- La entrada a puerto reutiliza el cliente existente con el mismo nombre (find-or-create, sin distinguir mayúsculas) en lugar de crear un cliente duplicado en cada operación.
+- Login: eliminado el doble `POST /auth/login` por clic de ratón (el botón usa solo el `onSubmit` del formulario, con un guard síncrono contra reenvíos).
+- El botón del menú hamburguesa solo expone `aria-controls` cuando el panel está montado en el DOM (referencia ARIA ya no colgante).
+- «Meter contenedor» valida el tipo de imagen (JPG/PNG) también al arrastrar, no solo al seleccionar, y alinea `accept` con lo anunciado.
+- Cambio de contraseña: el estado `disabled` se propaga a los tres campos durante la petición, no solo al primero y al botón.
+- Cambiar el rol de un usuario al rol que ya tiene no lanza un `PUT /usuarios/:id` redundante.
+- Los enlaces a Contacto de las páginas legales usan `<Link>` de React Router (navegación cliente, sin recargar toda la SPA).
+- El lápiz de editar fechas de un tramo se desactiva cuando el tramo no tiene datos.
 
 ### Eliminado
 - `frontend/node_modules` y los archivos de log dejan de versionarse (se añaden al `.gitignore`); la cobertura de tests (`coverage/`) tampoco se versiona.
+- Componente huérfano `ModalEditarFecha` (sin uso; sustituido por `ModalEditarTramo`).
+- Fila de tarjetas-resumen del semáforo (sobre fondo claro); el recuento por tramo permanece en la cabecera de cada columna.
 
 ## [1.0.0] - 2026-05-22
 

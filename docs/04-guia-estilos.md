@@ -430,11 +430,20 @@ El sistema semáforo indica el estado de los contenedores respecto a los días d
 
 ### Semánticos — alias
 
-| Variable CSS | Alias de | Uso principal |
+Los alias de rojo/verde se usan como **fondo** (con texto encima). Para **texto**
+sobre fondos neutros existen tokens dedicados (`--color-error-text`,
+`--color-success-text`, `--color-enlace`), *theme-aware* (tono oscuro en claro y
+claro en oscuro) y verificados para cumplir **WCAG AA/AAA** en ambos temas; el
+rojo/verde del semáforo, pensados como fondo, fallaban el contraste como texto.
+
+| Variable CSS | Alias / Valor (claro · oscuro) | Uso principal |
 |---|---|---|
-| `--color-error` | `--color-segundo_tramo` | Mensajes de error, validación fallida |
+| `--color-error` | `--color-segundo_tramo` | Fondo de etiquetas/botones de error (texto encima) |
 | `--color-error-subtle` | `--color-segundo_tramo-inner` | Fondo de banners de error |
-| `--color-success` | `--color-sin_costes` | Confirmaciones, validación correcta |
+| `--color-success` | `--color-sin_costes` | Fondo de confirmación / validación correcta |
+| `--color-error-text` | `#B3261E` · `#FFB4AB` | **Texto** de error sobre fondo neutro (AA/AAA) |
+| `--color-success-text` | `#15803D` · `#4ADE80` | **Texto** de éxito sobre fondo neutro (AA/AAA) |
+| `--color-enlace` | `#155A93` · `#7CC5FA` | **Texto** de enlace/acento azul (mismo espectro que el primario, AAA) |
 
 ### Cards
 
