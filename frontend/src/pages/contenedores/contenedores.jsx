@@ -9,6 +9,7 @@ import { actualizarContenedor, eliminarContenedor } from '../../services/contene
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import ModalEditarContenedor from '../../components/moleculas/ModalEditarContenedor'
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion'
 import Notificacion from '../../components/atomos/Notificacion'
 
 /**
@@ -27,6 +28,9 @@ function Contenedores() {
   const [busqueda, setBusqueda] = useState('')
   // Ítem actualmente en edición; null cuando el modal está cerrado
   const [editando, setEditando] = useState(null)
+  // Contenedor pendiente de confirmación de borrado; null cuando no hay diálogo
+  const [aBorrar,  setABorrar]  = useState(null)
+  const [borrando, setBorrando] = useState(false)
 
   // Normalización al formato de tarjeta, con filtro de búsqueda aplicado en cliente
   const items = contenedores
@@ -45,33 +49,35 @@ function Contenedores() {
   /**
    * Guarda los cambios del modal y actualiza el contenedor en la lista local
    * haciendo merge de los campos nuevos sobre el objeto existente.
-   * Cierra el modal tras el guardado exitoso.
+   * Cierra el modal tras el guardado exitoso. Si la actualización falla
+   * (p. ej. 422 por una fecha inválida), el error se propaga al modal, que lo
+   * muestra en línea junto al campo y permanece abierto para corregirlo.
    *
    * @param {string} id    - ID del contenedor a actualizar
    * @param {object} datos - Campos modificados (foto, fechaInicioLibre)
    */
   const handleActualizar = async (id, datos) => {
-    try {
-      const actualizado = await actualizarContenedor(id, datos)
-      setContenedores(prev => prev.map(c => c._id === id ? { ...c, ...actualizado } : c))
-      setEditando(null)
-    } catch (err) {
-      setAviso(err.response?.data?.mensaje ?? 'No se pudo actualizar el contenedor')
-    }
+    const actualizado = await actualizarContenedor(id, datos)
+    setContenedores(prev => prev.map(c => c._id === id ? { ...c, ...actualizado } : c))
+    setEditando(null)
   }
 
   /**
-   * Elimina el contenedor y lo quita de la lista local sin recargar.
-   * El backend rechaza la operación si el contenedor tiene un ciclo activo.
-   *
-   * @param {{ id: string }} item - Ítem de la tarjeta con el ID
+   * Confirma el borrado del contenedor pendiente (el que abrió el diálogo):
+   * lo elimina y lo quita de la lista local sin recargar. El backend rechaza
+   * la operación si el contenedor tiene un ciclo activo.
    */
-  const handleEliminar = async (item) => {
+  const handleConfirmarBorrado = async () => {
     try {
-      await eliminarContenedor(item.id)
-      setContenedores(prev => prev.filter(c => c._id !== item.id))
+      setBorrando(true)
+      await eliminarContenedor(aBorrar.id)
+      setContenedores(prev => prev.filter(c => c._id !== aBorrar.id))
+      setABorrar(null)
     } catch (err) {
+      setABorrar(null)
       setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el contenedor')
+    } finally {
+      setBorrando(false)
     }
   }
 
@@ -105,7 +111,7 @@ function Contenedores() {
               onBuscar={() => {}}
               items={items}
               onEditar={item => setEditando(item)}
-              onEliminar={handleEliminar}
+              onEliminar={item => setABorrar(item)}
             />
           )}
         </div>
@@ -116,6 +122,17 @@ function Contenedores() {
           item={editando}
           onActualizar={handleActualizar}
           onCancelar={() => setEditando(null)}
+        />
+      )}
+
+      {aBorrar && (
+        <ModalConfirmacion
+          titulo="Borrar contenedor"
+          mensaje={`¿Seguro que quieres borrar el contenedor ${aBorrar.codigoBic}? Esta acción no se puede deshacer.`}
+          textoConfirmar="Borrar"
+          cargando={borrando}
+          onConfirmar={handleConfirmarBorrado}
+          onCancelar={() => setABorrar(null)}
         />
       )}
 

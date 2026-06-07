@@ -1,19 +1,22 @@
+// Botón de borrar usuario: icono de papelera + texto, con los mismos colores que
+// el botón de eliminar de la card de contenedor (rojo del semáforo + texto/icono
+// en el color de texto).
 .btn-borrar-usuario {
   display:          inline-flex;
-  align-self:       flex-start;
   align-items:      center;
+  justify-content:  center;
   gap:              var(--space-8);
   padding:          var(--space-8);
   border:           none;
   border-radius:    var(--radius);
   cursor:           pointer;
   font-family:      var(--font-body);
-  font-size:        var(--text-14);
+  font-size:        var(--text-16);
   font-weight:      var(--font-weight-regular);
   line-height:      1;
   white-space:      nowrap;
-  color:            var(--color-box-text);
-  background-color: var(--color-secondary);
+  color:            var(--color-text);
+  background-color: var(--color-segundo_tramo);
   transition:       background-color var(--transition-fast);
 
   &__icono {
@@ -23,11 +26,11 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--color-error-fondo);
   }
 
   &:disabled {
-    background-color: var(--color-secondary-off);
-    cursor:           not-allowed;
+    opacity: 0.6;
+    cursor:  not-allowed;
   }
 }

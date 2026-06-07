@@ -92,7 +92,7 @@
     justify-content: center;
     gap:             var(--space-8);
     width:           100%;
-    flex-wrap:       wrap;
+    flex-wrap:       nowrap; // los tres roles en una sola fila
   }
 
   &__borrar {

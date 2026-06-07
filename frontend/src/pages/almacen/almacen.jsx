@@ -11,6 +11,7 @@ import { generarPDFGeneral } from '../../services/pdfService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
 import PanelGenerarInforme from '../../components/organismos/PanelGenerarInforme'
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion'
 import Notificacion from '../../components/atomos/Notificacion'
 
 /**
@@ -30,6 +31,9 @@ function Almacen() {
 
   const { contenedores, setContenedores, cargando, aviso, setAviso } = useContenedores()
   const [busqueda,       setBusqueda]       = useState('')
+  // Contenedor pendiente de confirmación de borrado; null cuando no hay diálogo
+  const [aBorrar,        setABorrar]        = useState(null)
+  const [borrando,       setBorrando]       = useState(false)
 
   // Filtros del panel de generación de informe general
   const [fechaDesde,       setFechaDesde]       = useState('')
@@ -71,18 +75,21 @@ function Almacen() {
     }))
 
   /**
-   * Elimina un contenedor del sistema y actualiza la lista local
-   * sin necesidad de recargar todos los datos desde el servidor.
+   * Confirma el borrado del contenedor pendiente (el que abrió el diálogo):
+   * lo elimina y actualiza la lista local sin recargar todos los datos.
    * El backend rechaza la eliminación si el contenedor no está en INACTIVO.
-   *
-   * @param {{ id: string }} item - Ítem de la tarjeta con el ID del contenedor
    */
-  const handleBorrar = async (item) => {
+  const handleConfirmarBorrado = async () => {
     try {
-      await eliminarContenedor(item.id)
-      setContenedores(prev => prev.filter(c => c._id !== item.id))
+      setBorrando(true)
+      await eliminarContenedor(aBorrar.id)
+      setContenedores(prev => prev.filter(c => c._id !== aBorrar.id))
+      setABorrar(null)
     } catch (err) {
+      setABorrar(null)
       setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el contenedor')
+    } finally {
+      setBorrando(false)
     }
   }
 
@@ -145,7 +152,7 @@ function Almacen() {
               onBuscar={() => {}}
               items={items}
               onVerRegistro={item => navigate(`/almacen/historial/${item.id}`)}
-              onBorrar={handleBorrar}
+              onBorrar={item => setABorrar(item)}
             />
           )}
         </div>
@@ -177,6 +184,17 @@ function Almacen() {
           </>
         )}
       </main>
+
+      {aBorrar && (
+        <ModalConfirmacion
+          titulo="Borrar contenedor"
+          mensaje={`¿Seguro que quieres borrar el contenedor ${aBorrar.codigoBic}? Esta acción no se puede deshacer.`}
+          textoConfirmar="Borrar"
+          cargando={borrando}
+          onConfirmar={handleConfirmarBorrado}
+          onCancelar={() => setABorrar(null)}
+        />
+      )}
 
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>

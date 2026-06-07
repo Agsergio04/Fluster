@@ -130,6 +130,35 @@ describe('contenedorController', () => {
         foto: 'data:image/png;base64,...',
       })
     })
+
+    it('aplica el código BIC y la foto aunque también se cambie la fecha (no los descarta)', async () => {
+      contenedorService.editarFechaInicioLibre.mockResolvedValue({ _id: 'c1' })
+      const actualizado = { _id: 'c1', codigoBIC: 'MSCU9999999', foto: 'data:img' }
+      contenedorService.actualizar.mockResolvedValue(actualizado)
+      req.body = { fechaInicioLibre: '2026-01-15T00:00:00.000Z', codigoBIC: 'MSCU9999999', foto: 'data:img' }
+
+      await editarContenedor(req, res, next)
+
+      expect(contenedorService.editarFechaInicioLibre).toHaveBeenCalledWith('c1', '2026-01-15T00:00:00.000Z')
+      expect(contenedorService.actualizar).toHaveBeenCalledWith('c1', {
+        codigoBIC: 'MSCU9999999',
+        foto: 'data:img',
+      })
+      expect(res.json).toHaveBeenCalledWith(actualizado)
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('actualiza solo la fecha cuando es el único campo enviado', async () => {
+      const actualizado = { _id: 'c1', fechaInicioLibre: '2026-01-15T00:00:00.000Z' }
+      contenedorService.editarFechaInicioLibre.mockResolvedValue(actualizado)
+      req.body = { fechaInicioLibre: '2026-01-15T00:00:00.000Z' }
+
+      await editarContenedor(req, res, next)
+
+      expect(contenedorService.editarFechaInicioLibre).toHaveBeenCalledWith('c1', '2026-01-15T00:00:00.000Z')
+      expect(contenedorService.actualizar).not.toHaveBeenCalled()
+      expect(res.json).toHaveBeenCalledWith(actualizado)
+    })
   })
 
   describe('eliminar', () => {

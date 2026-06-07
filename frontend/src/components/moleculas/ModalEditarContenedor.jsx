@@ -24,6 +24,11 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
   const [cargando, setCargando] = useState(false)
   const [error,    setError]    = useState('')
 
+  // Fecha máxima seleccionable = hoy (en hora local). El backend rechaza las
+  // fechas futuras con un 422, así que el selector ni siquiera las ofrece.
+  const ahora = new Date()
+  const hoy = `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}-${String(ahora.getDate()).padStart(2, '0')}`
+
   const handleFotoElegida = e => {
     const fichero = e.target.files?.[0]
     if (!fichero) return
@@ -44,7 +49,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
         fechaInicioLibre: fechaInicioLibre ? new Date(fechaInicioLibre).toISOString() : undefined,
       })
     } catch (err) {
-      setError(err.response?.data?.message ?? 'Error al actualizar el contenedor')
+      setError(err.response?.data?.mensaje ?? 'Error al actualizar el contenedor')
     } finally {
       setCargando(false)
     }
@@ -102,6 +107,7 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
             type="date"
             className="modal-editar-contenedor__fecha-input"
             value={fechaInicioLibre}
+            max={hoy}
             onChange={e => setFechaInicioLibre(e.target.value)}
           />
         </div>

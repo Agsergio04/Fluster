@@ -78,15 +78,28 @@ async function cancelarCiclo(req, res, next) {
 async function editarContenedor(req, res, next) {
   try {
     const { codigoBIC, foto, fechaInicioLibre } = req.body
-    // fechaInicioLibre tiene su propia función con validación y actualización del ciclo
+
+    // La fecha de inicio libre se actualiza aparte porque tiene su propia
+    // validación y recalcula el ciclo. Antes esta rama hacía `return` y, como
+    // el formulario siempre envía la fecha precargada, descartaba en silencio
+    // los cambios de código BIC y foto. Ahora solo aplica la fecha y continúa.
+    let actualizado
     if (fechaInicioLibre !== undefined) {
-      const actualizado = await contenedorService.editarFechaInicioLibre(req.params.id, fechaInicioLibre)
-      return res.json(actualizado)
+      actualizado = await contenedorService.editarFechaInicioLibre(req.params.id, fechaInicioLibre)
     }
+
     const cambios = {}
     if (codigoBIC !== undefined) cambios.codigoBIC = codigoBIC
     if (foto !== undefined)      cambios.foto      = foto
-    const actualizado = await contenedorService.actualizar(req.params.id, cambios)
+    if (Object.keys(cambios).length > 0) {
+      actualizado = await contenedorService.actualizar(req.params.id, cambios)
+    }
+
+    // Si el body no traía ningún campo editable, devolvemos el estado actual.
+    if (!actualizado) {
+      actualizado = await contenedorService.obtenerPorId(req.params.id)
+    }
+
     res.json(actualizado)
   } catch (err) {
     next(err)

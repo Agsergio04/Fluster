@@ -70,35 +70,62 @@
   &__cambios {
     display:          flex;
     flex-direction:   column;
-    align-items:      center;
-    gap:              var(--space-48);
-    width:            24.875rem; // 398px
-    padding:          var(--space-8);
+    align-items:      stretch;
+    gap:              var(--space-32);
+    width:            28rem; // 448px
+    padding:          var(--space-32);
     background-color: var(--color-card-almacen);
     border-radius:    var(--radius);
 
-    .cambiar-nombre {
-      align-self: center;
+    // Cada formulario interno es una columna a ancho completo, con el campo y
+    // su botón de confirmación separados de forma uniforme. Se libera el
+    // max-width de 261px (Figma antiguo) para que el campo respire dentro de
+    // la tarjeta y deje de recortar el placeholder.
+    .cambiar-nombre,
+    .cambiar-contrasenia {
+      display:        flex;
+      flex-direction: column;
+      gap:            var(--space-16);
+      width:          100%;
+      max-width:      none;
     }
 
+    // Los inputs ocupan todo el ancho de la tarjeta (sin el ancho fijo de 679px
+    // por defecto, que los recortaba dentro de la card).
+    .input {
+      width: 100%;
+    }
+
+    // Divisor translúcido entre el bloque de nombre y el de contraseña,
+    // siguiendo el patrón de las cards de color (igual que en el historial).
     .cambiar-contrasenia {
+      padding-top: var(--space-32);
+      border-top:  1px solid var(--color-card-divider);
+    }
+
+    // Botones centrados respecto a los campos a ancho completo.
+    .btn-registro-login,
+    .btn-operaciones-perfil {
       align-self: center;
     }
 
     .btn-operaciones-perfil {
-      align-self: center;
+      margin-top: var(--space-8);
     }
   }
 
   &__titulo {
-    font-family:  var(--font-heading);
-    font-size:    var(--texto-tamanio-32);
-    font-weight:  var(--font-weight-regular);
-    line-height:  1;
-    color:        var(--color-box-text);
-    white-space:  nowrap;
-    text-align:   center;
-    margin:       0;
+    font-family:    var(--font-heading);
+    font-size:      var(--texto-tamanio-32);
+    font-weight:    var(--font-weight-regular);
+    line-height:    1;
+    color:          var(--color-box-text);
+    white-space:    nowrap;
+    text-align:     center;
+    width:          100%;
+    margin:         0;
+    padding-bottom: var(--space-16);
+    border-bottom:  1px solid var(--color-card-divider);
   }
 
   .btn-accion-tarifa {
@@ -147,7 +174,8 @@
     }
 
     &__cambios {
-      width: 100%;
+      width:   100%;
+      padding: var(--space-16);
     }
 
     &__foto {

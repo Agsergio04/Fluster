@@ -12,7 +12,7 @@ const ROLES = ['admin', 'gestor', 'operador']
  * Permite ver los datos del usuario, cambiar su rol pulsando uno de los
  * tres botones de rol, y eliminar la cuenta de forma permanente.
  */
-function CardUsuario({ foto, nombre, correo, rol = 'operador', onCambiarRol, onEliminar }) {
+function CardUsuario({ foto, nombre, correo, rol = 'operador', esPropio = false, onCambiarRol, onEliminar }) {
   return (
     <div className="card-usuario">
       <div className="card-usuario__info">
@@ -55,8 +55,7 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', onCambiarRol, onE
           </div>
         </div>
         <div className="card-usuario__borrar">
-          <p className="card-usuario__etiqueta">Borrar usuario</p>
-          <BotonBorrarUsuario onClick={onEliminar} />
+          <BotonBorrarUsuario onClick={onEliminar} disabled={esPropio} />
         </div>
       </div>
     </div>

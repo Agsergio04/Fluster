@@ -7,6 +7,7 @@ import { getUsuario } from '../../services/session'
 import { listarUsuarios, actualizarRol, eliminarUsuario } from '../../services/usuarioService'
 import Header from '../../components/organismos/Header'
 import ConjuntoCards from '../../components/organismos/ConjuntoCards'
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion'
 import Notificacion from '../../components/atomos/Notificacion'
 
 /**
@@ -24,6 +25,9 @@ function PanelDeControl() {
   const [usuarios, setUsuarios] = useState([])
   const [aviso,    setAviso]    = useState('')
   const [cargando, setCargando] = useState(true)
+  // Usuario pendiente de confirmación de borrado; null cuando no hay diálogo
+  const [aBorrar,  setABorrar]  = useState(null)
+  const [borrando, setBorrando] = useState(false)
 
   useEffect(() => {
     listarUsuarios()
@@ -40,11 +44,13 @@ function PanelDeControl() {
       u.correo.toLowerCase().includes(busqueda.trim().toLowerCase())
     )
     .map(u => ({
-      id:     u._id,
-      foto:   u.foto   ?? null,
-      nombre: u.nombre,
-      correo: u.correo,
-      rol:    u.rol,
+      id:       u._id,
+      foto:     u.foto   ?? null,
+      nombre:   u.nombre,
+      correo:   u.correo,
+      rol:      u.rol,
+      // La propia cuenta del admin en sesión no se puede eliminar
+      esPropio: u._id === usuario?.id,
     }))
 
   /**
@@ -70,19 +76,28 @@ function PanelDeControl() {
   }
 
   /**
-   * Elimina un usuario del sistema de forma permanente y lo quita
-   * de la lista local. Los contenedores que hubiera registrado
-   * permanecen en el sistema (no se eliminan en cascada).
-   *
-   * @param {{ id: string }} item - Tarjeta del usuario a eliminar
+   * Confirma el borrado del usuario pendiente (el que abrió el diálogo):
+   * lo elimina de forma permanente y lo quita de la lista local. Los
+   * contenedores que hubiera registrado permanecen (no se borran en cascada).
+   * Se protege contra el borrado de la propia cuenta (además del botón, que
+   * ya está deshabilitado para la tarjeta propia).
    */
-  const handleEliminar = async (item) => {
+  const handleConfirmarBorrado = async () => {
+    if (aBorrar.id === usuario?.id) {
+      setABorrar(null)
+      setAviso('No puedes eliminar tu propia cuenta')
+      return
+    }
     try {
-      await eliminarUsuario(item.id)
-      setUsuarios(prev => prev.filter(u => u._id !== item.id))
-      setAviso('')
+      setBorrando(true)
+      await eliminarUsuario(aBorrar.id)
+      setUsuarios(prev => prev.filter(u => u._id !== aBorrar.id))
+      setABorrar(null)
     } catch (err) {
+      setABorrar(null)
       setAviso(err.response?.data?.mensaje ?? 'No se pudo eliminar el usuario')
+    } finally {
+      setBorrando(false)
     }
   }
 
@@ -116,11 +131,22 @@ function PanelDeControl() {
               onBuscar={() => {}}
               items={items}
               onCambiarRol={handleCambiarRol}
-              onEliminar={handleEliminar}
+              onEliminar={item => setABorrar(item)}
             />
           )}
         </div>
       </main>
+
+      {aBorrar && (
+        <ModalConfirmacion
+          titulo="Borrar usuario"
+          mensaje={`¿Seguro que quieres borrar a ${aBorrar.nombre}? Esta acción no se puede deshacer.`}
+          textoConfirmar="Borrar"
+          cargando={borrando}
+          onConfirmar={handleConfirmarBorrado}
+          onCancelar={() => setABorrar(null)}
+        />
+      )}
 
       <Notificacion mensaje={aviso} onCerrar={() => setAviso('')} />
     </>

@@ -1,0 +1,94 @@
+// Diálogo de confirmación para acciones destructivas (borrar contenedor).
+// Comparte el patrón de overlay de los demás modales, pero con un z-index
+// superior para poder aparecer también sobre el modal de edición si hiciera
+// falta. El botón de confirmar usa el rojo del semáforo (igual que el resto
+// de botones de borrado de la app) para señalar la acción destructiva.
+.modal-confirmacion {
+  position:         fixed;
+  inset:            0;
+  z-index:          300;
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  padding:          var(--space-16);
+  background-color: var(--color-overlay);
+
+  &__panel {
+    background-color: var(--color-primary-off);
+    border:           1px solid var(--color-border);
+    border-radius:    var(--radius);
+    padding:          var(--space-32);
+    display:          flex;
+    flex-direction:   column;
+    gap:              var(--space-16);
+    width:            min(26rem, 90vw);
+    box-shadow:       var(--shadow-xl);
+    text-align:       center;
+  }
+
+  &__titulo {
+    font-family: var(--font-heading);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-text);
+    margin:      0;
+  }
+
+  &__mensaje {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-text);
+    line-height: var(--leading-normal);
+    margin:      0;
+  }
+
+  &__botones {
+    display:         flex;
+    gap:             var(--space-16);
+    justify-content: center;
+    margin-top:      var(--space-8);
+  }
+
+  &__btn-cancelar,
+  &__btn-confirmar {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    padding:         var(--space-8) var(--space-24);
+    border:          none;
+    border-radius:   var(--radius);
+    font-family:     var(--font-body);
+    font-size:       var(--text-16);
+    font-weight:     var(--font-weight-regular);
+    cursor:          pointer;
+    transition:      background-color var(--transition-fast);
+
+    &:disabled {
+      opacity: 0.6;
+      cursor:  not-allowed;
+    }
+
+    &:focus-visible {
+      outline:        2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__btn-cancelar {
+    background-color: var(--color-secondary);
+    color:            var(--color-box-text);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-secondary-hover);
+    }
+  }
+
+  &__btn-confirmar {
+    background-color: var(--color-segundo_tramo);
+    color:            var(--color-text);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-error-fondo);
+    }
+  }
+}
