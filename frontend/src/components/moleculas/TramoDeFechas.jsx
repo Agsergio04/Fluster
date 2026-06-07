@@ -20,13 +20,15 @@ const formatFecha = (valor) => {
  * @param {string}   fechaInicio - Fecha en ISO o compatible con Date()
  * @param {string}   fechaFin
  * @param {function} onEditar    - Abre el modal de edición de fechas del tramo
+ * @param {boolean}  editable    - Si es false, el botón de editar se deshabilita
+ *                                 (tramo sin datos; editarlo no tendría sentido)
  */
-function TramoDeFechas({ titulo, fechaInicio, fechaFin, onEditar }) {
+function TramoDeFechas({ titulo, fechaInicio, fechaFin, onEditar, editable = true }) {
   return (
     <div className="tramo-de-fechas">
       <div className="tramo-de-fechas__cabecera">
         <h3 className="tramo-de-fechas__titulo">{titulo}</h3>
-        <BotonEditadoFechaContenedor onClick={onEditar} />
+        <BotonEditadoFechaContenedor onClick={onEditar} disabled={!editable} />
       </div>
 
       <div className="tramo-de-fechas__fechas">

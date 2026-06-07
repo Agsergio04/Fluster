@@ -1,9 +1,13 @@
 @use '../01-tools/mixins' as mix;
 
+// Panel de filtros para generar informes. Jerarquía tipográfica clara y
+// consistente sobre la superficie de tarjeta:
+//   título de sección 24px → título de grupo 20px → etiqueta/input 16px,
+// con espaciado en la escala de 8px y alineación a la izquierda uniforme.
 .panel-generar-informe {
   @include mix.flex-col;
-  gap:              5.4375rem; // 87px
-  padding:          var(--space-8);
+  gap:              var(--space-32);
+  padding:          var(--space-24);
   background-color: var(--color-card-almacen);
   border-radius:    var(--radius);
   width:            100%;
@@ -13,81 +17,69 @@
     display:     flex;
     flex-wrap:   wrap;
     gap:         var(--space-32);
-    align-items: center;
-    padding:     var(--space-8);
+    align-items: flex-start;
     width:       100%;
   }
 
   &__columna-fechas {
-    display:         flex;
-    flex-direction:  column;
-    align-items:     center;
-    justify-content: center;
-    gap:             var(--space-40);
-    flex:            1 0 0;
-    min-width:       0;
-    padding:         var(--space-8);
+    display:        flex;
+    flex-direction: column;
+    gap:            var(--space-24);
+    flex:           1 0 0;
+    min-width:      14rem;
   }
 
-  &__seccion-titulo {
+  // Títulos de sección (nivel hermano) — mismo tamaño en todo el panel
+  &__seccion-titulo,
+  &__opciones-titulo {
     font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-56);
-    font-weight: var(--font-weight-regular);
+    font-size:   var(--text-24);
+    font-weight: var(--font-weight-semibold);
     color:       var(--color-box-text);
-    text-align:  center;
     line-height: var(--leading-tight);
     width:       100%;
   }
 
   &__rango {
-    display:     flex;
-    flex-wrap:   wrap;
-    gap:         var(--space-56);
-    align-items: center;
-    width:       100%;
+    display:   flex;
+    flex-wrap: wrap;
+    gap:       var(--space-16);
+    width:     100%;
   }
 
   &__campo-fecha {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-16);
-    align-items:    center;
+    gap:            var(--space-8);
     flex:           1 0 0;
-    min-width:      0;
-  }
-
-  &__campo-titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-48);
-    font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
-    text-align:  center;
-    line-height: var(--leading-tight);
+    min-width:      8rem;
   }
 
   &__campo-unico {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-16);
+    gap:            var(--space-8);
     width:          100%;
   }
 
+  // Etiquetas de campo — estilo uniforme para todas (fechas y textos)
+  &__campo-titulo,
   &__campo-label {
-    font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-48);
-    font-weight: var(--font-weight-regular);
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-medium);
     color:       var(--color-box-text);
-    line-height: var(--leading-tight);
+    line-height: var(--leading-snug);
   }
 
   &__input {
     width:            100%;
-    padding:          var(--space-8);
+    padding:          var(--space-8) var(--space-16);
     background-color: var(--color-bg);
     border:           1px solid var(--color-border);
     border-radius:    var(--radius);
     font-family:      var(--font-body);
-    font-size:        var(--text-24);
+    font-size:        var(--text-16);
     font-weight:      var(--font-weight-regular);
     color:            var(--color-text);
     line-height:      var(--leading-tight);
@@ -107,53 +99,39 @@
     display:        flex;
     flex-direction: column;
     gap:            var(--space-16);
-    width:          100%;
-    max-width:      42.4375rem; // 679px
+    flex:           1 0 0;
+    min-width:      14rem;
   }
 
   // ── Opciones adicionales ────────────────────────────────────────
   &__opciones {
     display:        flex;
     flex-direction: column;
-    gap:            var(--space-64);
-    align-items:    center;
-    padding:        var(--space-8);
+    gap:            var(--space-24);
     width:          100%;
   }
 
-  &__opciones-titulo {
-    font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-48);
-    font-weight: var(--font-weight-regular);
-    color:       var(--color-box-text);
-    text-align:  center;
-    line-height: var(--leading-tight);
-    width:       100%;
-  }
-
   &__opciones-grid {
-    display:         flex;
-    flex-wrap:       wrap;
-    align-items:     flex-start;
-    justify-content: center;
-    width:           100%;
+    display:     flex;
+    flex-wrap:   wrap;
+    align-items: flex-start;
+    gap:         var(--space-32);
+    width:       100%;
   }
 
   &__opciones-grupo {
     display:        flex;
     flex-direction: column;
     gap:            var(--space-16);
-    align-items:    center;
     flex:           1 0 0;
-    min-width:      0;
+    min-width:      14rem;
   }
 
   &__opciones-grupo-titulo {
     font-family: var(--font-heading);
-    font-size:   var(--texto-tamanio-40);
+    font-size:   var(--text-20);
     font-weight: var(--font-weight-regular);
     color:       var(--color-box-text);
-    text-align:  center;
     line-height: var(--leading-tight);
     width:       100%;
   }
@@ -161,23 +139,21 @@
   &__lista-opciones {
     display:        flex;
     flex-direction: column;
-    gap:            1.25rem; // 20px
+    gap:            var(--space-16);
     width:          100%;
   }
 
-  // ── Botón centrado ──────────────────────────────────────────────
+  // ── Botón ───────────────────────────────────────────────────────
   .btn-generar-informe {
     align-self: center;
+    margin-top: var(--space-8);
   }
 
-  // ── Variante individual (panel estrecho) ────────────────────────
+  // ── Variante individual (aside estrecho) ────────────────────────
   &--individual {
-    gap: var(--space-40);
-
     .panel-generar-informe__filtros {
       flex-direction: column;
-      gap:            2.6875rem; // 43px
-      align-items:    flex-start;
+      gap:            var(--space-24);
     }
 
     .panel-generar-informe__columna-fechas {
@@ -185,13 +161,8 @@
       width: 100%;
     }
 
-    .panel-generar-informe__opciones {
-      gap: var(--space-32);
-    }
-
     .panel-generar-informe__opciones-grid {
       flex-direction: column;
-      align-items:    center;
       gap:            var(--space-16);
     }
 
@@ -202,16 +173,11 @@
   }
 
   @include mix.mobile {
-    gap:     var(--space-24);
-    padding: var(--space-8);
+    padding: var(--space-16);
 
     &__filtros {
       flex-direction: column;
       gap:            var(--space-24);
-    }
-
-    &__columna-textos {
-      width: 100%;
     }
 
     &__rango {

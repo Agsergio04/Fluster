@@ -30,24 +30,32 @@ function HistorialCiclosContenedor({
 
   return (
     <div className="historial-ciclos-contenedor">
-      <div className="historial-ciclos-contenedor__ciclos">
-        {ciclosPagina.map((ciclo, i) => (
-          <TarjetaCicloContenedor
-            key={inicio + i}
-            cliente={ciclo.cliente}
-            demurrage={ciclo.demurrage}
-            detention={ciclo.detention}
-            onEditarDemurrage={() => onEditarDemurrage?.(ciclo)}
-            onEditarDetention={() => onEditarDetention?.(ciclo)}
-          />
-        ))}
-      </div>
+      {ciclos.length === 0 ? (
+        <p className="historial-ciclos-contenedor__vacio" role="status">
+          Aún no hay ciclos completados
+        </p>
+      ) : (
+        <>
+          <div className="historial-ciclos-contenedor__ciclos">
+            {ciclosPagina.map((ciclo, i) => (
+              <TarjetaCicloContenedor
+                key={inicio + i}
+                cliente={ciclo.cliente}
+                demurrage={ciclo.demurrage}
+                detention={ciclo.detention}
+                onEditarDemurrage={() => onEditarDemurrage?.(ciclo)}
+                onEditarDetention={() => onEditarDetention?.(ciclo)}
+              />
+            ))}
+          </div>
 
-      <BotonesMovimientoCard
-        paginaActual={paginaActual}
-        totalPaginas={totalPaginas}
-        onCambiarPagina={setPaginaActual}
-      />
+          <BotonesMovimientoCard
+            paginaActual={paginaActual}
+            totalPaginas={totalPaginas}
+            onCambiarPagina={setPaginaActual}
+          />
+        </>
+      )}
 
       <button
         type="button"

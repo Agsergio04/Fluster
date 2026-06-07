@@ -32,6 +32,7 @@ function TarjetaCicloContenedor({
           fechaInicio={demurrage?.fechaInicio}
           fechaFin={demurrage?.fechaFin}
           onEditar={onEditarDemurrage}
+          editable={Boolean(demurrage?.fechaInicio)}
         />
         <p className="tarjeta-ciclo-contenedor__coste-linea">
           <span>Coste Demurrage</span>
@@ -47,6 +48,7 @@ function TarjetaCicloContenedor({
           fechaInicio={detention?.fechaInicio}
           fechaFin={detention?.fechaFin}
           onEditar={onEditarDetention}
+          editable={Boolean(detention?.fechaInicio)}
         />
         <p className="tarjeta-ciclo-contenedor__coste-linea">
           <span>Coste Detention</span>

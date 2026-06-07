@@ -17,6 +17,21 @@
     flex:           1;
   }
 
+  // Estado vacío: contenedor sin ningún ciclo completado todavía
+  &__vacio {
+    flex:        1;
+    display:     flex;
+    align-items: center;
+    justify-content: center;
+    width:       100%;
+    font-family: var(--font-body);
+    font-size:   var(--texto-tamanio-32);
+    font-weight: var(--font-weight-regular);
+    color:       var(--color-box-text);
+    text-align:  center;
+    line-height: var(--leading-snug);
+  }
+
   &__btn-cancelar {
     padding:          var(--space-8) var(--space-24);
     background-color: var(--color-secondary);

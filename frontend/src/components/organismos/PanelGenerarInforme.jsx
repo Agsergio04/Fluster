@@ -90,7 +90,7 @@ function PanelGenerarInforme({
                 type="text"
                 value={cliente}
                 onChange={onCliente}
-                placeholder="Introduce por nombre del cliente"
+                placeholder="Introduce el nombre del cliente"
               />
             </div>
             <div className="panel-generar-informe__campo-unico">
@@ -147,7 +147,7 @@ function PanelGenerarInforme({
                 type="text"
                 value={cliente}
                 onChange={onCliente}
-                placeholder="Introduce por nombre del cliente"
+                placeholder="Introduce el nombre del cliente"
               />
             </div>
           </>

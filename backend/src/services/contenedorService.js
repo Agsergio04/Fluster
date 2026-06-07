@@ -102,8 +102,10 @@ async function obtenerPorId(id) {
   }
 
   // Incluir el historial de ciclos para que el frontend tenga los cicloIds
-  // necesarios para la generación de informes y la vista de almacén
-  const ciclos = await Ciclo.find({ contenedorId: id })
+  // necesarios para la generación de informes y la vista de almacén.
+  // Solo se registran los ciclos COMPLETADOS (con fechaCierre): el ciclo en
+  // curso no se considera un ciclo registrado hasta que se cierra (devolución).
+  const ciclos = await Ciclo.find({ contenedorId: id, fechaCierre: { $ne: null } })
     .populate('clienteId', 'nombre')
     .sort({ creadoEn: -1 })
     .lean()

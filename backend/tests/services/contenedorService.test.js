@@ -563,6 +563,24 @@ describe('contenedorService', () => {
       expect(result.ciclos).toEqual(mockCiclos)
     })
 
+    it('solo incluye en el historial los ciclos completados (con fechaCierre)', async () => {
+      Contenedor.findById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          lean: jest.fn().mockResolvedValue({ _id: 'cont-id', codigoBIC: 'MSCU1234567' }),
+        }),
+      })
+      Ciclo.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          sort: jest.fn().mockReturnValue({ lean: jest.fn().mockResolvedValue([]) }),
+        }),
+      })
+
+      await obtenerPorId('cont-id')
+
+      // El ciclo en curso (fechaCierre: null) no se registra en el historial
+      expect(Ciclo.find).toHaveBeenCalledWith({ contenedorId: 'cont-id', fechaCierre: { $ne: null } })
+    })
+
     it('lanza error 404 si el contenedor no existe', async () => {
       Contenedor.findById.mockReturnValue({
         populate: jest.fn().mockReturnValue({
