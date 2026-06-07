@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
@@ -74,7 +74,7 @@ function Privacidad() {
             Conforme al RGPD tienes derecho a acceder, rectificar, suprimir,
             limitar el tratamiento y portar tus datos. Para ejercer estos
             derechos contacta con nosotros a través de la página de{' '}
-            <a href="/contacto" className="pagina-estatica__contacto-valor">Contacto</a>.
+            <Link to="/contacto" className="pagina-estatica__contacto-valor">Contacto</Link>.
           </p>
         </section>
 

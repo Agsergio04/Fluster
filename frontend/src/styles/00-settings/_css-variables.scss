@@ -30,6 +30,11 @@
   --color-box-border: #{vars.$color-box-border-light};
   --color-box-text:   #{vars.$color-box-text-light};
 
+  // ── Texto semántico accesible (sobre fondos neutros) ──────────
+  --color-error-text:   #{vars.$color-error-text-light};
+  --color-success-text: #{vars.$color-success-text-light};
+  --color-enlace:       #{vars.$color-enlace-light};
+
   // ── Semáforo ──────────────────────────────────────────────────
   --color-sin_costes:          #{vars.$color-sin-costes};
   --color-sin_costes-inner:    #{vars.$color-sin-costes-inner};
@@ -158,6 +163,10 @@
   --color-box-border: #{vars.$color-box-border-light};
   --color-box-text:   #{vars.$color-box-text-light};
 
+  --color-error-text:   #{vars.$color-error-text-light};
+  --color-success-text: #{vars.$color-success-text-light};
+  --color-enlace:       #{vars.$color-enlace-light};
+
   --color-sin_costes:          #{vars.$color-sin-costes};
   --color-sin_costes-inner:    #{vars.$color-sin-costes-inner};
   --color-primer_tramo:        #{vars.$color-primer-tramo};
@@ -197,6 +206,10 @@
 
   --color-box-border: #{vars.$color-box-border-dark};
   --color-box-text:   #{vars.$color-box-text-dark};
+
+  --color-error-text:   #{vars.$color-error-text-dark};
+  --color-success-text: #{vars.$color-success-text-dark};
+  --color-enlace:       #{vars.$color-enlace-dark};
 
   --color-sin_costes:          #{vars.$color-sin-costes-dark};
   --color-sin_costes-inner:    #{vars.$color-sin-costes-dark-inner};
@@ -238,6 +251,10 @@
 
     --color-box-border: #{vars.$color-box-border-dark};
     --color-box-text:   #{vars.$color-box-text-dark};
+
+    --color-error-text:   #{vars.$color-error-text-dark};
+    --color-success-text: #{vars.$color-success-text-dark};
+    --color-enlace:       #{vars.$color-enlace-dark};
 
     --color-sin_costes:          #{vars.$color-sin-costes-dark};
     --color-sin_costes-inner:    #{vars.$color-sin-costes-dark-inner};

@@ -32,7 +32,7 @@
   &__error-foto {
     font-family: var(--font-body);
     font-size:   var(--text-16);
-    color:       var(--color-error);
+    color:       var(--color-error-text);
     text-align:  center;
     margin:      0;
   }
@@ -72,7 +72,7 @@
     flex-direction:   column;
     align-items:      stretch;
     gap:              var(--space-32);
-    width:            28rem; // 448px
+    width:            31rem; // 496px → inputs a 27rem (como en registro/login)
     padding:          var(--space-32);
     background-color: var(--color-card-almacen);
     border-radius:    var(--radius);
@@ -103,10 +103,11 @@
       border-top:  1px solid var(--color-card-divider);
     }
 
-    // Botones centrados respecto a los campos a ancho completo.
+    // Botones a ancho completo de la columna, igual que los campos (se libera
+    // el max-width propio de cada botón; el width: 100% ya los hace llenar).
     .btn-registro-login,
     .btn-operaciones-perfil {
-      align-self: center;
+      max-width: none;
     }
 
     .btn-operaciones-perfil {

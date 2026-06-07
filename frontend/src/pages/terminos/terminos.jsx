@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import useTema from '../../hooks/useTema'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getUsuario } from '../../services/session'
@@ -76,7 +76,7 @@ function Terminos() {
           <h2 className="pagina-estatica__seccion-titulo">5. Contacto</h2>
           <p className="pagina-estatica__seccion-texto">
             Para cualquier consulta sobre estos términos puedes contactarnos a través
-            de la página de <a href="/contacto" className="pagina-estatica__contacto-valor">Contacto</a>.
+            de la página de <Link to="/contacto" className="pagina-estatica__contacto-valor">Contacto</Link>.
           </p>
         </section>
       </main>

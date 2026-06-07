@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './login.scss'
 import useTema from '../../hooks/useTema'
@@ -28,6 +28,9 @@ function Login() {
   const [errorCorreo, setErrorCorreo] = useState('')
   const [errorContrasenia, setErrorContrasenia] = useState('')
   const [cargando, setCargando] = useState(false)
+  // Guard síncrono contra envíos duplicados: el estado `cargando` no se actualiza
+  // a tiempo dentro del mismo dispatch, así que un ref evita una segunda petición.
+  const enviando = useRef(false)
 
   /**
    * Valida los campos, llama al servicio de autenticación y redirige al destino
@@ -35,6 +38,7 @@ function Login() {
    * implica un chequeo de contenedores; sin rol válido cae a la raíz.
    */
   const handleIniciarSesion = async () => {
+    if (enviando.current) return
     setErrorCorreo('')
     setErrorContrasenia('')
 
@@ -42,6 +46,7 @@ function Login() {
     if (!contrasenia.trim()) { setErrorContrasenia('Introduce tu contraseña'); return }
 
     try {
+      enviando.current = true
       setCargando(true)
       const usuario = await login(correo.trim(), contrasenia)
       navigate(await resolverDestinoRol(usuario.rol))
@@ -51,6 +56,7 @@ function Login() {
       if (campo === 'correo') setErrorCorreo(mensaje)
       else                    setErrorContrasenia(mensaje)
     } finally {
+      enviando.current = false
       setCargando(false)
     }
   }
@@ -87,7 +93,12 @@ function Login() {
           className="login__panel"
           onSubmit={e => { e.preventDefault(); handleIniciarSesion() }}
         >
-          <h1 className="login__titulo">Iniciar sesión</h1>
+          <header className="login__cabecera">
+            <h1 className="login__titulo">Iniciar sesión</h1>
+            <p className="login__subtitulo">
+              Bienvenido al panel de inicio de sesión de Fluster. Por favor, introduce tus credenciales para acceder a tu cuenta y gestionar tus contenedores de manera eficiente.
+            </p>
+          </header>
           <EntradaDatosLogin
             correo={correo}
             onCorreoCambio={e => setCorreo(e.target.value)}
@@ -97,7 +108,6 @@ function Login() {
             errorContrasenia={errorContrasenia}
           />
           <BotonesLogin
-            onIniciarSesion={handleIniciarSesion}
             onIrRegistro={() => navigate('/registro')}
             cargando={cargando}
           />

@@ -22,8 +22,8 @@ function EyeClosedIcon() {
 
 /**
  * Campo de contraseña con botón de mostrar/ocultar integrado.
- * autoComplete="current-password" ayuda a los gestores de contraseñas a
- * identificar el campo y rellenarlo correctamente.
+ * autoComplete ayuda a los gestores de contraseñas: 'current-password' para
+ * iniciar sesión (por defecto) y 'new-password' al crear/cambiar la contraseña.
  */
 function InputContrasenia({
   id,
@@ -37,6 +37,7 @@ function InputContrasenia({
   hint,
   name,
   size,
+  autoComplete = 'current-password',
 }) {
   const [visible, setVisible] = useState(false)
 
@@ -69,7 +70,7 @@ function InputContrasenia({
           disabled={disabled}
           required={required}
           name={name}
-          autoComplete="current-password"
+          autoComplete={autoComplete}
         />
         <button
           className="input__eye-btn"

@@ -73,6 +73,17 @@ $color-error-fondo-hover: #B71C1C; // hover más oscuro para el botón de borrar
 // oscuro en claro y oscuro, así que el texto siempre debe ser blanco).
 $color-text-on-error: #FFFFFF;
 
+// Texto de error/éxito/enlace accesible (AA/AAA) sobre fondos NEUTROS (bg,
+// surface, primary-off). Theme-aware: tono oscuro en claro y claro en oscuro,
+// al contrario que $color-segundo_tramo/$color-sin-costes (pensados como FONDO
+// con texto encima). El enlace usa el mismo espectro azul que el primario.
+$color-error-text-light:   #B3261E;
+$color-error-text-dark:    #FFB4AB;
+$color-success-text-light: #15803D;
+$color-success-text-dark:  #4ADE80;
+$color-enlace-light:       #155A93; // = $color-secondary-dark (azul oscuro)
+$color-enlace-dark:        #7CC5FA; // = $color-secondary-hover (azul claro)
+
 // Separador translúcido sobre tarjetas de color (mismo valor en ambos temas:
 // las tarjetas son de tono medio, así que una línea blanca suave funciona).
 $color-card-divider: rgba(255 255 255 / 0.2);

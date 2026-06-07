@@ -24,6 +24,7 @@ function CambiarContrasenia({
         onChange={onContraseniaActualCambio}
         error={errorContraseniaActual}
         disabled={disabled}
+        autoComplete="current-password"
       />
       <InputContrasenia
         id="cambiar-contrasenia-nueva"
@@ -32,6 +33,8 @@ function CambiarContrasenia({
         value={contrasenia}
         onChange={onContraseniaCambio}
         error={errorContrasenia}
+        disabled={disabled}
+        autoComplete="new-password"
       />
       <RequisitosContrasenia valor={contrasenia} />
       <InputContrasenia
@@ -41,6 +44,8 @@ function CambiarContrasenia({
         value={confirmacion}
         onChange={onConfirmacionCambio}
         error={errorConfirmacion}
+        disabled={disabled}
+        autoComplete="new-password"
       />
       <BotonRegistroLogin onClick={onConfirmar} disabled={disabled}>
         Cambiar la contraseña

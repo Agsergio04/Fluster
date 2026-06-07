@@ -114,7 +114,12 @@ function Registro() {
           className="registro__panel"
           onSubmit={e => { e.preventDefault(); handleCrearCuenta() }}
         >
-          <h1 className="registro__titulo">Registro</h1>
+          <header className="registro__cabecera">
+            <h1 className="registro__titulo">Registro</h1>
+            <p className="registro__subtitulo">
+              Crea tu cuenta para gestionar tus contenedores y controlar los costes de demora y detención.
+            </p>
+          </header>
 
           <EntradaDatosRegistro
             nombre={nombre}

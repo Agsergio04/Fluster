@@ -66,6 +66,8 @@ function PanelDeControl() {
       setAviso('No puedes cambiar tu propio rol')
       return
     }
+    // Si ya tiene ese rol, no hay nada que cambiar: evita un PUT redundante
+    if (item.rol === nuevoRol) return
     try {
       const actualizado = await actualizarRol(item.id, nuevoRol)
       setUsuarios(prev => prev.map(u => u._id === item.id ? { ...u, rol: actualizado.rol } : u))

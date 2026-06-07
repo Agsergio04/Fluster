@@ -102,6 +102,10 @@ function SubirFotoOcr({
               <span className="subir-foto-ocr__dropzone-formatos">Formatos aceptados: JPG, PNG</span>
             </button>
 
+            {errorOcr && (
+              <p className="subir-foto-ocr__error-ocr" role="alert">{errorOcr}</p>
+            )}
+
             <div className="subir-foto-ocr__info">
               <h3 className="subir-foto-ocr__info-titulo">¿Cómo funciona?</h3>
               <p className="subir-foto-ocr__info-texto">

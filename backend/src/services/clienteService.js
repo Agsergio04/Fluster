@@ -8,13 +8,22 @@ const Cliente = require('../models/Cliente')
 const Ciclo = require('../models/Ciclo')
 
 /**
- * Crea un nuevo cliente.
+ * Crea un cliente, o devuelve el existente si ya hay uno con el mismo nombre.
+ * La entrada a puerto solo aporta el nombre del cliente (texto libre), así que
+ * sin esta deduplicación cada repetición de un nombre crearía un Cliente nuevo,
+ * ensuciando listados, filtros e informes. La comparación ignora mayúsculas.
  *
  * @param {{ nombre: string }} datos
  * @returns {Promise<object>}
  */
 async function crear({ nombre }) {
-  return Cliente.create({ nombre })
+  const nombreLimpio = (nombre ?? '').trim()
+
+  const existente = await Cliente.findOne({ nombre: nombreLimpio })
+    .collation({ locale: 'es', strength: 2 })
+  if (existente) return existente
+
+  return Cliente.create({ nombre: nombreLimpio })
 }
 
 /**

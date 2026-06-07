@@ -46,6 +46,13 @@ function MeterContenedor() {
    */
   const procesarFoto = (fichero) => {
     if (!fichero) return
+    // El drag&drop no respeta el `accept` del input, así que validamos el tipo
+    // aquí (cubre selección y arrastre) para no enviar archivos no-imagen al OCR.
+    const TIPOS_VALIDOS = ['image/jpeg', 'image/png']
+    if (!TIPOS_VALIDOS.includes(fichero.type)) {
+      setErrorOcr('Formato no admitido. Sube una imagen JPG o PNG.')
+      return
+    }
     const reader = new FileReader()
     reader.onload = async () => {
       const base64 = reader.result
@@ -127,7 +134,7 @@ function MeterContenedor() {
           <input
             ref={inputFotoRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png"
             aria-label="Seleccionar foto del contenedor"
             aria-hidden="true"
             style={{ display: 'none' }}

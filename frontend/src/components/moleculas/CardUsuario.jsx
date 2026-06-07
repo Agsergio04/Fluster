@@ -49,7 +49,11 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', esPropio = false,
                 key={r}
                 rol={r}
                 seleccionado={r === rol}
-                onClick={() => onCambiarRol?.(r)}
+                // Los roles no asignados se muestran en estado "--off"
+                // (disponibles para cambiar), como define el diseño.
+                active={r === rol}
+                // El rol ya asignado no dispara click (evita un PUT redundante)
+                onClick={r === rol ? undefined : () => onCambiarRol?.(r)}
               />
             ))}
           </div>

@@ -38,6 +38,7 @@ function EntradaDatosRegistro({
         value={contrasenia}
         onChange={onContraseniaCambio}
         error={errorContrasenia}
+        autoComplete="new-password"
       />
       <RequisitosContrasenia valor={contrasenia} />
       <InputContrasenia
@@ -47,6 +48,7 @@ function EntradaDatosRegistro({
         value={confirmacion}
         onChange={onConfirmacionCambio}
         error={errorConfirmacion}
+        autoComplete="new-password"
       />
     </div>
   )

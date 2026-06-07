@@ -13,6 +13,8 @@ const LABELS = {
  *
  * @param {'admin'|'gestor'|'operador'} rol
  * @param {boolean} seleccionado - true si este rol es el asignado actualmente
+ * @param {boolean} active        - false aplica el estado '--off' (rol no asignado, disponible)
+ * @param {boolean} disabled
  */
 function BotonRolesCardUsuario({ rol = 'operador', active = true, seleccionado = false, disabled = false, onClick }) {
   const modificador = seleccionado ? '--seleccionado' : !active ? '--off' : ''

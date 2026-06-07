@@ -19,15 +19,15 @@
     padding:          var(--space-8);
     border:           none;
     border-radius:    var(--radius);
-    background-color: var(--color-box-border);
+    background-color: var(--color-bg);
     font-family:      var(--font-body);
     font-size:        var(--texto-tamanio-24);
     font-weight:      var(--font-weight-regular);
     line-height:      1;
-    color:            var(--color-box-text);
+    color:            var(--color-text);
 
     &::placeholder {
-      color: var(--color-box-text);
+      color: var(--color-text-subtle);
     }
 
     &:focus-visible {

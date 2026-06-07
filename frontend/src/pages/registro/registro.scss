@@ -30,6 +30,59 @@
     gap:             var(--space-24);
     padding:         var(--space-48) var(--space-24);
     overflow-y:      auto;
+
+    // Los formularios usan clases sueltas (sin BEM), así que se anclan aquí
+    // —a un elemento real— en lugar de a `.registro`, que no existe en el DOM.
+
+    // Campos del formulario: columna a ancho de la propia columna del panel
+    .entrada-datos-registro {
+      width:          100%;
+      max-width:      27rem;
+      display:        flex;
+      flex-direction: column;
+      gap:            var(--space-16);
+    }
+
+    // Tarjetas de rol a ancho completo, con icono y texto a la izquierda y algo
+    // más de aire interior (estilo Figma).
+    .botones-seleccion-rol {
+      max-width: none;
+    }
+
+    .btn-rol {
+      max-width: none;
+      gap:       var(--space-16);
+      padding:   var(--space-16);
+
+      .btn-rol__texto {
+        align-items: flex-start;
+        text-align:  left;
+      }
+    }
+
+    // Botón "Crear cuenta" a ancho completo de la columna + enlace bajo él
+    .botones-registro {
+      width:          100%;
+      max-width:      27rem;
+      display:        flex;
+      flex-direction: column;
+      align-items:    center;
+      gap:            var(--space-16);
+
+      .btn-registro-login {
+        max-width: none;
+      }
+    }
+  }
+
+  &__cabecera {
+    width:          100%;
+    max-width:      27rem;
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-8);
+    text-align:     center;
   }
 
   &__titulo {
@@ -38,15 +91,25 @@
     font-weight: var(--font-weight-regular);
     line-height: 1;
     color:       var(--color-box-text);
-    text-align:  center;
+    margin:      0;
+  }
+
+  &__subtitulo {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--leading-snug);
+    color:       var(--color-box-text);
+    margin:      0;
   }
 
   &__rol {
+    width:          100%;
+    max-width:      27rem;
     display:        flex;
     flex-direction: column;
     align-items:    center;
     gap:            var(--space-16);
-    width:          100%;
   }
 
   &__rol-titulo {
@@ -56,13 +119,15 @@
     line-height: 1;
     color:       var(--color-box-text);
     text-align:  center;
+    margin:      0;
   }
 
   &__rol-error {
     font-family: var(--font-body);
     font-size:   var(--text-16);
-    color:       var(--color-error);
+    color:       var(--color-error-text);
     text-align:  center;
+    margin:      0;
   }
 
   @media (max-width: 767px) {

@@ -43,7 +43,9 @@ function CabeceraHeader({ loggeado = false, menuAbierto = false, tema = 'light',
           <BotonMenuHamburguesa
             onClick={onMenuHamburguesa}
             expanded={menuAbierto}
-            controls="menu-navegacion"
+            // Solo referenciamos el panel cuando existe en el DOM (menú abierto):
+            // con el menú cerrado el <nav id="menu-navegacion"> no está montado.
+            controls={menuAbierto ? 'menu-navegacion' : undefined}
           />
         )}
         <BotonCambiarTema tema={tema} onClick={onToggleTema} />

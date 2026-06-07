@@ -12,14 +12,26 @@ describe('clienteService', () => {
   // crear
   // ---------------------------------------------------------------------------
   describe('crear', () => {
-    it('crea un cliente y devuelve el objeto creado', async () => {
+    it('crea un cliente nuevo cuando no existe otro con ese nombre', async () => {
       const mockCliente = { _id: 'cli-id', nombre: 'Mercadona' }
+      Cliente.findOne.mockReturnValue({ collation: jest.fn().mockResolvedValue(null) })
       Cliente.create.mockResolvedValue(mockCliente)
 
       const result = await crear({ nombre: 'Mercadona' })
 
       expect(Cliente.create).toHaveBeenCalledWith({ nombre: 'Mercadona' })
       expect(result).toEqual(mockCliente)
+    })
+
+    it('reutiliza el cliente existente (sin distinguir mayúsculas) en vez de duplicarlo', async () => {
+      const existente = { _id: 'cli-id', nombre: 'Mercadona' }
+      Cliente.findOne.mockReturnValue({ collation: jest.fn().mockResolvedValue(existente) })
+
+      const result = await crear({ nombre: '  mercadona  ' })
+
+      expect(Cliente.findOne).toHaveBeenCalledWith({ nombre: 'mercadona' })
+      expect(Cliente.create).not.toHaveBeenCalled()
+      expect(result).toEqual(existente)
     })
   })
 
