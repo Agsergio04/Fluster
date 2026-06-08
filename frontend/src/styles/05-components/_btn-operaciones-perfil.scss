@@ -6,23 +6,24 @@
   width:            100%;
   max-width:        16.3125rem; // 261px, Figma-exact
   padding:          var(--space-8);
-  background-color: var(--color-secondary);
+  // Azul claro que se distingue de la tarjeta de perfil (1.4.11)
+  background-color: var(--color-btn-card);
   border-radius:    var(--radius);
   font-family:      var(--font-body);
   font-size:        var(--text-16);
   font-weight:      var(--font-weight-regular);
   line-height:      1;
-  color:            var(--color-box-text);
+  color:            var(--color-btn-card-text);
   text-align:       center;
   cursor:           pointer;
   transition:       background-color var(--transition-fast);
 
   &:hover:not(:disabled) {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--color-btn-card-hover);
   }
 
   &:disabled {
-    background-color: var(--color-secondary-off);
+    background-color: var(--color-btn-card-off);
     cursor:           not-allowed;
   }
 }

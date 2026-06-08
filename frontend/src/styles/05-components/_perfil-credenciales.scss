@@ -122,6 +122,17 @@
     .btn-operaciones-perfil {
       margin-top: var(--space-8);
     }
+
+    // El botón de guardar (compartido con login/registro) usa aquí el azul claro
+    // de los botones de tarjeta para distinguirse del azul de la tarjeta del
+    // perfil. Solo se reestiliza en este contexto; en login/registro no cambia.
+    .btn-registro-login {
+      background-color: var(--color-btn-card);
+      color:            var(--color-btn-card-text);
+
+      &:hover:not(:disabled) { background-color: var(--color-btn-card-hover); }
+      &:disabled            { background-color: var(--color-btn-card-off); }
+    }
   }
 
   &__titulo {

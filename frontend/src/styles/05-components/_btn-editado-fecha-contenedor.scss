@@ -4,8 +4,9 @@
   align-items:      center;
   justify-content:  center;
   padding:          var(--space-8);
-  background-color: var(--color-card-semaforo);
-  color:            var(--color-box-text);
+  // Azul claro que se distingue de la tarjeta de ciclo (que es del color secundario)
+  background-color: var(--color-btn-card);
+  color:            var(--color-btn-card-text);
   border-radius:    var(--radius);
   transition:       background-color var(--transition-fast);
 
@@ -16,7 +17,7 @@
   }
 
   &:hover:not(:disabled) {
-    filter: brightness(0.92);
+    background-color: var(--color-btn-card-hover);
   }
 
   &:disabled {
