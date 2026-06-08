@@ -116,9 +116,11 @@ Requisitos previos: [Docker](https://www.docker.com/) y [Docker Compose](https:/
 git clone https://github.com/Agsergio04/Fluster.git
 cd Fluster
 
-# 2. Copiar y configurar las variables de entorno
-cp backend/.env.example backend/.env
-# Editar backend/.env con los valores correspondientes
+# 2. (Opcional) Para una prueba local no hace falta configurar nada: el compose
+#    ya usa la Mongo del propio stack y un JWT_SECRET por defecto. docker compose
+#    NO lee backend/.env; para fijar tu propio secreto, expórtalo o ponlo en un
+#    .env en la RAÍZ del repo (compose lo sustituye en ${JWT_SECRET}):
+#    echo "JWT_SECRET=una_clave_larga_y_aleatoria" > .env
 
 # 3. Levantar todos los servicios
 docker compose up --build
@@ -173,7 +175,7 @@ npm run seed
 npm run seed:datos
 ```
 
-Tras `npm run seed:datos`, la consola muestra las credenciales de los usuarios de ejemplo. Hay un usuario de cada tipo para probar la aplicación:
+Tras `npm run seed:datos`, la consola muestra los usuarios creados (correo y rol). Hay un usuario de cada tipo para probar la aplicación, con estas credenciales:
 
 | Rol | Correo | Contraseña | Notas |
 | --- | --- | --- | --- |
