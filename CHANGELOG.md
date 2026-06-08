@@ -78,7 +78,6 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Las etiquetas de los campos (encima de los inputs) pasan a peso *semibold* para resaltar mejor sobre el campo, en los formularios (login, registro, perfil…) y en el panel de generar informe.
 - Auditoría final de regresiones (sin regresiones por los cambios de tokens), que destapó tres defectos de contraste preexistentes ya corregidos: los botones de **borrar usuario** y **borrar contenedor** pasan a rojo sólido accesible (`error-fondo`) con texto/icono blanco (de 6.11 a 8.0:1 en reposo y de 2.22 a 9.4:1 en hover); el **icono del título de «Meter contenedor»** usa `--color-enlace` (de 2.2 a 7.2:1 sobre la superficie); y los **placeholders** de los campos de BIC (OCR y manual) usan el token `--color-placeholder` AAA (de 4.6 a 7.3:1).
 - Las **tarjetas de funcionalidades del home** ya no se desplazan al pasar el cursor (se elimina el `translateY` que provocaba un salto; el realce se hace solo con la sombra).
-- La **foto de perfil** se muestra completa (`object-fit: contain` con marco neutro) en vez de recortada (`cover`).
 
 ### Eliminado
 - `frontend/node_modules` y los archivos de log dejan de versionarse (se añaden al `.gitignore`); la cobertura de tests (`coverage/`) tampoco se versiona.
