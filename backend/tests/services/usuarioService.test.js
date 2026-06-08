@@ -127,6 +127,29 @@ describe('usuarioService', () => {
       expect(result.rol).toBe('gestor')
     })
 
+    it('lanza error 403 al intentar cambiar el rol de un admin protegido', async () => {
+      Usuario.findById.mockResolvedValue({ _id: 'user-id', rol: 'admin', protegido: true })
+      Usuario.findOne.mockResolvedValue(null)
+
+      await expect(
+        actualizar('user-id', { rol: 'gestor' })
+      ).rejects.toMatchObject({ status: 403 })
+      expect(Usuario.findByIdAndUpdate).not.toHaveBeenCalled()
+    })
+
+    it('permite editar el nombre de un admin protegido (solo se protege el rol)', async () => {
+      Usuario.findById.mockResolvedValue({ _id: 'user-id', rol: 'admin', protegido: true })
+      Usuario.findByIdAndUpdate.mockReturnValue({
+        select: jest.fn().mockReturnValue({
+          lean: jest.fn().mockResolvedValue({ _id: 'user-id', nombre: 'Nuevo', rol: 'admin' }),
+        }),
+      })
+
+      const result = await actualizar('user-id', { nombre: 'Nuevo' })
+
+      expect(result.nombre).toBe('Nuevo')
+    })
+
     it('no incluye contrasena en la actualización aunque venga en el body', async () => {
       const mockUser = { _id: 'user-id', rol: 'gestor' }
       Usuario.findById.mockResolvedValue(mockUser)
@@ -205,6 +228,14 @@ describe('usuarioService', () => {
       Usuario.findById.mockResolvedValue(null)
 
       await expect(eliminar('non-existent')).rejects.toMatchObject({ status: 404 })
+    })
+
+    it('lanza error 403 al intentar eliminar un admin protegido', async () => {
+      const mockUser = { _id: 'user-id', rol: 'admin', protegido: true, deleteOne: jest.fn() }
+      Usuario.findById.mockResolvedValue(mockUser)
+
+      await expect(eliminar('user-id')).rejects.toMatchObject({ status: 403 })
+      expect(mockUser.deleteOne).not.toHaveBeenCalled()
     })
 
     it('lanza error 409 (restrict) si el usuario tiene datos asociados', async () => {

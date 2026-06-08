@@ -43,6 +43,7 @@ function calcularCoste(diasTotales, diasLibres, tramos) {
 // ─────────────────────────────────────────────
 
 const USUARIOS = [
+  { nombre: 'Sergio Aragón García', correo: 'sergioaragongarcia@gmail.com', contrasena: 'Sergio1234', rol: 'admin', protegido: true },
   { nombre: 'Administrador',  correo: 'admin@fluster.com',      contrasena: 'Admin1234', rol: 'admin'    },
   { nombre: 'Luis García',    correo: 'luis@gmail.com',         contrasena: 'luis',  rol: 'gestor'   },
   { nombre: 'Gestor Dos',     correo: 'gestor2@fluster.com',    contrasena: 'Test1234',  rol: 'gestor'   },

@@ -12,7 +12,7 @@ const ROLES = ['admin', 'gestor', 'operador']
  * Permite ver los datos del usuario, cambiar su rol pulsando uno de los
  * tres botones de rol, y eliminar la cuenta de forma permanente.
  */
-function CardUsuario({ foto, nombre, correo, rol = 'operador', esPropio = false, onCambiarRol, onEliminar }) {
+function CardUsuario({ foto, nombre, correo, rol = 'operador', esPropio = false, protegido = false, onCambiarRol, onEliminar }) {
   return (
     <div className="card-usuario">
       <div className="card-usuario__info">
@@ -42,7 +42,9 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', esPropio = false,
       </div>
       <div className="card-usuario__acciones">
         <div className="card-usuario__cambio-rol">
-          <p className="card-usuario__etiqueta">Selecciona su rol</p>
+          <p className="card-usuario__etiqueta">
+            {protegido ? 'Rol protegido' : 'Selecciona su rol'}
+          </p>
           <div className="card-usuario__botones-rol">
             {ROLES.map(r => (
               <BotonRolesCardUsuario
@@ -52,14 +54,17 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', esPropio = false,
                 // Los roles no asignados se muestran en estado "--off"
                 // (disponibles para cambiar), como define el diseño.
                 active={r === rol}
-                // El rol ya asignado no dispara click (evita un PUT redundante)
-                onClick={r === rol ? undefined : () => onCambiarRol?.(r)}
+                // Un admin protegido no puede cambiar de rol: se bloquean las
+                // alternativas (la asignada nunca dispara click, evita un PUT redundante).
+                disabled={protegido && r !== rol}
+                onClick={r === rol || protegido ? undefined : () => onCambiarRol?.(r)}
               />
             ))}
           </div>
         </div>
         <div className="card-usuario__borrar">
-          <BotonBorrarUsuario onClick={onEliminar} disabled={esPropio} />
+          {/* Un usuario protegido (o tu propia cuenta) no se puede eliminar */}
+          <BotonBorrarUsuario onClick={onEliminar} disabled={esPropio || protegido} />
         </div>
       </div>
     </div>

@@ -84,6 +84,13 @@ async function actualizar(id, cambios) {
     }
   }
 
+  // Admin protegido: no se le puede cambiar el rol (no se le puede quitar admin)
+  if (usuario.protegido && cambios.rol && cambios.rol !== usuario.rol) {
+    const err = new Error('No se puede cambiar el rol de un administrador protegido')
+    err.status = 403
+    throw err
+  }
+
   // Proteger al último admin: no se puede cambiar su rol
   if (cambios.rol && cambios.rol !== 'admin' && usuario.rol === 'admin') {
     const totalAdmins = await Usuario.countDocuments({ rol: 'admin' })
@@ -153,6 +160,13 @@ async function eliminar(id) {
   if (!usuario) {
     const err = new Error('Usuario no encontrado')
     err.status = 404
+    throw err
+  }
+
+  // Admin protegido: tampoco se puede eliminar (borrarlo equivaldría a quitarle el rol)
+  if (usuario.protegido) {
+    const err = new Error('No se puede eliminar un administrador protegido')
+    err.status = 403
     throw err
   }
 

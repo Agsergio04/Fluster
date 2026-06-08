@@ -124,7 +124,7 @@ cp backend/.env.example backend/.env
 docker compose up --build
 ```
 
-Al arrancar, Docker **siembra automáticamente** la base de datos local (servicio `seed` de un solo uso): crea el administrador y los datos de demostración antes de poner en marcha el backend, usando la Mongo del propio stack (no el cluster Atlas). Inicia sesión con `admin@fluster.com` / `Admin1234`.
+Al arrancar, Docker **siembra automáticamente** la base de datos local (servicio `seed` de un solo uso): crea el administrador y los datos de demostración antes de poner en marcha el backend, usando la Mongo del propio stack (no el cluster Atlas). Inicia sesión como administrador con `sergioaragongarcia@gmail.com` / `Sergio1234` (ver la tabla de [usuarios de prueba](#datos-de-prueba-seed)).
 
 Una vez iniciado, la aplicación estará disponible en `http://localhost` (puerto 80, servido por nginx). La API es accesible a través del proxy en `http://localhost/api`.
 
@@ -173,13 +173,22 @@ npm run seed
 npm run seed:datos
 ```
 
-Tras `npm run seed:datos`, la consola muestra las credenciales de los usuarios de ejemplo (admin, gestor y operador) para iniciar sesión.
+Tras `npm run seed:datos`, la consola muestra las credenciales de los usuarios de ejemplo. Hay un usuario de cada tipo para probar la aplicación:
+
+| Rol | Correo | Contraseña | Notas |
+| --- | --- | --- | --- |
+| **admin** (protegido) | `sergioaragongarcia@gmail.com` | `Sergio1234` | Administrador principal. **No se le puede quitar el rol de admin ni eliminar** (en el panel de control aparece como «Rol protegido» con los botones deshabilitados). |
+| admin | `admin@fluster.com` | `Admin1234` | Segundo administrador (sí editable). |
+| gestor | `gestor2@fluster.com` | `Test1234` | Seguimiento, tarifas, almacén e informes. |
+| operador | `operador2@fluster.com` | `Test1234` | Meter contenedores y registrar eventos. |
+
+> El administrador `sergioaragongarcia@gmail.com` está marcado como **protegido** (`protegido: true`): la API rechaza con **403** cualquier intento de cambiarle el rol o eliminarlo, de modo que el sistema siempre conserva su administrador principal.
 
 ---
 
 ## Uso / Primeros pasos
 
-Tras arrancar la aplicación y poblar la base de datos con `npm run seed:datos`, abre el frontend e inicia sesión con uno de los usuarios de ejemplo que muestra la consola del seed (admin, gestor u operador).
+Tras arrancar la aplicación y poblar la base de datos con `npm run seed:datos`, abre el frontend e inicia sesión con uno de los [usuarios de prueba](#datos-de-prueba-seed) de la tabla anterior (admin, gestor u operador).
 
 Flujo básico según el rol:
 

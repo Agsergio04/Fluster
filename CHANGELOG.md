@@ -14,9 +14,12 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Mensaje de estado vacío «Aún no hay ciclos completados» en el historial de un contenedor sin ciclos cerrados.
 - Confirmación mediante modal al eliminar una naviera en Tarifas (mismo patrón que el resto de borrados).
 - Tokens de color accesibles para texto: `--color-error-text`, `--color-success-text` y `--color-enlace` (theme-aware, AA/AAA).
+- **Administrador protegido**: campo `protegido` en el modelo de usuario. El administrador principal (Sergio Aragón García, `sergioaragongarcia@gmail.com`) se crea protegido en el seed; en el panel de control sus botones de rol y de borrado salen deshabilitados («Rol protegido»).
+- Tabla de **usuarios de prueba** (uno de cada rol) documentada en el README, con sus credenciales.
 
 ### Seguridad
 - El registro público ya no permite asignarse el rol `admin` (responde 403); el rol admin solo se crea con el script de administración.
+- Un administrador **protegido** no puede perder el rol de admin ni ser eliminado: el servicio de usuarios responde **403** ante cualquier intento, garantizando que el administrador principal del sistema siempre permanece.
 - El rol del cliente se deriva del JWT firmado, no del objeto `usuario` de `localStorage`, de modo que editar `localStorage` ya no concede permisos.
 - Algoritmo del JWT fijado a HS256 en firma y verificación (rechaza `alg: none` y la confusión de algoritmo).
 - Validación del entorno al arrancar: el servidor no arranca con un `JWT_SECRET` ausente o de ejemplo (fatal en producción).

@@ -39,6 +39,12 @@ const usuarioSchema = new Schema(
       type: String,
       default: null,
     },
+    // Admin protegido: no se le puede quitar el rol de admin ni eliminarlo.
+    // Garantiza que el administrador principal del sistema siempre permanece.
+    protegido: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: { createdAt: 'creadoEn', updatedAt: false } }
 )

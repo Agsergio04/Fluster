@@ -51,6 +51,8 @@ function PanelDeControl() {
       rol:      u.rol,
       // La propia cuenta del admin en sesión no se puede eliminar
       esPropio: u._id === usuario?.id,
+      // Admin protegido: no se le puede cambiar el rol ni eliminar
+      protegido: u.protegido ?? false,
     }))
 
   /**
