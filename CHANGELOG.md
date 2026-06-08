@@ -37,6 +37,8 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - El registro valida la contraseña en el servidor (mínimo 8 caracteres **y al menos un número** → 400), no solo en el cliente; el checklist de requisitos del frontend incluye también «Al menos un número».
 
 ### Cambiado
+- **Informes PDF con columnas en español**: las cabeceras pasan de abreviaturas (`D.L. Dem.`, `D.F. Det.`, `Coste Dem.`…) a términos completos —«sobreestadía» (demurrage) y «detención» (detention)— con sus días libres, días facturables, coste por tramo (€) y coste total (€); el informe individual añade «Inicio/Fin sobreestadía» e «Inicio/Fin detención».
+- **Precedencia de los filtros de informe** (`generarDatos`): el rango de fechas Desde/Hasta tiene prioridad y la fecha específica se ignora cuando ya hay rango (antes la fecha específica sobreescribía al rango); y los criterios de orden se **combinan** en una sola ordenación —fecha de cierre como clave principal y código BIC como desempate alfabético— en lugar de que el alfabético pisara al orden por fecha. Cubierto con tests nuevos de `generarDatos` (la cobertura de `informeService.js` sube del 45 % al 85 %).
 - El seed de demostración mueve dos contenedores de INACTIVO a PUERTO (uno en *free time* con 7 días de margen y otro en *primer tramo*) para que el semáforo muestre todos los tramos durante la semana de la exposición; el *segundo tramo* ya es permanente.
 - El panel de control muestra como máximo **6 tarjetas de usuario por página** (antes 9); a partir de ahí aparece la paginación.
 - En la tarjeta de tarifa compacta, en móviles muy estrechos (≤400px) el par Det./Sob. se apila para que cada celda tenga más espacio.

@@ -42,7 +42,7 @@ Los tests de servicios validan la lógica de negocio en aislamiento, sin conexi�
 | `semaforoService.test.js` | Clasificación del nivel de riesgo (`sin_costes`, `primer_tramo`, `segundo_tramo`, `inactivo`) según los días transcurridos respecto a los días libres y los tramos de cada naviera. |
 | `navieraService.test.js` | CRUD de navieras: creación, consulta, actualización, eliminación. Manejo de 404 cuando la naviera no existe. |
 | `clienteService.test.js` | CRUD de clientes con los mismos escenarios: éxito y recurso no encontrado. |
-| `informeService.test.js` | Generación de informes: inmutabilidad del snapshot una vez creado, datos agregados correctos. |
+| `informeService.test.js` | Generación de informes: inmutabilidad del snapshot una vez creado, datos agregados correctos, y los filtros/orden de `generarDatos` (solo ciclos cerrados, prioridad del rango sobre la fecha específica y combinación de orden por fecha + desempate alfabético por BIC). |
 | `eventoService.test.js` | Registro de eventos: asociación al contenedor correcto, persistencia de foto en base64. |
 | `cicloService.test.js` | Gestión de ciclos: apertura, cierre, edición manual de fechas y recálculo de costes. |
 | `usuarioService.test.js` | CRUD de usuarios: cambio de rol, actualización de perfil, eliminación, protección del admin protegido y política de contraseña al cambiarla. |
@@ -307,13 +307,13 @@ npm run test:coverage
 
 ### Backend
 
-Resultados obtenidos ejecutando `npm test -- --coverage` sobre la suite completa (**254 tests, 24 suites**):
+Resultados obtenidos ejecutando `npm test -- --coverage` sobre la suite completa (**259 tests, 24 suites**):
 
 ```
 --------------------------|---------|----------|---------|---------|-----------------------
 Archivo                   | % Stmts | % Branch | % Funcs | % Lines | Líneas no cubiertas
 --------------------------|---------|----------|---------|---------|-----------------------
-All files                 |   80.77 |    63.17 |   84.42 |   82.91 |
+All files                 |   83.26 |    68.18 |    87.5 |   85.26 |
  controllers              |   93.02 |    91.66 |     100 |   92.85 |
   authController.js       |     100 |      100 |     100 |     100 |
   cicloController.js      |     100 |      100 |     100 |     100 |
@@ -331,14 +331,14 @@ All files                 |   80.77 |    63.17 |   84.42 |   82.91 |
   rateLimit.js            |     100 |      100 |     100 |     100 |
   rolMiddleware.js        |     100 |      100 |     100 |     100 |
  models                   |     100 |      100 |     100 |     100 |
- services                 |   71.72 |    61.91 |   76.11 |   74.68 |
+ services                 |   75.91 |    67.81 |   81.53 |   78.74 |
   authService.js          |    90.9 |    77.77 |     100 |    90.9 | 34-37
   calculoDD.js            |     100 |      100 |     100 |     100 |
   cicloService.js         |   89.47 |    81.81 |     100 |   89.09 | 92-94,99-101
   clienteService.js       |     100 |    91.66 |     100 |     100 | 20
   contenedorService.js    |    58.7 |       50 |   81.81 |   62.36 | 28-30,85-97,201-258,455-480
   eventoService.js        |     100 |      100 |     100 |     100 |
-  informeService.js       |   45.07 |    30.43 |   36.36 |   47.61 | 105-163
+  informeService.js       |   84.93 |    75.43 |   66.66 |   87.87 | 138-140,146-147,151-152,170
   navieraService.js       |   72.05 |    61.29 |   72.72 |   76.19 | 18-20,148-175
   ocrService.js           |   15.62 |        0 |       0 |      20 | 12-41
   semaforoService.js      |   98.24 |    96.15 |     100 |     100 | 47
@@ -358,10 +358,10 @@ All files                 |   80.77 |    63.17 |   84.42 |   82.91 |
 | **Utils** | 100 % | 87.5 % | 100 % | 100 % |
 | **Controladores** | 93.02 % | 91.66 % | 100 % | 92.85 % |
 | **Middlewares** | 80 % | 57.69 % | 100 % | 81.08 % |
-| **Servicios** | 71.72 % | 61.91 % | 76.11 % | 74.68 % |
-| **Total** | **80.77 %** | **63.17 %** | **84.42 %** | **82.91 %** |
+| **Servicios** | 75.91 % | 67.81 % | 81.53 % | 78.74 % |
+| **Total** | **83.26 %** | **68.18 %** | **87.5 %** | **85.26 %** |
 
-La baja cobertura de ramas en servicios se concentra en `informeService.js` y `ocrService.js` (generación de PDF con jsPDF e integración con Tesseract.js, mockeadas en los tests de controlador pero difíciles de probar internamente sin un entorno de navegador real) y en las ramas de `contenedorService.js` correspondientes a transiciones de estado poco frecuentes (reversión de salida a puerto). En middlewares, el `errorMiddleware.js` solo se ejercita parcialmente porque la mayoría de errores se prueban a nivel de controlador.
+La cobertura más baja en servicios se concentra ahora en `ocrService.js` (integración con Tesseract.js, mockeada en los tests de controlador pero no probada internamente) y en las ramas de `contenedorService.js` correspondientes a transiciones de estado poco frecuentes (reversión de salida a puerto). `informeService.js` sube del 45 % al 85 % al añadirse los tests de `generarDatos` (filtros y orden). En middlewares, el `errorMiddleware.js` solo se ejercita parcialmente porque la mayoría de errores se prueban a nivel de controlador.
 
 ### Frontend
 
@@ -401,11 +401,11 @@ Las ramas no cubiertas corresponden a props opcionales de presentación (modific
 
 ## 6. Resultados
 
-**Backend:** todos los tests pasan en el entorno de CI de GitHub Actions. El workflow `ci.yml` ejecuta `npm test` en el job `test-backend` en cada push o Pull Request a `main` o `dev`. El número total de tests es **254** distribuidos en **24 suites** (10 de controladores + 10 de servicios + 2 de middlewares + 2 de integración), con cero fallos en la ejecución final del proyecto.
+**Backend:** todos los tests pasan en el entorno de CI de GitHub Actions. El workflow `ci.yml` ejecuta `npm test` en el job `test-backend` en cada push o Pull Request a `main` o `dev`. El número total de tests es **259** distribuidos en **24 suites** (10 de controladores + 10 de servicios + 2 de middlewares + 2 de integración), con cero fallos en la ejecución final del proyecto.
 
 **Frontend:** la suite unitaria y de componentes suma **115 tests** en **14 suites** (11 de componentes + 2 de hooks + 1 de servicios), ejecutada con Vitest. A ello se añaden **20 tests end-to-end** con Playwright repartidos en **3 specs**, que cubren los flujos de login, almacén y semáforo en un navegador real.
 
-**Total combinado: 389 tests (254 backend + 115 frontend unitarios/componentes + 20 frontend E2E), 41 suites.**
+**Total combinado: 394 tests (259 backend + 115 frontend unitarios/componentes + 20 frontend E2E), 41 suites.**
 
 ---
 

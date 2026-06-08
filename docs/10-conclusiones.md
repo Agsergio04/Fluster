@@ -57,7 +57,7 @@ Además de lo propuesto inicialmente, el proyecto incorporó funcionalidades no 
 - **Tema claro/oscuro** con persistencia en localStorage y detección de preferencia del sistema operativo.
 - **Páginas estáticas públicas** (Footer con Aviso Legal, Política de Privacidad, Política de Cookies) que acompañan a la aplicación sin necesidad de backend.
 - **Arquitectura de custom hooks** (`useContenedores`, `useHistorial`) que no estaba especificada en la propuesta pero que mejoró significativamente la organización del código del frontend.
-- **Suite de pruebas completa** (41 archivos de test: 254 tests unitarios y de integración en el backend, 115 unitarios/de componentes y 20 end-to-end con Playwright en el frontend) que supera el nivel de pruebas descrito en la propuesta inicial.
+- **Suite de pruebas completa** (41 archivos de test: 259 tests unitarios y de integración en el backend, 115 unitarios/de componentes y 20 end-to-end con Playwright en el frontend) que supera el nivel de pruebas descrito en la propuesta inicial.
 - **Mecanismo de heartbeat** para mitigar el cold start del plan gratuito de Render, no previsto en el diseño inicial.
 
 ---

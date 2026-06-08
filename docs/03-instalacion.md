@@ -208,7 +208,7 @@ npm test -- --coverage
 npm test -- --watch
 ```
 
-Los tests cubren 254 casos en 24 suites (servicios, controladores, middlewares e integración). Los unitarios y de controlador no requieren base de datos real ni variables de entorno adicionales (Jest mockea todos los modelos de Mongoose); los de integración levantan una MongoDB en memoria con `mongodb-memory-server`, también sin servidor externo.
+Los tests cubren 259 casos en 24 suites (servicios, controladores, middlewares e integración). Los unitarios y de controlador no requieren base de datos real ni variables de entorno adicionales (Jest mockea todos los modelos de Mongoose); los de integración levantan una MongoDB en memoria con `mongodb-memory-server`, también sin servidor externo.
 
 ### Tests del frontend (Vitest + React Testing Library)
 

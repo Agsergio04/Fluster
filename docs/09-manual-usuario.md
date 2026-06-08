@@ -150,6 +150,8 @@ El almacén (`/almacen`) es una **vista de consulta y generación de informes**.
 4. Pulsa **Generar informe**.
 5. El PDF se descarga con un resumen de todos los ciclos que cumplen los filtros indicados.
 
+> **Sobre los filtros de fecha y orden:** si rellenas el rango **Desde/Hasta**, este tiene prioridad y la **fecha específica** se ignora (úsala solo cuando no indiques un rango). Los criterios de orden se combinan: el informe se ordena primero por fecha de cierre (ascendente o descendente) y, dentro del mismo día, por código BIC si activas el orden alfabético. Las columnas del PDF se titulan en español («sobreestadía» y «detención»).
+
 ### 2.6 Gestionar clientes
 
 Los clientes se crean automáticamente al registrar la entrada a puerto de un contenedor: el modal de entrada a puerto solicita el nombre del cliente y lo registra en el sistema en ese mismo momento. No existe una pantalla independiente de gestión de clientes en la interfaz.

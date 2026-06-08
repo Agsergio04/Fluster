@@ -100,10 +100,12 @@ Desde esta misma página se puede generar un informe PDF individual del contened
 
 ### 2.8 Generación de informes PDF
 
-Fluster permite generar informes en formato PDF mediante la biblioteca jsPDF con el complemento jsPDF-AutoTable. Existen dos variantes:
+Fluster permite generar informes en formato PDF mediante la biblioteca jsPDF con el complemento jsPDF-AutoTable. Solo se incluyen ciclos **cerrados** (con costes definitivos). Las columnas de la tabla usan terminología en español —«sobreestadía» (demurrage) y «detención» (detention)— con sus días libres, días facturables y coste por tramo, y el coste total del ciclo. Existen dos variantes:
 
-- **Informe individual** (desde `/almacen/historial/:id`): detalla todos los ciclos de un contenedor específico, con fechas y costes de demurrage y detention.
-- **Informe general** (desde `/almacen`): agrega los ciclos de múltiples contenedores filtrados por rango de fechas, fecha específica, naviera, cliente o código BIC, con opciones de ordenación ascendente, descendente o alfabética.
+- **Informe individual** (desde `/almacen/historial/:id`): detalla todos los ciclos de un contenedor específico, con las fechas de inicio/fin y los costes de sobreestadía y detención de cada ciclo.
+- **Informe general** (desde `/almacen`): agrega los ciclos de múltiples contenedores filtrados por rango de fechas, fecha específica, naviera, cliente o código BIC, con opciones de ordenación ascendente, descendente y alfabética.
+
+Cuando se combinan filtros de fecha, el **rango Desde/Hasta tiene prioridad** sobre la fecha específica (esta solo se aplica si no hay rango). Los criterios de ordenación se **combinan** en una sola ordenación: la fecha de cierre es la clave principal y el código BIC actúa como desempate alfabético dentro del mismo día.
 
 Cada informe generado queda registrado en el sistema.
 
