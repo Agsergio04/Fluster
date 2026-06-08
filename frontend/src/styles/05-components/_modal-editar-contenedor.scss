@@ -1,7 +1,7 @@
 .modal-editar-contenedor {
   position:        fixed;
   inset:           0;
-  z-index:         200;
+  z-index:         var(--z-modal);
   display:         flex;
   align-items:     center;
   justify-content: center;
@@ -87,7 +87,6 @@
     color:            var(--color-text);
     font-family:      var(--font-body);
     font-size:        var(--text-16);
-    color-scheme:     light dark;
 
     &:focus {
       outline:        2px solid var(--color-primary);
@@ -149,4 +148,15 @@
       background-color: var(--color-secondary-hover);
     }
   }
+}
+
+// Los inputs type="date" usan los controles nativos del navegador (incluido el
+// icono del calendario), que siguen el `color-scheme`. Lo atamos al tema de la
+// aplicación —no al del sistema operativo— para que el icono cambie en modo
+// oscuro. Mismo patrón que en el panel de informes.
+:root[data-theme='dark'] .modal-editar-contenedor__fecha-input {
+  color-scheme: dark;
+}
+:root[data-theme='light'] .modal-editar-contenedor__fecha-input {
+  color-scheme: light;
 }
