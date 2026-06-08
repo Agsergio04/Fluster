@@ -7,6 +7,12 @@
 # Escanea el sistema de ficheros del repositorio (dependencias npm y
 # configuraciones / IaC) en busca de vulnerabilidades conocidas y publica
 # los resultados en formato SARIF en la pestaña Security del repositorio.
+#
+# Además, el escaneo FALLA el workflow (exit-code: 1) si encuentra
+# vulnerabilidades HIGH/CRITICAL con corrección disponible (ignore-unfixed),
+# de modo que un PR no pueda mezclarse arrastrando un fallo conocido y
+# subsanable. Trivy escribe primero el SARIF y solo después sale con error,
+# así que el informe se sube igualmente (pasos con `if: always()`).
 # ─────────────────────────────────────────────────────────────────
 
 name: Security
@@ -44,6 +50,9 @@ jobs:
           limit-severities-for-sarif: true
           ignore-unfixed: true
           scanners: vuln,misconfig
+          # Falla el job ante HIGH/CRITICAL subsanables; el SARIF ya se ha escrito
+          # antes de salir, así que los pasos `if: always()` siguientes lo publican.
+          exit-code: '1'
 
       - name: Guardar informe Trivy como artefacto
         if: always()
