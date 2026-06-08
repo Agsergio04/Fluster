@@ -24,7 +24,7 @@
   &__cargando {
     font-family: var(--font-body);
     font-size:   var(--text-16);
-    color:       var(--color-text-subtle);
+    color:       var(--color-text); // pleno: -subtle no llega a AAA sobre el fondo
     text-align:  center;
     padding:     var(--space-48) var(--space-24);
   }
@@ -86,7 +86,7 @@
   &__vacio {
     font-family:      var(--font-body);
     font-size:        var(--text-14);
-    color:            var(--color-text-subtle);
+    color:            var(--color-text); // pleno: -subtle no llega a AAA sobre surface
     text-align:       center;
     padding:          var(--space-24) var(--space-16);
     background-color: var(--color-surface);

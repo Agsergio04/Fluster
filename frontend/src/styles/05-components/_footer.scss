@@ -76,10 +76,12 @@
     color:           var(--color-box-text);
     text-decoration: none;
     white-space:     nowrap;
-    transition:      opacity var(--transition-fast);
+    transition:      color var(--transition-fast);
 
+    // Subrayado en hover en vez de opacity: 0.7 (que mezclaba el texto con el
+    // fondo y bajaba el contraste de 8.8:1 a ~5.2:1, incumpliendo AAA).
     &:hover {
-      opacity: 0.7;
+      text-decoration: underline;
     }
   }
 

@@ -25,6 +25,7 @@
   --color-text:        #{vars.$color-text-light};
   --color-text-subtle: #{vars.$color-text-subtle-light};
   --color-border:      #{vars.$color-border-light};
+  --color-placeholder: #{vars.$color-placeholder-light};
 
   // ── Cajas ─────────────────────────────────────────────────────
   --color-box-border: #{vars.$color-box-border-light};
@@ -159,6 +160,7 @@
   --color-text:        #{vars.$color-text-light};
   --color-text-subtle: #{vars.$color-text-subtle-light};
   --color-border:      #{vars.$color-border-light};
+  --color-placeholder: #{vars.$color-placeholder-light};
 
   --color-box-border: #{vars.$color-box-border-light};
   --color-box-text:   #{vars.$color-box-text-light};
@@ -203,6 +205,7 @@
   --color-text:        #{vars.$color-text-dark};
   --color-text-subtle: #{vars.$color-text-subtle-dark};
   --color-border:      #{vars.$color-border-dark};
+  --color-placeholder: #{vars.$color-placeholder-dark};
 
   --color-box-border: #{vars.$color-box-border-dark};
   --color-box-text:   #{vars.$color-box-text-dark};
@@ -248,6 +251,7 @@
     --color-text:        #{vars.$color-text-dark};
     --color-text-subtle: #{vars.$color-text-subtle-dark};
     --color-border:      #{vars.$color-border-dark};
+    --color-placeholder: #{vars.$color-placeholder-dark};
 
     --color-box-border: #{vars.$color-box-border-dark};
     --color-box-text:   #{vars.$color-box-text-dark};

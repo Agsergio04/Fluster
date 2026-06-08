@@ -84,11 +84,13 @@
   }
 
   &__btn-confirmar {
-    background-color: var(--color-segundo_tramo);
-    color:            var(--color-text);
+    // Rojo sólido oscuro + texto blanco: AAA 8.0:1 en reposo y 9.2:1 en hover.
+    // Antes era rojo claro del semáforo + texto oscuro (6.11:1, fallaba AAA).
+    background-color: var(--color-error-fondo);
+    color:            var(--color-text-on-error);
 
     &:hover:not(:disabled) {
-      background-color: var(--color-error-fondo);
+      background-color: var(--color-error-fondo-hover);
     }
   }
 }

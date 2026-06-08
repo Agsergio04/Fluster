@@ -39,6 +39,11 @@ $color-text-dark:        #F9FAFB;
 $color-text-subtle-dark: #9CA3AF;
 $color-border-dark:      #374151;
 
+// Placeholder de campos (sobre --color-bg). Gris accesible AAA >=7:1 en cada
+// tema, sin recurrir a opacity (que erosiona el contraste de forma imprecisa).
+$color-placeholder-light: #50545B; // AAA 7.3:1 sobre #F9FAFB
+$color-placeholder-dark:  #ACB1B9; // AAA 8.2:1 sobre #111827
+
 // ── Cajas ──────────────────────────────────────────────────────────
 $color-box-border-light: #FFFFFF;
 $color-box-text-light:   #040404;
@@ -55,8 +60,8 @@ $color-sin-costes-dark-inner: #19622C;
 // ── Semáforo — Primer tramo (amarillo) ─────────────────────────────
 $color-primer-tramo:            #FFFC4B;
 $color-primer-tramo-inner:      #ACA82E;
-$color-primer-tramo-dark:       #686920;
-$color-primer-tramo-dark-inner: #787620;
+$color-primer-tramo-dark:       #4F501A; // AAA 8.4:1 con texto blanco (antes #686920, AA 5.78)
+$color-primer-tramo-dark-inner: #5A5818; // AAA 7.4:1 con texto blanco (antes #787620, 4.76)
 
 // ── Semáforo — Segundo tramo (rojo) ───────────────────────────────
 $color-segundo-tramo:            #F66B6B;
@@ -65,10 +70,10 @@ $color-segundo-tramo-dark:       #7A0000;
 $color-segundo-tramo-dark-inner: #AB0404;
 
 // Rojo accesible para el fondo de etiquetas de error con texto blanco
-// (contraste ≈ 5.6:1, cumple WCAG AA). El rojo del semáforo es demasiado
+// (contraste 8.0:1, cumple WCAG AAA). El rojo del semáforo es demasiado
 // claro para texto blanco (≈ 2.9:1).
-$color-error-fondo: #C62828;
-$color-error-fondo-hover: #B71C1C; // hover más oscuro para el botón de borrar
+$color-error-fondo: #9E1B1B;        // AAA 8.0:1 con texto blanco (antes #C62828, AA 5.6)
+$color-error-fondo-hover: #8B1616;  // hover más oscuro — AAA 9.2:1 con texto blanco
 // Texto sobre fondo de error: blanco fijo en ambos temas (el fondo es rojo
 // oscuro en claro y oscuro, así que el texto siempre debe ser blanco).
 $color-text-on-error: #FFFFFF;
@@ -77,9 +82,9 @@ $color-text-on-error: #FFFFFF;
 // surface, primary-off). Theme-aware: tono oscuro en claro y claro en oscuro,
 // al contrario que $color-segundo_tramo/$color-sin-costes (pensados como FONDO
 // con texto encima). El enlace usa el mismo espectro azul que el primario.
-$color-error-text-light:   #B3261E;
+$color-error-text-light:   #8A1A14; // AAA >=7:1 sobre fondos neutros (bg, surface, primary-off)
 $color-error-text-dark:    #FFB4AB;
-$color-success-text-light: #15803D;
+$color-success-text-light: #0E5C2B; // AAA >=7:1 sobre fondos neutros (antes #15803D, solo 4.8:1)
 $color-success-text-dark:  #4ADE80;
 $color-enlace-light:       #155A93; // = $color-secondary-dark (azul oscuro)
 $color-enlace-dark:        #7CC5FA; // = $color-secondary-hover (azul claro)
