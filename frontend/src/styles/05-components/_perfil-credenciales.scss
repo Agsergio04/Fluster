@@ -22,11 +22,14 @@
   }
 
   &__foto {
-    width:         13.75rem;  // 220px
-    height:        13.25rem;  // 212px
-    border-radius: var(--radius);
-    object-fit:    cover;
-    flex-shrink:   0;
+    width:            13.75rem;  // 220px
+    height:           13.25rem;  // 212px
+    border-radius:    var(--radius);
+    // contain (no cover): muestra la imagen COMPLETA sin recortarla; el hueco
+    // sobrante queda como un marco neutro en lugar de recortar la foto.
+    object-fit:       contain;
+    background-color: var(--color-surface);
+    flex-shrink:      0;
   }
 
   &__error-foto {

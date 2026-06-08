@@ -35,11 +35,12 @@
     border-radius:    var(--radius);
     box-shadow:       var(--shadow-md);
     padding:          var(--space-32);
-    transition:       box-shadow var(--transition-fast), transform var(--transition-fast);
+    transition:       box-shadow var(--transition-fast);
 
+    // Solo se realza la sombra al pasar el cursor (sin desplazar la tarjeta,
+    // que provocaba un "salto" molesto al entrar/salir el ratón).
     &:hover {
       box-shadow: var(--shadow-lg);
-      transform:  translateY(-2px);
     }
   }
 
