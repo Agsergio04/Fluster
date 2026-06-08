@@ -97,9 +97,9 @@ $color-inactivo-dark-inner: #4C4A4A;
 // ── Cards ──────────────────────────────────────────────────────────
 // Solo queda el color de la card de almacén (= primario). Las cards de
 // semáforo, contenedor y usuario usan --color-secondary (ver _css-variables).
-$color-card-almacen-light:  #4FB2F8;
+$color-card-almacen-light:  #4FB2F8; // AAA 8.84:1 con texto oscuro
 
-$color-card-almacen-dark:  #2F6891;
+$color-card-almacen-dark:  #1E4D74; // AAA 8.86:1 con texto blanco (antes #2F6891, AA 5.98)
 
 // ── Tipografía — Familias ──────────────────────────────────────────
 $font-heading: 'Crimson Text', serif;

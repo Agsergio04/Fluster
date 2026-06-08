@@ -79,14 +79,12 @@
     border:         1px solid var(--color-border);
     border-radius:  var(--space-8);
 
-    // Tarifas teñidas por tramo con tintes suaves del sistema (claro y oscuro)
+    // Tarifas teñidas por tramo con tintes suaves derivados de los colores de
+    // marca (azul el primero, rojo el segundo). El tinte rojo se aclara con
+    // color-mix sobre la superficie para que el texto llegue a AAA (≥7:1) en
+    // claro y oscuro; el tinte azul (secondary-subtle) ya cumple AAA.
     &--primer  { background-color: var(--color-secondary-subtle); border-color: transparent; }
-    &--segundo { background-color: var(--color-error-subtle);     border-color: transparent; }
-
-    // Sobre los tintes de color las etiquetas atenuadas pierden contraste
-    // (text-subtle no llega a AA): usan el color de texto pleno.
-    &--primer  .tarjeta-tarifa__mini-label,
-    &--segundo .tarjeta-tarifa__mini-label { color: var(--color-text); }
+    &--segundo { background-color: color-mix(in srgb, var(--color-error) 16%, var(--color-surface)); border-color: transparent; }
   }
 
   &__bloque-titulo {
@@ -120,7 +118,9 @@
     line-height:    1.5;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    color:          var(--color-text-subtle);
+    // Texto pleno (no -subtle): a 10 px el atenuado no llega a AAA sobre la
+    // superficie ni sobre los tintes de tramo; el pleno lo cumple en todos.
+    color:          var(--color-text);
   }
 
   // ── Acciones ──────────────────────────────────────────────────────

@@ -69,6 +69,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Referencia de cliente colgante protegida al generar un informe.
 - Semántica HTML y accesibilidad: encabezados sin saltos de nivel (`h2` en las columnas de la tarjeta de tarifa), `aria-current="page"` en el paginador, `role="img"` en el badge de estado, `alt` no redundante en el avatar, asociación `aria-describedby` del error en el campo de contraseña, `type="button"` en el botón de la 404, correo de Contacto como enlace `mailto:` y eliminación de un `aria-label` contradictorio.
 - BEM: el estado de carga del panel de control usa `__cargando` (la clase del JSX ya no quedaba sin estilo).
+- Página de tarifas a contraste **AAA** (≥7:1) en claro y oscuro: el azul `card-almacen` oscuro se profundiza (cabecera de tarjeta y tabla pasan de 5.98 a 8.86:1), el panel «Segundo tramo» usa un tinte rojo aclarado con `color-mix` (de 6.53 a 15.04:1) y las mini-etiquetas DET./SOB. usan color de texto pleno (de 4.83 a 17.74:1).
 
 ### Eliminado
 - `frontend/node_modules` y los archivos de log dejan de versionarse (se añaden al `.gitignore`); la cobertura de tests (`coverage/`) tampoco se versiona.
