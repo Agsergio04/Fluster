@@ -16,6 +16,8 @@
     { "name": "Contenedores", "description": "Ciclo de vida de contenedores y cálculo de costes.\n\n**Diseño de rutas:** el CRUD básico sigue REST puro (`GET/POST/PUT/DELETE /contenedores`). Las transiciones de estado (`entrada-puerto`, `salida-puerto`, `devolucion`, `cancelar-ciclo`, `revertir-salida`) se modelan como **comandos sobre una máquina de estados** (INACTIVO → PUERTO → CLIENTE → INACTIVO), no como mutaciones CRUD. Cada una aplica reglas de negocio y validaciones de transición que un `PUT` genérico no puede expresar, por lo que se exponen como sub-recursos de acción con verbo explícito —patrón habitual y aceptado para recursos con ciclo de vida (estilo CQRS)." },
     { "name": "Eventos",      "description": "Registro fotográfico de hitos del contenedor" },
     { "name": "Informes",     "description": "Auditoría de exportaciones PDF de ciclos cerrados (gestor)" },
+    { "name": "Ciclos",       "description": "Edición manual de las fechas de los tramos D&D (demurrage/detention) de un ciclo (gestor)" },
+    { "name": "OCR",          "description": "Extracción del código BIC a partir de una imagen mediante Tesseract.js" },
     { "name": "Semáforo",     "description": "Dashboard de riesgo D&D en tiempo real (gestor)" }
   ],
   "components": {
@@ -339,7 +341,62 @@
         },
         "responses": {
           "200": { "description": "Contraseña actualizada" },
-          "401": { "description": "Contraseña actual incorrecta o token inválido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "400": { "description": "La contraseña nueva no cumple la política (mínimo 8 caracteres y al menos un número)", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Token inválido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "Contraseña actual incorrecta", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/usuarios/{id}/nombre": {
+      "patch": {
+        "tags": ["Usuarios"],
+        "summary": "Cambiar nombre propio",
+        "description": "Cualquier rol autenticado puede cambiar su propio nombre. Solo el titular de la cuenta (el `id` debe coincidir con el del token).",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["nombre"],
+                "properties": { "nombre": { "type": "string", "example": "Ana García López" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Nombre actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usuario" } } } },
+          "400": { "description": "El nombre no puede estar vacío", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "description": "Solo puedes cambiar tu propio nombre", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/usuarios/{id}/foto": {
+      "patch": {
+        "tags": ["Usuarios"],
+        "summary": "Actualizar foto de perfil propia",
+        "description": "Cualquier rol autenticado puede actualizar su propia foto de perfil (imagen en base64). Solo el titular de la cuenta.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["foto"],
+                "properties": { "foto": { "type": "string", "description": "Imagen en base64 (data URL)", "example": "data:image/png;base64,iVBORw0KGgo..." } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Foto actualizada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usuario" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "description": "Solo puedes actualizar tu propia foto", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
           "404": { "$ref": "#/components/responses/NotFound" }
         }
       }
@@ -739,6 +796,109 @@
         }
       }
     },
+    "/api/contenedores/{id}/editar": {
+      "patch": {
+        "tags": ["Contenedores"],
+        "summary": "Editar datos del contenedor",
+        "description": "Edita el código BIC, la foto y/o la fecha de inicio del periodo libre del contenedor. Si se cambia la fecha de inicio libre, el ciclo activo se recalcula. Roles: `operador` (solo sus contenedores) y `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigoBIC":        { "type": "string", "example": "MSCU1234567" },
+                  "foto":             { "type": "string", "nullable": true, "description": "Imagen en base64 (data URL)" },
+                  "fechaInicioLibre": { "type": "string", "format": "date-time", "description": "Recalcula el ciclo activo si cambia" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Contenedor actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "description": "Ya existe un contenedor con ese código BIC", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/contenedores/{id}/revertir-salida": {
+      "patch": {
+        "tags": ["Contenedores"],
+        "summary": "Revertir salida a cliente — CLIENTE → PUERTO",
+        "description": "Deshace una salida del puerto registrada por error: el contenedor vuelve a estado PUERTO, se anula el tramo de detention y se reabre el de demurrage. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Contenedor de nuevo en estado PUERTO", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Contenedor" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "El contenedor no está en estado CLIENTE", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/ciclos/{id}/demurrage": {
+      "patch": {
+        "tags": ["Ciclos"],
+        "summary": "Editar el tramo de demurrage de un ciclo",
+        "description": "Ajusta manualmente las fechas de inicio/fin del tramo de demurrage de un ciclo y recalcula sus días y coste. La fecha de fin de demurrage no puede ser posterior al inicio de detention. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fechaInicio": { "type": "string", "format": "date-time" },
+                  "fechaFin":    { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Ciclo actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Ciclo" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "Fechas incoherentes con el tramo de detention", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/ciclos/{id}/detention": {
+      "patch": {
+        "tags": ["Ciclos"],
+        "summary": "Editar el tramo de detention de un ciclo",
+        "description": "Ajusta manualmente las fechas de inicio/fin del tramo de detention de un ciclo y recalcula sus días y coste. La fecha de inicio de detention no puede ser anterior al fin de demurrage. Solo `gestor`.",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fechaInicio": { "type": "string", "format": "date-time" },
+                  "fechaFin":    { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Ciclo actualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Ciclo" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "422": { "description": "Fechas incoherentes con el tramo de demurrage", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
     "/api/eventos": {
       "post": {
         "tags": ["Eventos"],
@@ -827,6 +987,30 @@
         }
       }
     },
+    "/api/informes/generar-datos": {
+      "get": {
+        "tags": ["Informes"],
+        "summary": "Datos de ciclos cerrados para generar el PDF",
+        "description": "Devuelve los ciclos CERRADOS con todos los datos (contenedor, naviera, cliente y costes) que el frontend necesita para componer el PDF. Aplica los mismos filtros que el panel de informes.",
+        "parameters": [
+          { "name": "fechaDesde",       "in": "query", "schema": { "type": "string", "format": "date" } },
+          { "name": "fechaHasta",       "in": "query", "schema": { "type": "string", "format": "date" } },
+          { "name": "fechaEspecifica",  "in": "query", "schema": { "type": "string", "format": "date" } },
+          { "name": "naviera",          "in": "query", "schema": { "type": "string" }, "description": "Filtro parcial por nombre o código de naviera" },
+          { "name": "cliente",          "in": "query", "schema": { "type": "string" }, "description": "Filtro parcial por nombre de cliente" },
+          { "name": "codigoBic",        "in": "query", "schema": { "type": "string" } },
+          { "name": "contenedorId",     "in": "query", "schema": { "type": "string" } },
+          { "name": "ordenAscendente",  "in": "query", "schema": { "type": "string", "enum": ["true", "false"] }, "description": "Ordena por fecha de cierre ascendente" },
+          { "name": "ordenDescendente", "in": "query", "schema": { "type": "string", "enum": ["true", "false"] }, "description": "Ordena por fecha de cierre descendente" },
+          { "name": "ordenAlfabetico",  "in": "query", "schema": { "type": "string", "enum": ["true", "false"] }, "description": "Ordena por código BIC" }
+        ],
+        "responses": {
+          "200": { "description": "Lista de ciclos cerrados con datos completos", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Ciclo" } } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" }
+        }
+      }
+    },
     "/api/informes/contenedor/{contenedorId}": {
       "get": {
         "tags": ["Informes"],
@@ -849,6 +1033,35 @@
           "401": { "$ref": "#/components/responses/Unauthorized" },
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/ocr/extraer-bic": {
+      "post": {
+        "tags": ["OCR"],
+        "summary": "Extraer código BIC de una imagen",
+        "description": "Recibe una imagen (base64) y devuelve el código BIC reconocido por Tesseract.js. El resultado es una asistencia: puede venir vacío o parcial y siempre es corregible manualmente. Disponible para cualquier rol autenticado.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["imagen"],
+                "properties": {
+                  "imagen": { "type": "string", "description": "Imagen en base64 (data URL)", "example": "data:image/jpeg;base64,/9j/4AAQSkZJRg..." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Código BIC extraído (puede ser una cadena vacía si el OCR no reconoce nada)",
+            "content": { "application/json": { "schema": { "type": "object", "properties": { "codigoBic": { "type": "string", "example": "MSCU1234567" } } } } }
+          },
+          "400": { "description": "No se proporcionó la imagen", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
         }
       }
     },
