@@ -30,6 +30,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - El registro valida la contraseña en el servidor (mínimo 8 caracteres **y al menos un número** → 400), no solo en el cliente; el checklist de requisitos del frontend incluye también «Al menos un número».
 
 ### Cambiado
+- El seed de demostración mueve dos contenedores de INACTIVO a PUERTO (uno en *free time* con 7 días de margen y otro en *primer tramo*) para que el semáforo muestre todos los tramos durante la semana de la exposición; el *segundo tramo* ya es permanente.
 - El panel de control muestra como máximo **6 tarjetas de usuario por página** (antes 9); a partir de ahí aparece la paginación.
 - Refactor MVC: la edición de tramos de ciclo pasa de `cicloController` a `cicloService` (controladores finos, sin acceso directo a modelos), reutilizando el motor de cálculo D&D extraído a `calculoDD.js`.
 - Las hojas de estilo usan los mixins `mobile`/`tablet` y `flex-col`/`flex-row` en lugar de media queries y flex repetidos a mano.

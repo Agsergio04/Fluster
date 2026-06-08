@@ -245,15 +245,18 @@ async function run() {
   // ── Contenedores ───────────────────────────
   console.log('\n=== Contenedores ===')
 
-  // ── INACTIVO (2) ──────────────────────────
+  // ── INACTIVO (c1 queda inactivo; c2 se mueve a PUERTO/free time, ver abajo) ──
   const c1 = await upsertContenedor({
     codigoBIC: 'MAEU1234567', tipo: '20DC', estado: 'INACTIVO',
     navieraId: maeu._id, fechaInicioLibre: diasAtras(2), creadoPor: op1._id,
   }, 'marilopez@gmail.com')
 
-  const c2 = await upsertContenedor({
-    codigoBIC: 'MSCU7654321', tipo: '40HC', estado: 'INACTIVO',
-    navieraId: mscu._id, fechaInicioLibre: diasAtras(1), creadoPor: op2._id,
+  // Movido a PUERTO (free time) para la exposición: MSC tiene 7 días libres de
+  // demurrage y la entrada es hoy → 0 facturables (free time) durante 7 días.
+  const c2 = await resetContenedor({
+    codigoBIC: 'MSCU7654321', tipo: '40HC', estado: 'PUERTO',
+    navieraId: mscu._id, fechaInicioLibre: diasAtras(1),
+    fechaEntradaPuerto: diasAtras(0), creadoPor: op2._id,
   }, 'operador2@fluster.com')
 
   // ── SIN COSTE / freeTime (2) ──────────────
@@ -310,10 +313,12 @@ async function run() {
     navieraId: bafu._id, fechaInicioLibre: diasAtras(3), creadoPor: op1._id,
   }, 'marilopez@gmail.com')
 
-  // INACTIVO — Maersk extra (segundo para más variedad en la columna inactivos)
-  const c10 = await upsertContenedor({
-    codigoBIC: 'MAEU9999999', tipo: '40HC', estado: 'INACTIVO',
-    navieraId: maeu._id, fechaInicioLibre: diasAtras(5), creadoPor: op2._id,
+  // Movido a PUERTO (primer tramo) para la exposición: Maersk, 5 días libres de
+  // demurrage; entrada hace 6 días → 1 facturable (primer tramo), dura ~5 días.
+  const c10 = await resetContenedor({
+    codigoBIC: 'MAEU9999999', tipo: '40HC', estado: 'PUERTO',
+    navieraId: maeu._id, fechaInicioLibre: diasAtras(8),
+    fechaEntradaPuerto: diasAtras(6), creadoPor: op2._id,
   }, 'operador2@fluster.com')
 
   // PUERTO sin-coste — BAF: 2 días, diasLibres=3 → 0 facturables
@@ -351,9 +356,21 @@ async function run() {
   await upsertCiclo(c1._id, cicloCerrado(c1._id, cl1._id, maeu, 120, 100, 85))
   await upsertCiclo(c1._id, cicloCerrado(c1._id, cl2._id, maeu,  70,  58, 45))
 
-  // ── MSCU7654321 (INACTIVO) — 2 ciclos históricos
+  // ── MSCU7654321 (ahora PUERTO, free time) — 2 ciclos históricos + ciclo activo
   await upsertCiclo(c2._id, cicloCerrado(c2._id, cl2._id, mscu, 110,  95, 80))
   await upsertCiclo(c2._id, cicloCerrado(c2._id, cl3._id, mscu,  60,  50, 38))
+
+  // Ciclos activos de los dos contenedores movidos desde INACTIVO para la exposición:
+  // c2 (MSC) en free time (entrada hoy → 0 facturables, 7 días libres)
+  await Ciclo.create({
+    contenedorId: c2._id, clienteId: cl1._id,
+    demurrage: { diasLibres: mscu.diasLibresDemurrage, fechaInicio: diasAtras(0) },
+  })
+  // c10 (Maersk) en primer tramo (entrada hace 6 días → 1 facturable, tramo [1-5])
+  await Ciclo.create({
+    contenedorId: c10._id, clienteId: cl2._id,
+    demurrage: { diasLibres: maeu.diasLibresDemurrage, fechaInicio: diasAtras(6) },
+  })
 
   // ── MAEU2345678 (PUERTO, sin-coste) — ciclo activo, 0 días facturables
   await Ciclo.create({
@@ -478,6 +495,9 @@ async function run() {
   await upsertEvento(c13._id, 'salida_puerto',  diasAtras(4),  op1._id)
   await upsertEvento(c14._id, 'entrada_puerto', diasAtras(25), op2._id)
   await upsertEvento(c14._id, 'salida_puerto',  diasAtras(15), op2._id)
+  // Eventos de entrada de los dos contenedores movidos a PUERTO para la exposición
+  await upsertEvento(c2._id,  'entrada_puerto', diasAtras(0), op2._id)
+  await upsertEvento(c10._id, 'entrada_puerto', diasAtras(6), op2._id)
 
   // ─────────────────────────────────────────────
   console.log('\n══════════════════════════════════════════')
