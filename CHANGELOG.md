@@ -32,6 +32,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 ### Cambiado
 - El seed de demostración mueve dos contenedores de INACTIVO a PUERTO (uno en *free time* con 7 días de margen y otro en *primer tramo*) para que el semáforo muestre todos los tramos durante la semana de la exposición; el *segundo tramo* ya es permanente.
 - El panel de control muestra como máximo **6 tarjetas de usuario por página** (antes 9); a partir de ahí aparece la paginación.
+- En la tarjeta de tarifa compacta, en móviles muy estrechos (≤400px) el par Det./Sob. se apila para que cada celda tenga más espacio.
 - Refactor MVC: la edición de tramos de ciclo pasa de `cicloController` a `cicloService` (controladores finos, sin acceso directo a modelos), reutilizando el motor de cálculo D&D extraído a `calculoDD.js`.
 - Las hojas de estilo usan los mixins `mobile`/`tablet` y `flex-col`/`flex-row` en lugar de media queries y flex repetidos a mano.
 - Las tarifas en móvil se muestran con el mismo conjunto de tarjetas (`ConjuntoCards`) que el resto de la aplicación.

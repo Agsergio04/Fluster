@@ -154,4 +154,15 @@
     // Con todo el ancho disponible, los campos pueden respirar más
     .celda-tabla__input { width: 3.5rem; }
   }
+
+  // ── Móviles muy estrechos: el par Det./Sob. también se apila ──────
+  // Con tan poco ancho, ponemos detención y sobrestadía una debajo de otra
+  // para que cada celda y su etiqueta tengan sitio de sobra.
+  @media (max-width: 400px) {
+    &__detsob {
+      flex-direction: column;
+      gap:            var(--space-8);
+      align-items:    center;
+    }
+  }
 }
