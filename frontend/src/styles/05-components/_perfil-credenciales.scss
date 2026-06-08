@@ -103,13 +103,12 @@
       border-top:  1px solid var(--color-card-divider);
     }
 
-    // Los requisitos de contraseña van sobre una caja de superficie neutra: el
-    // verde de «cumplido» no alcanza AAA sobre el azul de la tarjeta, pero sí
-    // sobre surface (8.1:1 claro / 8.4:1 oscuro).
-    .requisitos-contrasenia {
-      background-color: var(--color-surface);
-      border-radius:    var(--radius);
-      padding:          var(--space-16);
+    // Los requisitos van sobre el fondo de la propia tarjeta (sin caja aparte).
+    // Sobre ese azul el verde de «cumplido» no se lee bien, y el estado ya lo
+    // marca el icono (✓ / ○): por eso los ítems cumplidos usan el color de texto
+    // pleno (AAA sobre la tarjeta). En el registro (fondo neutro) sigue el verde.
+    .requisitos-contrasenia__item--ok {
+      color: var(--color-text);
     }
 
     // Botones a ancho completo de la columna, igual que los campos (se libera
