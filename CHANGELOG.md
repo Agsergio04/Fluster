@@ -20,6 +20,10 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - El rol del cliente se deriva del JWT firmado, no del objeto `usuario` de `localStorage`, de modo que editar `localStorage` ya no concede permisos.
 - Algoritmo del JWT fijado a HS256 en firma y verificación (rechaza `alg: none` y la confusión de algoritmo).
 - Validación del entorno al arrancar: el servidor no arranca con un `JWT_SECRET` ausente o de ejemplo (fatal en producción).
+- Control de propiedad (anti-IDOR): un operador solo puede ver, editar o borrar **sus** contenedores también por ID (`/:id`); acceder a uno ajeno responde 404. El gestor mantiene acceso completo.
+- El token JWT caduca a los 7 días (`expiresIn`), limitando la ventana de un token filtrado.
+- Las consultas de login coaccionan correo/contraseña a `string` para impedir la inyección de operadores NoSQL desde `req.body`.
+- El registro valida la contraseña en el servidor (mínimo 8 caracteres → 400), no solo en el cliente.
 
 ### Cambiado
 - Refactor MVC: la edición de tramos de ciclo pasa de `cicloController` a `cicloService` (controladores finos, sin acceso directo a modelos), reutilizando el motor de cálculo D&D extraído a `calculoDD.js`.
@@ -32,6 +36,11 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Subtítulos y títulos de Login y Semáforo usan `--color-text`; la etiqueta de la tarjeta del semáforo pasa a «Última operación» y la fecha se muestra en formato español.
 - En la tarjeta de usuario, los roles no asignados se muestran en estado `--off` (disponibles para cambiar), como define el diseño.
 - `autocomplete` semánticamente correcto en los campos de contraseña (`new-password` al crear cuenta o cambiar contraseña; `current-password` solo en login).
+- Modo producción real en el despliegue: `NODE_ENV=production` en Render (enmascara los errores 500 y activa el fail-fast del `JWT_SECRET`).
+- Un contenedor solo puede tener **un ciclo activo** a la vez (índice único parcial) y el `codigoBIC` es único (con comprobación de duplicado al crear).
+- No se puede eliminar una naviera con contenedores asociados (409), para no perder sus tarifas.
+- CI ejecuta ahora también los **tests (Vitest) y el lint (ESLint) del frontend** y cachea el binario de MongoDB; la publicación de imágenes Docker queda condicionada a que el CI termine en verde.
+- El frontend en Docker espera a que el backend esté `healthy` (nuevo healthcheck contra `/health`); Render usa `npm ci`.
 
 ### Corregido
 - `errorMiddleware` devuelve 400 ante un `CastError` (identificador inválido) y 409 ante clave duplicada (E11000) en lugar de 500.
@@ -48,6 +57,18 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Cambiar el rol de un usuario al rol que ya tiene no lanza un `PUT /usuarios/:id` redundante.
 - Los enlaces a Contacto de las páginas legales usan `<Link>` de React Router (navegación cliente, sin recargar toda la SPA).
 - El lápiz de editar fechas de un tramo se desactiva cuando el tramo no tiene datos.
+- **Cálculo de costes D&D**: la naviera se identifica por las 3 primeras letras del BIC (código de propietario ISO 6346; la 4.ª letra es la categoría de equipo). El catálogo usaba códigos de 4 letras que no casaban, por lo que los costes salían 0; corregidos a 3 letras (servicio y datos semilla).
+- El cálculo de tramos los ordena por `desdeDia` antes de facturar (evita infrafacturación si llegasen desordenados).
+- Las transiciones de salida/devolución validan que exista un ciclo activo (422 en vez de un 500 por `TypeError`).
+- El código BIC leído por OCR ahora se persiste (el evento usaba un nombre de campo que el esquema descartaba).
+- `editarFechaInicioLibre` solo corrige `fechaEntradaPuerto` en estado PUERTO (ya no corrompe ese sello en INACTIVO/CLIENTE).
+- Cambiar la contraseña con la actual incorrecta devuelve 422 (antes 401, que cerraba la sesión por el interceptor global).
+- El conjunto de tarjetas acota la página activa: borrar el último elemento de la última página ya no deja la vista en blanco.
+- Guard síncrono contra doble envío en el modal de entrada a puerto y en el formulario de registro.
+- Importes del PDF formateados a 2 decimales en formato es-ES.
+- Referencia de cliente colgante protegida al generar un informe.
+- Semántica HTML y accesibilidad: encabezados sin saltos de nivel (`h2` en las columnas de la tarjeta de tarifa), `aria-current="page"` en el paginador, `role="img"` en el badge de estado, `alt` no redundante en el avatar, asociación `aria-describedby` del error en el campo de contraseña, `type="button"` en el botón de la 404, correo de Contacto como enlace `mailto:` y eliminación de un `aria-label` contradictorio.
+- BEM: el estado de carga del panel de control usa `__cargando` (la clase del JSX ya no quedaba sin estilo).
 
 ### Eliminado
 - `frontend/node_modules` y los archivos de log dejan de versionarse (se añaden al `.gitignore`); la cobertura de tests (`coverage/`) tampoco se versiona.
