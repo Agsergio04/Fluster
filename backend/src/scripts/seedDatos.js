@@ -50,6 +50,10 @@ const USUARIOS = [
   { nombre: 'María López',    correo: 'marilopez@gmail.com',    contrasena: 'maria',  rol: 'operador' },
   { nombre: 'Operador Dos',   correo: 'operador2@fluster.com',  contrasena: 'Test1234',  rol: 'operador' },
   { nombre: 'Operador Tres',  correo: 'operador3@fluster.com',  contrasena: 'Test1234',  rol: 'operador' },
+  // Cuentas de prueba para el profesorado (ver README → «Pruebas para el profesorado»)
+  { nombre: 'Juan José Arias', correo: 'juanjoseariaslozano@gmail.com', contrasena: 'Juanjosearias1@', rol: 'operador' },
+  { nombre: 'Selena López',    correo: 'selenalopez@gmail.com',         contrasena: 'Selenalopez1@',   rol: 'gestor'   },
+  { nombre: 'Pablo Amosa',     correo: 'pabloamosa@gmail.com',          contrasena: 'Pabloamosa1@',    rol: 'admin'    },
 ]
 
 const NAVIERAS = [

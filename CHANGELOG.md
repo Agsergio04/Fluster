@@ -16,6 +16,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Tokens de color accesibles para texto: `--color-error-text`, `--color-success-text` y `--color-enlace` (theme-aware, AA/AAA).
 - **Administrador protegido**: campo `protegido` en el modelo de usuario. El administrador principal (Sergio Aragón García, `sergioaragongarcia@gmail.com`) se crea protegido en el seed; en el panel de control sus botones de rol y de borrado salen deshabilitados («Rol protegido»).
 - Tabla de **usuarios de prueba** (uno de cada rol) documentada en el README, con sus credenciales.
+- Apartado **«Pruebas para el profesorado»** al final del README con tres cuentas (operador, gestor de operaciones y administrador), creadas también por el seed.
 
 ### Seguridad
 - El registro público ya no permite asignarse el rol `admin` (responde 403); el rol admin solo se crea con el script de administración.

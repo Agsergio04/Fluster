@@ -280,3 +280,23 @@ Si descubres una vulnerabilidad, **no abras un issue público**: sigue la [polí
 ## Licencia
 
 Distribuido bajo la licencia **MIT**. Consulta el archivo [LICENSE](./LICENSE) para más información.
+
+---
+
+## Pruebas para el profesorado
+
+Cuentas de prueba, una por cada rol, para evaluar la aplicación. Se crean al sembrar la base de datos (`npm run seed:datos`):
+
+| Rol | Nombre | Correo | Contraseña |
+| --- | --- | --- | --- |
+| Operador | Juan José Arias | `juanjoseariaslozano@gmail.com` | `Juanjosearias1@` |
+| Gestor de operaciones | Selena López | `selenalopez@gmail.com` | `Selenalopez1@` |
+| Administrador | Pablo Amosa | `pabloamosa@gmail.com` | `Pabloamosa1@` |
+
+Qué puede hacer cada rol:
+
+- **Operador** — *Meter contenedor*: sube una foto y el OCR lee el código BIC (o se introduce a mano), y consulta sus contenedores.
+- **Gestor de operaciones** — seguimiento de contenedores en el *Semáforo*, gestión de *Tarifas*, *Almacén* y generación de informes PDF.
+- **Administrador** — además de lo anterior, el *Panel de control* para gestionar usuarios y sus roles.
+
+> Estas cuentas existen tras ejecutar el seed. Si evalúas la **aplicación desplegada**, deben estar creadas en su base de datos (ejecutar el seed apuntando a ella).
