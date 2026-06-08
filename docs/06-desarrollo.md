@@ -1,12 +1,12 @@
 # 06 - Proceso de desarrollo
 
-Este documento recoge la secuencia de desarrollo seguida durante el proyecto, las decisiones técnicas más relevantes adoptadas a lo largo de los seis sprints, las dificultades encontradas y cómo se resolvieron, y una selección de fragmentos de código representativos de la arquitectura de la aplicación.
+Este documento recoge la secuencia de desarrollo seguida durante el proyecto, las decisiones técnicas más relevantes adoptadas a lo largo de los siete sprints, las dificultades encontradas y cómo se resolvieron, y una selección de fragmentos de código representativos de la arquitectura de la aplicación.
 
 ---
 
 ## 1. Secuencia de desarrollo
 
-El proyecto se organizó en seis sprints de duración aproximada de dos semanas cada uno. El objetivo de cada sprint era entregar un incremento funcional y desplegable, no un conjunto de tareas técnicas aisladas.
+El proyecto se organizó en siete sprints de duración aproximada de dos semanas cada uno. El objetivo de cada sprint era entregar un incremento funcional y desplegable, no un conjunto de tareas técnicas aisladas.
 
 ### Sprint 1 — Infraestructura base y estructura del repositorio
 
@@ -45,6 +45,12 @@ Se desarrollaron todas las páginas del frontend: semáforo de riesgo (`/semafor
 **Objetivo:** entregar un proyecto estable, probado y documentado.
 
 Se escribió la suite completa de tests con Jest: 11 archivos de tests de controladores, 9 de servicios y 2 de middlewares (22 en total). Se corrigieron todos los errores detectados durante las pruebas (inconsistencias en clases CSS, advertencias del linter de hooks, confusión de clases entre modales). Se escribió la documentación técnica del proyecto (`docs/`) y se realizó la revisión final de UX: textos, accesibilidad básica, notificaciones de error amigables y ajuste del tema en todos los componentes.
+
+### Sprint 7 — Accesibilidad AAA, endurecimiento de seguridad y pulido para la entrega
+
+**Objetivo:** dejar la aplicación lista para la defensa: accesible, segura, probada y con la documentación coherente con el código.
+
+Se auditó y corrigió el contraste de **toda la interfaz** para cumplir WCAG AAA (7:1 en texto y 3:1 en elementos no textuales) con tokens de color theme-aware, se rediseñó el sistema de botones de tarjeta con la rampa de color de marca (claro/oscuro) y se hizo responsive el conjunto de tarjetas (mantienen su ancho cuando hay espacio y se adaptan al encoger). En el backend se **endureció la seguridad**: rate limiting, escape de las entradas usadas en `$regex` (anti ReDoS), política de contraseña también al cambiarla, `/health` con comprobación real de MongoDB (503 si está caída), validación del formato del código BIC (4 letras + 7 números) y un administrador «protegido» cuyo rol no puede revocarse ni eliminarse. Se añadió un **ErrorBoundary** global en el frontend, se mejoraron los informes PDF (cabeceras en español y precedencia de los filtros de fecha/orden) y se **amplió la suite de pruebas** con tests unitarios adicionales, de integración con `mongodb-memory-server` y end-to-end con Playwright (261 tests de backend, 122 de frontend y 20 E2E). Se **tokenizaron** los valores de diseño que quedaban hardcodeados (radios, tamaños de fuente, z-index e interlineado), se **endureció el CI/CD** (Trivy bloquea el workflow ante vulnerabilidades HIGH/CRITICAL con corrección disponible y `npm audit fix` deja las dependencias a cero) y se **sincronizó por completo la documentación** (Swagger, los documentos de `docs/`, README y CHANGELOG) con el estado real del código.
 
 ---
 
