@@ -8,6 +8,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Usuario = require('../models/Usuario')
+const { validarPoliticaContrasena } = require('../utils/validacion')
 
 const SALT_ROUNDS = 10
 
@@ -44,19 +45,7 @@ async function registrar({ nombre, correo, contrasena, rol }) {
     throw err
   }
 
-  if (typeof contrasena !== 'string' || contrasena.length < 8) {
-    const err = new Error('La contraseña debe tener al menos 8 caracteres')
-    err.status = 400
-    err.campo = 'contrasena'
-    throw err
-  }
-
-  if (!/[0-9]/.test(contrasena)) {
-    const err = new Error('La contraseña debe incluir al menos un número')
-    err.status = 400
-    err.campo = 'contrasena'
-    throw err
-  }
+  validarPoliticaContrasena(contrasena)
 
   const yaExiste = await Usuario.findOne({ correo: String(correo).trim() })
   if (yaExiste) {

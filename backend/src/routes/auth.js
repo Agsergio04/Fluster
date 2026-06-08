@@ -1,11 +1,11 @@
 const { Router } = require('express')
 const authController = require('../controllers/authController')
-const authMiddleware = require('../middlewares/authMiddleware')
-const verificarRol = require('../middlewares/rolMiddleware')
+const { authLimiter } = require('../middlewares/rateLimit')
 
 const router = Router()
 
-router.post('/registro', authController.registrar)
-router.post('/login', authController.login)
+// Límite estricto: frena la fuerza bruta de contraseñas y el abuso del registro.
+router.post('/registro', authLimiter, authController.registrar)
+router.post('/login', authLimiter, authController.login)
 
 module.exports = router

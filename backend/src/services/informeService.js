@@ -8,6 +8,7 @@
 const Informe = require('../models/Informe')
 const Contenedor = require('../models/Contenedor')
 const Ciclo = require('../models/Ciclo')
+const { escaparRegex } = require('../utils/validacion')
 
 /**
  * Registra que el gestor ha exportado el PDF de un ciclo cerrado.
@@ -59,7 +60,7 @@ async function generar({ contenedorId, cicloId, generadoPor }) {
  */
 async function listar(filtros = {}) {
   const query = {}
-  if (filtros.cliente) query.cliente = { $regex: filtros.cliente, $options: 'i' }
+  if (filtros.cliente) query.cliente = { $regex: escaparRegex(filtros.cliente), $options: 'i' }
   if (filtros.contenedorId) query.contenedorId = filtros.contenedorId
 
   return Informe.find(query).sort({ generadoEn: -1 }).lean()

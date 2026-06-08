@@ -11,6 +11,7 @@ const Ciclo = require('../models/Ciclo')
 const Evento = require('../models/Evento')
 const Informe = require('../models/Informe')
 const { calcularDiasEntreFechas, calcularCosteTramos } = require('./calculoDD')
+const { escaparRegex } = require('../utils/validacion')
 
 // ---------------------------------------------------------------------------
 // CRUD básico
@@ -70,7 +71,7 @@ async function listar(filtros = {}) {
   const query = {}
   if (filtros.estado)      query.estado    = filtros.estado
   if (filtros.navieraId)   query.navieraId = filtros.navieraId
-  if (filtros.busqueda)    query.codigoBIC = { $regex: filtros.busqueda, $options: 'i' }
+  if (filtros.busqueda)    query.codigoBIC = { $regex: escaparRegex(filtros.busqueda), $options: 'i' }
   if (filtros.creadoPorId) query.creadoPor = filtros.creadoPorId
 
   if (filtros.clienteId) {

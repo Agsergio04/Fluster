@@ -9,6 +9,7 @@ const Usuario = require('../models/Usuario')
 const Contenedor = require('../models/Contenedor')
 const Evento = require('../models/Evento')
 const Informe = require('../models/Informe')
+const { escaparRegex, validarPoliticaContrasena } = require('../utils/validacion')
 
 const SALT_ROUNDS = 10
 
@@ -23,7 +24,7 @@ const SALT_ROUNDS = 10
 async function listar(filtros = {}) {
   const query = {}
   if (filtros.busqueda) {
-    const re = { $regex: filtros.busqueda, $options: 'i' }
+    const re = { $regex: escaparRegex(filtros.busqueda), $options: 'i' }
     query.$or = [{ nombre: re }, { correo: re }]
   }
   if (filtros.rol) query.rol = filtros.rol
@@ -139,6 +140,9 @@ async function cambiarContrasena(id, contrasenaActual, contrasenaNueva) {
     err.status = 422
     throw err
   }
+
+  // Misma política que en el registro (mínimo 8 caracteres y al menos un número)
+  validarPoliticaContrasena(contrasenaNueva)
 
   const hash = await bcrypt.hash(contrasenaNueva, SALT_ROUNDS)
   await Usuario.findByIdAndUpdate(id, { contrasena: hash })

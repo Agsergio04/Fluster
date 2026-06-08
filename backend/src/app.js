@@ -1,9 +1,11 @@
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
+const mongoose = require('mongoose')
 const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('./swagger.json')
 const errorMiddleware = require('./middlewares/errorMiddleware')
+const { generalLimiter } = require('./middlewares/rateLimit')
 
 const authRoutes        = require('./routes/auth')
 const ocrRoutes         = require('./routes/ocr')
@@ -17,6 +19,10 @@ const semaforoRoutes    = require('./routes/semaforo')
 const cicloRoutes       = require('./routes/ciclos')
 
 const app = express()
+
+// Detrás del proxy de Render: usa la IP real del cliente (X-Forwarded-For) para
+// que el rate limiting cuente por usuario y no por la IP del proxy.
+app.set('trust proxy', 1)
 
 // Cabeceras HTTP de seguridad. La CSP se desactiva porque este servidor
 // sirve Swagger UI (/api-docs), que carga scripts y estilos inline que la
@@ -33,8 +39,21 @@ app.use(cors(corsOptions))
 app.use(express.json({ limit: '20mb' }))
 
 app.get('/', (_req, res) => res.redirect('/api-docs'))
-app.get('/health', (_req, res) => res.json({ ok: true }))
+
+// Healthcheck con comprobación REAL de la dependencia crítica (MongoDB):
+// si la conexión no está lista responde 503, para que Render/Docker no den por
+// sano un servicio que no puede atender peticiones.
+app.get('/health', (_req, res) => {
+  const bdConectada = mongoose.connection.readyState === 1
+  res
+    .status(bdConectada ? 200 : 503)
+    .json({ ok: bdConectada, bd: bdConectada ? 'conectada' : 'desconectada' })
+})
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+// Límite de tasa general para toda la API (el login añade uno más estricto)
+app.use('/api', generalLimiter)
 
 app.use('/api/auth',         authRoutes)
 app.use('/api/ocr',          ocrRoutes)
