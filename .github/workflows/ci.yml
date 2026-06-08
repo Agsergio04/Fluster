@@ -44,6 +44,13 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
+      # Evita descargar el binario de MongoDB (mongodb-memory-server) en cada run
+      - name: Cache binario de MongoDB
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}
+
       - name: Ejecutar tests
         working-directory: ./backend
         run: npm test
@@ -66,6 +73,16 @@ jobs:
       - name: Instalar dependencias
         working-directory: ./frontend
         run: npm ci
+
+      - name: Lint
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Tests (Vitest)
+        working-directory: ./frontend
+        run: npm test
+        env:
+          VITE_API_URL: http://localhost:3000/api
 
       - name: Verificar build
         working-directory: ./frontend

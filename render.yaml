@@ -9,6 +9,10 @@ services:
     plan: free
     healthCheckPath: /health
     envVars:
+      # Activa el modo producción: enmascara los errores 500 y exige un
+      # JWT_SECRET real (fail-fast del arranque si falta o es de ejemplo).
+      - key: NODE_ENV
+        value: production
       - key: MONGO_URI
         sync: false
       - key: JWT_SECRET
@@ -21,7 +25,7 @@ services:
   - type: static
     name: fluster-frontend
     rootDir: frontend
-    buildCommand: npm install && npm run build
+    buildCommand: npm ci && npm run build
     staticPublishPath: dist
     plan: free
     routes:

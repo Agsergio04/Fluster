@@ -26,20 +26,27 @@
 
 name: Docker
 
+# Se dispara cuando el CI termina en main. Las imágenes solo se publican si el
+# CI terminó en verde (ver `if` de cada job), para no subir imágenes rotas.
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
 
 jobs:
   build-push-backend:
     name: Build & Push — Backend
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: write
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       # ghcr.io exige el nombre del propietario en minúsculas
       - name: Owner en minúsculas
@@ -65,19 +72,22 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/fluster-backend:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-backend:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-backend:${{ github.event.workflow_run.head_sha }}
             ghcr.io/${{ env.OWNER }}/fluster-backend:latest
-            ghcr.io/${{ env.OWNER }}/fluster-backend:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/fluster-backend:${{ github.event.workflow_run.head_sha }}
 
   build-push-frontend:
     name: Build & Push — Frontend
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: write
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Owner en minúsculas
         run: echo "OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
@@ -102,6 +112,6 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/fluster-frontend:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-frontend:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/fluster-frontend:${{ github.event.workflow_run.head_sha }}
             ghcr.io/${{ env.OWNER }}/fluster-frontend:latest
-            ghcr.io/${{ env.OWNER }}/fluster-frontend:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/fluster-frontend:${{ github.event.workflow_run.head_sha }}
