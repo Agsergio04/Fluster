@@ -20,12 +20,15 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - **ErrorBoundary global** en el frontend: captura los errores de render y los fallos al cargar un chunk diferido (típicos tras un despliegue nuevo) y muestra una pantalla de recuperación («Recargar la página» / «Volver al inicio») en lugar de dejar la pantalla en blanco.
 - **Tests unitarios del motor de cálculo D&D** (`calculoDD.test.js`): `calcularDiasEntreFechas` y `calcularCosteTramos` probados de forma aislada (tarifa escalonada, tramo abierto, free time, fechas límite).
 - El endpoint `/health` comprueba ahora el estado **real** de la conexión a MongoDB (`mongoose.connection.readyState`) y responde **503** si la base de datos no está conectada, en vez de devolver siempre `{ ok: true }`.
+- En la tarjeta de contenedor del operador, el botón de **eliminar sale deshabilitado (off)** cuando el contenedor tiene un ciclo activo (estado distinto de INACTIVO), con tooltip explicativo; el backend ya lo rechazaba con 422.
 
 ### Seguridad
 - **Rate limiting efectivo** con `express-rate-limit`: límite general sobre `/api` y límite reforzado en `/auth/registro` y `/auth/login` (este último solo contabiliza intentos fallidos). Hace real lo que el changelog de la v1.0.0 ya anunciaba; se desactiva en el entorno de test.
 - Las entradas de búsqueda se **escapan antes de usarse en `$regex`** de MongoDB (contenedores, usuarios e informes), evitando la inyección de expresiones regulares y los ataques ReDoS.
 - El **cambio de contraseña** aplica la misma política que el registro (mínimo 8 caracteres **y al menos un número** → 400); antes solo se validaba al registrarse.
 - El escaneo de **Trivy** en CI ahora **falla el workflow** (`exit-code: 1`) ante vulnerabilidades HIGH/CRITICAL con corrección disponible, además de publicar el informe SARIF en la pestaña Security.
+- **Validación del formato del código BIC al editar** (ISO 6346: 4 letras + 7 números = 11 caracteres): el servicio responde 422 y normaliza a mayúsculas; el modal del operador bloquea el envío, limita el campo a 11 caracteres y corrige el placeholder.
+- **`react-router-dom` actualizado a 7.17.0** (corrige CVE-2026-42342, HIGH: DoS por *unbounded path expansion* en el endpoint `__manifest` de react-router en modo Framework; Fluster es SPA con `BrowserRouter` y no era explotable, pero se elimina la versión vulnerable para dejar el escaneo Trivy en verde).
 - El registro público ya no permite asignarse el rol `admin` (responde 403); el rol admin solo se crea con el script de administración.
 - Un administrador **protegido** no puede perder el rol de admin ni ser eliminado: el servicio de usuarios responde **403** ante cualquier intento, garantizando que el administrador principal del sistema siempre permanece.
 - El rol del cliente se deriva del JWT firmado, no del objeto `usuario` de `localStorage`, de modo que editar `localStorage` ya no concede permisos.
@@ -39,6 +42,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 ### Cambiado
 - **Informes PDF con columnas en español**: las cabeceras pasan de abreviaturas (`D.L. Dem.`, `D.F. Det.`, `Coste Dem.`…) a términos completos —«sobreestadía» (demurrage) y «detención» (detention)— con sus días libres, días facturables, coste por tramo (€) y coste total (€); el informe individual añade «Inicio/Fin sobreestadía» e «Inicio/Fin detención».
 - **Precedencia de los filtros de informe** (`generarDatos`): el rango de fechas Desde/Hasta tiene prioridad y la fecha específica se ignora cuando ya hay rango (antes la fecha específica sobreescribía al rango); y los criterios de orden se **combinan** en una sola ordenación —fecha de cierre como clave principal y código BIC como desempate alfabético— en lugar de que el alfabético pisara al orden por fecha. Cubierto con tests nuevos de `generarDatos` (la cobertura de `informeService.js` sube del 45 % al 85 %).
+- **Tokenización de valores CSS hardcodeados**: nuevos tokens `--radius-sm/pill/circle` (unifican `2px`/`100px`/`999px`/`50%`), `--text-10/12/18` (huecos de la escala tipográfica) y una escala de capas `--z-modal`/`--z-modal-confirmacion`/`--z-notificacion` (100/200/300 en vez de 200/300/9999); los `line-height` literales pasan a `--leading-tight`/`--leading-normal`. Documentados en la guía de estilos.
 - El seed de demostración mueve dos contenedores de INACTIVO a PUERTO (uno en *free time* con 7 días de margen y otro en *primer tramo*) para que el semáforo muestre todos los tramos durante la semana de la exposición; el *segundo tramo* ya es permanente.
 - El panel de control muestra como máximo **6 tarjetas de usuario por página** (antes 9); a partir de ahí aparece la paginación.
 - En la tarjeta de tarifa compacta, en móviles muy estrechos (≤400px) el par Det./Sob. se apila para que cada celda tenga más espacio.
@@ -59,6 +63,8 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - El frontend en Docker espera a que el backend esté `healthy` (nuevo healthcheck contra `/health`); Render usa `npm ci`.
 
 ### Corregido
+- El icono del calendario de los inputs de fecha de los modales (editar contenedor y editar tramo de ciclo) ahora **sigue el tema de la aplicación en modo oscuro**: el `color-scheme` se ata a `:root[data-theme]` en lugar de `light dark` (que seguía la preferencia del sistema operativo).
+- Las imágenes del dataset de OCR `contenedor_leido` se **renumeran a 1..18 sin huecos** (antes faltaban varios números sobre un rango 1..28); la serie `contenedor_fallo` ya estaba correcta.
 - `errorMiddleware` devuelve 400 ante un `CastError` (identificador inválido) y 409 ante clave duplicada (E11000) en lugar de 500.
 - Borrado en cascada del contenedor (ciclos, eventos e informes) y *restrict* al eliminar usuarios con datos asociados.
 - Formulario de registro: se elimina el doble envío y se valida el formato del correo (cliente y servidor).

@@ -472,7 +472,12 @@ La escala sigue un sistema de tamaños múltiplos de 8px para garantizar la cohe
 | Variable CSS | Valor rem | Valor px | Uso típico |
 |---|---|---|---|
 | `--text-8` | `0.5rem` | 8px | Etiquetas muy pequeñas, badges |
+| `--text-10` | `0.625rem` | 10px | Etiquetas diminutas (mini-labels de tarifa) |
+| `--text-12` | `0.75rem` | 12px | Cabeceras de tabla, texto auxiliar |
+| `--text-14` | `0.875rem` | 14px | Texto secundario (hint, error, botones pequeños) |
 | `--text-16` | `1rem` | 16px | Texto de cuerpo base |
+| `--text-18` | `1.125rem` | 18px | Énfasis intermedio (inputs en pantallas grandes) |
+| `--text-20` | `1.25rem` | 20px | Subtítulos pequeños |
 | `--text-24` | `1.5rem` | 24px | Subtítulos, texto de énfasis |
 | `--text-32` | `2rem` | 32px | Títulos de sección (`h3`–`h4`) |
 | `--text-40` | `2.5rem` | 40px | Títulos de página (`h2`) |
@@ -552,6 +557,9 @@ Siempre se deben utilizar los tokens de espaciado. **No se deben usar valores de
 | Variable CSS | Valor | Uso |
 |---|---|---|
 | `--radius` | `12px` | Radio estándar para tarjetas, botones, inputs y modales |
+| `--radius-sm` | `2px` | Radio pequeño (marcadores, barras finas) |
+| `--radius-pill` | `999px` | Píldora: botones y etiquetas totalmente redondeados |
+| `--radius-circle` | `50%` | Círculos (avatares, spinner, puntos de estado) |
 
 El radio de 12px aplica de forma consistente a todos los elementos con borde redondeado de la interfaz. Esto incluye tarjetas, botones, campos de entrada, modales y paneles.
 
@@ -580,6 +588,16 @@ Ejemplo de uso:
 | `--shadow-xl` | `0 20px 25px rgba(0,0,0,.1), 0 10px 10px rgba(0,0,0,.04)` | Modales de alta importancia, tooltips |
 
 Las sombras siguen una escala de elevación. Cuanto mayor es la sombra, mayor es la percepción de distancia del elemento respecto al fondo.
+
+### Z-index (capas)
+
+Escala de apilamiento ordenada (de menor a mayor) para los elementos que se superponen al contenido. Evita los números mágicos dispersos (antes `200`/`300`/`9999`) y deja explícito qué se dibuja encima de qué.
+
+| Variable CSS | Valor | Uso típico |
+|---|---|---|
+| `--z-modal` | `100` | Modales de edición y de entrada a puerto |
+| `--z-modal-confirmacion` | `200` | Diálogo de confirmación (aparece sobre los demás modales) |
+| `--z-notificacion` | `300` | Toast / notificación (siempre encima de todo) |
 
 ---
 

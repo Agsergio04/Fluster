@@ -208,7 +208,7 @@ npm test -- --coverage
 npm test -- --watch
 ```
 
-Los tests cubren 259 casos en 24 suites (servicios, controladores, middlewares e integración). Los unitarios y de controlador no requieren base de datos real ni variables de entorno adicionales (Jest mockea todos los modelos de Mongoose); los de integración levantan una MongoDB en memoria con `mongodb-memory-server`, también sin servidor externo.
+Los tests cubren 261 casos en 24 suites (servicios, controladores, middlewares e integración). Los unitarios y de controlador no requieren base de datos real ni variables de entorno adicionales (Jest mockea todos los modelos de Mongoose); los de integración levantan una MongoDB en memoria con `mongodb-memory-server`, también sin servidor externo.
 
 ### Tests del frontend (Vitest + React Testing Library)
 
@@ -225,7 +225,7 @@ npm run test:watch
 npm run test:coverage
 ```
 
-Los tests unitarios y de componentes cubren 115 casos en 14 suites (utilidades de sesión, hooks y componentes atómicos y moleculares). Se ejecutan sobre jsdom sin necesidad de navegador real. Aparte, hay 20 tests end-to-end con Playwright (`npm run test:e2e`) que sí abren un navegador Chromium.
+Los tests unitarios y de componentes cubren 122 casos en 15 suites (utilidades de sesión, hooks y componentes atómicos y moleculares). Se ejecutan sobre jsdom sin necesidad de navegador real. Aparte, hay 20 tests end-to-end con Playwright (`npm run test:e2e`) que sí abren un navegador Chromium.
 
 ---
 
