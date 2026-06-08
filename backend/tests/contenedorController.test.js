@@ -79,7 +79,7 @@ describe('contenedorController', () => {
 
       await obtener(req, res, next)
 
-      expect(contenedorService.obtenerPorId).toHaveBeenCalledWith('c1')
+      expect(contenedorService.obtenerPorId).toHaveBeenCalledWith('c1', 'user-id')
       expect(res.json).toHaveBeenCalledWith(contenedor)
     })
 
@@ -116,7 +116,7 @@ describe('contenedorController', () => {
       expect(contenedorService.actualizar).toHaveBeenCalledWith('c1', {
         codigoBIC: 'MSCU9999999',
         foto: null,
-      })
+      }, 'user-id')
       expect(res.json).toHaveBeenCalledWith(actualizado)
     })
 
@@ -128,7 +128,7 @@ describe('contenedorController', () => {
 
       expect(contenedorService.actualizar).toHaveBeenCalledWith('c1', {
         foto: 'data:image/png;base64,...',
-      })
+      }, 'user-id')
     })
 
     it('aplica el código BIC y la foto aunque también se cambie la fecha (no los descarta)', async () => {
@@ -139,11 +139,11 @@ describe('contenedorController', () => {
 
       await editarContenedor(req, res, next)
 
-      expect(contenedorService.editarFechaInicioLibre).toHaveBeenCalledWith('c1', '2026-01-15T00:00:00.000Z')
+      expect(contenedorService.editarFechaInicioLibre).toHaveBeenCalledWith('c1', '2026-01-15T00:00:00.000Z', 'user-id')
       expect(contenedorService.actualizar).toHaveBeenCalledWith('c1', {
         codigoBIC: 'MSCU9999999',
         foto: 'data:img',
-      })
+      }, 'user-id')
       expect(res.json).toHaveBeenCalledWith(actualizado)
       expect(next).not.toHaveBeenCalled()
     })
@@ -155,7 +155,7 @@ describe('contenedorController', () => {
 
       await editarContenedor(req, res, next)
 
-      expect(contenedorService.editarFechaInicioLibre).toHaveBeenCalledWith('c1', '2026-01-15T00:00:00.000Z')
+      expect(contenedorService.editarFechaInicioLibre).toHaveBeenCalledWith('c1', '2026-01-15T00:00:00.000Z', 'user-id')
       expect(contenedorService.actualizar).not.toHaveBeenCalled()
       expect(res.json).toHaveBeenCalledWith(actualizado)
     })
@@ -167,7 +167,7 @@ describe('contenedorController', () => {
 
       await eliminar(req, res, next)
 
-      expect(contenedorService.eliminar).toHaveBeenCalledWith('c1')
+      expect(contenedorService.eliminar).toHaveBeenCalledWith('c1', 'user-id')
       expect(res.status).toHaveBeenCalledWith(204)
       expect(res.send).toHaveBeenCalled()
     })

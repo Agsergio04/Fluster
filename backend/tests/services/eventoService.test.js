@@ -53,7 +53,7 @@ describe('eventoService', () => {
 
       expect(Evento.create).toHaveBeenCalledWith(expect.objectContaining({
         fotoUrl: 'http://storage/foto.jpg',
-        codigoBICOcr: 'MSCU1234567',
+        codigoBIC: 'MSCU1234567',
         ocrValidado: true,
       }))
     })

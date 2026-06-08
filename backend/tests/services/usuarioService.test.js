@@ -157,11 +157,11 @@ describe('usuarioService', () => {
       expect(bcrypt.hash).toHaveBeenCalledWith('new-pass', 10)
     })
 
-    it('lanza error 401 si la contraseña actual no coincide', async () => {
+    it('lanza error 422 si la contraseña actual no coincide', async () => {
       Usuario.findById.mockResolvedValue({ _id: 'user-id', contrasena: 'hash' })
       bcrypt.compare.mockResolvedValue(false)
 
-      await expect(cambiarContrasena('user-id', 'wrong', 'new')).rejects.toMatchObject({ status: 401 })
+      await expect(cambiarContrasena('user-id', 'wrong', 'new')).rejects.toMatchObject({ status: 422 })
     })
 
     it('lanza error 404 si el usuario no existe', async () => {

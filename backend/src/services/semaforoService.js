@@ -15,8 +15,10 @@ const Ciclo = require('../models/Ciclo')
 
 function calcularCosteTramos(diasFacturables, tramos) {
   if (diasFacturables <= 0 || !tramos?.length) return 0
+  // Orden ascendente por desdeDia para no infrafacturar si llegan desordenados.
+  const ordenados = [...tramos].sort((a, b) => a.desdeDia - b.desdeDia)
   let total = 0
-  for (const tramo of tramos) {
+  for (const tramo of ordenados) {
     if (diasFacturables < tramo.desdeDia) break
     const fin = tramo.hastaDia === null ? diasFacturables : Math.min(tramo.hastaDia, diasFacturables)
     total += (fin - tramo.desdeDia + 1) * tramo.precioPorDia

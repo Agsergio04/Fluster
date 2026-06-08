@@ -109,9 +109,9 @@ async function actualizar(id, cambios) {
 }
 
 /**
- * Elimina una naviera aunque tenga contenedores asociados.
- * Al volver a listar navieras, recrearNavierasHuerfanas() detectará los
- * contenedores huérfanos y recreará una naviera por defecto para cada uno.
+ * Elimina una naviera. Se impide el borrado si tiene contenedores asociados:
+ * recrear una naviera de sustitución perdería sus tarifas (precios a 0), así que
+ * una naviera en uso no debe borrarse (mismo criterio que clientes con ciclos).
  *
  * @param {string} id
  * @returns {Promise<void>}
@@ -124,12 +124,19 @@ async function eliminar(id) {
     throw err
   }
 
+  const enUso = await Contenedor.exists({ navieraId: id })
+  if (enUso) {
+    const err = new Error('No se puede eliminar una naviera con contenedores asociados')
+    err.status = 409
+    throw err
+  }
+
   await naviera.deleteOne()
 }
 
 /**
  * Detecta contenedores cuya navieraId apunta a una naviera eliminada y crea
- * una naviera de sustitución usando el prefijo de 4 letras del código BIC.
+ * una naviera de sustitución usando el prefijo de 3 letras del código BIC.
  * Actualiza todos los contenedores afectados para que apunten a la nueva naviera.
  *
  * @returns {Promise<void>}

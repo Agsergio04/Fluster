@@ -129,4 +129,12 @@ const cicloSchema = new Schema(
 // Índice para recuperar todos los ciclos de un contenedor ordenados por fecha
 cicloSchema.index({ contenedorId: 1, creadoEn: -1 })
 
+// Un contenedor solo puede tener UN ciclo activo (sin cerrar) a la vez. El índice
+// único parcial lo garantiza a nivel de BD, evitando ciclos duplicados ante doble
+// clic o concurrencia en las transiciones de estado.
+cicloSchema.index(
+  { contenedorId: 1 },
+  { unique: true, partialFilterExpression: { fechaCierre: null } }
+)
+
 module.exports = model('Ciclo', cicloSchema)

@@ -23,7 +23,26 @@ const { calcularDiasEntreFechas, calcularCosteTramos } = require('./calculoDD')
  * @returns {Promise<object>}
  */
 async function crear({ codigoBIC, foto, creadoPor }) {
-  const prefijo = codigoBIC.substring(0, 3).toUpperCase()
+  if (typeof codigoBIC !== 'string' || !codigoBIC.trim()) {
+    const err = new Error('El código BIC es obligatorio')
+    err.status = 422
+    throw err
+  }
+  const bic = codigoBIC.trim().toUpperCase()
+
+  // El código BIC identifica físicamente al contenedor: no puede repetirse
+  // (coherente con la validación de `actualizar` y con el índice único del modelo).
+  const duplicado = await Contenedor.findOne({ codigoBIC: bic })
+  if (duplicado) {
+    const err = new Error(`Ya existe un contenedor con el código BIC ${bic}`)
+    err.status = 409
+    throw err
+  }
+
+  // La naviera se identifica por las 3 primeras letras del BIC (código de
+  // propietario ISO 6346); la 4ª letra es la categoría de equipo. El catálogo de
+  // navieras debe usar ese mismo código de 3 letras (p. ej. MAE), no 4.
+  const prefijo = bic.substring(0, 3)
   let naviera = await Naviera.findOne({ codigo: prefijo })
   if (!naviera) {
     naviera = await Naviera.create({
@@ -35,7 +54,7 @@ async function crear({ codigoBIC, foto, creadoPor }) {
       diasDetention:        [],
     })
   }
-  return Contenedor.create({ codigoBIC, foto: foto ?? null, navieraId: naviera._id, creadoPor })
+  return Contenedor.create({ codigoBIC: bic, foto: foto ?? null, navieraId: naviera._id, creadoPor })
 }
 
 /**
@@ -90,12 +109,15 @@ async function listar(filtros = {}) {
  * @param {string} id
  * @returns {Promise<object>}
  */
-async function obtenerPorId(id) {
+async function obtenerPorId(id, creadoPorId) {
   const contenedor = await Contenedor.findById(id)
     .populate('navieraId')
     .lean()
 
-  if (!contenedor) {
+  // Control de propiedad: si el solicitante es operador (creadoPorId definido),
+  // solo accede a SUS contenedores. Se responde 404 (no 403) para no revelar la
+  // existencia de IDs ajenos.
+  if (!contenedor || (creadoPorId && String(contenedor.creadoPor) !== String(creadoPorId))) {
     const err = new Error('Contenedor no encontrado')
     err.status = 404
     throw err
@@ -121,11 +143,21 @@ async function obtenerPorId(id) {
  * @param {object} cambios
  * @returns {Promise<object>}
  */
-async function actualizar(id, cambios) {
+async function actualizar(id, cambios, creadoPorId) {
   delete cambios.estado
   delete cambios.fechaEntradaPuerto
   delete cambios.fechaSalidaPuerto
   delete cambios.fechaDevolucion
+
+  // Control de propiedad para operadores (creadoPorId definido): no editar ajenos.
+  if (creadoPorId) {
+    const propio = await Contenedor.exists({ _id: id, creadoPor: creadoPorId })
+    if (!propio) {
+      const err = new Error('Contenedor no encontrado')
+      err.status = 404
+      throw err
+    }
+  }
 
   if (cambios.codigoBIC) {
     const duplicado = await Contenedor.findOne({ codigoBIC: cambios.codigoBIC.toUpperCase(), _id: { $ne: id } })
@@ -164,9 +196,9 @@ async function actualizar(id, cambios) {
  * @param {string} id
  * @param {string|Date} nuevaFechaStr
  */
-async function editarFechaInicioLibre(id, nuevaFechaStr) {
+async function editarFechaInicioLibre(id, nuevaFechaStr, creadoPorId) {
   const contenedor = await Contenedor.findById(id).populate('navieraId').lean()
-  if (!contenedor) {
+  if (!contenedor || (creadoPorId && String(contenedor.creadoPor) !== String(creadoPorId))) {
     const err = new Error('Contenedor no encontrado'); err.status = 404; throw err
   }
 
@@ -216,9 +248,15 @@ async function editarFechaInicioLibre(id, nuevaFechaStr) {
     }
   }
 
+  // fechaEntradaPuerto solo se corrige en PUERTO (donde coincide con el inicio
+  // del demurrage). En INACTIVO el contenedor nunca entró a puerto y en CLIENTE
+  // ese timestamp ya es histórico: sobrescribirlo lo corromperia.
+  const updateContenedor = { fechaInicioLibre: nuevaFecha }
+  if (contenedor.estado === 'PUERTO') updateContenedor.fechaEntradaPuerto = nuevaFecha
+
   return Contenedor.findByIdAndUpdate(
     id,
-    { fechaInicioLibre: nuevaFecha, fechaEntradaPuerto: nuevaFecha },
+    updateContenedor,
     { new: true }
   ).lean()
 }
@@ -295,6 +333,12 @@ async function registrarSalidaPuerto(id) {
     Naviera.findById(contenedor.navieraId),
     Ciclo.findOne({ contenedorId: id, fechaCierre: null }),
   ])
+
+  if (!ciclo?.demurrage) {
+    const err = new Error('No hay un ciclo de sobrestadía activo para este contenedor')
+    err.status = 422
+    throw err
+  }
 
   const diasTranscurridos = calcularDiasEntreFechas(ciclo.demurrage.fechaInicio, fecha)
   const diasFacturables = Math.max(0, diasTranscurridos - ciclo.demurrage.diasLibres)
@@ -448,9 +492,9 @@ async function revertirSalidaPuerto(id) {
  * @param {string} id
  * @returns {Promise<void>}
  */
-async function eliminar(id) {
+async function eliminar(id, creadoPorId) {
   const contenedor = await Contenedor.findById(id)
-  if (!contenedor) {
+  if (!contenedor || (creadoPorId && String(contenedor.creadoPor) !== String(creadoPorId))) {
     const err = new Error('Contenedor no encontrado')
     err.status = 404
     throw err

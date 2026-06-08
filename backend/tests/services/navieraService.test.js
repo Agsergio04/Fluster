@@ -131,12 +131,13 @@ describe('navieraService', () => {
       expect(nav.deleteOne).toHaveBeenCalled()
     })
 
-    it('permite eliminar aunque haya contenedores asociados (se recrean como huérfanos)', async () => {
-      const nav = { ...mockNaviera, deleteOne: jest.fn().mockResolvedValue({}) }
+    it('lanza error 409 si la naviera tiene contenedores asociados', async () => {
+      const nav = { ...mockNaviera, deleteOne: jest.fn() }
       Naviera.findById.mockResolvedValue(nav)
+      Contenedor.exists.mockResolvedValue({ _id: 'cont-id' })
 
-      await expect(eliminar('nav-id')).resolves.not.toThrow()
-      expect(nav.deleteOne).toHaveBeenCalled()
+      await expect(eliminar('nav-id')).rejects.toMatchObject({ status: 409 })
+      expect(nav.deleteOne).not.toHaveBeenCalled()
     })
 
 it('lanza error 404 si la naviera no existe', async () => {

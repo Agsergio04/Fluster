@@ -53,7 +53,7 @@ const USUARIOS = [
 
 const NAVIERAS = [
   {
-    nombre: 'Maersk', codigo: 'MAEU',
+    nombre: 'Maersk', codigo: 'MAE',
     diasLibresDemurrage: 5, diasLibresDetention: 7,
     diasDemurrage: [
       { desdeDia: 1,  hastaDia: 5,    precioPorDia: 50  },
@@ -67,7 +67,7 @@ const NAVIERAS = [
     ],
   },
   {
-    nombre: 'MSC', codigo: 'MSCU',
+    nombre: 'MSC', codigo: 'MSC',
     diasLibresDemurrage: 7, diasLibresDetention: 5,
     diasDemurrage: [
       { desdeDia: 1,  hastaDia: 7,    precioPorDia: 45  },
@@ -81,7 +81,7 @@ const NAVIERAS = [
     ],
   },
   {
-    nombre: 'CMA CGM', codigo: 'CMAU',
+    nombre: 'CMA CGM', codigo: 'CMA',
     diasLibresDemurrage: 4, diasLibresDetention: 6,
     diasDemurrage: [
       { desdeDia: 1,  hastaDia: 4,    precioPorDia: 55  },
@@ -95,7 +95,7 @@ const NAVIERAS = [
     ],
   },
   {
-    nombre: 'BAF', codigo: 'BAFU',
+    nombre: 'BAF', codigo: 'BAF',
     diasLibresDemurrage: 3, diasLibresDetention: 5,
     diasDemurrage: [
       { desdeDia: 1,  hastaDia: 5,    precioPorDia: 60  },
@@ -232,7 +232,9 @@ async function run() {
   const op1 = U['marilopez@gmail.com']
   const op2 = U['operador2@fluster.com']
   const op3 = U['operador3@fluster.com']
-  const maeu = N['MAEU'], mscu = N['MSCU'], cmau = N['CMAU'], bafu = N['BAFU']
+  // Las navieras se indexan por su código real de 3 letras (ISO 6346, prefijo de
+  // propietario). Las variables conservan el nombre del prefijo BIC por claridad.
+  const maeu = N['MAE'], mscu = N['MSC'], cmau = N['CMA'], bafu = N['BAF']
   const cl1 = C['Acme Logistics'], cl2 = C['Tech Global Freight'], cl3 = C['Iberia Cargo']
 
   // ── Contenedores ───────────────────────────

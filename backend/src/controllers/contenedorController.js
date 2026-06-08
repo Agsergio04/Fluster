@@ -1,5 +1,9 @@
 const contenedorService = require('../services/contenedorService')
 
+// Para un operador, las acciones por ID se acotan a SUS contenedores (control de
+// propiedad / anti-IDOR). El gestor accede a todos (devuelve undefined).
+const propietario = req => (req.usuario.rol === 'operador' ? req.usuario.id : undefined)
+
 async function crear(req, res, next) {
   try {
     // El creador se toma del token, no del body
@@ -23,7 +27,7 @@ async function listar(req, res, next) {
 
 async function obtener(req, res, next) {
   try {
-    const contenedor = await contenedorService.obtenerPorId(req.params.id)
+    const contenedor = await contenedorService.obtenerPorId(req.params.id, propietario(req))
     res.json(contenedor)
   } catch (err) {
     next(err)
@@ -83,21 +87,22 @@ async function editarContenedor(req, res, next) {
     // validación y recalcula el ciclo. Antes esta rama hacía `return` y, como
     // el formulario siempre envía la fecha precargada, descartaba en silencio
     // los cambios de código BIC y foto. Ahora solo aplica la fecha y continúa.
+    const dueno = propietario(req)
     let actualizado
     if (fechaInicioLibre !== undefined) {
-      actualizado = await contenedorService.editarFechaInicioLibre(req.params.id, fechaInicioLibre)
+      actualizado = await contenedorService.editarFechaInicioLibre(req.params.id, fechaInicioLibre, dueno)
     }
 
     const cambios = {}
     if (codigoBIC !== undefined) cambios.codigoBIC = codigoBIC
     if (foto !== undefined)      cambios.foto      = foto
     if (Object.keys(cambios).length > 0) {
-      actualizado = await contenedorService.actualizar(req.params.id, cambios)
+      actualizado = await contenedorService.actualizar(req.params.id, cambios, dueno)
     }
 
     // Si el body no traía ningún campo editable, devolvemos el estado actual.
     if (!actualizado) {
-      actualizado = await contenedorService.obtenerPorId(req.params.id)
+      actualizado = await contenedorService.obtenerPorId(req.params.id, dueno)
     }
 
     res.json(actualizado)
@@ -108,7 +113,7 @@ async function editarContenedor(req, res, next) {
 
 async function eliminar(req, res, next) {
   try {
-    await contenedorService.eliminar(req.params.id)
+    await contenedorService.eliminar(req.params.id, propietario(req))
     res.status(204).send()
   } catch (err) {
     next(err)

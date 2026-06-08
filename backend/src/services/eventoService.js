@@ -28,7 +28,9 @@ async function registrar({ contenedorId, tipo, timestamp, fotoUrl, codigoBICOcr,
     throw err
   }
 
-  return Evento.create({ contenedorId, tipo, timestamp, fotoUrl, codigoBICOcr, ocrValidado, registradoPor })
+  // El esquema Evento define el campo `codigoBIC` (no `codigoBICOcr`): si se
+  // pasara con el nombre del parámetro, Mongoose lo descartaría y no se guardaría.
+  return Evento.create({ contenedorId, tipo, timestamp, fotoUrl, codigoBIC: codigoBICOcr, ocrValidado, registradoPor })
 }
 
 /**

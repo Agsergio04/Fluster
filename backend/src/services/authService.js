@@ -44,7 +44,14 @@ async function registrar({ nombre, correo, contrasena, rol }) {
     throw err
   }
 
-  const yaExiste = await Usuario.findOne({ correo })
+  if (typeof contrasena !== 'string' || contrasena.length < 8) {
+    const err = new Error('La contraseña debe tener al menos 8 caracteres')
+    err.status = 400
+    err.campo = 'contrasena'
+    throw err
+  }
+
+  const yaExiste = await Usuario.findOne({ correo: String(correo).trim() })
   if (yaExiste) {
     const err = new Error('Ya existe un usuario con ese correo')
     err.status = 409
@@ -64,15 +71,17 @@ async function registrar({ nombre, correo, contrasena, rol }) {
  * El token lleva id, correo y rol para que los middlewares de autorización
  * no tengan que consultar la base de datos en cada petición.
  *
- * El token no caduca por tiempo; el frontend lo guarda en localStorage y la
- * sesión se cierra cuando el usuario hace logout.
+ * El token caduca a los 7 días (expiresIn); el frontend lo guarda en localStorage
+ * y la sesión se cierra al hacer logout o al expirar.
  *
  * @param {string} correo
  * @param {string} contrasena
  * @returns {Promise<{ token: string, usuario: object }>}
  */
 async function login(correo, contrasena) {
-  const usuario = await Usuario.findOne({ correo })
+  // Coerción a string: req.body podría traer objetos ({$ne:null}, …) e inyectar
+  // operadores NoSQL en la consulta.
+  const usuario = await Usuario.findOne({ correo: String(correo ?? '').trim() })
 
   if (!usuario) {
     const err = new Error('El correo no está registrado')
@@ -81,7 +90,7 @@ async function login(correo, contrasena) {
     throw err
   }
 
-  const coincide = await bcrypt.compare(contrasena, usuario.contrasena)
+  const coincide = await bcrypt.compare(String(contrasena ?? ''), usuario.contrasena)
   if (!coincide) {
     const err = new Error('Contraseña incorrecta')
     err.status = 401
@@ -92,7 +101,8 @@ async function login(correo, contrasena) {
   const payload = { id: usuario._id, correo: usuario.correo, rol: usuario.rol }
   // Algoritmo fijado a HS256 (coherente con la verificación del authMiddleware):
   // solo se aceptan tokens HMAC, lo que evita ataques de confusión de algoritmo.
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256' })
+  // Caduca a los 7 días para limitar la ventana de un token filtrado.
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '7d' })
 
   return {
     token,

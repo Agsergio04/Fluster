@@ -590,6 +590,16 @@ describe('contenedorService', () => {
 
       await expect(obtenerPorId('no-existe')).rejects.toMatchObject({ status: 404 })
     })
+
+    it('niega con 404 el acceso de un operador a un contenedor de otro (anti-IDOR)', async () => {
+      Contenedor.findById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          lean: jest.fn().mockResolvedValue({ _id: 'cont-id', creadoPor: 'otro-operador' }),
+        }),
+      })
+
+      await expect(obtenerPorId('cont-id', 'operador-actual')).rejects.toMatchObject({ status: 404 })
+    })
   })
 
   // ---------------------------------------------------------------------------

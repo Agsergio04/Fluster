@@ -123,10 +123,13 @@ async function cambiarContrasena(id, contrasenaActual, contrasenaNueva) {
     throw err
   }
 
-  const coincide = await bcrypt.compare(contrasenaActual, usuario.contrasena)
+  const coincide = await bcrypt.compare(String(contrasenaActual ?? ''), usuario.contrasena)
   if (!coincide) {
+    // 422 (no 401): el usuario SÍ tiene sesión válida; un 401 dispararía el
+    // cierre de sesión global del interceptor del frontend al equivocarse de
+    // contraseña actual. Es un error de validación, no de autenticación.
     const err = new Error('La contraseña actual no es correcta')
-    err.status = 401
+    err.status = 422
     throw err
   }
 

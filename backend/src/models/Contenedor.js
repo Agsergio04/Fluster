@@ -34,6 +34,7 @@ const contenedorSchema = new Schema(
     codigoBIC: {
       type: String,
       required: true,
+      unique: true,
       uppercase: true,
       trim: true,
     },

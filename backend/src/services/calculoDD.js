@@ -26,10 +26,14 @@ function calcularDiasEntreFechas(fechaInicio, fechaFin) {
  * @returns {number}
  */
 function calcularCosteTramos(diasFacturables, tramos) {
-  if (diasFacturables <= 0) return 0
+  if (diasFacturables <= 0 || !tramos?.length) return 0
+
+  // Se procesan en orden ascendente de desdeDia: si los tramos llegaran
+  // desordenados, un `break` prematuro infrafacturaría (coste menor del debido).
+  const ordenados = [...tramos].sort((a, b) => a.desdeDia - b.desdeDia)
 
   let total = 0
-  for (const tramo of tramos) {
+  for (const tramo of ordenados) {
     if (diasFacturables < tramo.desdeDia) break
     const fin = tramo.hastaDia === null
       ? diasFacturables

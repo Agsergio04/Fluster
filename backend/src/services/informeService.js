@@ -44,7 +44,7 @@ async function generar({ contenedorId, cicloId, generadoPor }) {
     contenedorId,
     cicloId,
     codigoBIC: contenedor.codigoBIC,
-    cliente: ciclo.clienteId.nombre,
+    cliente: ciclo.clienteId?.nombre ?? 'Cliente desconocido',
     generadoPor,
   })
 }

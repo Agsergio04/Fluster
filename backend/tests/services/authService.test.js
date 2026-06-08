@@ -30,14 +30,14 @@ describe('authService', () => {
       const result = await registrar({
         nombre: 'Test',
         correo: 'test@test.com',
-        contrasena: '1234',
+        contrasena: '12345678',
         rol: 'operador',
       })
 
       expect(result.contrasena).toBeUndefined()
       expect(result.correo).toBe('test@test.com')
       expect(result.nombre).toBe('Test')
-      expect(bcrypt.hash).toHaveBeenCalledWith('1234', 10)
+      expect(bcrypt.hash).toHaveBeenCalledWith('12345678', 10)
     })
 
     it('llama a Usuario.create con la contraseña hasheada, nunca en texto plano', async () => {
@@ -47,18 +47,18 @@ describe('authService', () => {
         toObject: () => ({ _id: 'id', nombre: 'A', correo: 'a@a.com', rol: 'gestor' }),
       })
 
-      await registrar({ nombre: 'A', correo: 'a@a.com', contrasena: 'plain', rol: 'gestor' })
+      await registrar({ nombre: 'A', correo: 'a@a.com', contrasena: 'plaintext', rol: 'gestor' })
 
       const createArgs = Usuario.create.mock.calls[0][0]
       expect(createArgs.contrasena).toBe('hashed-password')
-      expect(createArgs.contrasena).not.toBe('plain')
+      expect(createArgs.contrasena).not.toBe('plaintext')
     })
 
     it('lanza error 409 si el correo ya está registrado', async () => {
       Usuario.findOne.mockResolvedValue({ correo: 'test@test.com' })
 
       await expect(
-        registrar({ nombre: 'Test', correo: 'test@test.com', contrasena: '1234', rol: 'operador' })
+        registrar({ nombre: 'Test', correo: 'test@test.com', contrasena: '12345678', rol: 'operador' })
       ).rejects.toMatchObject({ status: 409 })
 
       expect(Usuario.create).not.toHaveBeenCalled()
@@ -66,10 +66,18 @@ describe('authService', () => {
 
     it('rechaza con 403 el intento de registrarse como admin (escalada de privilegios)', async () => {
       await expect(
-        registrar({ nombre: 'Hacker', correo: 'h@h.com', contrasena: '1234', rol: 'admin' })
+        registrar({ nombre: 'Hacker', correo: 'h@h.com', contrasena: '12345678', rol: 'admin' })
       ).rejects.toMatchObject({ status: 403, campo: 'rol' })
 
       expect(Usuario.findOne).not.toHaveBeenCalled()
+      expect(Usuario.create).not.toHaveBeenCalled()
+    })
+
+    it('rechaza con 400 una contraseña de menos de 8 caracteres', async () => {
+      await expect(
+        registrar({ nombre: 'Test', correo: 't@t.com', contrasena: 'corta', rol: 'operador' })
+      ).rejects.toMatchObject({ status: 400, campo: 'contrasena' })
+
       expect(Usuario.create).not.toHaveBeenCalled()
     })
   })
@@ -106,7 +114,7 @@ describe('authService', () => {
       expect(jwt.sign).toHaveBeenCalledWith(
         { id: 'user-id', correo: 'test@test.com', rol: 'admin' },
         'test-secret',
-        { algorithm: 'HS256' }
+        { algorithm: 'HS256', expiresIn: '7d' }
       )
     })
 
