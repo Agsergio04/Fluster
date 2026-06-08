@@ -38,6 +38,7 @@ function EstadoContenedorSemaforo({ estado = 'inactivo' }) {
   return (
     <div
       className={`estado-contenedor-semaforo estado-contenedor-semaforo--${mod}`}
+      role="img"
       aria-label={label}
     >
       <span className="estado-contenedor-semaforo__label" aria-hidden="true">

@@ -57,7 +57,7 @@ function InputContrasenia({
         </span>
       )}
 
-      {error && <span className="input__error">{error}</span>}
+      {error && <span className="input__error" id={`${id}-error`}>{error}</span>}
 
       <div className="input__password-wrapper">
         <input
@@ -71,6 +71,8 @@ function InputContrasenia({
           required={required}
           name={name}
           autoComplete={autoComplete}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${id}-error` : (hint ? `${id}-hint` : undefined)}
         />
         <button
           className="input__eye-btn"
@@ -82,7 +84,7 @@ function InputContrasenia({
         </button>
       </div>
 
-      {hint && !error && <span className="input__hint">{hint}</span>}
+      {hint && !error && <span className="input__hint" id={`${id}-hint`}>{hint}</span>}
 
     </label>
   )

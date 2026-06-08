@@ -32,7 +32,7 @@ function Error() {
           <p className="o-error__descripcion">
             La página que buscas no existe o ha sido movida.
           </p>
-          <button className="o-error__boton" onClick={() => navigate(rutaVolver)}>
+          <button type="button" className="o-error__boton" onClick={() => navigate(rutaVolver)}>
             {destino ? 'Volver a mi panel' : 'Volver al inicio'}
           </button>
         </div>

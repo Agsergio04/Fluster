@@ -56,7 +56,7 @@ function GrupoNavieraMovil({ naviera, valores = [], onActualizar, onEliminar }) 
 
         {/* Columna de días */}
         <section className="tarjeta-tarifa__columna">
-          <h4 className="tarjeta-tarifa__columna-titulo">Días</h4>
+          <h2 className="tarjeta-tarifa__columna-titulo">Días</h2>
 
           <div className="tarjeta-tarifa__bloque">
             <span className="tarjeta-tarifa__bloque-titulo">Free Time</span>
@@ -77,7 +77,7 @@ function GrupoNavieraMovil({ naviera, valores = [], onActualizar, onEliminar }) 
 
         {/* Columna de costes */}
         <section className="tarjeta-tarifa__columna">
-          <h4 className="tarjeta-tarifa__columna-titulo">Costes (€/día)</h4>
+          <h2 className="tarjeta-tarifa__columna-titulo">Costes (€/día)</h2>
 
           <div className="tarjeta-tarifa__bloque tarjeta-tarifa__bloque--primer">
             <span className="tarjeta-tarifa__bloque-titulo">Primer tramo</span>

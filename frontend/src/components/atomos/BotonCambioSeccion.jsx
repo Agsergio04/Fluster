@@ -4,7 +4,7 @@ function BotonCambioSeccion({ children, active = false, disabled = false, onClic
     <button
       className={`btn-cambio-seccion${active ? ' btn-cambio-seccion--active' : ''}`}
       type="button"
-      aria-pressed={active}
+      aria-current={active ? 'page' : undefined}
       disabled={disabled}
       onClick={onClick}
     >

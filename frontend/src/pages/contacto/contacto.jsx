@@ -33,7 +33,7 @@ function Contacto() {
         <section className="pagina-estatica__seccion">
           <div className="pagina-estatica__contacto-card">
             <span className="pagina-estatica__contacto-tipo">Correo electrónico</span>
-            <span className="pagina-estatica__contacto-valor">agsergio@iesrafaelalberti.es</span>
+            <a className="pagina-estatica__contacto-valor" href="mailto:agsergio@iesrafaelalberti.es">agsergio@iesrafaelalberti.es</a>
             <p className="pagina-estatica__seccion-texto">Respuesta en 24–48 horas.</p>
           </div>
         </section>

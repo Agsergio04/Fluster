@@ -19,7 +19,7 @@ function CardUsuario({ foto, nombre, correo, rol = 'operador', esPropio = false,
         <div className="card-usuario__foto">
           <img
             src={foto || imagenUsuarioDefault}
-            alt={nombre}
+            alt=""
             className="card-usuario__imagen"
             loading="lazy"
             decoding="async"

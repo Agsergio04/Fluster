@@ -67,7 +67,6 @@ function PerfilCredenciales({
             ref={inputFotoRef}
             type="file"
             accept="image/*"
-            aria-label="Subir foto de perfil"
             aria-hidden="true"
             style={{ display: 'none' }}
             onChange={handleSeleccionarFoto}
