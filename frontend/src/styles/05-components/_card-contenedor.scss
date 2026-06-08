@@ -8,6 +8,8 @@
   flex-direction:   column;
   overflow:         hidden; // recorta la foto a las esquinas redondeadas de la card
   width:            16rem;  // 256px
+  max-width:        100%;   // encoge si la pantalla es más estrecha que la card
+  flex-shrink:      0;      // mantiene su ancho y salta de línea, no se comprime
   background-color: var(--color-primary);
   border-radius:    var(--radius);
 

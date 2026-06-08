@@ -7,6 +7,8 @@
   background-color: var(--color-card-almacen);
   border-radius:    var(--radius);
   width:            24.25rem; // 387px
+  max-width:        100%;     // encoge si la pantalla es más estrecha que la card
+  flex-shrink:      0;        // mantiene su ancho y salta de línea, no se comprime
 
   &__bic {
     display:     flex;

@@ -7,6 +7,8 @@
   background-color: var(--color-card-usuario);
   border-radius:    var(--radius);
   width:            var(--tamanio_card_usuario);
+  max-width:        100%;  // encoge si la pantalla es más estrecha que la card
+  flex-shrink:      0;     // mantiene su ancho y salta de línea, no se comprime
 
   &__info {
     display:        flex;
