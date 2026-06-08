@@ -123,11 +123,16 @@
   }
 
   // ── Acciones ──────────────────────────────────────────────────────
+  // flex-wrap: cuando los dos botones no caben en una línea, "Eliminar" baja
+  // a la siguiente en vez de quedarse a la derecha/apretado.
   &__acciones {
     display:         flex;
+    flex-wrap:       wrap;
     justify-content: space-between;
-    gap:             var(--space-16);
+    gap:             var(--space-8) var(--space-16);
     padding:         0 var(--space-16) var(--space-16);
+
+    .btn-accion-tarifa { flex-shrink: 0; } // no encoger: que provoquen el salto de línea
   }
 
   // ── CeldaTabla reutilizada: quitar el cromo de tabla ──────────────
