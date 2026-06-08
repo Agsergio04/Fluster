@@ -1,15 +1,15 @@
-// Botón de borrar de la card de contenedor: solo el icono de papelera, en el
-// rojo del semáforo con el icono en el color de texto.
+// Botón de borrar de la card de contenedor: solo el icono de papelera, en rojo
+// sólido accesible (error-fondo) con el icono blanco — AAA en ambos temas.
 .btn-eliminar {
   display:          inline-flex;
   align-items:      center;
   justify-content:  center;
   padding:          var(--space-8);
-  background-color: var(--color-segundo_tramo);
+  background-color: var(--color-error-fondo);
   border:           none;
   border-radius:    var(--radius);
   cursor:           pointer;
-  color:            var(--color-text);
+  color:            var(--color-text-on-error);
   transition:       background-color var(--transition-fast);
 
   svg {
@@ -19,7 +19,7 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--color-error-fondo);
+    background-color: var(--color-error-fondo-hover);
   }
 
   &:disabled {

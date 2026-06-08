@@ -1,6 +1,6 @@
-// Botón de borrar usuario: icono de papelera + texto, con los mismos colores que
-// el botón de eliminar de la card de contenedor (rojo del semáforo + texto/icono
-// en el color de texto).
+// Botón de borrar usuario: icono de papelera + texto, en rojo sólido accesible
+// (error-fondo) con texto/icono blanco — AAA 8.0:1 en reposo y 9.2:1 en hover,
+// igual que el modal de confirmar y los chips de error.
 .btn-borrar-usuario {
   display:          inline-flex;
   align-items:      center;
@@ -15,8 +15,8 @@
   font-weight:      var(--font-weight-regular);
   line-height:      1;
   white-space:      nowrap;
-  color:            var(--color-text);
-  background-color: var(--color-segundo_tramo);
+  color:            var(--color-text-on-error);
+  background-color: var(--color-error-fondo);
   transition:       background-color var(--transition-fast);
 
   &__icono {
@@ -26,7 +26,7 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--color-error-fondo);
+    background-color: var(--color-error-fondo-hover);
   }
 
   &:disabled {

@@ -27,7 +27,7 @@
     color:            var(--color-text);
 
     &::placeholder {
-      color: var(--color-text-subtle);
+      color: var(--color-placeholder); // token AAA (>=7:1); -subtle daba 4.6:1
     }
 
     &:focus-visible {

@@ -35,7 +35,8 @@
     width:       1.75rem;
     height:      1.75rem;
     flex-shrink: 0;
-    color:       var(--color-secondary);
+    // enlace (azul oscuro/claro): el secundario daba 2.2:1 sobre surface (< 3 no-texto)
+    color:       var(--color-enlace);
   }
 
   // ── Zona de subida de foto ─────────────────────────────────────────
@@ -174,7 +175,7 @@
     color:            var(--color-text);
 
     &::placeholder {
-      color: var(--color-text-subtle);
+      color: var(--color-placeholder); // token AAA (>=7:1); -subtle daba 4.6:1
     }
 
     @include mix.foco-visible;
