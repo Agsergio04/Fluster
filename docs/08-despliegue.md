@@ -301,6 +301,8 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
+ARG VITE_API_URL=/api          # URL de la API inyectada en build (proxy nginx)
+ENV VITE_API_URL=$VITE_API_URL
 COPY . .
 RUN npm run build
 
@@ -376,8 +378,8 @@ docker compose logs backend
 ```
 
 ```
-fluster-backend-1  | Servidor corriendo en http://localhost:3000
-fluster-backend-1  | Conectado a MongoDB
+fluster-backend-1  | Servidor en puerto 3000
+fluster-backend-1  | MongoDB conectado
 ```
 
 ### Logs de acceso del proxy nginx

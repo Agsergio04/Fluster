@@ -152,10 +152,10 @@ Necesitas una instancia de MongoDB accesible desde el backend. Tienes dos opcion
 curl http://localhost:3000/health
 ```
 
-Respuesta esperada:
+Respuesta esperada (con la base de datos conectada; si no, responde `503` con `"bd":"desconectada"`):
 
 ```json
-{"ok":true}
+{"ok":true,"bd":"conectada"}
 ```
 
 ### Frontend
