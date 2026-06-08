@@ -51,6 +51,13 @@ async function registrar({ nombre, correo, contrasena, rol }) {
     throw err
   }
 
+  if (!/[0-9]/.test(contrasena)) {
+    const err = new Error('La contraseña debe incluir al menos un número')
+    err.status = 400
+    err.campo = 'contrasena'
+    throw err
+  }
+
   const yaExiste = await Usuario.findOne({ correo: String(correo).trim() })
   if (yaExiste) {
     const err = new Error('Ya existe un usuario con ese correo')

@@ -47,11 +47,11 @@ describe('authService', () => {
         toObject: () => ({ _id: 'id', nombre: 'A', correo: 'a@a.com', rol: 'gestor' }),
       })
 
-      await registrar({ nombre: 'A', correo: 'a@a.com', contrasena: 'plaintext', rol: 'gestor' })
+      await registrar({ nombre: 'A', correo: 'a@a.com', contrasena: 'plaintext1', rol: 'gestor' })
 
       const createArgs = Usuario.create.mock.calls[0][0]
       expect(createArgs.contrasena).toBe('hashed-password')
-      expect(createArgs.contrasena).not.toBe('plaintext')
+      expect(createArgs.contrasena).not.toBe('plaintext1')
     })
 
     it('lanza error 409 si el correo ya está registrado', async () => {
@@ -76,6 +76,14 @@ describe('authService', () => {
     it('rechaza con 400 una contraseña de menos de 8 caracteres', async () => {
       await expect(
         registrar({ nombre: 'Test', correo: 't@t.com', contrasena: 'corta', rol: 'operador' })
+      ).rejects.toMatchObject({ status: 400, campo: 'contrasena' })
+
+      expect(Usuario.create).not.toHaveBeenCalled()
+    })
+
+    it('rechaza con 400 una contraseña sin ningún número', async () => {
+      await expect(
+        registrar({ nombre: 'Test', correo: 't@t.com', contrasena: 'SinNumeros!', rol: 'operador' })
       ).rejects.toMatchObject({ status: 400, campo: 'contrasena' })
 
       expect(Usuario.create).not.toHaveBeenCalled()

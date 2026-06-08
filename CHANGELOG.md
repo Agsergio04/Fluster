@@ -26,7 +26,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Control de propiedad (anti-IDOR): un operador solo puede ver, editar o borrar **sus** contenedores también por ID (`/:id`); acceder a uno ajeno responde 404. El gestor mantiene acceso completo.
 - El token JWT caduca a los 7 días (`expiresIn`), limitando la ventana de un token filtrado.
 - Las consultas de login coaccionan correo/contraseña a `string` para impedir la inyección de operadores NoSQL desde `req.body`.
-- El registro valida la contraseña en el servidor (mínimo 8 caracteres → 400), no solo en el cliente.
+- El registro valida la contraseña en el servidor (mínimo 8 caracteres **y al menos un número** → 400), no solo en el cliente; el checklist de requisitos del frontend incluye también «Al menos un número».
 
 ### Cambiado
 - Refactor MVC: la edición de tramos de ciclo pasa de `cicloController` a `cicloService` (controladores finos, sin acceso directo a modelos), reutilizando el motor de cálculo D&D extraído a `calculoDD.js`.
