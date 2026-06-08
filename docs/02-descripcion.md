@@ -69,7 +69,7 @@ Cada transición registra la fecha correspondiente:
 - **Devolución** (`CLIENTE → INACTIVO`): el contenedor es devuelto vacío, cerrando el ciclo.
 - **Cancelar ciclo**: anula el ciclo activo devolviendo el contenedor a `INACTIVO`.
 
-**Endpoints relacionados:** `PATCH /api/contenedores/:id/entrada-puerto`, `/salida-puerto`, `/devolucion`, `/revertir-salida-puerto`, `/cancelar-ciclo`.
+**Endpoints relacionados:** `PATCH /api/contenedores/:id/entrada-puerto`, `/salida-puerto`, `/devolucion`, `/revertir-salida`, `/cancelar-ciclo`.
 
 ### 2.6 Semáforo de riesgo
 
@@ -170,8 +170,8 @@ Las variables CSS cubren las siguientes categorías:
 - **Color**: `--color-primary`, `--color-secondary`, `--color-bg`, `--color-surface`, `--color-text`, `--color-border`, más las cuatro variantes de semáforo (`--color-sin_costes`, `--color-primer_tramo`, `--color-segundo_tramo`, `--color-inactivo`).
 - **Tipografía**: `--font-heading` (Crimson Text, serif), `--font-body` (Poppins, sans-serif), escala de tamaños en base 8 px (`--text-8` a `--text-64`).
 - **Espaciado**: escala en base 8 px (`--space-8` a `--space-96`).
-- **Formas**: `--radius` (12 px), cuatro niveles de sombra (`--shadow-sm` a `--shadow-xl`).
-- **Movimiento**: tres velocidades de transición (`--transition-fast`, `--transition-base`, `--transition-slow`).
+- **Formas**: `--radius` (12 px), tres niveles de sombra (`--shadow-md` a `--shadow-xl`).
+- **Movimiento**: dos velocidades de transición (`--transition-fast`, `--transition-base`).
 
 ### 3.5 Diseño responsive
 

@@ -352,7 +352,7 @@ curl -s -o /dev/null -w "HTTP %{http_code}\n" http://localhost/api/semaforo
 
 # Health check del backend desde dentro de la red interna
 docker compose exec backend node -e "fetch('http://localhost:3000/health').then(r=>r.json()).then(o=>console.log(o))"
-# { ok: true }
+# { ok: true, bd: 'conectada' }
 
 # Frontend respondiendo
 curl -I http://localhost
@@ -596,7 +596,7 @@ content-type: text/html; charset=utf-8
 ```bash
 # Health check del backend real (Web Service de Render)
 curl -s https://fluster-vd09.onrender.com/health
-# → {"ok":true}
+# → {"ok":true,"bd":"conectada"}
 ```
 
 En producción el mismo flujo funciona sobre HTTPS. Render termina TLS en su balanceador y reenvía la petición al servicio en HTTP interno.

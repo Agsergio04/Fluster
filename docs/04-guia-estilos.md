@@ -484,7 +484,6 @@ La escala sigue un sistema de tamaños múltiplos de 8px para garantizar la cohe
 
 | Variable CSS | Valor | Uso típico |
 |---|---|---|
-| `--font-weight-light` | 300 | Texto decorativo, subtítulos de baja jerarquía |
 | `--font-weight-regular` | 400 | Texto de cuerpo estándar |
 | `--font-weight-medium` | 500 | Texto de énfasis moderado, labels de formulario |
 | `--font-weight-semibold` | 600 | Títulos de componente, botones |
@@ -562,7 +561,6 @@ El radio de 12px aplica de forma consistente a todos los elementos con borde red
 |---|---|---|
 | `--transition-fast` | `150ms ease-in-out` | Hover de botones, cambios de color inmediatos |
 | `--transition-base` | `300ms ease-in-out` | Transición estándar de elementos interactivos, apertura de menús |
-| `--transition-slow` | `500ms ease-in-out` | Animaciones de entrada/salida de modales, cambio de tema |
 
 Ejemplo de uso:
 
@@ -577,7 +575,6 @@ Ejemplo de uso:
 
 | Variable CSS | Valor | Uso típico |
 |---|---|---|
-| `--shadow-sm` | `0 1px 2px rgba(0,0,0,.05)` | Elevación mínima: inputs, botones secundarios |
 | `--shadow-md` | `0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06)` | Tarjetas, paneles de contenido |
 | `--shadow-lg` | `0 10px 15px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.08)` | Modales, dropdowns, elementos flotantes |
 | `--shadow-xl` | `0 20px 25px rgba(0,0,0,.1), 0 10px 10px rgba(0,0,0,.04)` | Modales de alta importancia, tooltips |

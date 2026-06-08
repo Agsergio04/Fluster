@@ -57,7 +57,7 @@ Además de lo propuesto inicialmente, el proyecto incorporó funcionalidades no 
 - **Tema claro/oscuro** con persistencia en localStorage y detección de preferencia del sistema operativo.
 - **Páginas estáticas públicas** (Footer con Aviso Legal, Política de Privacidad, Política de Cookies) que acompañan a la aplicación sin necesidad de backend.
 - **Arquitectura de custom hooks** (`useContenedores`, `useHistorial`) que no estaba especificada en la propuesta pero que mejoró significativamente la organización del código del frontend.
-- **Suite de tests unitarios completa** (22 archivos) que supera el nivel de pruebas descrito en la propuesta inicial.
+- **Suite de pruebas completa** (41 archivos de test: 254 tests unitarios y de integración en el backend, 115 unitarios/de componentes y 20 end-to-end con Playwright en el frontend) que supera el nivel de pruebas descrito en la propuesta inicial.
 - **Mecanismo de heartbeat** para mitigar el cold start del plan gratuito de Render, no previsto en el diseño inicial.
 
 ---
@@ -105,9 +105,9 @@ Las siguientes mejoras están ordenadas por impacto estimado en la utilidad del 
 
 Añadir un modelo `Organizacion` al que se asocien todos los recursos del sistema. Cada usuario pertenece a una organización; las navieras, clientes, contenedores y tarifas son privados por organización. Este cambio convertiría Fluster en una plataforma SaaS que podría servir a múltiples empresas desde una única instancia desplegada, con una pantalla de registro de organización y un modelo de suscripción opcional.
 
-### 2. Tests de frontend y E2E
+### 2. Ampliar la cobertura E2E y los umbrales de CI
 
-Implementar tests de componentes React con React Testing Library para las páginas y organismos críticos (semáforo, formularios de transición de estado, generación de informes). Añadir tests end-to-end con Playwright que simulen los flujos de usuario completos (ciclo de contenedor, login/logout, OCR) en un navegador real contra el entorno de staging.
+La base de pruebas de frontend ya está implementada: tests de componentes con React Testing Library (átomos y moléculas), tests de integración de backend con `mongodb-memory-server` y tests end-to-end con Playwright para los flujos de login, almacén y semáforo (ver documento 07-pruebas). La extensión natural es automatizar también los flujos E2E aún cubiertos solo manualmente —el ciclo de vida completo del contenedor (entrada/salida/devolución) y la generación de informes PDF— y configurar umbrales mínimos de cobertura en Jest y Vitest que hagan fallar el CI si la cobertura cae por debajo de un límite definido.
 
 ### 3. Notificaciones push y alertas automáticas
 

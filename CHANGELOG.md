@@ -17,8 +17,15 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - **Administrador protegido**: campo `protegido` en el modelo de usuario. El administrador principal (Sergio Aragón García, `sergioaragongarcia@gmail.com`) se crea protegido en el seed; en el panel de control sus botones de rol y de borrado salen deshabilitados («Rol protegido»).
 - Tabla de **usuarios de prueba** (uno de cada rol) documentada en el README, con sus credenciales.
 - Apartado **«Pruebas para el profesorado»** al final del README con tres cuentas (operador, gestor de operaciones y administrador), creadas también por el seed.
+- **ErrorBoundary global** en el frontend: captura los errores de render y los fallos al cargar un chunk diferido (típicos tras un despliegue nuevo) y muestra una pantalla de recuperación («Recargar la página» / «Volver al inicio») en lugar de dejar la pantalla en blanco.
+- **Tests unitarios del motor de cálculo D&D** (`calculoDD.test.js`): `calcularDiasEntreFechas` y `calcularCosteTramos` probados de forma aislada (tarifa escalonada, tramo abierto, free time, fechas límite).
+- El endpoint `/health` comprueba ahora el estado **real** de la conexión a MongoDB (`mongoose.connection.readyState`) y responde **503** si la base de datos no está conectada, en vez de devolver siempre `{ ok: true }`.
 
 ### Seguridad
+- **Rate limiting efectivo** con `express-rate-limit`: límite general sobre `/api` y límite reforzado en `/auth/registro` y `/auth/login` (este último solo contabiliza intentos fallidos). Hace real lo que el changelog de la v1.0.0 ya anunciaba; se desactiva en el entorno de test.
+- Las entradas de búsqueda se **escapan antes de usarse en `$regex`** de MongoDB (contenedores, usuarios e informes), evitando la inyección de expresiones regulares y los ataques ReDoS.
+- El **cambio de contraseña** aplica la misma política que el registro (mínimo 8 caracteres **y al menos un número** → 400); antes solo se validaba al registrarse.
+- El escaneo de **Trivy** en CI ahora **falla el workflow** (`exit-code: 1`) ante vulnerabilidades HIGH/CRITICAL con corrección disponible, además de publicar el informe SARIF en la pestaña Security.
 - El registro público ya no permite asignarse el rol `admin` (responde 403); el rol admin solo se crea con el script de administración.
 - Un administrador **protegido** no puede perder el rol de admin ni ser eliminado: el servicio de usuarios responde **403** ante cualquier intento, garantizando que el administrador principal del sistema siempre permanece.
 - El rol del cliente se deriva del JWT firmado, no del objeto `usuario` de `localStorage`, de modo que editar `localStorage` ya no concede permisos.
@@ -55,6 +62,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - Formulario de registro: se elimina el doble envío y se valida el formato del correo (cliente y servidor).
 - Capitalización de los textos de interfaz según la norma RAE (mayúscula inicial, no Title Case).
 - Documentación sincronizada con el código: diagrama entidad-relación, Swagger (estado `PUERTO`), guía de despliegue y valores de tokens de estilo.
+- Documentación de pruebas (07-pruebas, 10-conclusiones, 03-instalación) reconciliada con el estado real de la suite (254 tests de backend, 115 unitarios/de componentes y 20 E2E de frontend) y reclasificación de los tests de integración y end-to-end como ya implementados (antes figuraban como trabajo futuro).
 - Auditoría de contraste WCAG en toda la interfaz: las 8 combinaciones texto/fondo que no llegaban a AA (texto de error y de éxito, enlace azul de la zona de subida, input blanco-sobre-blanco en tema oscuro y una etiqueta diminuta) se corrigen a AA/AAA en claro y oscuro con colores del espectro de marca.
 - La entrada a puerto reutiliza el cliente existente con el mismo nombre (find-or-create, sin distinguir mayúsculas) en lugar de crear un cliente duplicado en cada operación.
 - Login: eliminado el doble `POST /auth/login` por clic de ratón (el botón usa solo el `onSubmit` del formulario, con un guard síncrono contra reenvíos).

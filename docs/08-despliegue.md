@@ -190,13 +190,15 @@ A partir de este momento, cualquier `push` a `main` activa el workflow de CI. Si
 
 ### Health check
 
-El backend expone el endpoint `GET /health` que devuelve:
+El backend expone el endpoint `GET /health`, que comprueba el estado real de la conexión a MongoDB (`mongoose.connection.readyState`). Con la base de datos conectada responde **200**:
 
 ```json
-{"ok":true}
+{"ok":true,"bd":"conectada"}
 ```
 
-Render utiliza este endpoint para comprobar que el servicio está vivo y reiniciarlo automáticamente si no responde.
+Si la base de datos no está conectada responde **503** con `{"ok":false,"bd":"desconectada"}`, de modo que el health check distingue «proceso vivo pero sin BD» de «todo correcto».
+
+Render utiliza este endpoint para comprobar que el servicio está sano y reiniciarlo automáticamente si no responde correctamente.
 
 ### Heartbeat (keep-warm)
 
@@ -351,7 +353,7 @@ Solo `frontend` expone puerto al host (80). `backend` y `mongo` solo son accesib
 ```bash
 # Health check del backend desde dentro de la red interna (no está expuesto al host)
 docker compose exec backend node -e "fetch('http://localhost:3000/health').then(r=>r.json()).then(o=>console.log(o))"
-# → { ok: true }
+# → { ok: true, bd: 'conectada' }
 
 # Cabeceras del frontend (nginx respondiendo)
 curl -I http://localhost:80
