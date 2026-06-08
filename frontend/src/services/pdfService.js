@@ -38,17 +38,17 @@ export async function generarPDFGeneral(ciclos) {
   doc.text(`Generado: ${fmt(new Date())}   ·   Total ciclos: ${ciclos.length}`, 14, 25)
 
   const columns = [
-    { header: 'BIC',          dataKey: 'bic'     },
-    { header: 'Naviera',      dataKey: 'naviera' },
-    { header: 'Cliente',      dataKey: 'cliente' },
-    { header: 'F. Cierre',    dataKey: 'fCierre' },
-    { header: 'D.L. Dem.',    dataKey: 'dlDem'   },
-    { header: 'D.F. Dem.',    dataKey: 'dfDem'   },
-    { header: 'Coste Dem.',   dataKey: 'cDem'    },
-    { header: 'D.L. Det.',    dataKey: 'dlDet'   },
-    { header: 'D.F. Det.',    dataKey: 'dfDet'   },
-    { header: 'Coste Det.',   dataKey: 'cDet'    },
-    { header: 'Total',        dataKey: 'total'   },
+    { header: 'Código BIC',                    dataKey: 'bic'     },
+    { header: 'Naviera',                       dataKey: 'naviera' },
+    { header: 'Cliente',                       dataKey: 'cliente' },
+    { header: 'Fecha cierre',                  dataKey: 'fCierre' },
+    { header: 'Días libres sobreestadía',      dataKey: 'dlDem'   },
+    { header: 'Días facturables sobreestadía', dataKey: 'dfDem'   },
+    { header: 'Coste sobreestadía (€)',        dataKey: 'cDem'    },
+    { header: 'Días libres detención',         dataKey: 'dlDet'   },
+    { header: 'Días facturables detención',    dataKey: 'dfDet'   },
+    { header: 'Coste detención (€)',           dataKey: 'cDet'    },
+    { header: 'Coste total (€)',               dataKey: 'total'   },
   ]
 
   const rows = ciclos.map(c => ({
@@ -94,18 +94,18 @@ export async function generarPDFIndividual(ciclos, codigoBIC) {
   doc.text(`Generado: ${fmt(new Date())}   ·   Ciclos cerrados: ${ciclos.length}`, 14, 25)
 
   const columns = [
-    { header: 'Cliente',        dataKey: 'cliente'    },
-    { header: 'F. Ini. Dem.',   dataKey: 'fIniDem'    },
-    { header: 'F. Fin Dem.',    dataKey: 'fFinDem'    },
-    { header: 'D.L. Dem.',      dataKey: 'dlDem'      },
-    { header: 'D.F. Dem.',      dataKey: 'dfDem'      },
-    { header: 'Coste Dem.',     dataKey: 'cDem'       },
-    { header: 'F. Ini. Det.',   dataKey: 'fIniDet'    },
-    { header: 'F. Fin Det.',    dataKey: 'fFinDet'    },
-    { header: 'D.L. Det.',      dataKey: 'dlDet'      },
-    { header: 'D.F. Det.',      dataKey: 'dfDet'      },
-    { header: 'Coste Det.',     dataKey: 'cDet'       },
-    { header: 'Total',          dataKey: 'total'      },
+    { header: 'Cliente',                       dataKey: 'cliente'    },
+    { header: 'Inicio sobreestadía',           dataKey: 'fIniDem'    },
+    { header: 'Fin sobreestadía',              dataKey: 'fFinDem'    },
+    { header: 'Días libres sobreestadía',      dataKey: 'dlDem'      },
+    { header: 'Días facturables sobreestadía', dataKey: 'dfDem'      },
+    { header: 'Coste sobreestadía (€)',        dataKey: 'cDem'       },
+    { header: 'Inicio detención',              dataKey: 'fIniDet'    },
+    { header: 'Fin detención',                 dataKey: 'fFinDet'    },
+    { header: 'Días libres detención',         dataKey: 'dlDet'      },
+    { header: 'Días facturables detención',    dataKey: 'dfDet'      },
+    { header: 'Coste detención (€)',           dataKey: 'cDet'       },
+    { header: 'Coste total (€)',               dataKey: 'total'      },
   ]
 
   const rows = ciclos.map(c => ({

@@ -114,7 +114,9 @@ async function generarDatos(filtros = {}) {
     }
   }
 
-  if (filtros.fechaEspecifica) {
+  // La fecha específica solo se aplica si NO hay un rango Desde/Hasta: el rango
+  // tiene prioridad y la fecha específica se ignora cuando ya se ha indicado uno.
+  if (filtros.fechaEspecifica && !filtros.fechaDesde && !filtros.fechaHasta) {
     const ini = new Date(filtros.fechaEspecifica)
     const fin = new Date(filtros.fechaEspecifica)
     fin.setHours(23, 59, 59, 999)
@@ -150,15 +152,24 @@ async function generarDatos(filtros = {}) {
     ciclos = ciclos.filter(c => c.contenedorId?.codigoBIC?.includes(bic))
   }
 
-  if (filtros.ordenAscendente === 'true')
-    ciclos.sort((a, b) => new Date(a.fechaCierre) - new Date(b.fechaCierre))
-  else if (filtros.ordenDescendente === 'true')
-    ciclos.sort((a, b) => new Date(b.fechaCierre) - new Date(a.fechaCierre))
-
-  if (filtros.ordenAlfabetico === 'true')
-    ciclos.sort((a, b) =>
-      (a.contenedorId?.codigoBIC ?? '').localeCompare(b.contenedorId?.codigoBIC ?? '')
-    )
+  // Los criterios de orden se COMBINAN en una sola ordenación: la fecha de cierre
+  // es la clave principal (ascendente o descendente según se elija) y el código BIC
+  // actúa como desempate alfabético dentro del mismo día. Si solo se marca el
+  // alfabético ordena solo por BIC; si solo la fecha, solo por fecha.
+  const ordenarPorFecha = filtros.ordenAscendente === 'true' || filtros.ordenDescendente === 'true'
+  if (ordenarPorFecha || filtros.ordenAlfabetico === 'true') {
+    ciclos.sort((a, b) => {
+      if (ordenarPorFecha) {
+        const diff = new Date(a.fechaCierre) - new Date(b.fechaCierre)
+        const signo = filtros.ordenDescendente === 'true' ? -diff : diff
+        if (signo !== 0) return signo
+      }
+      if (filtros.ordenAlfabetico === 'true') {
+        return (a.contenedorId?.codigoBIC ?? '').localeCompare(b.contenedorId?.codigoBIC ?? '')
+      }
+      return 0
+    })
+  }
 
   return ciclos
 }

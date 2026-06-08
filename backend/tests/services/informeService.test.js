@@ -5,7 +5,7 @@ jest.mock('../../src/models/Ciclo')
 const Informe = require('../../src/models/Informe')
 const Contenedor = require('../../src/models/Contenedor')
 const Ciclo = require('../../src/models/Ciclo')
-const { generar, listar, listarPorContenedor, obtenerPorId } = require('../../src/services/informeService')
+const { generar, listar, listarPorContenedor, obtenerPorId, generarDatos } = require('../../src/services/informeService')
 
 describe('informeService', () => {
   beforeEach(() => jest.clearAllMocks())
@@ -176,6 +176,75 @@ describe('informeService', () => {
       })
 
       await expect(obtenerPorId('non-existent')).rejects.toMatchObject({ status: 404 })
+    })
+  })
+
+  // ---------------------------------------------------------------------------
+  // generarDatos (datos de ciclos cerrados para el PDF; filtros y orden)
+  // ---------------------------------------------------------------------------
+  describe('generarDatos', () => {
+    // Simula la cadena Ciclo.find(query).populate().populate().sort().lean()
+    function mockFind(fixtures) {
+      Ciclo.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          populate: jest.fn().mockReturnValue({
+            sort: jest.fn().mockReturnValue({
+              lean: jest.fn().mockResolvedValue(fixtures),
+            }),
+          }),
+        }),
+      })
+    }
+
+    // Tres ciclos cerrados: A y B el mismo día (BIC distinto), C un día antes
+    const cA = { fechaCierre: new Date('2025-01-10'), contenedorId: { codigoBIC: 'ZZZU0000000' } }
+    const cB = { fechaCierre: new Date('2025-01-10'), contenedorId: { codigoBIC: 'AAAU0000000' } }
+    const cC = { fechaCierre: new Date('2025-01-05'), contenedorId: { codigoBIC: 'MMMU0000000' } }
+
+    it('solo devuelve ciclos cerrados (fechaCierre != null)', async () => {
+      mockFind([])
+      await generarDatos({})
+      expect(Ciclo.find).toHaveBeenCalledWith(
+        expect.objectContaining({ fechaCierre: { $ne: null } })
+      )
+    })
+
+    it('el rango Desde/Hasta tiene prioridad: la fecha específica se ignora si hay rango', async () => {
+      mockFind([])
+      await generarDatos({ fechaDesde: '2025-01-01', fechaHasta: '2025-01-31', fechaEspecifica: '2025-06-15' })
+
+      const query = Ciclo.find.mock.calls[0][0]
+      // Manda el rango: el $gte es el 1 de enero, no el 15 de junio de la fecha específica
+      expect(query.fechaCierre.$gte).toEqual(new Date('2025-01-01'))
+      expect(query.fechaCierre.$gte.getTime()).not.toBe(new Date('2025-06-15').getTime())
+    })
+
+    it('la fecha específica sí se aplica cuando no hay rango', async () => {
+      mockFind([])
+      await generarDatos({ fechaEspecifica: '2025-06-15' })
+
+      const query = Ciclo.find.mock.calls[0][0]
+      expect(query.fechaCierre.$gte).toEqual(new Date('2025-06-15'))
+      expect(query.fechaCierre.$lte.getHours()).toBe(23) // fin del día
+    })
+
+    it('combina el orden por fecha (asc) con el BIC como desempate alfabético', async () => {
+      mockFind([cA, cB, cC])
+      const result = await generarDatos({ ordenAscendente: 'true', ordenAlfabetico: 'true' })
+
+      // Principal por fecha asc (C antes que A/B) y, mismo día, BIC alfabético (B antes que A)
+      expect(result.map(c => c.contenedorId.codigoBIC)).toEqual([
+        'MMMU0000000', 'AAAU0000000', 'ZZZU0000000',
+      ])
+    })
+
+    it('ordena solo por BIC cuando únicamente se marca el alfabético', async () => {
+      mockFind([cA, cB, cC])
+      const result = await generarDatos({ ordenAlfabetico: 'true' })
+
+      expect(result.map(c => c.contenedorId.codigoBIC)).toEqual([
+        'AAAU0000000', 'MMMU0000000', 'ZZZU0000000',
+      ])
     })
   })
 })
