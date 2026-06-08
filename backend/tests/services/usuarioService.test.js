@@ -176,15 +176,26 @@ describe('usuarioService', () => {
       bcrypt.hash.mockResolvedValue('new-hash')
       Usuario.findByIdAndUpdate.mockResolvedValue({})
 
-      await expect(cambiarContrasena('user-id', 'old-pass', 'new-pass')).resolves.not.toThrow()
-      expect(bcrypt.hash).toHaveBeenCalledWith('new-pass', 10)
+      await expect(cambiarContrasena('user-id', 'old-pass', 'nueva-pass1')).resolves.not.toThrow()
+      expect(bcrypt.hash).toHaveBeenCalledWith('nueva-pass1', 10)
+    })
+
+    it('lanza error 400 si la contraseña nueva no cumple la política (igual que el registro)', async () => {
+      Usuario.findById.mockResolvedValue({ _id: 'user-id', contrasena: 'old-hash' })
+      bcrypt.compare.mockResolvedValue(true)
+
+      // 'corta' tiene menos de 8 caracteres → la rechaza la misma política del registro
+      await expect(cambiarContrasena('user-id', 'old-pass', 'corta')).rejects.toMatchObject({ status: 400 })
+      // No debe hashear ni persistir si la nueva no es válida
+      expect(bcrypt.hash).not.toHaveBeenCalled()
+      expect(Usuario.findByIdAndUpdate).not.toHaveBeenCalled()
     })
 
     it('lanza error 422 si la contraseña actual no coincide', async () => {
       Usuario.findById.mockResolvedValue({ _id: 'user-id', contrasena: 'hash' })
       bcrypt.compare.mockResolvedValue(false)
 
-      await expect(cambiarContrasena('user-id', 'wrong', 'new')).rejects.toMatchObject({ status: 422 })
+      await expect(cambiarContrasena('user-id', 'wrong', 'nueva-pass1')).rejects.toMatchObject({ status: 422 })
     })
 
     it('lanza error 404 si el usuario no existe', async () => {
