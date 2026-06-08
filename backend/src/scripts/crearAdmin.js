@@ -26,7 +26,18 @@ async function run() {
   // existe siempre, aunque hubiera otros administradores en el sistema.
   const yaExiste = await Usuario.findOne({ correo: ADMIN.correo })
   if (yaExiste) {
-    console.log('El administrador protegido ya existe. No se ha creado ninguno nuevo.')
+    // Idempotente: si su registro se creó antes de existir el campo `protegido`
+    // (p. ej. en la base de datos de Atlas ya en producción), se repara aquí
+    // para que conserve el rol admin y la protección. Sin esto, volver a sembrar
+    // lo omitiría y su registro real seguiría sin el flag.
+    if (yaExiste.rol !== 'admin' || yaExiste.protegido !== true) {
+      yaExiste.rol = 'admin'
+      yaExiste.protegido = true
+      await yaExiste.save()
+      console.log('Administrador protegido actualizado: rol=admin, protegido=true.')
+    } else {
+      console.log('El administrador protegido ya existe y está correcto.')
+    }
     await mongoose.disconnect()
     return
   }
