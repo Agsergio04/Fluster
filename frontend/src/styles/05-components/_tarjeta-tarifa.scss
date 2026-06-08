@@ -9,7 +9,10 @@
   display:          flex;
   flex-direction:   column;
   width:            24rem; // 384px — se reparten y envuelven en la cuadrícula
-  max-width:        100%;  // …pero encogen en pantallas estrechas
+  max-width:        100%;  // …pero encogen en pantallas más estrechas que la card
+  // No se comprime para meter más por fila: mantiene su ancho mientras haya sitio
+  // y salta de línea; solo encoge (vía max-width) cuando la pantalla es más estrecha.
+  flex-shrink:      0;
   background-color: var(--color-surface);
   border:           1px solid var(--color-border);
   border-radius:    var(--radius);
