@@ -79,12 +79,11 @@
     border:         1px solid var(--color-border);
     border-radius:  var(--space-8);
 
-    // Tarifas teñidas por tramo con tintes suaves derivados de los colores de
-    // marca (azul el primero, rojo el segundo). El tinte rojo se aclara con
-    // color-mix sobre la superficie para que el texto llegue a AAA (≥7:1) en
-    // claro y oscuro; el tinte azul (secondary-subtle) ya cumple AAA.
-    &--primer  { background-color: var(--color-secondary-subtle); border-color: transparent; }
-    &--segundo { background-color: color-mix(in srgb, var(--color-error) 16%, var(--color-surface)); border-color: transparent; }
+    // Ambos tramos usan el mismo tinte azul suave de marca (secondary-subtle),
+    // que cumple AAA con el texto en claro y oscuro. (Antes el segundo era un
+    // tinte rojo; ahora usa el azul del primer tramo, como se pidió.)
+    &--primer,
+    &--segundo { background-color: var(--color-secondary-subtle); border-color: transparent; }
   }
 
   &__bloque-titulo {
