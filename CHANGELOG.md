@@ -29,6 +29,7 @@ y el proyecto sigue [Versionado Semántico](https://semver.org/lang/es/).
 - El registro valida la contraseña en el servidor (mínimo 8 caracteres **y al menos un número** → 400), no solo en el cliente; el checklist de requisitos del frontend incluye también «Al menos un número».
 
 ### Cambiado
+- El panel de control muestra como máximo **6 tarjetas de usuario por página** (antes 9); a partir de ahí aparece la paginación.
 - Refactor MVC: la edición de tramos de ciclo pasa de `cicloController` a `cicloService` (controladores finos, sin acceso directo a modelos), reutilizando el motor de cálculo D&D extraído a `calculoDD.js`.
 - Las hojas de estilo usan los mixins `mobile`/`tablet` y `flex-col`/`flex-row` en lugar de media queries y flex repetidos a mano.
 - Las tarifas en móvil se muestran con el mismo conjunto de tarjetas (`ConjuntoCards`) que el resto de la aplicación.

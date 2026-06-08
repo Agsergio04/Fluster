@@ -129,7 +129,7 @@ function PanelDeControl() {
           ) : (
             <ConjuntoCards
               variante="usuarios"
-              itemsPorPagina={9}
+              itemsPorPagina={6}
               busqueda={busqueda}
               onBusquedaCambio={e => setBusqueda(e.target.value)}
               onBuscar={() => {}}
