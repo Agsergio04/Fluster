@@ -67,7 +67,7 @@
   &__campo-label {
     font-family: var(--font-body);
     font-size:   var(--text-16);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold); // resalta sobre el campo
     color:       var(--color-box-text);
     line-height: var(--leading-snug);
   }

@@ -150,6 +150,13 @@
 
   .btn-accion-tarifa {
     align-self: center;
+    // El botón de actualizar la foto va sobre el fondo de página (no sobre una
+    // tarjeta de color), así que usa el color secundario en vez del azul de tarjeta.
+    background-color: var(--color-secondary);
+    color:            var(--color-box-text);
+
+    &:hover:not(:disabled) { background-color: var(--color-secondary-hover); }
+    &:disabled            { background-color: var(--color-secondary-off); }
   }
 
   // Pantallas medianas: dos columnas al 50%, gap reducido
