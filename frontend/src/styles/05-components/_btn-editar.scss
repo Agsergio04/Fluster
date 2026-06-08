@@ -7,12 +7,13 @@
   width:            100%;
   max-width:        8.6875rem;
   padding:          var(--space-8);
-  background-color: var(--color-secondary);
+  // Azul claro/marino que se distingue de la tarjeta (1.4.11); texto vía --color-text
+  background-color: var(--color-btn-card);
   border-radius:    var(--radius);
   font-family:      var(--font-body);
   font-size:        var(--texto-tamanio-24);
   font-weight:      var(--font-weight-regular);
-  color:            var(--color-box-text);
+  color:            var(--color-text);
   white-space:      nowrap;
   line-height:      var(--leading-tight);
   transition:       background-color var(--transition-fast);
@@ -24,11 +25,11 @@
   }
 
   &:hover:not(:disabled) {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--color-btn-card-hover);
   }
 
   &:disabled {
-    background-color: var(--color-secondary-off);
+    background-color: var(--color-btn-card-off);
     cursor:           not-allowed;
   }
 }
