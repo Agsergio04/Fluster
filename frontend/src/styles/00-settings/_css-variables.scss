@@ -56,7 +56,6 @@
   --color-btn-card:        #{vars.$color-btn-card-light};
   --color-btn-card-hover:  #{vars.$color-btn-card-hover-light};
   --color-btn-card-off:    #{vars.$color-btn-card-off-light};
-  --color-btn-card-text:   #{vars.$color-btn-card-text-light};
 
   // ── Semánticos — alias ────────────────────────────────────────
   --color-error:        var(--color-segundo_tramo);
@@ -193,7 +192,6 @@
   --color-btn-card:        #{vars.$color-btn-card-light};
   --color-btn-card-hover:  #{vars.$color-btn-card-hover-light};
   --color-btn-card-off:    #{vars.$color-btn-card-off-light};
-  --color-btn-card-text:   #{vars.$color-btn-card-text-light};
 }
 
 
@@ -244,7 +242,6 @@
   --color-btn-card:        #{vars.$color-btn-card-dark};
   --color-btn-card-hover:  #{vars.$color-btn-card-hover-dark};
   --color-btn-card-off:    #{vars.$color-btn-card-off-dark};
-  --color-btn-card-text:   #{vars.$color-btn-card-text-dark};
 }
 
 
@@ -296,6 +293,5 @@
     --color-btn-card:        #{vars.$color-btn-card-dark};
     --color-btn-card-hover:  #{vars.$color-btn-card-hover-dark};
     --color-btn-card-off:    #{vars.$color-btn-card-off-dark};
-    --color-btn-card-text:   #{vars.$color-btn-card-text-dark};
   }
 }

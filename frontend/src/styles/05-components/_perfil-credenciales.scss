@@ -128,7 +128,7 @@
     // perfil. Solo se reestiliza en este contexto; en login/registro no cambia.
     .btn-registro-login {
       background-color: var(--color-btn-card);
-      color:            var(--color-btn-card-text);
+      color:            var(--color-text);
 
       &:hover:not(:disabled) { background-color: var(--color-btn-card-hover); }
       &:disabled            { background-color: var(--color-btn-card-off); }
