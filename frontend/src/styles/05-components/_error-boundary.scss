@@ -1,0 +1,71 @@
+// Fallback del ErrorBoundary global. Comparte tokens con la página de error 404
+// (.o-error) para mantener una identidad visual coherente ante cualquier fallo.
+.o-error-boundary {
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  min-height:       100svh;
+  padding:          var(--space-32) var(--space-24);
+  background-color: var(--color-bg);
+
+  &__contenido {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            var(--space-16);
+    text-align:     center;
+    max-width:      32rem;
+  }
+
+  &__titulo {
+    font-family: var(--font-body);
+    font-size:   var(--texto-tamanio-32);
+    font-weight: var(--font-weight-semibold);
+    color:       var(--color-box-text);
+    margin:      0;
+  }
+
+  &__descripcion {
+    font-family: var(--font-body);
+    font-size:   var(--text-16);
+    color:       var(--color-text-subtle);
+    line-height: var(--leading-normal);
+    margin:      0;
+  }
+
+  &__acciones {
+    display:    flex;
+    flex-wrap:  wrap;
+    gap:        var(--space-8);
+    margin-top: var(--space-8);
+    justify-content: center;
+  }
+
+  &__boton {
+    display:          inline-block;
+    padding:          var(--space-8) var(--space-24);
+    background-color: var(--color-surface);
+    color:            var(--color-box-text);
+    font-family:      var(--font-body);
+    font-size:        var(--text-16);
+    font-weight:      var(--font-weight-regular);
+    border:           1px solid var(--color-border);
+    border-radius:    var(--radius);
+    cursor:           pointer;
+    transition:       background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-border);
+    }
+
+    &--primario {
+      background-color: var(--color-secondary);
+      border-color:     var(--color-secondary);
+
+      &:hover {
+        background-color: var(--color-secondary-hover);
+        border-color:     var(--color-secondary-hover);
+      }
+    }
+  }
+}

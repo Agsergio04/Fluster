@@ -89,6 +89,7 @@
 @use './05-components/spinner';
 @use './05-components/footer';
 @use './05-components/pagina-estatica';
+@use './05-components/error-boundary';
 
 // 06 Utilities — clases de apoyo de alta especificidad
 @use './06-utilities/utilities';
