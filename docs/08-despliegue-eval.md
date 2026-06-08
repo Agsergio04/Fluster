@@ -211,6 +211,9 @@ RUN npm ci --omit=dev
 
 COPY src/ ./src/
 
+# Modelo de Tesseract para el OCR de códigos BIC (se copia como .gz)
+COPY eng.traineddata ./eng.traineddata.gz
+
 # Ejecutar como usuario no-root (incluido en la imagen oficial de Node)
 USER node
 
@@ -226,6 +229,7 @@ CMD ["node", "src/index.js"]
 | `FROM node:22-alpine` | Alpine Linux reduce el tamaño (~50 MB vs ~350 MB de la imagen completa). Node 22 es la versión LTS activa. |
 | `COPY package*.json` + `RUN npm ci --omit=dev` | Separar la instalación del código fuente aprovecha la caché de capas: si el código cambia pero `package.json` no, Docker reutiliza la capa de `node_modules`. `--omit=dev` excluye herramientas de desarrollo de la imagen final. |
 | `COPY src/ ./src/` | Solo se copia el código fuente, no ficheros locales ni tests. |
+| `COPY eng.traineddata ./eng.traineddata.gz` | Modelo de idioma de Tesseract.js para el OCR de códigos BIC; se incluye en la imagen porque el reconocimiento se ejecuta en el backend. |
 | `CMD ["node", "src/index.js"]` | Forma `exec` (array): Node.js es el PID 1 del contenedor, lo que permite que Docker gestione correctamente las señales de parada (`SIGTERM`). |
 
 ### Dockerfile del frontend (multi-stage) — [`frontend/Dockerfile`](../frontend/Dockerfile)
@@ -238,6 +242,11 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci
+
+# La URL de la API se inyecta en build. Por defecto "/api" (relativo) para que
+# las llamadas pasen por el proxy de nginx → backend, sin exponer el puerto 3000.
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
 
 COPY . .
 RUN npm run build
@@ -270,20 +279,34 @@ Fase 1 (builder): instala dependencias y ejecuta `npm run build`, produciendo `d
 ### Variables de entorno — [`backend/.env.example`](../backend/.env.example)
 
 ```dotenv
-MONGO_URI=mongodb+srv://<usuario>:<contraseña>@cluster.mongodb.net/fluster
-JWT_SECRET=cambia-esto-por-una-cadena-larga-y-aleatoria
+# Cadena de conexión a MongoDB
+# Ejemplo local:  mongodb://localhost:27017/fluster
+# Ejemplo Atlas:  mongodb+srv://usuario:password@cluster.mongodb.net/fluster
+MONGO_URI=
+
+# Puerto en el que escucha el servidor (Render lo sobreescribe automáticamente)
 PORT=3000
+
+# Clave secreta para firmar los JWT (usa una cadena larga y aleatoria)
+JWT_SECRET=
+
+# Orígenes permitidos por CORS, separados por comas (p. ej. la URL del frontend).
+# Si se deja vacío, se permite cualquier origen (solo recomendable en local).
+# Ejemplo producción: https://fluster-frontend.onrender.com
+CORS_ORIGIN=
 ```
 
 - El `.env.example` está en el repositorio como guía. No contiene credenciales reales.
 - El `.env` real está en `.gitignore` y nunca se sube al repositorio.
 - En producción (Render) los secretos se configuran como variables de entorno en el panel de la plataforma.
 
-Extracto de [`.gitignore`](../.gitignore):
+Extracto de [`.gitignore`](../.gitignore) (el patrón `.env` sin barra inicial ignora `backend/.env` en cualquier subdirectorio; `.env.example`, al no coincidir con ninguna regla, sí se versiona):
 ```
 .env
-*.env
-!*.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 ```
 
 ### Redes y volúmenes
@@ -340,7 +363,7 @@ docker compose logs backend
 
 ```
 fluster-backend-1  | Servidor en puerto 3000
-fluster-backend-1  | Conectado a MongoDB
+fluster-backend-1  | MongoDB conectado
 ```
 
 ![Logs de arranque del backend](./assets/img/despliegue/c2-b.png)
@@ -546,25 +569,26 @@ El puerto 3000 no está expuesto al host. Solo es accesible dentro de `fluster-n
 ### Prueba 5 — flujo completo (login real)
 
 ```bash
-# Login a través del proxy
+# Login a través del proxy (cuenta de gestor sembrada por el seed)
 curl -s -X POST http://localhost/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"correo":"gestor@demo.com","contrasena":"demo1234"}'
+  -d '{"correo":"selenalopez@gmail.com","contrasena":"Selenalopez1@"}'
 ```
 
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "usuario": { "nombre": "Gestor Demo", "rol": "gestor" }
+  "usuario": { "id": "664a...", "nombre": "Selena López", "correo": "selenalopez@gmail.com", "rol": "gestor", "foto": null }
 }
 ```
 
 ```bash
-# Usar el token para acceder a datos protegidos
+# Usar el token para acceder a datos protegidos. El semáforo devuelve un objeto
+# con los contenedores agrupados por nivel de riesgo, así que se listan sus claves.
 TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 curl -s http://localhost/api/semaforo \
-  -H "Authorization: Bearer $TOKEN" | jq 'length'
-# → 12
+  -H "Authorization: Bearer $TOKEN" | jq 'keys'
+# → ["freeTime","inactivos","primerTramo","segundoTramo"]
 ```
 
 El flujo completo `cliente → nginx (80) → backend (3000) → MongoDB (27017)` funciona de extremo a extremo a través de `fluster-net`.
