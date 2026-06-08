@@ -1,8 +1,10 @@
 
 /** Formatea una fecha a dd/mm/aaaa; devuelve '-' si el valor es nulo. */
 const fmt  = date => date ? new Date(date).toLocaleDateString('es-ES') : '-'
-/** Formatea un número como importe en euros; devuelve '-' si el valor es nulo. */
-const eur  = n    => n != null ? `${n} €` : '-'
+/** Formatea un número como importe en euros (es-ES, 2 decimales); '-' si es nulo. */
+const eur  = n    => n != null
+  ? `${Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`
+  : '-'
 
 // Color primario de la aplicación tomado del token CSS --color-primary
 const HEAD_COLOR = [79, 178, 248]

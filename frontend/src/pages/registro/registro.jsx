@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './registro.scss'
 import useTema from '../../hooks/useTema'
@@ -41,6 +41,9 @@ function Registro() {
   const [errorConfirmacion, setErrorConfirmacion] = useState('')
   const [errorRol, setErrorRol] = useState('')
   const [cargando, setCargando] = useState(false)
+  // Guard síncrono contra doble envío (el estado `cargando` no se actualiza a
+  // tiempo dentro del mismo dispatch), coherente con el login.
+  const enviando = useRef(false)
 
   /**
    * Valida cada campo de forma secuencial y detiene el proceso
@@ -48,6 +51,7 @@ function Registro() {
    * claro sin saturar el formulario con múltiples alertas a la vez.
    */
   const handleCrearCuenta = async () => {
+    if (enviando.current) return
     setErrorNombre('')
     setErrorCorreo('')
     setErrorContrasenia('')
@@ -63,6 +67,7 @@ function Registro() {
     if (!rol)                             { setErrorRol('Selecciona un rol');               return }
 
     try {
+      enviando.current = true
       setCargando(true)
       await registro(nombre.trim(), correo.trim(), contrasenia, rol)
       // Auto-login para no obligar a re-introducir credenciales; si falla, login manual.
@@ -78,6 +83,7 @@ function Registro() {
       const mensaje = err.response?.data?.mensaje ?? 'Error al crear la cuenta'
       setErrorCorreo(mensaje)
     } finally {
+      enviando.current = false
       setCargando(false)
     }
   }

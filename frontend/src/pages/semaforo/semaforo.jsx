@@ -126,13 +126,19 @@ function Semaforo() {
    * @param {string} nombre - Nombre del cliente introducido en el modal
    */
   const handleEntradaPuerto = async (nombre) => {
+    const cid = modalPuerto?.id
+    // Guard contra doble confirmación del modal (doble clic / Enter + clic).
+    if (!cid || transicionando.current.has(cid)) return
+    transicionando.current.add(cid)
     try {
       const cliente = await crearCliente(nombre)
-      await entradaPuerto(modalPuerto.id, cliente._id)
+      await entradaPuerto(cid, cliente._id)
       setModalPuerto(null)
       cargarGrupos()
     } catch (err) {
       setAviso(err.response?.data?.mensaje ?? 'No se pudo registrar la entrada a puerto')
+    } finally {
+      transicionando.current.delete(cid)
     }
   }
 

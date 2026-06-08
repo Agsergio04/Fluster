@@ -61,7 +61,10 @@ function ConjuntoCards({
   }
 
   const totalPaginas = Math.max(1, Math.ceil(items.length / itemsActivos))
-  const inicio       = (pagina - 1) * itemsActivos
+  // Acota la página guardada por si la lista encogió (al borrar el último
+  // elemento de la última página); si no, la vista quedaría en blanco.
+  const paginaActual = Math.min(pagina, totalPaginas)
+  const inicio       = (paginaActual - 1) * itemsActivos
   const paginaItems  = items.slice(inicio, inicio + itemsActivos)
 
   const renderCard = (item, i) => {
@@ -111,7 +114,7 @@ function ConjuntoCards({
       )}
       {totalPaginas > 1 && (
         <BotonesMovimientoCard
-          paginaActual={pagina}
+          paginaActual={paginaActual}
           totalPaginas={totalPaginas}
           onCambiarPagina={setPagina}
         />
