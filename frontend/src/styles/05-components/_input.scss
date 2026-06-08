@@ -39,7 +39,7 @@
 
     // En escritorio grande, un punto más grande para mejorar la legibilidad
     @media (min-width: 1280px) {
-      font-size: 1.125rem; // 18px
+      font-size: var(--text-18);
     }
 
     &::placeholder {

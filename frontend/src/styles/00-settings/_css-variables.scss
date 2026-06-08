@@ -75,8 +75,11 @@
 
   // ── Tipografía — Escala (base 8px) ───────────────────────────
   --text-8:  #{vars.$text-8};
+  --text-10: #{vars.$text-10};
+  --text-12: #{vars.$text-12};
   --text-14: #{vars.$text-14};
   --text-16: #{vars.$text-16};
+  --text-18: #{vars.$text-18};
   --text-20: #{vars.$text-20};
   --text-24: #{vars.$text-24};
   --text-32: #{vars.$text-32};
@@ -129,7 +132,15 @@
   --tamanio_card_usuario: #{vars.$tamanio_card_usuario};
 
   // ── Radio de borde ────────────────────────────────────────────
-  --radius: #{vars.$radius};
+  --radius:        #{vars.$radius};
+  --radius-sm:     #{vars.$radius-sm};
+  --radius-pill:   #{vars.$radius-pill};
+  --radius-circle: #{vars.$radius-circle};
+
+  // ── Z-index (escala de capas) ─────────────────────────────────
+  --z-modal:              #{vars.$z-modal};
+  --z-modal-confirmacion: #{vars.$z-modal-confirmacion};
+  --z-notificacion:       #{vars.$z-notificacion};
 
   // ── Transiciones ──────────────────────────────────────────────
   --transition-fast: #{vars.$transition-fast};

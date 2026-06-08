@@ -63,7 +63,7 @@
   align-items: stretch;
 
   .celda-tabla--body .celda-tabla__texto {
-    font-size:   0.75rem;
+    font-size:   var(--text-12);
     white-space: nowrap;
   }
 }

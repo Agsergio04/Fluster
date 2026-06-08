@@ -1,7 +1,7 @@
 .spinner {
   display:      inline-block;
   flex-shrink:  0;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
 
   // Pista (track): usa la variante atenuada del color primario para que contraste
   // con el arco activo sin competir visualmente con el contenido de la página

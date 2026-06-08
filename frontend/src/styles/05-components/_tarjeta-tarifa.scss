@@ -67,7 +67,7 @@
     font-family:    var(--font-body);
     font-size:      var(--text-16);
     font-weight:    var(--font-weight-semibold);
-    line-height:    1.2;
+    line-height:    var(--leading-tight);
     color:          var(--color-text);
     text-align:     center;
   }
@@ -93,7 +93,7 @@
     font-family: var(--font-body);
     font-size:   var(--text-14);
     font-weight: var(--font-weight-medium);
-    line-height: 1.2;
+    line-height: var(--leading-tight);
     color:       var(--color-text);
     text-align:  center;
   }
@@ -115,9 +115,9 @@
 
   &__mini-label {
     font-family:    var(--font-body);
-    font-size:      0.625rem; // 10px
+    font-size:      var(--text-10);
     font-weight:    var(--font-weight-regular);
-    line-height:    1.5;
+    line-height:    var(--leading-normal);
     letter-spacing: 0.03em;
     text-transform: uppercase;
     // Texto pleno (no -subtle): a 10 px el atenuado no llega a AAA sobre la

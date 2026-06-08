@@ -125,8 +125,11 @@ $font-body:    'Arimo', Arial, sans-serif;
 
 // ── Tipografía — Escala (base 8px) ────────────────────────────────
 $text-8:  0.5rem;    //  8px
+$text-10: 0.625rem;  // 10px — texto diminuto (etiquetas auxiliares)
+$text-12: 0.75rem;   // 12px — cabeceras de tabla, texto auxiliar
 $text-14: 0.875rem;  // 14px — texto secundario legible (hint, error, botones pequeños)
 $text-16: 1rem;      // 16px
+$text-18: 1.125rem;  // 18px — énfasis intermedio
 $text-20: 1.25rem;   // 20px
 $text-24: 1.5rem;    // 24px
 $text-32: 2rem;      // 32px
@@ -169,7 +172,10 @@ $tamanio_pequenio:     10.9375rem; // 175px
 $tamanio_card_usuario: 24rem;      // 384px (3 por fila en el grid de 76.5rem)
 
 // ── Radio de borde ─────────────────────────────────────────────────
-$radius: 12px;
+$radius:        12px;   // radio estándar de tarjetas, botones e inputs
+$radius-sm:     2px;    // radio pequeño (marcadores, chips diminutos)
+$radius-pill:   999px;  // píldora: botones y etiquetas totalmente redondeados
+$radius-circle: 50%;    // círculos (avatares, spinner, puntos de estado)
 
 // ── Transiciones ───────────────────────────────────────────────────
 $transition-fast: 150ms ease-in-out;
@@ -182,6 +188,11 @@ $shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
 
 // ── Overlay ────────────────────────────────────────────────────────
 $color-overlay: rgba(0, 0, 0, 0.45);
+
+// ── Z-index (escala de capas, de menor a mayor) ────────────────────
+$z-modal:              100; // modales de edición y de entrada a puerto
+$z-modal-confirmacion: 200; // diálogo de confirmación (sobre los demás modales)
+$z-notificacion:       300; // toast / notificación (siempre encima de todo)
 
 // ── Breakpoints ────────────────────────────────────────────────────
 $breakpoint-mobile: 767px;
