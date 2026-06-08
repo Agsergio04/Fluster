@@ -11,7 +11,7 @@ const Ciclo = require('../models/Ciclo')
 const Evento = require('../models/Evento')
 const Informe = require('../models/Informe')
 const { calcularDiasEntreFechas, calcularCosteTramos } = require('./calculoDD')
-const { escaparRegex } = require('../utils/validacion')
+const { escaparRegex, validarCodigoBic } = require('../utils/validacion')
 
 // ---------------------------------------------------------------------------
 // CRUD básico
@@ -161,9 +161,11 @@ async function actualizar(id, cambios, creadoPorId) {
   }
 
   if (cambios.codigoBIC) {
-    const duplicado = await Contenedor.findOne({ codigoBIC: cambios.codigoBIC.toUpperCase(), _id: { $ne: id } })
+    // Valida el formato (4 letras + 7 números) y normaliza a mayúsculas
+    cambios.codigoBIC = validarCodigoBic(cambios.codigoBIC)
+    const duplicado = await Contenedor.findOne({ codigoBIC: cambios.codigoBIC, _id: { $ne: id } })
     if (duplicado) {
-      const err = new Error(`Ya existe un contenedor con el código BIC ${cambios.codigoBIC.toUpperCase()}`)
+      const err = new Error(`Ya existe un contenedor con el código BIC ${cambios.codigoBIC}`)
       err.status = 409
       throw err
     }

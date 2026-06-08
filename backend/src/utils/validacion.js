@@ -37,4 +37,27 @@ function validarPoliticaContrasena(contrasena) {
   }
 }
 
-module.exports = { escaparRegex, validarPoliticaContrasena }
+// Formato de código BIC/contenedor (ISO 6346): 4 letras seguidas de 7 dígitos
+// (p. ej. MSCU1234567). No comprueba el dígito de control, solo el formato.
+const CODIGO_BIC_REGEX = /^[A-Z]{4}[0-9]{7}$/
+
+/**
+ * Valida (y normaliza) el código BIC de un contenedor: 4 letras al principio y
+ * 7 números. Normaliza a mayúsculas y sin espacios antes de comprobar. Lanza un
+ * error 422 con `campo: 'codigoBIC'` si no cumple; devuelve el BIC normalizado.
+ *
+ * @param {string} codigoBIC
+ * @returns {string} BIC en mayúsculas y sin espacios
+ */
+function validarCodigoBic(codigoBIC) {
+  const bic = String(codigoBIC ?? '').trim().toUpperCase()
+  if (!CODIGO_BIC_REGEX.test(bic)) {
+    const err = new Error('El código BIC debe tener 4 letras seguidas de 7 números')
+    err.status = 422
+    err.campo = 'codigoBIC'
+    throw err
+  }
+  return bic
+}
+
+module.exports = { escaparRegex, validarPoliticaContrasena, validarCodigoBic }

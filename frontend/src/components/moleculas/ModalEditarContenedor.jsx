@@ -1,5 +1,8 @@
 import { useState, useRef } from 'react'
 
+// Formato BIC/ISO 6346: 4 letras seguidas de 7 números (exactamente 11 caracteres).
+const BIC_REGEX = /^[A-Za-z]{4}[0-9]{7}$/
+
 /**
  * Modal para editar la foto, el código BIC y la fecha de inclusión de un contenedor.
  * La foto se lee como data URL para previsualizarla antes de enviarla al servidor.
@@ -41,10 +44,17 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
 
   const handleActualizar = async () => {
     setError('')
+    const bic = codigoBic.trim().toUpperCase()
+    // Solo se permite actualizar si el BIC tiene 4 letras seguidas de 7 números
+    // (exactamente 11 caracteres). El backend aplica la misma regla con un 422.
+    if (bic && !BIC_REGEX.test(bic)) {
+      setError('El código BIC debe tener 4 letras seguidas de 7 números (11 caracteres).')
+      return
+    }
     setCargando(true)
     try {
       await onActualizar(item.id, {
-        codigoBIC:        codigoBic.trim().toUpperCase() || undefined,
+        codigoBIC:        bic || undefined,
         foto,
         fechaInicioLibre: fechaInicioLibre ? new Date(fechaInicioLibre).toISOString() : undefined,
       })
@@ -96,7 +106,8 @@ function ModalEditarContenedor({ item, onActualizar, onCancelar }) {
             className="modal-editar-contenedor__fecha-input"
             value={codigoBic}
             onChange={e => setCodigoBic(e.target.value)}
-            placeholder="BLKU258036"
+            maxLength={11}
+            placeholder="BLKU2580360"
           />
         </div>
 

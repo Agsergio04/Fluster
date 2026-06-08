@@ -644,6 +644,27 @@ describe('contenedorService', () => {
 
       await expect(actualizar('no-existe', { codigoBIC: 'MSCU0000001' })).rejects.toMatchObject({ status: 404 })
     })
+
+    it('lanza error 422 si el código BIC no tiene 4 letras seguidas de 7 números', async () => {
+      // Formato inválido: debe rechazarse antes de tocar la base de datos
+      await expect(actualizar('cont-id', { codigoBIC: 'MSC123' }))
+        .rejects.toMatchObject({ status: 422, campo: 'codigoBIC' })
+      // Excede 11 caracteres → también inválido
+      await expect(actualizar('cont-id', { codigoBIC: 'MSCU12345678' }))
+        .rejects.toMatchObject({ status: 422, campo: 'codigoBIC' })
+      expect(Contenedor.findByIdAndUpdate).not.toHaveBeenCalled()
+    })
+
+    it('normaliza el código BIC a mayúsculas al actualizar', async () => {
+      Contenedor.findByIdAndUpdate.mockReturnValue({
+        lean: jest.fn().mockResolvedValue({ _id: 'cont-id' }),
+      })
+
+      await actualizar('cont-id', { codigoBIC: 'mscu1234567' })
+
+      const updateArg = Contenedor.findByIdAndUpdate.mock.calls[0][1]
+      expect(updateArg.codigoBIC).toBe('MSCU1234567')
+    })
   })
 })
 
