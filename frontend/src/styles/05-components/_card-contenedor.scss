@@ -68,16 +68,16 @@
       max-width: none;
     }
 
-    // Relleno sólido secundario (destaca sobre el fondo primario de la card),
+    // Relleno del botón de acción de tarjeta (destaca sobre el fondo de la card),
     // sin borde y con icono/texto en el color de texto.
     .btn-editar {
       font-size:        var(--text-16); // antes 24, demasiado grande para la card
-      background-color: var(--color-secondary);
+      background-color: var(--color-btn-card);
       border:           none;
       color:            var(--color-text);
 
       &:hover:not(:disabled) {
-        background-color: var(--color-secondary-hover);
+        background-color: var(--color-btn-card-hover);
       }
     }
   }
