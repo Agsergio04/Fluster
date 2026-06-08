@@ -462,14 +462,14 @@ Todos los endpoints protegidos requieren la cabecera `Authorization: Bearer <tok
 # Login — obtener token JWT
 curl -s -X POST https://fluster-vd09.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"correo":"gestor@demo.com","contrasena":"demo1234"}' \
+  -d '{"correo":"selenalopez@gmail.com","contrasena":"Selenalopez1@"}' \
   | jq '.token'
 # → "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
 # Guardar el token en variable de shell para los siguientes ejemplos
 TOKEN=$(curl -s -X POST https://fluster-vd09.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"correo":"gestor@demo.com","contrasena":"demo1234"}' | jq -r '.token')
+  -d '{"correo":"selenalopez@gmail.com","contrasena":"Selenalopez1@"}' | jq -r '.token')
 ```
 
 ### Contenedores
