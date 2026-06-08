@@ -44,6 +44,7 @@ function Contenedores() {
       fechaInclusion:   new Date(c.fechaInicioLibre).toLocaleDateString('es-ES'),
       fechaInicioLibre: c.fechaInicioLibre,
       foto:             c.foto ?? null,
+      estado:           c.estado,
     }))
 
   /**

@@ -22,8 +22,12 @@
     background-color: var(--color-error-fondo-hover);
   }
 
+  // Estado "off": cuando el contenedor tiene un ciclo activo no se puede borrar.
+  // Se neutraliza el rojo a un gris inactivo y se atenúa para que se lea como
+  // deshabilitado (el cursor not-allowed lo refuerza).
   &:disabled {
-    opacity: 0.6;
-    cursor:  not-allowed;
+    background-color: var(--color-inactivo);
+    opacity:          0.6;
+    cursor:           not-allowed;
   }
 }

@@ -3,7 +3,10 @@ import placeholder from '../../assets/images/PlaceHolder-contenedor.jpg'
 import BotonEditar from '../atomos/BotonEditar'
 import BotonEliminar from '../atomos/BotonEliminar'
 
-function CardContenedor({ foto, codigoBic, fechaInclusion, onEditar, onEliminar }) {
+function CardContenedor({ foto, codigoBic, fechaInclusion, estado, onEditar, onEliminar }) {
+  // Un contenedor con un ciclo activo (no INACTIVO) no se puede borrar: el backend
+  // lo rechaza con 422, así que aquí el botón de eliminar sale deshabilitado/off.
+  const cicloActivo = estado != null && estado !== 'INACTIVO'
   const [imgError, setImgError] = useState(false)
   const [fotoActual, setFotoActual] = useState(foto)
 
@@ -42,7 +45,11 @@ function CardContenedor({ foto, codigoBic, fechaInclusion, onEditar, onEliminar 
 
       <div className="card-contenedor__botones">
         <BotonEditar onClick={onEditar} />
-        <BotonEliminar onClick={onEliminar} />
+        <BotonEliminar
+          onClick={onEliminar}
+          disabled={cicloActivo}
+          title={cicloActivo ? 'No se puede eliminar: el contenedor tiene un ciclo activo' : undefined}
+        />
       </div>
     </div>
   )

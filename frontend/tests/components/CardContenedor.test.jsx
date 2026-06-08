@@ -57,6 +57,23 @@ describe('CardContenedor', () => {
     expect(onEliminar).toHaveBeenCalledTimes(1)
   })
 
+  it('mantiene habilitado el botón eliminar cuando el contenedor está INACTIVO', () => {
+    render(<CardContenedor {...props} estado="INACTIVO" />)
+    expect(screen.getByRole('button', { name: /^eliminar$/i })).toBeEnabled()
+  })
+
+  it('deshabilita el botón eliminar cuando el contenedor tiene un ciclo activo (no INACTIVO)', () => {
+    render(<CardContenedor {...props} estado="PUERTO" />)
+    expect(screen.getByRole('button', { name: /no se puede eliminar/i })).toBeDisabled()
+  })
+
+  it('no llama a onEliminar si el botón está deshabilitado por ciclo activo', () => {
+    const onEliminar = vi.fn()
+    render(<CardContenedor {...props} estado="CLIENTE" onEliminar={onEliminar} />)
+    fireEvent.click(screen.getByRole('button', { name: /no se puede eliminar/i }))
+    expect(onEliminar).not.toHaveBeenCalled()
+  })
+
   it('tiene la clase card-contenedor', () => {
     const { container } = render(<CardContenedor {...props} />)
     expect(container.firstChild).toHaveClass('card-contenedor')
