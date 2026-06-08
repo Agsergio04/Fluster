@@ -52,6 +52,12 @@
   --color-card-contenedor: var(--color-secondary);
   --color-card-usuario:    var(--color-secondary);
 
+  // Botón sobre tarjeta de color (polaridad invertida — ver _variables.scss)
+  --color-btn-card:        #{vars.$color-btn-card-light};
+  --color-btn-card-hover:  #{vars.$color-btn-card-hover-light};
+  --color-btn-card-off:    #{vars.$color-btn-card-off-light};
+  --color-btn-card-text:   #{vars.$color-btn-card-text-light};
+
   // ── Semánticos — alias ────────────────────────────────────────
   --color-error:        var(--color-segundo_tramo);
   --color-error-subtle: var(--color-segundo_tramo-inner);
@@ -182,6 +188,12 @@
   --color-card-semaforo:   var(--color-secondary);
   --color-card-contenedor: var(--color-secondary);
   --color-card-usuario:    var(--color-secondary);
+
+  // Botón sobre tarjeta de color (polaridad invertida — ver _variables.scss)
+  --color-btn-card:        #{vars.$color-btn-card-light};
+  --color-btn-card-hover:  #{vars.$color-btn-card-hover-light};
+  --color-btn-card-off:    #{vars.$color-btn-card-off-light};
+  --color-btn-card-text:   #{vars.$color-btn-card-text-light};
 }
 
 
@@ -227,6 +239,12 @@
   --color-card-semaforo:   var(--color-secondary);
   --color-card-contenedor: var(--color-secondary);
   --color-card-usuario:    var(--color-secondary);
+
+  // Botón sobre tarjeta de color (polaridad invertida — ver _variables.scss)
+  --color-btn-card:        #{vars.$color-btn-card-dark};
+  --color-btn-card-hover:  #{vars.$color-btn-card-hover-dark};
+  --color-btn-card-off:    #{vars.$color-btn-card-off-dark};
+  --color-btn-card-text:   #{vars.$color-btn-card-text-dark};
 }
 
 
@@ -273,5 +291,11 @@
     --color-card-semaforo:   var(--color-secondary);
     --color-card-contenedor: var(--color-secondary);
     --color-card-usuario:    var(--color-secondary);
+
+    // Botón sobre tarjeta de color (polaridad invertida — ver _variables.scss)
+    --color-btn-card:        #{vars.$color-btn-card-dark};
+    --color-btn-card-hover:  #{vars.$color-btn-card-hover-dark};
+    --color-btn-card-off:    #{vars.$color-btn-card-off-dark};
+    --color-btn-card-text:   #{vars.$color-btn-card-text-dark};
   }
 }

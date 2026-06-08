@@ -11,23 +11,24 @@
   align-items:      center;
   justify-content:  center;
   padding:          0.625rem; // 10px, Figma-exact
-  background-color: var(--color-secondary);
+  // Color de polaridad invertida para contrastar con la tarjeta azul (1.4.11)
+  background-color: var(--color-btn-card);
   border-radius:    var(--radius);
   font-family:      var(--font-body);
   font-size:        var(--text-16);
   font-weight:      var(--font-weight-regular);
   line-height:      1;
-  color:            var(--color-box-text);
+  color:            var(--color-btn-card-text);
   text-align:       center;
   cursor:           pointer;
   transition:       background-color var(--transition-fast);
 
   &:hover:not(:disabled) {
-    background-color: var(--color-secondary-hover);
+    background-color: var(--color-btn-card-hover);
   }
 
   &:disabled {
-    background-color: var(--color-secondary-off);
+    background-color: var(--color-btn-card-off);
     cursor:           not-allowed;
   }
 }

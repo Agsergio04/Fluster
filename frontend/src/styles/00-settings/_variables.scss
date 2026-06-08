@@ -106,6 +106,20 @@ $color-card-almacen-light:  #4FB2F8; // AAA 8.84:1 con texto oscuro
 
 $color-card-almacen-dark:  #1E4D74; // AAA 8.86:1 con texto blanco (antes #2F6891, AA 5.98)
 
+// Botón de acción sobre tarjetas de color (card-almacen). Polaridad INVERTIDA
+// respecto a la tarjeta para que el borde del botón contraste ≥3:1 (WCAG 1.4.11,
+// elementos no textuales) en ambos temas — antes el botón usaba --color-secondary,
+// del mismo azul que la tarjeta (1.05:1), y se fundía con ella. Así contrasta:
+// claro = azul oscuro + texto blanco; oscuro = azul claro + texto oscuro.
+$color-btn-card-light:       #114A7C; // borde 3.95:1 vs card-almacen claro; texto blanco 9.15:1
+$color-btn-card-hover-light: #0E3E68;
+$color-btn-card-off-light:   #3F5266;
+$color-btn-card-text-light:  #FFFFFF;
+$color-btn-card-dark:        #5BB6F8; // borde 4.01:1 vs card-almacen oscuro; texto #040404 9.27:1
+$color-btn-card-hover-dark:  #7CC5FA;
+$color-btn-card-off-dark:    #BFE1FB;
+$color-btn-card-text-dark:   #040404;
+
 // ── Tipografía — Familias ──────────────────────────────────────────
 $font-heading: 'Crimson Text', serif;
 $font-body:    'Arimo', Arial, sans-serif;
